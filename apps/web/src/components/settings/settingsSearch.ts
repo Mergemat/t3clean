@@ -371,7 +371,7 @@ export const SETTINGS_SEARCH_ITEMS = [
     id: "dither-backdrop",
     title: "Dither backdrop",
     to: "/settings/appearance",
-    searchTerms: ["dithercn ripples background animation shader webgl"],
+    searchTerms: ["dithercn aurora background animation shader webgl"],
   },
   {
     id: "panel-animations",

@@ -3386,7 +3386,8 @@ export default function ChatView(props: ChatViewProps) {
           </header>
         )}
 
-        <div className="relative flex min-h-0 min-w-0 flex-1">
+        <div className="relative isolate flex min-h-0 min-w-0 flex-1 bg-background">
+          <ConversationBackdrop />
           <ThreadFindCanvas
             findOptions={{
               skills: timelineSkills,
@@ -3424,11 +3425,7 @@ export default function ChatView(props: ChatViewProps) {
               setThreadError={setThreadError}
               setThreadErrorBannerDismissTick={setThreadErrorBannerDismissTick}
             />
-            <div
-              {...conversationArea}
-              className="relative isolate flex min-h-0 flex-1 flex-col bg-background"
-            >
-              <ConversationBackdrop />
+            <div {...conversationArea} className="relative flex min-h-0 flex-1 flex-col">
               <WorkspaceMutationIdContext value={workspaceMutationId}>
                 <ThreadTimeline
                   pendingApprovals={pendingApprovals}

@@ -1,17 +1,28 @@
 import { useClientSettings } from "../../hooks/useSettings";
-import { Ripples } from "../../vendor/dithercn/ripples";
+import { Aurora } from "../../vendor/dithercn/aurora";
 
-// Ink is the theme's focus colour so the rings follow any theme. The middle stop and the capped
-// intensity keep crests dim enough to read messages over.
-const PALETTE = [
-  "--background",
-  "color-mix(in oklab, var(--ring) 30%, var(--background))",
-  "color-mix(in oklab, var(--ring) 70%, var(--background))",
-] as const;
-
+// dithercn's "Northern lights" preset. A theme can recolour it by setting --aurora-sky, --aurora-edge
+// and --aurora-tip.
 export function ConversationBackdrop() {
   const enabled = useClientSettings((settings) => settings.ditherBackdropEnabled);
   if (!enabled) return null;
-  // -z-10 sits under the timeline inside the conversation area's isolated stacking context.
-  return <Ripples className="absolute inset-0 -z-10" palette={PALETTE} intensity={0.6} />;
+  // -z-10 sits under the chat body inside its isolated stacking context.
+  return (
+    <div className="absolute inset-0 -z-10 bg-(--sky) [--edge:var(--aurora-edge,oklch(0.62_0.17_155))] [--sky:var(--aurora-sky,oklch(0.975_0.012_290))] [--tip:var(--aurora-tip,oklch(0.58_0.19_300))] dark:[--edge:var(--aurora-edge,oklch(0.8_0.18_150))] dark:[--sky:var(--aurora-sky,oklch(0.14_0.03_250))] dark:[--tip:var(--aurora-tip,oklch(0.55_0.16_300))]">
+      <Aurora
+        background="--sky"
+        color="--edge"
+        tipColor="--tip"
+        curtains={4}
+        height={0.28}
+        spread={0.08}
+        sway={1.6}
+        rays={11}
+        length={0.7}
+        tilt={-6}
+        drift={0.5}
+        className="absolute inset-0"
+      />
+    </div>
+  );
 }
