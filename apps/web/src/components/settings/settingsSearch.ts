@@ -368,6 +368,12 @@ export const SETTINGS_SEARCH_ITEMS = [
     searchTerms: ["latex tex katex equations formulas markdown"],
   },
   {
+    id: "dither-backdrop",
+    title: "Dither backdrop",
+    to: "/settings/appearance",
+    searchTerms: ["dithercn ripples background animation shader webgl"],
+  },
+  {
     id: "panel-animations",
     title: "Panel animations",
     to: "/settings/appearance",

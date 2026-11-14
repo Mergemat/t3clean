@@ -348,6 +348,31 @@ export function AppearanceSettingsPanel() {
             />
           }
         />
+        <SettingsRow
+          {...searchableSetting("dither-backdrop")}
+          description="Animated dithered ripples behind the conversation, drawn from your theme's background and focus colours. Holds a still frame when the system asks for reduced motion."
+          resetAction={
+            settings.ditherBackdropEnabled !== DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled ? (
+              <SettingResetButton
+                label="dither backdrop"
+                onClick={() =>
+                  updateSettings({
+                    ditherBackdropEnabled: DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled,
+                  })
+                }
+              />
+            ) : null
+          }
+          control={
+            <Switch
+              checked={settings.ditherBackdropEnabled}
+              onCheckedChange={(checked) =>
+                updateSettings({ ditherBackdropEnabled: Boolean(checked) })
+              }
+              aria-label="Dither backdrop"
+            />
+          }
+        />
         <AdvancedSettings
           targetIds={[
             searchableSetting("panel-animations").id,
