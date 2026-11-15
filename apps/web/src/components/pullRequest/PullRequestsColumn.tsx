@@ -14,6 +14,7 @@ import {
 import { WorkspacePageContainer } from "../WorkspacePageContainer";
 import { WorkspacePageHeader } from "../WorkspacePageHeader";
 import { workspaceAreaProps } from "../../lib/workspaceFocus";
+import { ConversationBackdrop } from "../chat/ConversationBackdrop";
 import { PullRequestCompactFilterMenu } from "./PullRequestCompactFilterMenu";
 import type { PullRequestFilterOption } from "./PullRequestListFilters";
 import { INVOLVEMENT_TABS, STATE_TABS } from "./pullRequestListOptions";
@@ -168,6 +169,7 @@ export function PullRequestsColumn({
       )}
     >
       <WorkspacePageHeader
+        data-chat-header=""
         electron={isElectron}
         reserveNativeControls={!rightPanelOpen}
         className="relative bg-background"
@@ -228,37 +230,40 @@ export function PullRequestsColumn({
         {rightPanelControl}
       </WorkspacePageHeader>
 
-      <div
-        ref={scrollRef}
-        className="topbar-scroll-fade scrollbar-gutter-both min-h-0 flex-1 overflow-y-auto"
-      >
-        <WorkspacePageContainer width="expanded" className="min-h-full gap-4">
-          <div className="flex flex-col gap-3">
-            <div ref={inFlowSearchRef} className="flex flex-wrap items-center gap-2">
-              <div className="min-w-0 basis-full @lg/pr-list:basis-0 @lg/pr-list:flex-1">
-                {searchInput}
+      <div className="relative isolate flex min-h-0 flex-1 flex-col">
+        <ConversationBackdrop />
+        <div
+          ref={scrollRef}
+          className="topbar-scroll-fade scrollbar-gutter-both min-h-0 flex-1 overflow-y-auto"
+        >
+          <WorkspacePageContainer width="expanded" className="min-h-full gap-4">
+            <div className="flex flex-col gap-3">
+              <div ref={inFlowSearchRef} className="flex flex-wrap items-center gap-2">
+                <div className="min-w-0 basis-full @lg/pr-list:basis-0 @lg/pr-list:flex-1">
+                  {searchInput}
+                </div>
+                {sortMenu}
+                {filtersMenu}
+                <PullRequestCompactFilterMenu
+                  label="Filter by provider"
+                  outlined
+                  iconOnly={host !== undefined}
+                  triggerIcon={<Plug2Icon aria-hidden className="size-4" />}
+                  triggerLabel="All"
+                  value={host ?? ""}
+                  options={hostMenuOptions}
+                  onChange={(next) => onHost(next === "" ? undefined : next)}
+                />
+                {!condensed ? (
+                  <PullRequestRefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                ) : null}
               </div>
-              {sortMenu}
-              {filtersMenu}
-              <PullRequestCompactFilterMenu
-                label="Filter by provider"
-                outlined
-                iconOnly={host !== undefined}
-                triggerIcon={<Plug2Icon aria-hidden className="size-4" />}
-                triggerLabel="All"
-                value={host ?? ""}
-                options={hostMenuOptions}
-                onChange={(next) => onHost(next === "" ? undefined : next)}
-              />
-              {!condensed ? (
-                <PullRequestRefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              ) : null}
+              <div ref={markerRef} aria-hidden className="-mt-3 h-px w-full" />
             </div>
-            <div ref={markerRef} aria-hidden className="-mt-3 h-px w-full" />
-          </div>
 
-          {listBody}
-        </WorkspacePageContainer>
+            {listBody}
+          </WorkspacePageContainer>
+        </div>
       </div>
     </div>
   );

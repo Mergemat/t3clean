@@ -1,16 +1,16 @@
 import { useClientSettings } from "../../hooks/useSettings";
 import { Aurora } from "../../vendor/dithercn/aurora";
 
-// dithercn's "Northern lights" preset. A theme can recolour it by setting --aurora-sky, --aurora-edge
-// and --aurora-tip.
+// dithercn's "Northern lights" shape, coloured from the active theme: sky from the card surface, edges
+// from the accent. A theme can override them with --aurora-sky, --aurora-edge and --aurora-tip.
 export function ConversationBackdrop() {
   const enabled = useClientSettings((settings) => settings.ditherBackdropEnabled);
   // Automated browsers run WebGL in software, and the shader there trips Playwright's stability
   // check on the composer in the browser tests.
   if (!enabled || navigator.webdriver) return null;
-  // -z-10 sits under the chat body inside its isolated stacking context.
+  // -z-10 sits under the content of the card that renders it; that card must isolate.
   return (
-    <div className="absolute inset-0 -z-10 bg-(--sky) [--edge:var(--aurora-edge,oklch(0.62_0.17_155))] [--sky:var(--aurora-sky,oklch(0.975_0.012_290))] [--tip:var(--aurora-tip,oklch(0.58_0.19_300))] dark:[--edge:var(--aurora-edge,oklch(0.8_0.18_150))] dark:[--sky:var(--aurora-sky,oklch(0.14_0.03_250))] dark:[--tip:var(--aurora-tip,oklch(0.55_0.16_300))]">
+    <div className="absolute inset-0 -z-10 bg-(--sky) [--edge:var(--aurora-edge,var(--primary))] [--sky:var(--aurora-sky,var(--card))] [--tip:var(--aurora-tip,color-mix(in_oklab,var(--primary)_45%,var(--muted-foreground)))]">
       <Aurora
         background="--sky"
         color="--edge"
@@ -23,7 +23,9 @@ export function ConversationBackdrop() {
         length={0.7}
         tilt={-6}
         drift={0.5}
-        className="absolute inset-0"
+        speed={0.4}
+        // Faded into the sky so text over the brightest curtains stays readable.
+        className="absolute inset-0 opacity-15"
       />
     </div>
   );

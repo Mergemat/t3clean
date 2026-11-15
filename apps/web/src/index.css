@@ -89,7 +89,7 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 }
 
 :root {
-  --app-scrollbar-width: 6px;
+  --app-scrollbar-width: 10px;
   --appearance-contrast-base: 100%;
   --appearance-contrast-boost: 0%;
   --appearance-contrast-border-boost: 0%;
@@ -1854,11 +1854,16 @@ code {
 
 :where(:not(iframe))::-webkit-scrollbar-track {
   background: transparent;
+  /* Keeps the thumb clear of rounded card corners. */
+  margin-block: 16px;
 }
 
+/* The transparent border insets the visible thumb inside its lane. */
 :where(:not(iframe))::-webkit-scrollbar-thumb {
   background: var(--app-scrollbar-thumb);
-  border-radius: 3px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
 }
 
 :where(:not(iframe))::-webkit-scrollbar-thumb:hover {
@@ -2639,4 +2644,165 @@ code {
 
 .messages-timeline-scroll:focus-visible {
   outline: none;
+}
+
+/* Workspace windows: the sidebar, the header and the tab bars form one flat frame in front, and
+   every content pane is a rounded window cut through it, outlined and shaded by the frame.
+   Docked surfaces inside a window use smaller radii so the corners stay concentric
+   (outer radius = inner radius + gap). */
+:root {
+  --workspace-card-radius: 18px;
+  --workspace-card-gap: 8px;
+  /* One outline for windows and everything floating in them, matching dropdown-glass. */
+  --workspace-line: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
+}
+
+/* Important: the themed sidebar rules set this border with higher specificity. */
+[data-slot="sidebar-container"] {
+  border-color: transparent !important;
+}
+
+/* The frame is one flat surface: the themed header rule would paint the toolbar colour, and the
+   sidebar's grain only shows on the sidebar, so either makes it read as a separate panel. */
+[data-chat-header] {
+  background-color: transparent !important;
+}
+
+[data-slot="sidebar-inner"] {
+  background-image: none;
+}
+
+[data-workspace-area="conversation"],
+[data-workspace-area="conversation"] .messages-timeline-scroll,
+[data-workspace-area="panel"] {
+  border: 0;
+  background: transparent;
+}
+
+[data-chat-header] + div,
+[data-right-panel-surface-content],
+[data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"]) {
+  position: relative;
+  isolation: isolate;
+  margin: 0 var(--workspace-card-gap) var(--workspace-card-gap) 0;
+  /* The outline is painted as border-box backgrounds, not a border colour, so the resize glow can
+     fade around the rounded corners instead of stopping at a per-side colour boundary. */
+  border: 1px solid transparent;
+  border-radius: var(--workspace-card-radius);
+  background:
+    linear-gradient(var(--workspace-fill), var(--workspace-fill)) padding-box,
+    linear-gradient(to right, var(--workspace-edge), transparent 72px) border-box,
+    linear-gradient(var(--workspace-line), var(--workspace-line)) border-box;
+  transition: --workspace-edge 200ms ease-out;
+  overflow: hidden;
+  --workspace-fill: var(--card);
+}
+
+[data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"]) {
+  --workspace-fill: var(--background);
+}
+
+/* Painted over the content, since the content's own backgrounds would cover an inset shadow. */
+[data-chat-header] + div::after,
+[data-right-panel-surface-content]::after,
+[data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 45%),
+    inset 0 10px 24px -14px rgb(0 0 0 / 70%);
+}
+
+/* The chat window shows the aurora, not a flat page, so surfaces painted the page or code colour
+   read as solid slabs. Code blocks become glass in the window's surface colour, like the
+   composer; the changed-files header drops the page colour it used to hide rows scrolling under
+   it. Important: themed rules set both with higher specificity. */
+[data-chat-header] + div .chat-markdown-codeblock {
+  background-color: color-mix(in srgb, var(--card) var(--glass-opacity), transparent) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+}
+
+[data-chat-header] + div [data-changed-files-header] {
+  background: none !important;
+}
+
+[data-chat-header] + div :is(.chat-markdown-codeblock, [data-changed-files-state]) {
+  border: 1px solid var(--workspace-line) !important;
+}
+
+[data-chat-header] + div [data-slot="composer-host"] {
+  --chat-composer-outline: var(--workspace-line);
+}
+
+/* A window's left edge is what the neighbouring resize handle moves, so the handle lights that
+   edge (rounded corners included) instead of drawing its own straight line through the frame.
+   The right panel handle keeps its line for keyboard focus. */
+@property --workspace-edge {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
+
+[data-slot="sidebar-rail"]::after {
+  background-color: transparent;
+}
+
+[role="separator"].cursor-col-resize:not(:focus-visible) > span {
+  background-color: transparent;
+}
+
+[data-slot="sidebar-wrapper"]:has([data-slot="sidebar-rail"]:is(:hover, :active))
+  :is(
+    [data-chat-header] + div,
+    [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])
+  ),
+[data-workspace-area="panel"]:has(> [role="separator"].cursor-col-resize:is(:hover, :active))
+  [data-right-panel-surface-content] {
+  --workspace-edge: color-mix(in srgb, var(--contrast-foreground) 35%, transparent);
+}
+
+/* With the sidebar collapsed, nothing else separates the cards from the window's left edge. */
+[data-slot="sidebar-wrapper"]:not(:has([data-slot="sidebar"][data-state="expanded"]))
+  :is(
+    [data-chat-header] + div,
+    [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])
+  ) {
+  margin-left: var(--workspace-card-gap);
+}
+
+/* The card edge already separates content from the header, and a fade there reads as the
+   card sliding under the header. */
+[data-chat-header] + div .topbar-scroll-fade {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+[data-slot="composer-context-strip"] {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+[data-thread-details-panel="inline"] [data-thread-details-card] {
+  border-radius: 8px;
+  --radius: 0.25rem;
+  --control-radius: 4px;
+}
+
+[data-right-panel-surface-content] [data-surface-subheader] {
+  height: auto;
+  min-height: 0;
+  padding: 10px;
+}
+
+[data-thread-terminal-drawer] > .flex-1 > div {
+  padding: 10px 12px;
+}
+
+[data-thread-terminal-drawer] > .absolute {
+  top: 10px;
+  right: 10px;
 }
