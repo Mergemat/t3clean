@@ -425,18 +425,14 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 }
 
 @utility dialog-glass {
-  background: color-mix(in srgb, var(--background) var(--glass-opacity), transparent);
+  /* Level 2 (see Levels): a dialog is a float. Dialogs set their own border width. */
+  background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border-color: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
-  box-shadow: 0 24px 64px -24px rgb(0 0 0 / 65%);
-
-  @variant dark {
-    border-color: color-mix(in srgb, var(--color-white) 8%, transparent);
-    box-shadow:
-      inset 0 1px rgb(255 255 255 / 4%),
-      0 24px 72px -20px rgb(0 0 0 / 90%);
-  }
+  border-color: var(--level-line);
+  box-shadow: var(--float-shadow);
+  --border: var(--level-line);
+  --contrast-border: var(--level-line);
 
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     background: var(--popover) !important;
@@ -454,14 +450,14 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 }
 
 @utility dropdown-glass {
-  background: color-mix(
-    in srgb,
-    var(--popover) 18%,
-    color-mix(in srgb, var(--popover) var(--glass-opacity), transparent)
-  );
+  /* Level 2 (see Levels). Dividers inside a float draw its outline. */
+  background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border: 1px solid color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
+  border: 1px solid var(--level-line);
+  box-shadow: var(--float-shadow);
+  --border: var(--level-line);
+  --contrast-border: var(--level-line);
 
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     background: var(--popover) !important;
@@ -2648,32 +2644,58 @@ code {
   outline: none;
 }
 
-/* Workspace windows: the sidebar, the header and the tab bars form one flat frame in front, and
-   every content pane is a rounded window cut through it, outlined and shaded by the frame.
-   Docked surfaces inside a window use smaller radii so the corners stay concentric
-   (outer radius = inner radius + gap). */
+/* Levels, nearest first. Every surface belongs to one level and takes its material from here,
+   so a theme only supplies colours.
+   2 float:   menus, popovers, tooltips, hover cards, dialogs, toasts. Glass that casts a shadow.
+   1 surface: the frame (sidebar, header, tab bars) and the rows and controls on it. Flat and
+              opaque, with no outline.
+   0 window:  panes cut through the frame onto the aurora, outlined and shaded by the frame.
+              What sits inside a window is glass in the window colour.
+   Siblings on a level follow the same rules, with no per-component exceptions:
+     windows        18px corners, 8px gaps
+     window content 16px corners (messages, code, composer, changed files)
+     floats         12px corners; text 12px from the edge, lists 4px with items inside
+     items          8px corners: float items, and every row and control on the surface */
 :root {
-  --workspace-card-radius: 18px;
-  --workspace-card-gap: 8px;
-  /* One outline for windows and everything floating in them, matching dropdown-glass. */
-  --workspace-line: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
+  --level-line: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
+
+  --float-fill: color-mix(
+    in srgb,
+    var(--popover) 18%,
+    color-mix(in srgb, var(--popover) var(--glass-opacity), transparent)
+  );
+  --float-shadow: 0 16px 40px -18px rgb(0 0 0 / 55%);
+
+  --surface-fill: var(--background);
+
+  --window-fill: var(--card);
+  --window-radius: 18px;
+  --window-gap: 8px;
+  --window-shade: inset 0 1px 2px rgb(0 0 0 / 45%), inset 0 10px 24px -14px rgb(0 0 0 / 70%);
+  --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
+
+  @variant dark {
+    --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
+  }
 }
 
+/* Level 1. */
 /* Important: the themed sidebar rules set this border with higher specificity. */
 [data-slot="sidebar-container"] {
   border-color: transparent !important;
 }
 
 /* The frame is one flat surface: the themed header rule would paint the toolbar colour, and the
-   sidebar's grain only shows on the sidebar, so either makes it read as a separate panel. */
+   sidebar would keep its own colour and grain, so either makes it read as a separate panel. */
 [data-chat-header] {
   background-color: transparent !important;
 }
 
 [data-slot="sidebar-inner"] {
-  background-image: none;
+  background: var(--surface-fill);
 }
 
+/* Level 0. */
 [data-workspace-area="conversation"],
 [data-workspace-area="conversation"] .messages-timeline-scroll,
 [data-workspace-area="panel"] {
@@ -2686,22 +2708,24 @@ code {
 [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"]) {
   position: relative;
   isolation: isolate;
-  margin: 0 var(--workspace-card-gap) var(--workspace-card-gap) 0;
+  margin: 0 var(--window-gap) var(--window-gap) 0;
   /* The outline is painted as border-box backgrounds, not a border colour, so the resize glow can
      fade around the rounded corners instead of stopping at a per-side colour boundary. */
   border: 1px solid transparent;
-  border-radius: var(--workspace-card-radius);
+  border-radius: var(--window-radius);
   background:
-    linear-gradient(var(--workspace-fill), var(--workspace-fill)) padding-box,
-    linear-gradient(to right, var(--workspace-edge), transparent 72px) border-box,
-    linear-gradient(var(--workspace-line), var(--workspace-line)) border-box;
-  transition: --workspace-edge 150ms ease;
+    linear-gradient(var(--pane-fill), var(--pane-fill)) padding-box,
+    linear-gradient(to right, var(--pane-edge), transparent 72px) border-box,
+    linear-gradient(var(--level-line), var(--level-line)) border-box;
+  transition: --pane-edge 150ms ease;
   overflow: hidden;
-  --workspace-fill: var(--card);
+  --pane-fill: var(--window-fill);
 }
 
-[data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"]) {
-  --workspace-fill: var(--background);
+/* Windows are one fill, so the terminal's canvas (read from this variable when it mounts) takes
+   the window's instead of the theme's separate terminal colour. */
+[data-thread-terminal-drawer] {
+  --terminal-background: var(--window-fill);
 }
 
 /* Painted over the content, since the content's own backgrounds would cover an inset shadow. */
@@ -2714,36 +2738,44 @@ code {
   z-index: 100;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow:
-    inset 0 1px 2px rgb(0 0 0 / 45%),
-    inset 0 10px 24px -14px rgb(0 0 0 / 70%);
+  box-shadow: var(--window-shade);
 }
 
-/* The chat window shows the aurora, not a flat page, so surfaces painted the page or code colour
-   read as solid slabs. Code blocks become glass in the window's surface colour, like the
-   composer; the changed-files header drops the page colour it used to hide rows scrolling under
-   it. Important: themed rules set both with higher specificity. */
-[data-chat-header] + div .chat-markdown-codeblock {
-  background-color: color-mix(in srgb, var(--card) var(--glass-opacity), transparent) !important;
+/* Inside the chat window everything sits on the aurora, so content shares the window's glass:
+   messages, code blocks and changed-files cards as cards, and anything painted the page colour
+   (chips, pills, overlays) through --background. Important: themed and component rules set
+   these with higher specificity. */
+[data-chat-header] + div {
+  --background: var(--window-content-fill);
+  --border: var(--level-line);
+  --contrast-border: var(--level-line);
+}
+
+[data-chat-header]
+  + div
+  :is(.chat-markdown-codeblock, [data-changed-files-state], [data-user-message-bubble]) {
+  background-color: var(--window-content-fill) !important;
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--level-line) !important;
+  border-radius: var(--radius-2xl) !important;
 }
 
 [data-chat-header] + div [data-changed-files-header] {
   background: none !important;
 }
 
-[data-chat-header] + div :is(.chat-markdown-codeblock, [data-changed-files-state]) {
-  border: 1px solid var(--workspace-line) !important;
+[data-chat-header] + div [data-slot="composer-shell"] {
+  --chat-composer-glass-surface: var(--card);
 }
 
 [data-chat-header] + div [data-slot="composer-host"] {
-  --chat-composer-outline: var(--workspace-line);
+  --chat-composer-outline: var(--level-line);
 }
 
 /* A window's left edge is what the neighbouring resize handle moves, so the handle lights that
    edge (rounded corners included) instead of drawing its own straight line through the frame.
    The right panel handle keeps its line for keyboard focus. */
-@property --workspace-edge {
+@property --pane-edge {
   syntax: "<color>";
   inherits: false;
   initial-value: transparent;
@@ -2764,7 +2796,7 @@ code {
   ),
 [data-workspace-area="panel"]:has(> [role="separator"].cursor-col-resize:is(:hover, :active))
   [data-right-panel-surface-content] {
-  --workspace-edge: color-mix(in srgb, var(--contrast-foreground) 35%, transparent);
+  --pane-edge: color-mix(in srgb, var(--contrast-foreground) 35%, transparent);
 }
 
 /* With the sidebar collapsed, nothing else separates the cards from the window's left edge. */
@@ -2773,7 +2805,7 @@ code {
     [data-chat-header] + div,
     [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])
   ) {
-  margin-left: var(--workspace-card-gap);
+  margin-left: var(--window-gap);
 }
 
 /* The card edge already separates content from the header, and a fade there reads as the

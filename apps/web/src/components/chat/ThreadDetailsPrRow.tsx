@@ -278,7 +278,7 @@ export function ThreadDetailsPrRow({
         variant="glass"
         className="max-w-80 text-left whitespace-normal"
       >
-        <div className="flex min-w-0 max-w-80 flex-col gap-2 px-1 py-2">
+        <div className="flex min-w-0 max-w-80 flex-col gap-2 py-2">
           <div className="flex min-w-0 items-baseline gap-1.5 text-xs leading-none">
             <span className="min-w-0 truncate font-medium text-foreground">{detail.title}</span>
             <span className="shrink-0 text-muted-foreground">#{detail.number}</span>
