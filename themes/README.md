@@ -1,9 +1,8 @@
 # Fork themes
 
-- `dither.json`: dithercn's black and periwinkle. The aurora keeps its own northern-lights colours.
-- `poimandres-dither.json`: the same layout in a near-black Poimandres, with a teal and lavender aurora
-  set through `--aurora-sky`, `--aurora-edge` and `--aurora-tip`.
+Colours only. The window layout and the aurora live in the app, so every theme gets them.
 
-Both carry a still contour tile, which shows on builds without the aurora.
+- `dither.json`: dithercn's black and periwinkle.
+- `poimandres-dither.json`: a near-black Poimandres with mint actions.
 
 Publish and switch with `t3 theme set themes/poimandres-dither.json`.
