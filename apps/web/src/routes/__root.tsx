@@ -39,6 +39,7 @@ import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 import { Button } from "../components/ui/button";
 import { StandalonePage, StandalonePageHeader } from "../components/ui/standalone-page";
 import { AnchoredToastProvider, ToastProvider } from "../components/ui/toast";
+import { TooltipProvider } from "../components/ui/tooltip";
 import { isElectron } from "../env";
 import { useClientSettings } from "../hooks/useSettings";
 import {
@@ -135,7 +136,10 @@ function RootRouteView() {
   return (
     <ToastProvider>
       <AnchoredToastProvider>
-        <RootRouteBranch />
+        {/* Base UI waits 600ms before a tooltip; once one shows, its neighbours open at once. */}
+        <TooltipProvider delay={300}>
+          <RootRouteBranch />
+        </TooltipProvider>
       </AnchoredToastProvider>
     </ToastProvider>
   );

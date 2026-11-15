@@ -188,10 +188,12 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
   --text-4xs--line-height: 1;
   --text-5xs: 0.4375rem;
   --text-5xs--line-height: 1;
-  /* Motion. drawer is the decelerating curve for surfaces that slide or pop in
-     (composer context, pills). */
   --inset-shadow-control-highlight: 0 1px rgb(255 255 255 / 16%);
   --inset-shadow-control-pressed: 0 1px rgb(0 0 0 / 8%);
+  /* Motion. out replaces Tailwind's ease-out with a stronger curve: entering UI moves most in its
+     first frames, so it reads as immediate. drawer is the decelerating curve for surfaces that
+     slide or pop in (composer context, pills, sheets). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   /* The composer's elevation: a soft drop pulled in under the surface, shared
      by the composer, its context strip and attached banners. */
@@ -2693,7 +2695,7 @@ code {
     linear-gradient(var(--workspace-fill), var(--workspace-fill)) padding-box,
     linear-gradient(to right, var(--workspace-edge), transparent 72px) border-box,
     linear-gradient(var(--workspace-line), var(--workspace-line)) border-box;
-  transition: --workspace-edge 200ms ease-out;
+  transition: --workspace-edge 150ms ease;
   overflow: hidden;
   --workspace-fill: var(--card);
 }
