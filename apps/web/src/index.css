@@ -2652,7 +2652,7 @@ code {
    0 window:  panes cut through the frame onto the aurora, outlined and shaded by the frame.
               What sits inside a window is glass in the window colour.
    Siblings on a level follow the same rules, with no per-component exceptions:
-     windows        18px corners, 8px gaps
+     windows        concentric with the app window's corner, 8px gaps
      window content 16px corners (messages, code, composer, changed files)
      floats         12px corners; text 12px from the edge, lists 4px with items inside
      items          8px corners: float items, and every row and control on the surface */
@@ -2669,14 +2669,22 @@ code {
   --surface-fill: var(--background);
 
   --window-fill: var(--card);
-  --window-radius: 18px;
+  /* The OS window corner, measured: 16px on macOS 26, 8px on Windows 11. The page can't read it.
+     A window sits the gap plus the OS edge (2px) inside it, and stays concentric by taking that
+     much off the corner. */
+  --app-corner: 16px;
   --window-gap: 8px;
+  --window-radius: max(4px, calc(var(--app-corner) - var(--window-gap) - 2px));
   --window-shade: inset 0 1px 2px rgb(0 0 0 / 45%), inset 0 10px 24px -14px rgb(0 0 0 / 70%);
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
     --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
+}
+
+html.electron-windows {
+  --app-corner: 8px;
 }
 
 /* Level 1. */
