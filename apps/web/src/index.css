@@ -2789,7 +2789,14 @@ code {
   background-color: transparent;
 }
 
-[data-slot="sidebar-wrapper"]:has([data-slot="sidebar-rail"]:is(:hover, :active))
+/* Every :has() here looks only at direct children: one that searches a subtree is re-checked on
+   every DOM change inside it, and over the whole app that made each thread switch ~100ms slower. */
+[data-slot="sidebar"]:has(
+    > [data-slot="sidebar-container"]
+      > [data-slot="sidebar-inner"]
+      > [data-slot="sidebar-rail"]:is(:hover, :active)
+  )
+  ~ [data-slot="sidebar-inset"]
   :is(
     [data-chat-header] + div,
     [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])
@@ -2800,7 +2807,8 @@ code {
 }
 
 /* With the sidebar collapsed, nothing else separates the cards from the window's left edge. */
-[data-slot="sidebar-wrapper"]:not(:has([data-slot="sidebar"][data-state="expanded"]))
+[data-slot="sidebar"]:not([data-state="expanded"])
+  ~ [data-slot="sidebar-inset"]
   :is(
     [data-chat-header] + div,
     [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])

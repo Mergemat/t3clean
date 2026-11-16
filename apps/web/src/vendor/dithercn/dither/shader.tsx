@@ -562,6 +562,13 @@ export interface DitherShaderProps extends Omit<
   /** The moment shown when motion is off or reduced, in field seconds. Default 0. */
   stillTime?: number;
   /**
+   * Field seconds read from the caller instead of counted per frame, so shaders that share a
+   * clock stay in step and a remount carries on where the last one was. Ignores `speed`.
+   */
+  clock?: () => number;
+  /** `false` shows the first frame at once instead of fading in from `fallback`. Default `true`. */
+  fadeIn?: boolean;
+  /**
    * Painted until the first WebGL frame, while the shader is far offscreen,
    * and whenever WebGL is unavailable. Default: flat paper.
    */
@@ -575,6 +582,12 @@ const clampLevels = (levels: number) =>
 
 const CANVAS_CLASS =
   "absolute top-0 left-0 block opacity-100 transition-opacity duration-700 ease-out [image-rendering:pixelated] group-data-[state=fallback]/dither:opacity-0 group-data-[state=fallback]/dither:duration-0 motion-reduce:transition-none";
+const CANVAS_CLASS_INSTANT =
+  "absolute top-0 left-0 block opacity-100 [image-rendering:pixelated] group-data-[state=fallback]/dither:opacity-0";
+const FALLBACK_CLASS =
+  "absolute inset-0 opacity-0 transition-opacity delay-700 duration-0 group-data-[state=fallback]/dither:opacity-100 group-data-[state=fallback]/dither:delay-0";
+const FALLBACK_CLASS_INSTANT =
+  "absolute inset-0 opacity-0 group-data-[state=fallback]/dither:opacity-100";
 
 /**
  * A dithered full-bleed canvas driven by a GLSL `field`. Renders one pixel
@@ -595,6 +608,8 @@ export const DitherShader = ({
   animate = true,
   fps = 30,
   stillTime = 0,
+  clock,
+  fadeIn = true,
   fallback,
   className,
   "aria-hidden": ariaHidden = true,
@@ -614,7 +629,8 @@ export const DitherShader = ({
   };
   const rendererRef = useRef<Renderer | null>(null);
   const sizeRef = useRef({ columns: 0, rows: 0 });
-  const timeRef = useRef(stillTime);
+  const reducedMotion = usePrefersReducedMotion();
+  const timeRef = useRef(clock && animate && !reducedMotion ? clock() : stillTime);
   const [hasFrame, setHasFrame] = useState(false);
   const hasFrameRef = useRef(false);
   const hasContext = useContextSlot(rootRef);
@@ -637,12 +653,13 @@ export const DitherShader = ({
     levels: resolvedLevels,
     map,
     paletteKey,
+    clock,
     speed,
     uniforms,
   });
   const drawRef = useRef<(() => void) | null>(null);
   useEffect(() => {
-    live.current = { levels: resolvedLevels, map, paletteKey, speed, uniforms };
+    live.current = { clock, levels: resolvedLevels, map, paletteKey, speed, uniforms };
     drawRef.current = () => {
       const renderer = rendererRef.current;
       const { columns, rows } = sizeRef.current;
@@ -663,7 +680,6 @@ export const DitherShader = ({
   // Once motion has run, turning `animate` off holds the frame on screen
   // instead of jumping to `stillTime`. A new `stillTime` still applies, and
   // reduced motion always shows it.
-  const reducedMotion = usePrefersReducedMotion();
   const hasRunRef = useRef(false);
   useEffect(() => {
     hasRunRef.current = false;
@@ -673,7 +689,7 @@ export const DitherShader = ({
     (time, delta) => {
       if (delta > 0) {
         // Accumulate so a change of `speed` never jumps the motion.
-        timeRef.current += delta * live.current.speed;
+        timeRef.current = live.current.clock?.() ?? timeRef.current + delta * live.current.speed;
         hasRunRef.current = true;
       } else if (reducedMotion || !hasRunRef.current) {
         timeRef.current = time;
@@ -691,7 +707,7 @@ export const DitherShader = ({
       return;
     }
     const canvas = document.createElement("canvas");
-    canvas.className = CANVAS_CLASS;
+    canvas.className = fadeIn ? CANVAS_CLASS : CANVAS_CLASS_INSTANT;
     const gl = canvas.getContext("webgl", {
       alpha: true,
       antialias: false,
@@ -776,7 +792,7 @@ export const DitherShader = ({
     };
     // `specs` is described by `specKey`; a new `cell` re-measures.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [field, colorField, specKey, cell, hasContext]);
+  }, [field, colorField, specKey, cell, hasContext, fadeIn]);
 
   useEffect(() => {
     rendererRef.current?.setMatrix(map);
@@ -813,7 +829,7 @@ export const DitherShader = ({
     >
       <div
         data-dither-fallback
-        className="absolute inset-0 opacity-0 transition-opacity delay-700 duration-0 group-data-[state=fallback]/dither:opacity-100 group-data-[state=fallback]/dither:delay-0"
+        className={fadeIn ? FALLBACK_CLASS : FALLBACK_CLASS_INSTANT}
       >
         {fallback ?? (
           <div
