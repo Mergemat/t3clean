@@ -8,7 +8,7 @@ import { useRenderedAppearance } from "../../hooks/useTheme";
 import { RenderErrorBoundary } from "../RenderErrorBoundary";
 import { HighlightedTokens } from "./HighlightedTokens";
 
-const WORD_CLASS_NAME = "[overflow-wrap:anywhere]";
+const WORD_CLASS_NAME = "wrap-anywhere";
 
 let embeddedScriptsModule:
   | Promise<typeof import("@t3tools/client-runtime/work-log/embedded-scripts")>
@@ -53,7 +53,7 @@ export function ShellCommandBlock({ command }: { command: string }) {
   if (!code) return null;
   const plain = <PlainWords code={code} />;
   return (
-    <div className="text-foreground/85">
+    <div className="text-ink-1">
       <RenderErrorBoundary fallback={plain} resetKeys={[code]}>
         <Suspense fallback={plain}>
           <HighlightedCommand code={code} theme={resolvedTheme} />

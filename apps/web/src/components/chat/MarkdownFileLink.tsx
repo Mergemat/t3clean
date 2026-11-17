@@ -435,9 +435,9 @@ function AppBundleIcon(props: { environmentId: EnvironmentId | null; path: strin
     <span
       data-app-bundle-icon=""
       aria-hidden="true"
-      className="relative me-[0.2em] inline-block size-[1em] align-[calc((1cap-1em)/2)]"
+      className="relative inline-block size-em align-middle"
     >
-      <FolderIcon className={cn("size-full text-icon-muted", loaded && "invisible")} />
+      <FolderIcon className={cn("size-full text-ink-3", loaded && "invisible")} />
       {url !== null && (
         <img
           src={url}

@@ -33,8 +33,8 @@ export function ProviderSubagentBar(props: {
   // chat column on a wide window, and one row there squeezes out the model
   // and status, so the status drops to its own line instead.
   return (
-    <div className="flex min-h-12 items-center gap-3 rounded-2xl py-2 ps-5 pe-2 text-sm">
-      <div className="flex min-w-0 flex-1 items-center gap-3 @max-[560px]/composer-surface:flex-col @max-[560px]/composer-surface:items-start @max-[560px]/composer-surface:gap-0.5">
+    <div className="flex min-h-12 items-center gap-2 rounded-box py-2 ps-4 pe-2 text-body">
+      <div className="flex min-w-0 flex-1 items-center gap-2 @max-[560px]/composer-surface:flex-col @max-[560px]/composer-surface:items-start">
         <span className="flex min-w-0 max-w-full items-center gap-2">
           {props.provider ? (
             <ProviderInstanceIcon
@@ -46,24 +46,24 @@ export function ProviderSubagentBar(props: {
               showBadge={props.showInstanceBadge}
               className="size-4 shrink-0"
               iconClassName="size-4"
-              badgeClassName="right-[-0.125rem] bottom-[-0.125rem] h-3 min-w-3 px-0.5 text-5xs"
+              badgeClassName="-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta"
             />
           ) : null}
-          <span className="min-w-0 truncate font-medium text-foreground">{props.modelLabel}</span>
+          <span className="min-w-0 truncate font-medium text-ink-1">{props.modelLabel}</span>
           {props.effortLabel === null ? null : (
-            <span className="shrink-0 text-muted-foreground">{props.effortLabel}</span>
+            <span className="shrink-0 text-ink-2">{props.effortLabel}</span>
           )}
         </span>
         <span
           ref={tickTextContent((nowMs) => formatProviderSubagentStatus(status, nowMs), live)}
           aria-hidden
-          className="min-w-0 max-w-full truncate text-muted-foreground tabular-nums @max-[560px]/composer-surface:text-xs"
+          className="min-w-0 max-w-full truncate text-ink-2 tabular-nums @max-[560px]/composer-surface:text-meta"
         />
       </div>
       <span role="status" className="sr-only">
         {`${modelDescription} subagent: ${announcement}`}
       </span>
-      <span className="shrink-0 text-muted-foreground @max-[640px]/composer-surface:sr-only">
+      <span className="shrink-0 text-ink-2 @max-[640px]/composer-surface:sr-only">
         Runs on its own
       </span>
       {props.actions}

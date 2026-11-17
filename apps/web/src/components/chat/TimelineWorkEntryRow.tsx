@@ -101,7 +101,7 @@ export function ThreadReadLabel({
         <Link
           to="/$environmentId/$threadId"
           params={{ environmentId, threadId: label.threadId }}
-          className="min-w-0 truncate rounded-sm text-foreground underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 truncate rounded-row text-ink-1 underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-ring"
           onClick={stopRowToggle}
           onKeyDown={stopRowToggle}
         >
@@ -116,7 +116,7 @@ export function ThreadReadLabel({
 }
 
 const toolCallExpandedBodyClassName =
-  "max-h-64 cursor-text overflow-auto whitespace-pre-wrap break-words font-mono text-secondary-label text-(length:--font-size-code,var(--text-2xs)) leading-relaxed select-text";
+  "max-h-64 cursor-text overflow-auto whitespace-pre-wrap break-words font-mono text-ink-2 text-(length:--font-size-code,var(--text-2xs)) leading-relaxed select-text";
 
 const stopRowToggle = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
@@ -130,7 +130,7 @@ export function ReasoningTraceContent({ entries }: { entries: ReadonlyArray<Time
       {entries.map((entry) => (
         <ChatMarkdown
           key={entry.id}
-          className="text-foreground"
+          className="text-ink-1"
           text={entry.detail ?? ""}
           cwd={ctx.markdownCwd}
           threadRef={ctx.threadRef ?? undefined}
@@ -184,7 +184,7 @@ export function ViewedImagesTimelineRow({
   const { threadRef, workspaceRoot, onImageExpand } = use(TimelineRowCtx);
   if (!threadRef) return null;
   return (
-    <div className="flex flex-wrap items-start gap-2 px-0.5" data-image-gallery>
+    <div className="flex flex-wrap items-start gap-2 px-1" data-image-gallery>
       {row.paths.map((path) => {
         const image = resolveViewedImageAsset(path, {
           threadId: threadRef.threadId,
@@ -276,7 +276,7 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
         }
         label={
           <span
-            className={cn("text-sm font-medium", warning ? "text-warning" : "text-destructive")}
+            className={cn("text-body font-medium", warning ? "text-warning" : "text-destructive")}
           >
             {label}
           </span>
@@ -290,12 +290,12 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
         }
       >
         {!warning ? (
-          <p className="ms-7 whitespace-pre-wrap break-words py-1 text-sm leading-relaxed text-foreground/80">
+          <p className="ms-6 whitespace-pre-wrap break-words py-1 text-body leading-relaxed text-ink-2">
             {failureItem.failure.message}
           </p>
         ) : null}
         {retryRunId !== null && onRetryWorkspacePreparation ? (
-          <div className="ms-7 pb-1">
+          <div className="ms-6 pb-1">
             <Button
               type="button"
               size="xs"
@@ -410,7 +410,7 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
         : showFailedIndicator
           ? failedToolIconClassName
           : workEntry.tone === "tool"
-            ? "text-icon-muted"
+            ? "text-ink-3"
             : iconConfig.className,
   );
   const headingClass = showWarningIndicator
@@ -418,8 +418,8 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
     : showDestructiveRowStyle
       ? "font-medium text-destructive"
       : workLogEntryIsToolLike(workEntry)
-        ? "text-secondary-label"
-        : "text-foreground/80";
+        ? "text-ink-2"
+        : "text-ink-2";
   const threadLabel = isReasoning ? null : threadReadLabel(previewText, threadTarget);
   const accessiblePreview = [threadLabel?.text ?? previewText, answerPreview]
     .filter(Boolean)
@@ -465,7 +465,7 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
       }
       label={
         <div className="min-w-0 flex-1 overflow-hidden">
-          <p className="flex min-w-0 w-full items-baseline gap-1.5 text-sm leading-relaxed">
+          <p className="flex min-w-0 w-full items-baseline gap-2 text-body leading-relaxed">
             <span
               className={cn(answerPreview ? "min-w-0" : "min-w-0 flex-1", "truncate", headingClass)}
             >
@@ -501,8 +501,8 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
                   !expanded &&
                     workEntry.questionAnswer &&
                     hasQuestionAnswer(workEntry.questionAnswer)
-                    ? "text-foreground"
-                    : "text-muted-foreground",
+                    ? "text-ink-1"
+                    : "text-ink-2",
                 )}
               >
                 {answerPreview}
@@ -516,7 +516,7 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
           {createdThread ? (
             <button
               type="button"
-              className="shrink-0 rounded-sm text-sm text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+              className="shrink-0 rounded-row text-body text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
               aria-label={`Open ${createdThread.title ?? "created thread"}`}
               onClick={(event) => {
                 event.stopPropagation();
@@ -548,7 +548,7 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
             <span className="flex size-4 shrink-0 items-center justify-center" aria-hidden>
               <ChevronRightIcon
                 className={cn(
-                  "size-3 shrink-0 text-icon-muted opacity-70 transition-transform duration-200",
+                  "size-3 shrink-0 text-ink-3 opacity-70 transition-transform duration-200",
                   expanded && "rotate-90",
                 )}
               />
@@ -629,7 +629,7 @@ function QuestionAnswerHistory({
   }));
   const urls = useAssetUrls(activeThreadEnvironmentId, resources);
   return (
-    <div className="ms-7 mt-2 space-y-2" onClick={stopRowToggle}>
+    <div className="ms-6 mt-2 space-y-2" onClick={stopRowToggle}>
       {[
         ...new Set([
           ...Object.keys(answer.questionTextById ?? {}),
@@ -639,12 +639,12 @@ function QuestionAnswerHistory({
       ].map((questionId) => (
         <div key={questionId} className="space-y-1">
           {answer.questionTextById?.[questionId] ? (
-            <p className="whitespace-pre-wrap text-sm text-muted-foreground">
+            <p className="whitespace-pre-wrap text-body text-ink-2">
               {answer.questionTextById[questionId]}
             </p>
           ) : null}
           {getQuestionAnswerText(answer.answers[questionId]) ? (
-            <p className="ms-3 whitespace-pre-wrap text-sm text-muted-foreground">
+            <p className="ms-2 whitespace-pre-wrap text-body text-ink-2">
               {getQuestionAnswerText(answer.answers[questionId])}
             </p>
           ) : null}
@@ -657,7 +657,7 @@ function QuestionAnswerHistory({
                   href={url ?? undefined}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm underline"
+                  className="text-body underline"
                 >
                   {attachment.type === "image" && url ? (
                     <img

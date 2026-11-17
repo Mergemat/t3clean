@@ -146,7 +146,7 @@ function HostedPromptLinkLanding({
     <StandalonePage>
       <StandalonePageHeader title={title} description={description} />
       {prompt !== null && prompt.hiddenCharacters > 0 ? (
-        <Alert className="mt-5" variant="error">
+        <Alert className="mt-2" variant="error">
           <AlertTitle>This prompt had hidden characters, it may be malicious</AlertTitle>
           <AlertDescription>
             T3 Code removed {prompt.hiddenCharacters} hidden character
@@ -155,12 +155,12 @@ function HostedPromptLinkLanding({
         </Alert>
       ) : null}
       {prompt !== null ? (
-        <pre className="mt-5 max-h-72 overflow-auto rounded-lg border border-border bg-background p-3 text-sm whitespace-pre-wrap">
+        <pre className="mt-2 max-h-72 overflow-auto rounded-row border border-border bg-background p-2 text-body whitespace-pre-wrap">
           {prompt.text}
         </pre>
       ) : null}
       {details.length > 0 ? (
-        <p className="mt-3 text-xs text-muted-foreground">{details.join(" · ")}</p>
+        <p className="mt-2 text-meta text-ink-2">{details.join(" · ")}</p>
       ) : null}
       <div className="mt-6 flex flex-wrap gap-2">
         <Button render={<a href={deepLink} />} onClick={() => onChoose("app", remember)}>
@@ -175,7 +175,7 @@ function HostedPromptLinkLanding({
           Get T3 Code
         </Button>
       </div>
-      <label className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+      <label className="mt-2 flex items-center gap-2 text-body text-ink-2">
         <Checkbox checked={remember} onCheckedChange={(checked) => setRemember(checked === true)} />
         Remember my choice
       </label>

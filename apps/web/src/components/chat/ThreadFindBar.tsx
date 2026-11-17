@@ -62,7 +62,7 @@ export function ThreadFindBar(props: ThreadFindBarProps) {
   return (
     <div
       data-thread-find-bar
-      className="absolute top-3 right-3 z-40 w-[min(var(--thread-details-panel-width),calc(100%-1.5rem))] transition-opacity duration-150 ease-out starting:opacity-0 motion-reduce:transition-none"
+      className="absolute top-2 right-2 left-2 z-40 ml-auto max-w-(--thread-details-panel-width) transition-opacity duration-150 ease-out starting:opacity-0 motion-reduce:transition-none"
     >
       <InputGroup
         variant="popover"
@@ -90,8 +90,8 @@ export function ThreadFindBar(props: ThreadFindBarProps) {
           <span
             aria-live="polite"
             className={cn(
-              "min-w-10 text-center text-xs tabular-nums",
-              noResults ? "text-destructive" : "text-muted-foreground",
+              "min-w-10 text-center text-meta tabular-nums",
+              noResults ? "text-destructive" : "text-ink-2",
             )}
           >
             {label}

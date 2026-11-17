@@ -108,17 +108,17 @@ export function ModelMentionChip(props: {
           acpRegistryAgentId={presentation.acpRegistryAgentId}
           acpRegistryIconUrl={presentation.acpRegistryIconUrl}
           className="z-auto"
-          iconClassName="size-[1em]"
+          iconClassName="size-em"
         />
       }
       label={presentation.label}
       accessibleLabel={`Model ${presentation.label}`}
       copyMarkdown={props.source}
     >
-      <div className="space-y-1 p-2 text-sm">
+      <div className="space-y-1 p-2 text-body">
         <p className="font-medium">{presentation.label}</p>
-        <p className="text-muted-foreground">{presentation.providerLabel}</p>
-        <p className="font-mono text-xs text-muted-foreground">{props.source}</p>
+        <p className="text-ink-2">{presentation.providerLabel}</p>
+        <p className="font-mono text-meta text-ink-2">{props.source}</p>
       </div>
     </ContextChipPopover>
   );

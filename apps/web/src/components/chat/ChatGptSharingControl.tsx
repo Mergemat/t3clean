@@ -12,18 +12,18 @@ export function ChatGptSharingControl({ provider }: { provider: ServerProvider |
   const speedNoticeId = useId();
   if (!usesChatGptSharing(provider)) return null;
   return (
-    <div className="flex items-center justify-between gap-4 border-t px-3 py-2">
+    <div className="flex items-center justify-between gap-2 px-2 py-2">
       <Tooltip>
         <TooltipTrigger
           render={
             <span
               aria-describedby={speedNoticeId}
               tabIndex={0}
-              className="flex items-center gap-2 rounded-sm text-xs text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+              className="flex items-center gap-2 rounded-row text-meta text-ink-2 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
             />
           }
         >
-          <OpenAI className="size-3.5" aria-hidden="true" />
+          <OpenAI className="size-4" aria-hidden="true" />
           Using ChatGPT plan
         </TooltipTrigger>
         <span id={speedNoticeId} className="sr-only">

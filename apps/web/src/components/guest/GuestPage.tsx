@@ -233,7 +233,7 @@ export function GuestPage() {
   }, []);
 
   return (
-    <div className="flex h-dvh flex-col bg-background text-foreground">
+    <div className="flex h-dvh flex-col bg-background text-ink-1">
       {access === "checking" ? (
         <Notice title="Connecting..." />
       ) : access === "name" && credential !== null ? (
@@ -342,8 +342,8 @@ function GuestSession({ shareId }: { readonly shareId: string }) {
 function Notice({ title, detail }: { readonly title: string; readonly detail?: string }) {
   return (
     <div className="m-auto flex max-w-sm flex-col gap-1 p-6 text-center">
-      <p className="text-sm font-medium">{title}</p>
-      {detail ? <p className="text-xs text-muted-foreground">{detail}</p> : null}
+      <p className="text-body font-medium">{title}</p>
+      {detail ? <p className="text-meta text-ink-2">{detail}</p> : null}
     </div>
   );
 }
@@ -369,9 +369,9 @@ function NameForm({
     else setError(failure);
   };
   return (
-    <form className="m-auto flex w-full max-w-xs flex-col gap-3 p-6" onSubmit={submit}>
+    <form className="m-auto flex w-full max-w-xs flex-col gap-2 p-6" onSubmit={submit}>
       <h1 className="text-base font-medium">Join a shared thread</h1>
-      <label className="flex flex-col gap-1.5 text-sm" htmlFor="guest-name">
+      <label className="flex flex-col gap-2 text-body" htmlFor="guest-name">
         Your name
         <Input
           id="guest-name"
@@ -383,14 +383,14 @@ function NameForm({
         />
       </label>
       {error !== null ? (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className="text-body text-destructive">
           {error}
         </p>
       ) : null}
       <Button type="submit" disabled={submitting || name.trim() === ""}>
         Join
       </Button>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-meta text-ink-2">
         The owner sees your name and approves each message before the agent gets it.
       </p>
     </form>
@@ -473,8 +473,8 @@ function GuestThread({
   const unplaced = unplacedGuestMessages(messages, items, awaitingRowIds);
   return (
     <>
-      <header className="flex shrink-0 items-center gap-3 border-b border-border px-4 py-2.5">
-        <h1 className="min-w-0 flex-1 truncate text-sm font-medium">{title}</h1>
+      <header className="flex shrink-0 items-center gap-2 border-b border-border px-4 py-2">
+        <h1 className="min-w-0 flex-1 truncate text-body font-medium">{title}</h1>
         <ExpiryLabel expiresAt={expiresAt} />
       </header>
       <div className="relative min-h-0 flex-1">
@@ -515,7 +515,7 @@ function GuestThread({
             onFooterGrow={follow.onTimelineFooterGrowStable}
             footer={
               unplaced.length === 0 ? null : (
-                <ol className="chat-content-lane flex flex-col gap-4 pb-4">
+                <ol className="chat-content-lane flex flex-col gap-2 pb-4">
                   {unplaced.map((message) => (
                     <li key={message.id}>
                       <UnplacedGuestMessage shareId={shareId} message={message} />
@@ -544,14 +544,14 @@ function GuestThread({
 function ExpiryLabel({ expiresAt }: { readonly expiresAt: string }) {
   const nowMinute = useNowMinute();
   return (
-    <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+    <span className="shrink-0 text-meta text-ink-2 tabular-nums">
       {formatGuestExpiry(expiresAt, Date.parse(`${nowMinute}Z`))}
     </span>
   );
 }
 
 const BUBBLE =
-  "flex min-w-0 max-w-[80%] flex-col gap-2 rounded-2xl p-3 text-sm whitespace-pre-wrap [overflow-wrap:anywhere]";
+  "flex min-w-0 max-w-4/5 flex-col gap-2 rounded-box p-2 text-body whitespace-pre-wrap wrap-anywhere";
 
 const openInNewTab = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
 /** Guests have no image viewer; the browser shows the picture in its own tab. */
@@ -578,7 +578,7 @@ function UnplacedGuestMessage({
         className={cn(
           BUBBLE,
           guestBubbleClassName(message.status !== "sent"),
-          message.status === "dismissed" ? "text-muted-foreground" : "text-message-foreground",
+          message.status === "dismissed" ? "text-ink-2" : "text-message-foreground",
         )}
       >
         <GuestMessageAttachments
@@ -589,7 +589,7 @@ function UnplacedGuestMessage({
         />
         {message.text ? <span>{message.text}</span> : null}
       </div>
-      <p className="me-1 text-2xs text-muted-foreground">{STATUS_LABEL[message.status]}</p>
+      <p className="me-1 text-meta text-ink-2">{STATUS_LABEL[message.status]}</p>
     </div>
   );
 }
@@ -708,7 +708,7 @@ function GuestComposer({
   };
   return (
     <form
-      className="flex flex-col gap-2 rounded-3xl border border-border bg-card px-4 pt-3 pb-2.5 shadow-composer dark:shadow-composer-dark"
+      className="flex flex-col gap-2 rounded-box border border-border bg-card px-4 pt-2 pb-2 shadow-composer dark:shadow-composer-dark"
       onSubmit={(event) => {
         event.preventDefault();
         void send();
@@ -727,17 +727,17 @@ function GuestComposer({
           {files.map((staged) => (
             <li
               key={staged.key}
-              className="flex h-14 min-w-0 items-center gap-2 overflow-hidden rounded-lg border border-border/80 bg-background/70 pe-1"
+              className="flex h-14 min-w-0 items-center gap-2 overflow-hidden rounded-row border border-border/80 bg-background/70 pe-1"
             >
               {staged.file.type.startsWith("image/") ? (
                 <span className="size-14 shrink-0">
                   <StagedImage file={staged.file} />
                 </span>
               ) : (
-                <span className="flex min-w-0 items-center gap-2 ps-2 text-sm">
+                <span className="flex min-w-0 items-center gap-2 ps-2 text-body">
                   <PierreEntryIcon pathValue={staged.file.name} kind="file" theme={resolvedTheme} />
                   <span className="max-w-40 truncate">{staged.file.name}</span>
-                  <span className="shrink-0 text-xs text-muted-foreground">
+                  <span className="shrink-0 text-meta text-ink-2">
                     {formatAttachmentSize(staged.file.size)}
                   </span>
                 </span>
@@ -766,9 +766,9 @@ function GuestComposer({
         onChange={(event) => setText(event.target.value)}
         onKeyDown={onKeyDown}
         onPaste={onPaste}
-        className="max-h-60 min-h-12 w-full resize-none bg-transparent text-sm outline-none field-sizing-content placeholder:text-placeholder"
+        className="max-h-60 min-h-12 w-full resize-none bg-transparent text-body outline-none field-sizing-content placeholder:text-ink-3"
       />
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <input
           ref={fileInputRef}
           type="file"
@@ -786,11 +786,11 @@ function GuestComposer({
         </ComposerControl>
         <GuestModelLabel model={model} />
         {error !== null ? (
-          <p role="alert" className="min-w-0 flex-1 text-xs text-destructive">
+          <p role="alert" className="min-w-0 flex-1 text-meta text-destructive">
             {error}
           </p>
         ) : (
-          <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+          <p className="min-w-0 flex-1 truncate text-meta text-ink-2">
             The owner approves each message
           </p>
         )}

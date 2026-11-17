@@ -119,7 +119,7 @@ function CommentIdentity({
     ? sourceControlClients.get(detail.provider).authorProfileUrl(actor.login, detail.url)
     : null;
   return (
-    <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 gap-y-1 text-xs">
+    <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 gap-y-1 text-meta">
       <PullRequestActorLabel actor={actor} profileUrl={profileUrl} className="max-w-full" />
       <Tooltip>
         <TooltipTrigger
@@ -129,10 +129,10 @@ function CommentIdentity({
                 href={comment.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground hover:underline"
+                className="text-ink-2 hover:text-ink-1 hover:underline"
               />
             ) : (
-              <span className="text-muted-foreground" />
+              <span className="text-ink-2" />
             )
           }
         >
@@ -160,7 +160,7 @@ function CommentLocation({
   if (!path) return null;
   const label = `${path}${thread?.line ? `:${thread.line}` : ""}`;
   return (
-    <div className="mt-2 flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+    <div className="mt-2 flex min-w-0 items-center gap-2 text-meta text-ink-2">
       <Tooltip>
         <TooltipTrigger render={<span className="truncate font-mono" />}>{label}</TooltipTrigger>
         <TooltipPopup>{label}</TooltipPopup>
@@ -289,23 +289,23 @@ function CollapsedComment({
   const statusTriggerRef = useRef<HTMLButtonElement>(null);
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <article className="group rounded-lg border border-border/60 [contain-intrinsic-block-size:44px] [content-visibility:auto]">
-        <div className="p-3">
+      <article className="group rounded-row border border-border/60 contain-intrinsic-block-11 content-visibility-auto">
+        <div className="p-2">
           <div className="flex flex-wrap items-baseline gap-2">
             <CommentIdentity comment={comment} detail={detail} />
             {replyCount > 0 ? (
-              <span className="shrink-0 py-1 text-xs text-muted-foreground">
+              <span className="shrink-0 py-1 text-meta text-ink-2">
                 {replyCount} {replyCount === 1 ? "reply" : "replies"}
               </span>
             ) : null}
             <CollapsibleTrigger
               ref={statusTriggerRef}
-              className="flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="flex shrink-0 items-center gap-2 rounded-row px-2 py-1 text-meta text-ink-2 hover:bg-muted hover:text-ink-1"
             >
               {label}
               <ChevronDownIcon
                 aria-hidden
-                className={cn("size-3.5 transition-transform", open && "rotate-180")}
+                className={cn("size-4 transition-transform", open && "rotate-180")}
               />
             </CollapsibleTrigger>
             {/* Collapsed, the status label already says "Resolved". */}
@@ -316,7 +316,7 @@ function CollapsedComment({
           <CommentLocation comment={comment} thread={thread} />
           {!open && body ? (
             <CollapsibleTrigger
-              className="mt-2 block w-full truncate text-left text-xs text-muted-foreground hover:text-foreground"
+              className="mt-2 block w-full truncate text-left text-meta text-ink-2 hover:text-ink-1"
               onClick={() => statusTriggerRef.current?.focus({ preventScroll: true })}
             >
               {pullRequestCommentPreview(body)}
@@ -325,15 +325,15 @@ function CollapsedComment({
         </div>
         <CollapsiblePanel>
           {open ? (
-            <div className="px-3 pb-3">
+            <div className="px-2 pb-2">
               {body === null && !editing.canEdit(comment) ? null : (
                 <CommentBody className="mt-2" comment={comment} editing={editing} />
               )}
-              {replies ? <div className="mt-3">{replies}</div> : null}
+              {replies ? <div className="mt-2">{replies}</div> : null}
             </div>
           ) : null}
         </CollapsiblePanel>
-        {moreReplies ? <div className="px-3 pb-3">{moreReplies}</div> : null}
+        {moreReplies ? <div className="px-2 pb-2">{moreReplies}</div> : null}
       </article>
     </Collapsible>
   );
@@ -349,12 +349,12 @@ function MetaRow({
   children: ReactNode;
 }) {
   return (
-    <div className="grid min-h-7 min-w-0 grid-cols-[6rem_minmax(0,1fr)] items-center gap-2 text-xs sm:min-h-6">
-      <span className="flex items-center gap-1.5 text-muted-foreground">
+    <div className="grid min-h-6 min-w-0 grid-cols-(--grid-lead) items-center gap-2 text-meta sm:min-h-6">
+      <span className="flex w-24 items-center gap-2 text-ink-2">
         {icon}
         {label}
       </span>
-      <span className="min-w-0 text-foreground">{children}</span>
+      <span className="min-w-0 text-ink-1">{children}</span>
     </div>
   );
 }
@@ -414,14 +414,11 @@ function Section({
         ref={headingRef}
         className="sticky top-0 z-10 flex w-full items-center bg-background pr-4"
       >
-        <CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-1.5 px-4 py-3 text-left text-xs font-medium text-muted-foreground hover:text-foreground">
+        <CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-2 px-4 py-2 text-left text-meta font-medium text-ink-2 hover:text-ink-1">
           <span>{title}</span>
           <ChevronRightIcon
             aria-hidden
-            className={cn(
-              "size-3.5 text-muted-foreground/60 transition-transform",
-              open && "rotate-90",
-            )}
+            className={cn("size-4 text-ink-3 transition-transform", open && "rotate-90")}
           />
         </CollapsibleTrigger>
         {actions}
@@ -737,10 +734,10 @@ export function PullRequestSummaryTab({
     return (
       <article
         key={`${detail.url}:${comment.id}`}
-        className="group rounded-lg border border-border/60 bg-background [contain-intrinsic-block-size:160px] [content-visibility:auto]"
+        className="group rounded-row border border-border/60 bg-background contain-intrinsic-block-40 content-visibility-auto"
       >
-        <div className="flex flex-wrap items-baseline gap-2 rounded-t-lg bg-muted/25 px-3 py-2.5">
-          <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-2 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-baseline gap-2 rounded-t-row bg-muted/25 px-2 py-2">
+          <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-2 text-meta text-ink-2">
             <CommentIdentity comment={comment} detail={detail} />
             {outcome ? (
               <PullRequestReviewOutcomeBadge outcome={outcome} />
@@ -773,12 +770,12 @@ export function PullRequestSummaryTab({
           {reactionBarFor(comment)}
         </div>
         {reply ? null : (
-          <div className="px-3">
+          <div className="px-2">
             <CommentLocation comment={comment} thread={thread} />
           </div>
         )}
         {body === null && !commentEditing.canEdit(comment) ? null : (
-          <CommentBody className="px-3 py-3" comment={comment} editing={commentEditing} />
+          <CommentBody className="px-2 py-2" comment={comment} editing={commentEditing} />
         )}
       </article>
     );
@@ -789,7 +786,7 @@ export function PullRequestSummaryTab({
     const thread = item.kind === "thread" ? item.thread : undefined;
     const replies =
       item.kind === "thread" && item.replies.length > 0 ? (
-        <div className="ml-4 space-y-2 border-l-2 border-border/60 pl-3">
+        <div className="ml-2 space-y-2 border-l-2 border-border/60 pl-2">
           {item.replies.map((reply) => renderCommentCard(reply, undefined, { reply: true }))}
         </div>
       ) : null;
@@ -834,12 +831,12 @@ export function PullRequestSummaryTab({
       className="h-full overflow-y-auto"
       data-pull-request-summary-scroll
     >
-      <section className="px-4 pt-2.5 pb-1">
+      <section className="px-4 pt-2 pb-1">
         <div className="space-y-2">
-          <MetaRow icon={<UsersIcon className="size-3.5" />} label="Reviewers">
-            <span className="flex min-w-0 flex-wrap items-center gap-1.5">
+          <MetaRow icon={<UsersIcon className="size-4" />} label="Reviewers">
+            <span className="flex min-w-0 flex-wrap items-center gap-2">
               {reviewerEntries.length === 0 ? (
-                <span className="text-muted-foreground">None</span>
+                <span className="text-ink-2">None</span>
               ) : (
                 <span className="flex items-center -space-x-1">
                   {reviewerEntries.map((entry) => {
@@ -911,10 +908,10 @@ export function PullRequestSummaryTab({
             </span>
           </MetaRow>
           {detail.labels.length > 0 || detail.capabilities.labels === true ? (
-            <MetaRow icon={<TagIcon className="size-3.5" />} label="Labels">
+            <MetaRow icon={<TagIcon className="size-4" />} label="Labels">
               <span className="flex min-w-0 flex-wrap items-center gap-1">
                 {detail.labels.length === 0 ? (
-                  <span className="text-muted-foreground">None</span>
+                  <span className="text-ink-2">None</span>
                 ) : (
                   detail.labels.map((label) => (
                     <PullRequestLabelChip
@@ -988,14 +985,14 @@ export function PullRequestSummaryTab({
         revealCount={checksReveals}
       >
         {checksStale ? (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 text-meta text-ink-2">
             <span>Check details are out of date.</span>
             <Button size="xs" variant="ghost" onClick={onRefreshChecks}>
               Refresh
             </Button>
           </div>
         ) : detail.checks.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No checks reported.</p>
+          <p className="text-meta text-ink-2">No checks reported.</p>
         ) : (
           detail.checks.map(
             (
@@ -1007,20 +1004,20 @@ export function PullRequestSummaryTab({
                 return (
                   <div
                     key={`${index}:${check.name}:${check.url ?? ""}`}
-                    className="group flex items-center gap-2 rounded-md pr-1 hover:bg-accent/60"
+                    className="group flex items-center gap-2 rounded-row pr-1 hover:bg-accent/60"
                   >
                     <button
                       type="button"
                       disabled={!check.url}
                       onClick={() => check.url && openCheck(check.url)}
                       className={cn(
-                        "flex min-w-0 flex-1 items-start gap-2 rounded-md px-2 py-2 text-left text-xs leading-5 [&>svg]:mt-0.5",
+                        "flex min-w-0 flex-1 items-start gap-2 rounded-row px-2 py-2 text-left text-meta leading-5",
                         check.url ? "cursor-pointer" : "cursor-default",
                       )}
                     >
                       <PullRequestCheckStatusIcon status={check.status} />
                       <span className="min-w-0 flex-1 wrap-anywhere">{check.name}</span>
-                      <span className="shrink-0 text-muted-foreground">
+                      <span className="shrink-0 text-ink-2">
                         {pullRequestCheckStatusLabel(check)}
                       </span>
                     </button>
@@ -1107,21 +1104,21 @@ export function PullRequestSummaryTab({
         ) : (
           <>
             {detail.commentsTruncated ? (
-              <p className="mb-2 rounded-md border border-warning/30 bg-warning-surface px-2 py-1.5 text-xs">
+              <p className="mb-2 rounded-row border border-warning/30 bg-warning-surface px-2 py-2 text-meta">
                 This conversation is only partially loaded. {commentCount} comment
                 {commentCount === 1 ? " is" : "s are"} loaded; open it on the host to read the rest.
               </p>
             ) : null}
             {items.length === 0 ? (
-              <p className="py-2 text-xs text-muted-foreground">No comments yet.</p>
+              <p className="py-2 text-meta text-ink-2">No comments yet.</p>
             ) : filteredItems.length === 0 ? (
-              <p className="py-2 text-xs text-muted-foreground">
+              <p className="py-2 text-meta text-ink-2">
                 {filteredOutCount === 1
                   ? "The only comment is hidden by the filter."
                   : `All ${filteredOutCount} comments are hidden by the filter.`}
               </p>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {commentOrder === "oldest" ? showOldestCommentsButton : null}
                 {visibleItems.map(renderItem)}
                 {commentOrder === "newest" ? showOldestCommentsButton : null}

@@ -63,21 +63,19 @@ export function ThreadDetailsUsage({
     <ThreadDetailsSection
       headingId="thread-details-usage-heading"
       title="Usage limits"
-      showHeading={false}
+      rowsClassName="grid grid-cols-(--grid-lead-trail) gap-x-2 text-meta"
     >
-      <div className="grid grid-cols-[auto_minmax(3rem,1fr)_auto] gap-x-3 text-xs">
-        {notice ? (
-          <UsageRow
-            label="Limits"
-            fill={null}
-            tone={null}
-            value="Unavailable"
-            tooltip={<span className="text-foreground">{notice}</span>}
-          />
-        ) : (
-          limits.windows.map((window) => <LimitRow key={window.id} window={window} now={now} />)
-        )}
-      </div>
+      {notice ? (
+        <UsageRow
+          label="Limits"
+          fill={null}
+          tone={null}
+          value="Unavailable"
+          tooltip={<span className="text-ink-1">{notice}</span>}
+        />
+      ) : (
+        limits.windows.map((window) => <LimitRow key={window.id} window={window} now={now} />)
+      )}
     </ThreadDetailsSection>
   );
 }
@@ -99,41 +97,37 @@ export function ThreadDetailsContext({ usage }: { readonly usage: ContextWindowS
     <ThreadDetailsSection
       headingId="thread-details-context-heading"
       title="Context window"
-      showHeading={false}
+      rowsClassName="grid grid-cols-(--grid-lead-trail) gap-x-2 text-meta"
     >
-      <div className="grid grid-cols-[auto_minmax(3rem,1fr)_auto] gap-x-3 text-xs">
-        <UsageRow
-          label="Context"
-          fill={used}
-          tone={used === null ? null : used >= 90 ? "error" : used >= 80 ? "warning" : null}
-          tick={tick}
-          muted
-          value={
-            maxTokens !== null
-              ? `${usedTokens} / ${formatContextWindowTokens(maxTokens)}`
-              : usedTokens
-          }
-          ariaValue={used !== null ? `${used}% used` : `${usedTokens} tokens used`}
-          tooltip={
-            <>
-              <span className="text-foreground">
-                {used !== null ? `Context: ${used}% used` : `Context: ${usedTokens} tokens used`}
+      <UsageRow
+        label="Context"
+        fill={used}
+        tone={used === null ? null : used >= 90 ? "error" : used >= 80 ? "warning" : null}
+        tick={tick}
+        muted
+        value={
+          maxTokens !== null
+            ? `${usedTokens} / ${formatContextWindowTokens(maxTokens)}`
+            : usedTokens
+        }
+        ariaValue={used !== null ? `${used}% used` : `${usedTokens} tokens used`}
+        tooltip={
+          <>
+            <span className="text-ink-1">
+              {used !== null ? `Context: ${used}% used` : `Context: ${usedTokens} tokens used`}
+            </span>
+            {maxTokens !== null ? (
+              <span className="text-ink-2">
+                {usage.usedTokens.toLocaleString("en-US")} of {maxTokens.toLocaleString("en-US")}{" "}
+                tokens
               </span>
-              {maxTokens !== null ? (
-                <span className="text-muted-foreground">
-                  {usage.usedTokens.toLocaleString("en-US")} of {maxTokens.toLocaleString("en-US")}{" "}
-                  tokens
-                </span>
-              ) : null}
-              {threshold !== null && threshold > 0 ? (
-                <span className="text-muted-foreground">
-                  {formatContextWindowCompactionMessage(threshold)}
-                </span>
-              ) : null}
-            </>
-          }
-        />
-      </div>
+            ) : null}
+            {threshold !== null && threshold > 0 ? (
+              <span className="text-ink-2">{formatContextWindowCompactionMessage(threshold)}</span>
+            ) : null}
+          </>
+        }
+      />
     </ThreadDetailsSection>
   );
 }
@@ -158,16 +152,16 @@ function LimitRow({
       ariaValue={`${left}% left`}
       tooltip={
         <>
-          <span className="text-foreground">
+          <span className="text-ink-1">
             {window.label}: {left}% left
           </span>
           {window.resetsAt && resetsAt > now ? (
-            <span className="text-muted-foreground">
+            <span className="text-ink-2">
               Resets in {formatDuration(resetsAt - now)} ·{" "}
               {formatUpcomingTimestamp(window.resetsAt, timestampFormat, now)}
             </span>
           ) : null}
-          {pace ? <span className="text-muted-foreground">{PACE_LABEL[pace]}</span> : null}
+          {pace ? <span className="text-ink-2">{PACE_LABEL[pace]}</span> : null}
         </>
       }
     />
@@ -203,13 +197,13 @@ function UsageRow({
           <div
             tabIndex={0}
             aria-label={`${label}: ${ariaValue}`}
-            className="col-span-3 grid h-6 cursor-default grid-cols-subgrid items-center rounded-lg px-2.5 outline-none hover:bg-black/[0.035] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-popup-open:bg-black/[0.035] dark:hover:bg-white/[0.08] dark:data-popup-open:bg-white/[0.08]"
+            className="col-span-3 grid h-6 cursor-default grid-cols-subgrid items-center rounded-row px-2 outline-none hover:bg-black/4 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-popup-open:bg-black/4 dark:hover:bg-white/8 dark:data-popup-open:bg-white/8"
           />
         }
       >
-        <span className="max-w-28 truncate text-muted-foreground">{label}</span>
+        <span className="max-w-28 truncate text-ink-2">{label}</span>
         {fill !== null ? (
-          <span className="relative h-[3px] rounded-full bg-muted-foreground/30 dark:bg-muted-foreground/20">
+          <span className="relative h-1 rounded-full bg-muted-foreground/30 dark:bg-muted-foreground/20">
             {fill > 0 ? (
               <span
                 className={cn(
@@ -228,7 +222,7 @@ function UsageRow({
             {tick !== null ? (
               <span
                 aria-hidden
-                className="absolute -top-[3px] h-[9px] w-px -translate-x-1/2 bg-foreground/60"
+                className="absolute -top-1 h-3 w-px -translate-x-1/2 bg-foreground/60"
                 style={{ left: `${tick}%` }}
               />
             ) : null}
@@ -244,8 +238,8 @@ function UsageRow({
               : tone === "warning"
                 ? "text-warning-foreground"
                 : fill === null
-                  ? "text-muted-foreground"
-                  : "text-foreground/80",
+                  ? "text-ink-2"
+                  : "text-ink-2",
           )}
         >
           {value}
@@ -253,7 +247,7 @@ function UsageRow({
       </TooltipTrigger>
       {/* Rows sit 8px inside the card; clear its edge instead of overlapping it. */}
       <TooltipPopup side="left" sideOffset={16}>
-        <div className="flex flex-col gap-0.5">{tooltip}</div>
+        <div className="flex flex-col">{tooltip}</div>
       </TooltipPopup>
     </Tooltip>
   );

@@ -38,7 +38,9 @@ import {
 } from "./pullRequestPresentation";
 
 function GhostBar({ className }: { className?: string | undefined }) {
-  return <span aria-hidden className={cn("block h-3 rounded bg-muted-foreground/15", className)} />;
+  return (
+    <span aria-hidden className={cn("block h-3 rounded-chip bg-muted-foreground/15", className)} />
+  );
 }
 
 const TITLE_WIDTHS = ["w-3/5", "w-2/5", "w-1/2", "w-2/3", "w-2/5", "w-3/5", "w-1/2"];
@@ -51,23 +53,21 @@ const DEFAULT_DETAIL_TABS = [
 
 export function PullRequestListGhost({ rows = 7, caption }: { rows?: number; caption?: string }) {
   return (
-    <div role="status" aria-label={caption ?? "Loading pull requests"} className="space-y-0.5">
+    <div role="status" aria-label={caption ?? "Loading pull requests"} className="">
       {/* Outside the pulse so the explanation stays readable. */}
-      {caption ? (
-        <p className="px-3 pb-1 text-xs font-medium text-muted-foreground">{caption}</p>
-      ) : null}
-      <div className="motion-safe:animate-skeleton space-y-0.5">
+      {caption ? <p className="px-2 pb-1 text-meta font-medium text-ink-2">{caption}</p> : null}
+      <div className="motion-safe:animate-skeleton">
         {Array.from({ length: rows }, (_, index) => (
           <div
             key={index}
-            className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md px-3 py-2.5"
+            className="grid grid-cols-(--grid-lead-trail) items-center gap-2 rounded-row px-2 py-2"
           >
             <GhostBar className="size-4 rounded-full" />
-            <div className="min-w-0 space-y-1.5">
+            <div className="min-w-0 space-y-2">
               <GhostBar className={cn("h-4", TITLE_WIDTHS[index % TITLE_WIDTHS.length])} />
-              <GhostBar className={cn("h-3.5", META_WIDTHS[index % META_WIDTHS.length])} />
+              <GhostBar className={cn("h-4", META_WIDTHS[index % META_WIDTHS.length])} />
             </div>
-            <div className="flex flex-col items-end gap-1.5">
+            <div className="flex flex-col items-end gap-2">
               <GhostBar className="w-12" />
               <GhostBar className="w-16" />
             </div>
@@ -134,18 +134,18 @@ export function PullRequestDetailGhost({
         !seed && "motion-safe:animate-skeleton",
       )}
     >
-      <div className="@container/pr-header grid min-w-0 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2 border-b border-border/60">
-        <div className="pl-4 grid h-7 min-w-0 items-center overflow-hidden">
-          <div className="flex min-w-0 items-center gap-1 text-sm text-muted-foreground sm:text-xs">
+      <div className="@container/pr-header grid min-w-0 shrink-0 grid-cols-(--grid-trail) items-start gap-x-2 border-b border-border/60">
+        <div className="pl-4 grid h-6 min-w-0 items-center overflow-hidden">
+          <div className="flex min-w-0 items-center gap-1 text-body text-ink-2 sm:text-meta">
             {onBack ? (
               <Button
-                size="icon-micro"
+                size="icon-xs"
                 variant="ghost-muted"
-                className="-ml-1.5"
+                className="-ml-2"
                 onClick={onBack}
                 aria-label="Back to this thread's pull requests"
               >
-                <ArrowLeftIcon aria-hidden className="size-3.5" />
+                <ArrowLeftIcon aria-hidden className="size-4" />
               </Button>
             ) : null}
             {seed ? (
@@ -156,19 +156,19 @@ export function PullRequestDetailGhost({
                   aria-label={`Open ${terminology.singular} #${seed.number} on host`}
                 >
                   <span className={statePresentation?.toneClassName}>#{seed.number}</span>
-                  <ExternalLinkIcon aria-hidden className="size-2.5" />
+                  <ExternalLinkIcon aria-hidden className="size-3" />
                 </InlineButton>
               </>
             ) : (
               <>
                 <GhostBar className="w-24" />
-                <span className="shrink-0 text-xs text-muted-foreground">#{number ?? "…"}</span>
+                <span className="shrink-0 text-meta text-ink-2">#{number ?? "…"}</span>
               </>
             )}
           </div>
         </div>
-        <div className="mr-4 flex h-7 shrink-0 items-center justify-end gap-1">
-          {actions ?? <GhostBar className="h-6 w-16 rounded-md" />}
+        <div className="mr-2 flex h-6 shrink-0 items-center justify-end gap-1">
+          {actions ?? <GhostBar className="h-6 w-16 rounded-row" />}
           <Button
             size="icon-xs"
             variant="ghost"
@@ -184,12 +184,12 @@ export function PullRequestDetailGhost({
               aria-label={`Collapse ${terminology.singular} panel`}
               onClick={onClose}
             >
-              <PanelRightIcon aria-hidden className="size-3.5" />
+              <PanelRightIcon aria-hidden className="size-4" />
             </Button>
           ) : null}
         </div>
 
-        <div className="col-span-2 grid grid-rows-[1fr]">
+        <div className="col-span-2 grid grid-rows-(--grid-open)">
           <div className="min-h-0 overflow-hidden">
             <PullRequestDetailHeaderBody
               title={
@@ -205,7 +205,7 @@ export function PullRequestDetailGhost({
                 seed ? (
                   <PullRequestActorLabel actor={seed.author ?? null} tooltip={false} />
                 ) : (
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-2">
                     <GhostBar className="size-4 rounded-full" />
                     <GhostBar className="h-3 w-14" />
                   </span>
@@ -235,7 +235,7 @@ export function PullRequestDetailGhost({
                 ) : null
               }
               base={
-                <span className="inline-flex min-w-0 max-w-[40%] shrink-0 items-center gap-1">
+                <span className="inline-flex min-w-0 max-w-2/5 shrink-0 items-center gap-1">
                   {seed ? (
                     <code className="flex min-w-0">
                       <MiddleTruncate value={seed.baseBranch} />
@@ -271,7 +271,7 @@ export function PullRequestDetailGhost({
                   <PullRequestDiffStat
                     additions={seed.additions ?? 0}
                     deletions={seed.deletions ?? 0}
-                    className="shrink-0 font-mono text-xs"
+                    className="shrink-0 font-mono text-meta"
                   />
                 ) : (
                   <GhostBar className="h-3 w-20" />
@@ -285,12 +285,12 @@ export function PullRequestDetailGhost({
           {checksPresentation ? (
             <PullRequestChecksStatusLine
               className={checksPresentation.toneClassName}
-              icon={<checksPresentation.Icon aria-hidden className="size-3.5" />}
+              icon={<checksPresentation.Icon aria-hidden className="size-4" />}
               label={checksPresentation.label}
             />
           ) : (
             <PullRequestChecksStatusLine
-              icon={<GhostBar className="my-px size-3.5 rounded-full" />}
+              icon={<GhostBar className="my-px size-4 rounded-full" />}
               label={<GhostBar className="w-28" />}
             />
           )}
@@ -298,26 +298,26 @@ export function PullRequestDetailGhost({
       </div>
 
       <div className="min-h-0 flex-1 overflow-hidden">
-        <section className="px-4 pt-2.5 pb-1">
+        <section className="px-4 pt-2 pb-1">
           <div className="space-y-2">
-            <div className="grid min-h-7 min-w-0 grid-cols-[6rem_minmax(0,1fr)] items-center gap-2 text-xs sm:min-h-6">
-              <span className="flex items-center gap-1.5 text-muted-foreground">
-                <UsersIcon aria-hidden className="size-3.5" />
+            <div className="grid min-h-6 min-w-0 grid-cols-(--grid-lead) items-center gap-2 text-meta sm:min-h-6">
+              <span className="flex w-24 items-center gap-2 text-ink-2">
+                <UsersIcon aria-hidden className="size-4" />
                 Reviewers
               </span>
-              <span className="flex min-w-0 items-center gap-1.5 text-foreground">
+              <span className="flex min-w-0 items-center gap-2 text-ink-1">
                 <GhostBar className="h-3 w-10" />
                 <Button size="icon-xs" variant="ghost" disabled aria-label="Reviewers loading">
-                  <UserPlusIcon aria-hidden className="size-3.5" />
+                  <UserPlusIcon aria-hidden className="size-4" />
                 </Button>
               </span>
             </div>
-            <div className="grid min-h-7 min-w-0 grid-cols-[6rem_minmax(0,1fr)] items-center gap-2 text-xs sm:min-h-6">
-              <span className="flex items-center gap-1.5 text-muted-foreground">
-                <TagIcon aria-hidden className="size-3.5" />
+            <div className="grid min-h-6 min-w-0 grid-cols-(--grid-lead) items-center gap-2 text-meta sm:min-h-6">
+              <span className="flex w-24 items-center gap-2 text-ink-2">
+                <TagIcon aria-hidden className="size-4" />
                 Labels
               </span>
-              <span className="flex min-w-0 flex-wrap items-center gap-1 text-foreground">
+              <span className="flex min-w-0 flex-wrap items-center gap-1 text-ink-1">
                 {entry?.labels ? (
                   entry.labels.length > 0 ? (
                     entry.labels.map((label) => (
@@ -329,16 +329,16 @@ export function PullRequestDetailGhost({
                       />
                     ))
                   ) : (
-                    <span className="text-muted-foreground">None</span>
+                    <span className="text-ink-2">None</span>
                   )
                 ) : (
                   <>
-                    <GhostBar className="h-4.5 w-24" />
-                    <GhostBar className="h-4.5 w-20" />
+                    <GhostBar className="h-4 w-24" />
+                    <GhostBar className="h-4 w-20" />
                   </>
                 )}
                 <Button size="icon-xs" variant="ghost" disabled aria-label="Labels loading">
-                  <TagIcon aria-hidden className="size-3.5" />
+                  <TagIcon aria-hidden className="size-4" />
                 </Button>
               </span>
             </div>
@@ -347,15 +347,12 @@ export function PullRequestDetailGhost({
 
         <section>
           <div className="sticky top-0 z-10 flex w-full items-center bg-background pr-4">
-            <div className="flex min-w-0 flex-1 items-center gap-1.5 px-4 py-3 text-left text-xs font-medium text-muted-foreground">
+            <div className="flex min-w-0 flex-1 items-center gap-2 px-4 py-2 text-left text-meta font-medium text-ink-2">
               <span>Description</span>
-              <ChevronRightIcon
-                aria-hidden
-                className="size-3.5 rotate-90 text-muted-foreground/60"
-              />
+              <ChevronRightIcon aria-hidden className="size-4 rotate-90 text-ink-3" />
             </div>
           </div>
-          <div className="space-y-3 px-4 pb-4">
+          <div className="space-y-2 px-4 pb-4">
             <GhostBar className="h-5 w-40" />
             <div className="space-y-2">
               <GhostBar className="h-4 w-full" />
@@ -378,7 +375,7 @@ export function PullRequestPeopleGhost({ rows = 4 }: { rows?: number }) {
       className="motion-safe:animate-skeleton space-y-1 p-1"
     >
       {Array.from({ length: rows }, (_, index) => (
-        <div key={index} className="flex h-7 items-center gap-2 rounded-md px-2">
+        <div key={index} className="flex h-6 items-center gap-2 rounded-row px-2">
           <GhostBar className="size-4 rounded-full" />
           <GhostBar className={META_WIDTHS[index % META_WIDTHS.length]} />
         </div>
@@ -392,14 +389,14 @@ export function PullRequestTimelineGhost({ rows = 6 }: { rows?: number }) {
     <div
       role="status"
       aria-label="Loading timeline"
-      className="motion-safe:animate-skeleton px-4 py-5"
+      className="motion-safe:animate-skeleton px-4 py-4"
     >
-      <div className="relative ml-2 border-l border-border/70 pl-5">
+      <div className="relative ml-2 border-l border-border/70 pl-4">
         {Array.from({ length: rows }, (_, index) => (
-          <div key={index} className="relative pb-5">
-            <GhostBar className="absolute -left-[1.55rem] top-1 size-2 rounded-full" />
-            <GhostBar className={cn("h-3.5", TITLE_WIDTHS[index % TITLE_WIDTHS.length])} />
-            <GhostBar className="mt-1.5 w-16" />
+          <div key={index} className="relative pb-4">
+            <GhostBar className="absolute -left-6 top-1 size-2 rounded-full" />
+            <GhostBar className={cn("h-4", TITLE_WIDTHS[index % TITLE_WIDTHS.length])} />
+            <GhostBar className="mt-2 w-16" />
           </div>
         ))}
       </div>
@@ -418,12 +415,12 @@ export function PullRequestConversationGhost({
     <div
       role="status"
       aria-label={`Loading ${terminology.singular} conversation`}
-      className="motion-safe:animate-skeleton space-y-4 py-2"
+      className="motion-safe:animate-skeleton space-y-2 py-2"
     >
       {Array.from({ length: rows }, (_, index) => (
         <div key={index} className="flex items-start gap-2">
           <GhostBar className="size-5 shrink-0 rounded-full" />
-          <div className="flex-1 space-y-1.5">
+          <div className="flex-1 space-y-2">
             <GhostBar className={META_WIDTHS[index % META_WIDTHS.length]} />
             <GhostBar className="w-full" />
             <GhostBar className="w-3/4" />

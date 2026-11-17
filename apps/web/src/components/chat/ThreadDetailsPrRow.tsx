@@ -279,21 +279,21 @@ export function ThreadDetailsPrRow({
         className="max-w-80 text-left whitespace-normal"
       >
         <div className="flex min-w-0 max-w-80 flex-col gap-2 py-2">
-          <div className="flex min-w-0 items-baseline gap-1.5 text-xs leading-none">
-            <span className="min-w-0 truncate font-medium text-foreground">{detail.title}</span>
-            <span className="shrink-0 text-muted-foreground">#{detail.number}</span>
+          <div className="flex min-w-0 items-baseline gap-2 text-meta leading-none">
+            <span className="min-w-0 truncate font-medium text-ink-1">{detail.title}</span>
+            <span className="shrink-0 text-ink-2">#{detail.number}</span>
           </div>
-          <div className="grid gap-1.5 pl-0.5 text-xs text-muted-foreground">
+          <div className="grid gap-2 pl-1 text-meta text-ink-2">
             <div className="flex min-w-0 items-center gap-2">
               <statePresentation.Icon
                 aria-hidden
                 className={cn("size-3 shrink-0", statePresentation.toneClassName)}
               />
-              <div className="min-w-0 truncate text-foreground/75">{statePresentation.label}</div>
+              <div className="min-w-0 truncate text-ink-2">{statePresentation.label}</div>
             </div>
             <div className="flex min-w-0 items-center gap-2">
               <GitBranchIcon className="size-3 shrink-0 stroke-muted-foreground" />
-              <div className="min-w-0 truncate text-foreground/75">
+              <div className="min-w-0 truncate text-ink-2">
                 {detail.baseBranch} ← {detail.headBranch}
               </div>
             </div>
@@ -308,14 +308,14 @@ export function ThreadDetailsPrRow({
                         : "success"
                   }
                 />
-                <div className="min-w-0 truncate text-foreground/75">
+                <div className="min-w-0 truncate text-ink-2">
                   {describePullRequestChecks(detail.checks)}
                 </div>
               </div>
             ) : null}
             {detail.isDraft && conflicting ? (
               <div className="flex min-w-0 items-start gap-2 text-destructive">
-                <TriangleAlertIcon aria-hidden className="mt-0.5 size-3 shrink-0 stroke-current" />
+                <TriangleAlertIcon aria-hidden className="h-lh w-3 shrink-0 stroke-current" />
                 <div className="min-w-0 flex-1 wrap-break-word">
                   Merge conflicts with {detail.baseBranch}
                 </div>
@@ -323,7 +323,7 @@ export function ThreadDetailsPrRow({
             ) : null}
             <div className="flex min-w-0 items-center gap-2">
               <FileDiffIcon className="size-3 shrink-0 stroke-muted-foreground" />
-              <div className="min-w-0 flex items-baseline gap-1 truncate text-foreground/75">
+              <div className="min-w-0 flex items-baseline gap-1 truncate text-ink-2">
                 {detail.changedFiles.toLocaleString()}{" "}
                 {detail.changedFiles === 1 ? "file" : "files"}
                 <PullRequestDiffStat additions={detail.additions} deletions={detail.deletions} />
@@ -333,7 +333,7 @@ export function ThreadDetailsPrRow({
               <PullRequestChangeBreakdownRows
                 environmentId={environmentId}
                 reference={reference}
-                className="pl-5 text-foreground/75"
+                className="pl-4 text-ink-2"
               />
             ) : null}
           </div>
@@ -419,14 +419,11 @@ export function ThreadDetailsPrRow({
         >
           <EyeIcon
             aria-hidden
-            className={cn(part === "icon" ? "size-3.5" : "size-4", "group-hover/watch:hidden")}
+            className={cn(part === "icon" ? "size-4" : "size-4", "group-hover/watch:hidden")}
           />
           <EyeOffIcon
             aria-hidden
-            className={cn(
-              part === "icon" ? "size-3.5" : "size-4",
-              "hidden group-hover/watch:block",
-            )}
+            className={cn(part === "icon" ? "size-4" : "size-4", "hidden group-hover/watch:block")}
           />
         </TooltipTrigger>
         <TooltipPopup side="top">
@@ -457,7 +454,7 @@ export function ThreadDetailsPrRow({
           className={cn(
             "min-w-0 flex-1 text-left",
             wrap
-              ? "line-clamp-2 whitespace-normal leading-4.5"
+              ? "line-clamp-2 whitespace-normal leading-4"
               : cn("truncate", THREAD_DETAILS_PANEL_LABEL_CLASS),
           )}
         >
@@ -473,9 +470,9 @@ export function ThreadDetailsPrRow({
   return (
     <>
       {detail !== null && (showChecks || trailingAction !== null || watching) ? (
-        <div className="pb-1.5">
+        <div className="pb-2">
           {openRow(detail.title, "row", true)}
-          <div className="flex h-5 min-w-0 items-center gap-0.5 ps-9 pe-2.5 text-xs text-muted-foreground">
+          <div className="flex h-5 min-w-0 items-center ps-8 pe-2 text-meta text-ink-2">
             <span className="me-1 shrink-0 tabular-nums">#{number}</span>
             {showChecks && checksRollup !== null ? (
               <PullRequestChecksPopover

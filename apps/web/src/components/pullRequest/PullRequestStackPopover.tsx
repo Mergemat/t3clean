@@ -67,7 +67,7 @@ export function PullRequestStackPopover({
                 <span
                   role="button"
                   tabIndex={0}
-                  className="inline-flex shrink-0 cursor-pointer items-center gap-1 text-xs font-normal text-muted-foreground"
+                  className="inline-flex shrink-0 cursor-pointer items-center gap-1 text-meta font-normal text-ink-2"
                 />
               }
               aria-label={`Stack ${membership.number}, layer ${membership.position} of ${membership.size}`}

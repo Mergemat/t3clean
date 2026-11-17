@@ -95,7 +95,7 @@ export default function NotebookPreview(props: {
   return (
     <>
       <div
-        className="border-b border-border/60 px-3 py-2 text-xs text-muted-foreground tabular-nums"
+        className="border-b border-border/60 px-2 py-2 text-meta text-ink-2 tabular-nums"
         role="status"
       >
         {props.notebook.cells.length.toLocaleString()}{" "}
@@ -106,14 +106,14 @@ export default function NotebookPreview(props: {
       </div>
       <FileSurfaceNotice>Saved outputs only. Code is never executed.</FileSurfaceNotice>
       <div ref={scroll} className="scrollbar-gutter-both min-h-0 flex-1 overflow-auto">
-        <div className="mx-auto max-w-4xl space-y-5 px-5 py-6">
+        <div className="mx-auto max-w-4xl space-y-2 px-4 py-6">
           {props.notebook.cells.slice(0, visible).map((cell, index) => (
             <section
               key={index}
               aria-label={`Cell ${index + 1}`}
-              className="min-w-0 overflow-hidden rounded-md border border-border/60"
+              className="min-w-0 overflow-hidden rounded-row border border-border/60"
             >
-              <div className="border-b border-border/60 bg-muted/30 px-3 py-1.5 text-xs text-muted-foreground">
+              <div className="bg-muted/30 px-2 py-2 text-meta text-ink-2">
                 {cell.kind === "code" ? props.notebook.language : cell.kind} · {index + 1}
               </div>
               {cell.kind === "markdown" ? (
@@ -122,7 +122,7 @@ export default function NotebookPreview(props: {
                   cwd={undefined}
                   parseRawHtml={false}
                   extraRemarkPlugins={NOTEBOOK_PLUGINS}
-                  className="px-4 py-3"
+                  className="px-4 py-2"
                 />
               ) : cell.source.trim() ? (
                 <NotebookSource
@@ -160,7 +160,7 @@ export default function NotebookPreview(props: {
                       className="max-h-96 max-w-full p-4 object-contain"
                     />
                   ) : (
-                    <pre className="overflow-x-auto p-4 text-xs whitespace-pre-wrap break-words">
+                    <pre className="overflow-x-auto p-4 text-meta whitespace-pre-wrap break-words">
                       {output.text}
                     </pre>
                   )}
@@ -169,7 +169,7 @@ export default function NotebookPreview(props: {
             </section>
           ))}
           {props.notebook.cells.length === 0 ? (
-            <p className="text-sm text-muted-foreground">This notebook is empty.</p>
+            <p className="text-body text-ink-2">This notebook is empty.</p>
           ) : null}
           {visible < props.notebook.cells.length ? (
             <Button variant="outline" size="sm" onClick={() => setVisible((count) => count + 20)}>

@@ -94,7 +94,7 @@ function FileSearchField({
   value: string;
 }) {
   return (
-    <InputGroup variant="ghost" className="h-7 min-w-0 flex-1">
+    <InputGroup variant="ghost" className="h-6 min-w-0 flex-1">
       <InputGroupInput
         ref={ref}
         type="search"
@@ -538,7 +538,7 @@ export default function FileBrowserPanel({
       }}
     >
       <div
-        className="flex h-10 min-h-10 shrink-0 items-center gap-1 border-b border-border/60 bg-background px-2 in-data-[preview-panel-mode=inline]:mb-1 in-data-[preview-panel-mode=inline]:h-9 in-data-[preview-panel-mode=inline]:min-h-9 in-data-[preview-panel-mode=inline]:border-b-transparent"
+        className="flex h-10 min-h-10 shrink-0 items-center gap-1 border-b border-border/60 bg-background px-2 in-data-[preview-panel-mode=inline]:mb-1 in-data-[preview-panel-mode=inline]:h-8 in-data-[preview-panel-mode=inline]:min-h-8 in-data-[preview-panel-mode=inline]:border-b-transparent"
         data-surface-subheader
       >
         <RefreshFilesButton isPending={isPending} onRefresh={handleRefresh} />
@@ -568,9 +568,9 @@ export default function FileBrowserPanel({
               }
             >
               {allDirectoriesExpanded ? (
-                <ChevronsDownUpIcon className="size-3.5" />
+                <ChevronsDownUpIcon className="size-4" />
               ) : (
-                <ChevronsUpDownIcon className="size-3.5" />
+                <ChevronsUpDownIcon className="size-4" />
               )}
             </TooltipTrigger>
             <TooltipPopup>
@@ -583,13 +583,13 @@ export default function FileBrowserPanel({
         <button
           type="button"
           onClick={handleRefresh}
-          className="p-4 text-left text-xs leading-relaxed text-destructive"
+          className="p-4 text-left text-meta leading-relaxed text-destructive"
         >
           {error ?? pathSearch.error} Click to retry.
         </button>
       ) : null}
       {query.trim() && pathSearch.truncated && !pathSearch.isPending ? (
-        <div className="px-3 py-1 text-xs text-muted-foreground">
+        <div className="px-2 py-1 text-meta text-ink-2">
           More matches available. Refine your search.
         </div>
       ) : null}
@@ -597,9 +597,7 @@ export default function FileBrowserPanel({
         <div
           role="status"
           className={
-            entries.length > 0 && !hasNoSearchMatches
-              ? "sr-only"
-              : "px-3 py-1 text-xs text-muted-foreground"
+            entries.length > 0 && !hasNoSearchMatches ? "sr-only" : "px-2 py-1 text-meta text-ink-2"
           }
         >
           Loading files…
@@ -607,7 +605,7 @@ export default function FileBrowserPanel({
       )}
       {hasNoSearchMatches ? (
         ready && !isPending && !pathSearch.isPending && !error && !pathSearch.error ? (
-          <div role="status" className="px-3 py-4 text-xs text-muted-foreground">
+          <div role="status" className="px-2 py-4 text-meta text-ink-2">
             No matching files.
           </div>
         ) : null

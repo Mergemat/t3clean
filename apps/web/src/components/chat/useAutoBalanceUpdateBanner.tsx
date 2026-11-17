@@ -97,7 +97,7 @@ export function useAutoBalanceUpdateBanner(
           <span className="min-w-0 truncate">{title}</span>
         </PopoverTrigger>
         <PopoverPopup side="top" align="start" width="md">
-          <div className="space-y-3 text-xs">
+          <div className="space-y-2 text-meta">
             {machines.map((machine) => (
               <div key={machine.environmentId} className="space-y-1">
                 <div className="font-medium">{machine.serverLabel}</div>
@@ -105,11 +105,11 @@ export function useAutoBalanceUpdateBanner(
                   <ServerUpdateProgress state={machine.state} />
                 ) : !machine.remoteUpdate ? (
                   <>
-                    <div className="text-muted-foreground">Manual update required</div>
+                    <div className="text-ink-2">Manual update required</div>
                     <ServerUpdateAction {...machine} />
                   </>
                 ) : (
-                  <div className="text-muted-foreground">
+                  <div className="text-ink-2">
                     {machine.connected
                       ? `Ready to update to ${machine.targetVersion}`
                       : "Reconnect this machine to update"}

@@ -131,14 +131,14 @@ function GuestShareDialog({
               </Button>
             </div>
           ) : (
-            <p className="text-muted-foreground text-sm">
+            <p className="text-ink-2 text-body">
               {activeShare !== null
                 ? "A new link ends the current one."
                 : "The link works once and expires in 24 hours."}
             </p>
           )}
           {state.status === "failed" ? (
-            <p role="alert" className="text-destructive text-xs">
+            <p role="alert" className="text-destructive text-meta">
               {state.message}
             </p>
           ) : null}
@@ -182,8 +182,8 @@ export function GuestShareIndicator({ threadRef }: { readonly threadRef: ScopedT
   const [closing, setClosing] = useState(false);
   if (share === null) return null;
   return (
-    <div className="flex shrink-0 items-center gap-1 text-muted-foreground text-xs">
-      <UserIcon aria-hidden className="size-3.5" />
+    <div className="flex shrink-0 items-center gap-1 text-ink-2 text-meta">
+      <UserIcon aria-hidden className="size-4" />
       <GuestShareStatus share={share} />
       <Button
         size="xs"
@@ -270,7 +270,7 @@ export function GuestPendingMessages({
 
   return (
     <ol
-      className="chat-content-lane flex flex-col gap-4 pb-4"
+      className="chat-content-lane flex flex-col gap-2 pb-4"
       aria-label={`${pending.length} guest message${pending.length === 1 ? "" : "s"} waiting`}
       aria-live="polite"
     >
@@ -281,7 +281,7 @@ export function GuestPendingMessages({
             <GuestMessageName name={guestName} />
             <div
               className={cn(
-                "flex min-w-0 max-w-[80%] flex-col gap-2 rounded-2xl p-3 text-foreground",
+                "flex min-w-0 max-w-4/5 flex-col gap-2 rounded-box p-2 text-ink-1",
                 guestBubbleClassName(true),
               )}
             >
@@ -292,7 +292,7 @@ export function GuestPendingMessages({
                 onOpenFile={onFileOpen}
               />
               {message.text ? (
-                <p className="text-sm leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
+                <p className="text-body leading-relaxed whitespace-pre-wrap wrap-anywhere">
                   {message.text}
                 </p>
               ) : null}

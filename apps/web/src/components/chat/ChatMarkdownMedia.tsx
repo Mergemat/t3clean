@@ -21,17 +21,16 @@ import { MediaVideoPlayer } from "../media/MediaVideoPlayer";
 import type { ExpandedImagePreview } from "./ExpandedImagePreview";
 import { markdownImageGallery, markdownImageItems } from "./markdownImageGallery";
 
-const CHAT_MARKDOWN_MEDIA_MAX_WIDTH_CLASS_NAME = "max-w-[min(100%,30rem)]";
+// Boxes with this cap are full width, so 30rem alone keeps them within 100%. The auto-width image
+// needs both caps, so it takes min(100%, 30rem) from index.css instead.
+const CHAT_MARKDOWN_MEDIA_MAX_WIDTH_CLASS_NAME = "max-w-120";
 const CHAT_MARKDOWN_MEDIA_BOUNDS_CLASS_NAME = cn(
-  "max-h-[30rem]",
+  "max-h-120",
   CHAT_MARKDOWN_MEDIA_MAX_WIDTH_CLASS_NAME,
 );
 const CHAT_MARKDOWN_MEDIA_LAYOUT_CLASS_NAME = "inline-block!";
-const CHAT_MARKDOWN_MEDIA_FRAME_CLASS_NAME = "rounded-lg border border-border/40";
-const CHAT_MARKDOWN_IMAGE_SIZE_CLASS_NAME = cn(
-  "h-auto w-auto object-contain",
-  CHAT_MARKDOWN_MEDIA_BOUNDS_CLASS_NAME,
-);
+const CHAT_MARKDOWN_MEDIA_FRAME_CLASS_NAME = "rounded-row border border-border/40";
+const CHAT_MARKDOWN_IMAGE_SIZE_CLASS_NAME = "h-auto max-h-120 w-auto object-contain";
 
 export function markdownImageCopy(alt: string, src: string, title: string | undefined): string {
   const escapedAlt = alt.replaceAll("\\", "\\\\").replaceAll("[", "\\[").replaceAll("]", "\\]");
@@ -127,8 +126,8 @@ function ChatMarkdownMediaUnavailableLabel(props: {
         ? "Video unavailable"
         : "Image unavailable";
   return (
-    <span data-thread-find-ignore className="inline-flex items-center gap-1.5">
-      <TriangleAlertIcon aria-hidden className="size-3.5 shrink-0" />
+    <span data-thread-find-ignore className="inline-flex items-center gap-2">
+      <TriangleAlertIcon aria-hidden className="size-4 shrink-0" />
       {[label, props.alt, props.detail].filter(Boolean).join(" · ")}
     </span>
   );
@@ -146,7 +145,7 @@ export function ChatMarkdownImageFallback(props: {
       data-markdown-copy={props.copyMarkdown}
       className={cn(
         CHAT_MARKDOWN_MEDIA_LAYOUT_CLASS_NAME,
-        "rounded-md border border-border/40 bg-muted/40 px-2 py-1 text-xs text-muted-foreground",
+        "rounded-row border border-border/40 bg-muted/40 px-2 py-1 text-meta text-ink-2",
       )}
     >
       <ChatMarkdownMediaUnavailableLabel alt={props.alt} kind={props.kind} detail={props.detail} />
@@ -222,6 +221,7 @@ export function ChatMarkdownImage(props: {
           src={src}
           alt={props.alt}
           data-markdown-copy={props.copyMarkdown}
+          data-slot="chat-markdown-image"
           decoding="async"
           loading="lazy"
           draggable={false}
@@ -271,7 +271,7 @@ export function ChatMarkdownImage(props: {
           : { role: "status" as const, "aria-label": "Loading image" })}
       >
         {failed ? (
-          <span className="flex size-full items-center justify-center p-2 text-center text-xs text-muted-foreground">
+          <span className="flex size-full items-center justify-center p-2 text-center text-meta text-ink-2">
             <ChatMarkdownMediaUnavailableLabel alt={props.alt} detail={props.unavailableDetail} />
           </span>
         ) : src !== null ? (

@@ -466,7 +466,7 @@ function SidebarUpdateControl() {
       aria-label={idleTooltip?.detail ? `${tooltip}: ${idleTooltip.detail}` : tooltip}
       aria-disabled={isInteractionDisabled || undefined}
       className={cn(
-        "inline-flex size-8 items-center justify-center rounded-full outline-hidden ring-ring transition-colors focus-visible:ring-2 focus-visible:ring-inset",
+        "inline-flex size-8 items-center justify-center rounded-row outline-hidden ring-ring transition-colors focus-visible:ring-2 focus-visible:ring-inset",
         isInteractionDisabled ? "cursor-not-allowed" : "cursor-pointer",
         showUpdateIconState
           ? cn(
@@ -551,7 +551,7 @@ function SidebarUpdateControl() {
               {idleTooltip?.detail ? (
                 <div className="text-left">
                   <div className="font-medium">{idleTooltip.title}</div>
-                  <div className="text-muted-foreground">{idleTooltip.detail}</div>
+                  <div className="text-ink-2">{idleTooltip.detail}</div>
                 </div>
               ) : (
                 <span className="whitespace-pre-line">{tooltip}</span>

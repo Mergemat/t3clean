@@ -4,10 +4,9 @@ import { LegendList, type LegendListRef } from "@legendapp/list/react";
 import { useId, useRef, useState, type ComponentProps, type ReactNode } from "react";
 
 import { MiddleTruncate } from "./ui/middle-truncate";
-import { cn } from "../lib/utils";
 import { RefreshIcon } from "./ui/refresh-icon";
 import { Switch } from "./ui/switch";
-import { getVirtualizedScrollFadeClassName } from "./ui/scroll-area";
+import { virtualizedScrollFadeProps } from "./ui/scroll-area";
 import {
   Combobox,
   ComboboxEmpty,
@@ -18,6 +17,7 @@ import {
   ComboboxStatus,
 } from "./ui/combobox";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
+import { ListRowGap } from "./ui/list-row-gap";
 
 export function BranchPicker({
   items,
@@ -138,19 +138,18 @@ export function BranchPicker({
                 renderItem={({ item, index }) => renderItem(item, index)}
                 extraData={renderItem}
                 estimatedItemSize={28}
+                ItemSeparatorComponent={ListRowGap}
                 drawDistance={336}
                 onScroll={updateBranchListScrollFades}
                 onLayout={updateBranchListScrollFades}
                 onReady={updateBranchListScrollFades}
                 onEndReached={fetchNextBranchPage}
                 onEndReachedThreshold={0.5}
-                className={cn(
-                  "min-h-0 max-h-56 scrollbar-gutter-stable overflow-x-hidden overscroll-y-contain ps-1 pe-0 py-2",
-                  getVirtualizedScrollFadeClassName({
-                    top: showTopBranchScrollFade,
-                    bottom: showBottomBranchScrollFade,
-                  }),
-                )}
+                className="virtualized-scroll-fade min-h-0 max-h-56 scrollbar-gutter-stable overflow-x-hidden overscroll-y-contain ps-1 pe-0 py-2"
+                {...virtualizedScrollFadeProps({
+                  top: showTopBranchScrollFade,
+                  bottom: showBottomBranchScrollFade,
+                })}
               />
             </ComboboxListVirtualized>
           </div>
@@ -160,9 +159,9 @@ export function BranchPicker({
                 render={
                   <label
                     htmlFor={startFromOriginSwitchId}
-                    className="flex cursor-pointer items-center justify-between gap-3 border-t border-border/60 px-3 py-2 text-xs"
+                    className="flex cursor-pointer items-center justify-between gap-2 px-2 py-2 text-meta"
                   >
-                    <span className="flex min-w-0 items-center gap-1.5 font-medium text-muted-foreground">
+                    <span className="flex min-w-0 items-center gap-2 font-medium text-ink-2">
                       <RefreshIcon aria-hidden="true" className="size-3 shrink-0" />
                       <span className="truncate">Start from remote</span>
                     </span>
@@ -232,7 +231,7 @@ export function BranchPickerRefItem({
     >
       <div className="flex w-full min-w-0 items-center justify-between gap-2">
         <MiddleTruncate value={itemValue} className="flex-1" />
-        {badge && <span className="shrink-0 text-3xs text-muted-foreground/45">{badge}</span>}
+        {badge && <span className="shrink-0 text-meta text-ink-3">{badge}</span>}
       </div>
     </ComboboxItem>
   );

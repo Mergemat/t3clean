@@ -37,7 +37,7 @@ import { type Project, type SidebarThreadSummary, type Thread } from "../types";
 
 export const RECENT_THREAD_LIMIT = 12;
 const NO_THREAD_KEYS: ReadonlySet<string> = new Set();
-export const ITEM_ICON_CLASS = "size-4 text-icon-muted";
+export const ITEM_ICON_CLASS = "size-4 text-ink-3";
 export const ADDON_ICON_CLASS = "size-4";
 
 export function buildLinkedThreadActionItems(

@@ -55,23 +55,23 @@ export function T3ChatUserProfilePage() {
       }
     >
       {linkState.error ? (
-        <div className="border-t py-3 text-xs" role="alert">
+        <div className="border-t py-2 text-meta" role="alert">
           <p className="font-medium text-destructive-foreground">Could not load T3 Chat link</p>
-          <p className="mt-0.5 text-muted-foreground">{linkState.error}</p>
+          <p className="text-ink-2">{linkState.error}</p>
         </div>
       ) : data === null ? null : !data.available ? (
-        <p className="border-t py-4 text-xs text-muted-foreground">
+        <p className="border-t py-4 text-meta text-ink-2">
           This T3 Connect server does not support T3 Chat linking.
         </p>
       ) : (
         <ul className="border-t">
           <ClerkUserProfileRow icon={<MessageSquareIcon className="size-4" />}>
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-2">
               <div className="min-w-0 flex-1">
-                <h3 className="truncate text-sm leading-4.5 font-medium text-foreground">
+                <h3 className="truncate text-body leading-4 font-medium text-ink-1">
                   {link ? link.email : "Not linked"}
                 </h3>
-                <p className="mt-1 text-xs leading-4.5 text-muted-foreground">
+                <p className="mt-1 text-meta leading-4 text-ink-2">
                   {link ? (
                     planLabel(link)
                   ) : linkUrl ? (

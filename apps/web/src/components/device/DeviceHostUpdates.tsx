@@ -24,11 +24,11 @@ export function DeviceHostUpdates({
           <div
             key={host.id}
             role={failed ? "alert" : "status"}
-            className="flex items-start gap-3 rounded-md border border-border/60 px-3 py-2 text-xs"
+            className="flex items-start gap-2 rounded-row border border-border/60 px-2 py-2 text-meta"
           >
             <div className="min-w-0 flex-1">
               <p className="font-medium">{host.label}</p>
-              <p className="whitespace-pre-wrap break-words text-muted-foreground">
+              <p className="whitespace-pre-wrap break-words text-ink-2">
                 {status.detail ??
                   (failed
                     ? "Device support could not start."
@@ -37,7 +37,7 @@ export function DeviceHostUpdates({
                       : "Starting device tools…")}
               </p>
               {failed ? (
-                <p className="mt-1 text-muted-foreground">
+                <p className="mt-1 text-ink-2">
                   Check the host connection and network access, then retry. Your device settings are
                   saved.
                 </p>
@@ -45,7 +45,7 @@ export function DeviceHostUpdates({
             </div>
             {failed && state.supportsHostRetry ? (
               <Button
-                size="compact"
+                size="sm"
                 variant="outline"
                 disabled={pending !== null}
                 onClick={() => {

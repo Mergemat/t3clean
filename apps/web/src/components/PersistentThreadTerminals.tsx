@@ -242,10 +242,10 @@ export const PersistentThreadTerminalDrawer = memo(function PersistentThreadTerm
     <div
       className={cn(
         "grid shrink-0 overflow-clip",
-        active ? (visible ? "grid-rows-[1fr]" : "grid-rows-[0fr]") : "hidden",
+        active ? (visible ? "grid-rows-(--grid-open)" : "grid-rows-(--grid-closed)") : "hidden",
         active &&
-          "[[data-panel-animations=true]_&]:transition-[grid-template-rows] [[data-panel-animations=true]_&]:duration-(--panel-animation-duration) [[data-panel-animations=true]_&]:ease-out",
-        active && visible && "[[data-panel-animations=true]_&]:starting:grid-rows-[0fr]!",
+          "[[data-panel-animations=true]_&]:transition [[data-panel-animations=true]_&]:duration-(--panel-animation-duration) [[data-panel-animations=true]_&]:ease-out",
+        active && visible && "[[data-panel-animations=true]_&]:starting:grid-rows-(--grid-closed)!",
       )}
     >
       <div className="min-h-0 overflow-clip">

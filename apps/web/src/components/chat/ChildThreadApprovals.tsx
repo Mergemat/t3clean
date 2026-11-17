@@ -21,21 +21,21 @@ function ChildApproval({ entry }: { entry: ChildThreadApproval }) {
   return (
     <section
       aria-label={`Approval from ${entry.title}`}
-      className="rounded-lg border border-border bg-background p-3 text-xs"
+      className="rounded-row border border-border bg-background p-2 text-meta"
     >
       <p className="mb-2 font-medium">Approval needed from {entry.title}</p>
       <pre className="max-h-40 overflow-auto whitespace-pre-wrap break-words font-mono">
         {approval.detail || approval.requestKind}
       </pre>
-      {approval.appName ? <p className="mt-2 text-muted-foreground">{approval.appName}</p> : null}
+      {approval.appName ? <p className="mt-2 text-ink-2">{approval.appName}</p> : null}
       {approval.responseCapability !== "live" ? (
         <p className="mt-2 text-warning">
           Provider process is gone. Interrupt or restart the child thread to respond.
         </p>
       ) : null}
-      {approval.reason ? <p className="mt-2 text-muted-foreground">{approval.reason}</p> : null}
+      {approval.reason ? <p className="mt-2 text-ink-2">{approval.reason}</p> : null}
       {approval.fullAccessOverride ? (
-        <p className="mt-2 text-muted-foreground">
+        <p className="mt-2 text-ink-2">
           {fullAccessOverrideExplanation(approval.fullAccessOverride)}
         </p>
       ) : null}

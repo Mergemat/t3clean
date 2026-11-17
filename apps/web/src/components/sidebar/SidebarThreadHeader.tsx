@@ -58,7 +58,7 @@ export function SidebarThreadHeader({
 
   return (
     <div className="flex items-center gap-1">
-      <div className="flex h-8 min-w-0 flex-1 items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-sidebar-muted-foreground hover:bg-sidebar-row-hover hover:text-sidebar-foreground focus-within:bg-sidebar-row-hover focus-within:text-sidebar-foreground focus-within:ring-1 focus-within:ring-inset focus-within:ring-ring/70">
+      <div className="flex h-8 min-w-0 flex-1 items-center gap-2 rounded-row px-2 py-2 text-body font-medium text-ink-2 hover:bg-sidebar-row-hover hover:text-sidebar-foreground focus-within:bg-sidebar-row-hover focus-within:text-sidebar-foreground focus-within:ring-1 focus-within:ring-inset focus-within:ring-ring/70">
         <SearchIcon className="size-4 shrink-0 text-(--sidebar-icon-color)" />
         <SidebarInput
           ref={searchInputRef}
@@ -83,7 +83,7 @@ export function SidebarThreadHeader({
         {isSearching ? (
           <Button
             type="button"
-            size="icon-micro"
+            size="icon-xs"
             variant="ghost-muted"
             className="shrink-0"
             aria-label="Clear thread search"
@@ -109,9 +109,9 @@ export function SidebarThreadHeader({
           label="New thread"
           tooltip={
             showNewThreadInProjectHint ? (
-              <span className="flex flex-col gap-0.5">
+              <span className="flex flex-col">
                 <span>{newThreadLabel}</span>
-                <span className="text-muted-foreground">
+                <span className="text-ink-2">
                   New thread in current project: Shift+click
                   {newThreadInProjectShortcutLabel ? ` (${newThreadInProjectShortcutLabel})` : ""}
                 </span>
@@ -154,14 +154,14 @@ export function SidebarHeaderIconButton({
             type="button"
             aria-label={label}
             {...rest}
-            className={cn("relative size-7 shrink-0", className)}
+            className={cn("relative shrink-0", className)}
           />
         }
       >
         {children}
         <span
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 size-[max(100%,3rem)] -translate-1/2 pointer-fine:hidden"
+          className="pointer-events-none absolute left-1/2 top-1/2 size-full min-h-12 min-w-12 -translate-1/2 pointer-fine:hidden"
         />
       </TooltipTrigger>
       <TooltipPopup side="top">{tooltip}</TooltipPopup>

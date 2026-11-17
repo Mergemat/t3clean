@@ -451,7 +451,7 @@ function LinkPage({
         <EmptyHeader className="max-w-md">
           <EmptyTitle>{title}</EmptyTitle>
           {description ? <EmptyDescription>{description}</EmptyDescription> : null}
-          {children ? <div className="mt-5 flex justify-center gap-2">{children}</div> : null}
+          {children ? <div className="mt-2 flex justify-center gap-2">{children}</div> : null}
         </EmptyHeader>
       </Empty>
     </SidebarInset>

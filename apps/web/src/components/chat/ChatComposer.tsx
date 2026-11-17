@@ -212,7 +212,11 @@ import {
   ComposerQueuedAttachmentRow,
   ComposerRestingImagePreviews,
 } from "./ComposerAttachmentStrip";
-import { CollapsedComposerStopAction, ComposerPrimaryActions } from "./ComposerPrimaryActions";
+import {
+  CollapsedComposerStopAction,
+  ComposerCompactToggle,
+  ComposerPrimaryActions,
+} from "./ComposerPrimaryActions";
 import { ComposerFooterPrimaryActions } from "./ComposerFooterControls";
 import { ComposerPendingUserInputPanel } from "./ComposerPendingUserInputPanel";
 import { resolveComposerMenuActiveItemId } from "./composerMenuHighlight";
@@ -2501,7 +2505,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
           description: (
             <button
               type="button"
-              className="cursor-pointer hover:text-foreground"
+              className="cursor-pointer hover:text-ink-1"
               onClick={() => {
                 const { citation } = replyTo;
                 const source = readThreadShell(
@@ -3320,6 +3324,15 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
         onRemoveFile={removeComposerFileFromDraft}
       />
     ) : null;
+  // The send button's own states (a pending question, stopping a run, resume, editing a queued
+  // message) leave nothing to compact before.
+  const hasSendableContent = composerSendState.hasSendableContent || voiceInputActive;
+  const showCompactToggle =
+    !dictationTakesFooter &&
+    pendingPrimaryAction === null &&
+    !isEditingQueuedMessage &&
+    !(showResumeAction && !hasSendableContent) &&
+    !(canInterrupt && !hasSendableContent);
   const composerAttachButton = showComposerAttachAction ? (
     <ComposerAttachButton
       addComposerAttachments={addComposerAttachments}
@@ -3425,7 +3438,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
             data-chat-composer-surface="true"
             data-chat-composer-mobile-collapsed={isComposerCollapsedMobile ? "true" : "false"}
             className={cn(
-              "rounded-2xl transition-[background-color] duration-200",
+              "rounded-box transition-colors duration-200",
               "in-data-[thread-context-over]:bg-accent/45 in-data-[thread-context-over]:ring-1 in-data-[thread-context-over]:ring-inset in-data-[thread-context-over]:ring-primary/70",
               isDragOverComposer ? "bg-accent/45 ring-1 ring-inset ring-primary/70" : null,
               projectSelectionRequired ? "opacity-75" : null,
@@ -3433,13 +3446,13 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
             )}
           >
             {showCollapsedMobilePromptRow ? (
-              <div className="flex items-center justify-between gap-2 px-3 py-2">
+              <div className="flex items-center justify-between gap-2 px-2 py-2">
                 <button
                   type="button"
                   data-chat-composer-transition-prompt="true"
                   className={cn(
-                    "min-w-0 flex-1 truncate bg-transparent p-0 text-left text-sm focus:outline-none",
-                    prompt.trim() ? "text-foreground" : "text-placeholder",
+                    "min-w-0 flex-1 truncate bg-transparent p-0 text-left text-body focus:outline-none",
+                    prompt.trim() ? "text-ink-1" : "text-ink-3",
                   )}
                   onPointerDown={(event) => event.preventDefault()}
                   onClick={expandMobileComposerStable}
@@ -3519,7 +3532,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
               data-chat-composer-body="true"
               className={cn(
                 "relative px-4 pb-2",
-                "pt-3.5 sm:pt-4",
+                "pt-4 sm:pt-4",
                 isComposerCollapsedMobile && "hidden",
               )}
             >
@@ -3615,7 +3628,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                     buildContextClipboardFragment={buildContextClipboardFragmentStable}
                     importContextFragment={importContextFragmentStable}
                     skills={selectedProviderSkills}
-                    className={cn(showMobilePendingAnswerActions && "max-sm:pb-12")}
+                    className={cn(showMobilePendingAnswerActions && "max-sm:pb-6")}
                     onChange={onPromptChangeStable}
                     onCommandKeyDown={onComposerCommandKeyStable}
                     onPageScrollKeyDown={onPageScrollKeyDown}
@@ -3643,7 +3656,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                     }
                     placeholderSuffix={
                       offeredPromptSuggestion !== null ? (
-                        <span className="ml-2 inline-flex align-[1px]">
+                        <span className="relative -top-px ml-2 inline-flex">
                           <Kbd variant="outline">⇥ Tab</Kbd>
                         </span>
                       ) : undefined
@@ -3689,11 +3702,11 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
               // column-reverse pins the scroll to the bottom; the single inner div keeps the text in normal order.
               <div
                 aria-label="Live transcription"
-                className="mx-3 mb-3 flex max-h-32 flex-col-reverse overflow-y-auto rounded-lg border border-border/60 bg-muted/30 px-3 py-2 text-sm leading-relaxed break-words whitespace-pre-wrap sm:mx-4"
+                className="mx-2 mb-2 flex max-h-32 flex-col-reverse overflow-y-auto rounded-row border border-border/60 bg-muted/30 px-2 py-2 text-body leading-relaxed break-words whitespace-pre-wrap sm:mx-2"
               >
                 <div>
                   <span>{speechInput.preview.committed}</span>
-                  <span className="text-muted-foreground">{speechInput.preview.tentative}</span>
+                  <span className="text-ink-2">{speechInput.preview.tentative}</span>
                 </div>
               </div>
             ) : null}
@@ -3725,10 +3738,24 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                     data-chat-composer-controls="footer"
                     data-chat-composer-footer-controls="true"
                     className={cn(
-                      "relative flex min-w-0 flex-1 items-center justify-end gap-0.5",
+                      "relative flex min-w-0 flex-1 items-center justify-end",
                       dictationTakesFooter && "hidden",
                     )}
                   >
+                    {/* Left of the model trigger, never between it and send: its width follows
+                        the model's context window, and the picker is anchored to the trigger's
+                        right edge, which must not move when the model changes. */}
+                    {showCompactToggle && props.resumeCompactionTokens !== null ? (
+                      <div className="me-2">
+                        <ComposerCompactToggle
+                          tokens={props.resumeCompactionTokens}
+                          keepFullHistory={props.keepFullHistory}
+                          disabled={!canOperateThread}
+                          preserveComposerFocusOnPointerDown={isMobileViewport}
+                          onToggle={props.onToggleKeepFullHistory}
+                        />
+                      </div>
+                    ) : null}
                     {composerControls}
                   </div>
                   <ComposerFooterPrimaryActions
@@ -3775,9 +3802,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                     onPreviousPendingQuestion={onPreviousActivePendingUserInputQuestion}
                     onInterrupt={handleInterruptPrimaryActionStable}
                     compactBeforeSendTokens={props.resumeCompactionTokens}
-                    hideCompactToggle={dictationTakesFooter}
                     keepFullHistory={props.keepFullHistory}
-                    onToggleKeepFullHistory={props.onToggleKeepFullHistory}
                   >
                     {speechInput.available ? (
                       <>
@@ -3832,7 +3857,7 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                     aria-hidden={restingControlsVisible ? undefined : true}
                     inert={restingControlsVisible ? undefined : true}
                     className={cn(
-                      "relative flex w-max min-w-0 max-w-full items-center gap-1 text-muted-foreground/70 [&_button]:text-xs!",
+                      "relative flex w-max min-w-0 max-w-full items-center gap-1 text-ink-2 [&_button]:text-meta!",
                       !restingControlsVisible && "invisible",
                     )}
                   >

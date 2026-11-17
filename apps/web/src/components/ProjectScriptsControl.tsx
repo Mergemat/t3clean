@@ -167,7 +167,7 @@ export default function ProjectScriptsControl({
             <ScriptIcon icon={fileScript.icon ?? "play"} className="size-4" />
             <MenuItemLabel>{fileScript.name}</MenuItemLabel>
             <MenuShortcut>
-              <DownloadIcon className="size-3.5" aria-label="Import" />
+              <DownloadIcon className="size-4" aria-label="Import" />
             </MenuShortcut>
           </MenuItem>
         ))}
@@ -195,7 +195,7 @@ export default function ProjectScriptsControl({
             <span className="relative ms-auto flex h-6 min-w-6 items-center justify-end">
               {shortcutLabel &&
                 (presentation === "menu" ? (
-                  <MenuShortcut className="ms-0 mr-7">{shortcutLabel}</MenuShortcut>
+                  <MenuShortcut className="ms-0 mr-6">{shortcutLabel}</MenuShortcut>
                 ) : (
                   <span className="transition-opacity group-hover:opacity-0 group-focus-visible:opacity-0">
                     <MenuShortcut className="ms-0">{shortcutLabel}</MenuShortcut>
@@ -220,7 +220,7 @@ export default function ProjectScriptsControl({
                     openEditDialog(script);
                   }}
                 >
-                  <SettingsIcon className="size-3.5" />
+                  <SettingsIcon className="size-4" />
                 </Button>
               </span>
             </span>
@@ -291,7 +291,7 @@ export default function ProjectScriptsControl({
                   variant={isPanel ? "ghost" : "outline"}
                   part="primary"
                   panel={isPanel}
-                  className={isPanel ? undefined : "w-7 sm:w-6 @3xl/header-actions:w-auto!"}
+                  className={isPanel ? undefined : "w-8 sm:w-6 @3xl/header-actions:w-auto!"}
                   aria-label={`Run ${primaryScript.name}`}
                   // Tooltip replaces the button data-slot, so toolbar theming needs a separate hook.
                   data-toolbar-control=""
@@ -306,7 +306,7 @@ export default function ProjectScriptsControl({
               />
               <span
                 className={cn(
-                  "sr-only @3xl/header-actions:not-sr-only @3xl/header-actions:ml-0.5",
+                  "sr-only @3xl/header-actions:not-sr-only",
                   isPanel && cn("not-sr-only ml-0 truncate", THREAD_DETAILS_PANEL_LABEL_CLASS),
                 )}
               >
@@ -418,11 +418,9 @@ export default function ProjectScriptsControl({
             <MenuTrigger
               render={<Button size="xs" variant="outline" aria-label="Project actions" />}
             >
-              <WrenchIcon className="size-3.5" />
-              <span className="sr-only @3xl/header-actions:not-sr-only @3xl/header-actions:ml-0.5">
-                Actions
-              </span>
-              <ChevronDownIcon className="size-3.5" />
+              <WrenchIcon className="size-4" />
+              <span className="sr-only @3xl/header-actions:not-sr-only">Actions</span>
+              <ChevronDownIcon className="size-4" />
             </MenuTrigger>
             <MenuPopup align="end">{scriptItems}</MenuPopup>
           </Menu>
@@ -436,18 +434,18 @@ export default function ProjectScriptsControl({
                 variant={isPanel ? "ghost" : "outline"}
                 part="row"
                 panel={isPanel}
-                className={isPanel ? undefined : "w-7 sm:w-6 @3xl/header-actions:w-auto!"}
+                className={isPanel ? undefined : "w-8 sm:w-6 @3xl/header-actions:w-auto!"}
                 aria-label={isPanel ? "Add project script" : "Add action"}
                 data-toolbar-control=""
                 onClick={openAddDialog}
               />
             }
           >
-            <PlusIcon className="size-3.5" />
+            <PlusIcon className={isPanel ? "size-4" : "size-4"} />
             <span
               className={cn(
-                "sr-only @3xl/header-actions:not-sr-only @3xl/header-actions:ml-0.5",
-                isPanel && cn("not-sr-only ml-0.5", THREAD_DETAILS_PANEL_LABEL_CLASS),
+                "sr-only @3xl/header-actions:not-sr-only",
+                isPanel && cn("not-sr-only", THREAD_DETAILS_PANEL_LABEL_CLASS),
               )}
             >
               {isPanel ? "Add project script" : "Add action"}

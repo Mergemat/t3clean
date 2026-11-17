@@ -88,11 +88,11 @@ function stageRowClassName(status: WorktreeSetupStage["status"]): string {
     case "warning":
       return "text-warning-foreground";
     case "pending":
-      return "text-secondary-label opacity-40";
+      return "text-ink-2 opacity-40";
     case "running":
     case "skipped":
     case "done":
-      return "text-secondary-label";
+      return "text-ink-2";
   }
 }
 
@@ -103,7 +103,7 @@ function ShimmerOverlay({ children }: { children: ReactNode }) {
       className="live-activity-focus pointer-events-none absolute inset-y-0 select-none"
     >
       <span className="live-activity-focus-counter block">
-        <span className="live-activity-focus-aligned block text-foreground">{children}</span>
+        <span className="live-activity-focus-aligned block text-ink-1">{children}</span>
       </span>
     </span>
   );
@@ -134,12 +134,12 @@ function SetupHeaderRow({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
     ? "text-destructive-foreground"
     : finishedWithFailedStage
       ? "text-warning-foreground"
-      : "text-muted-foreground";
+      : "text-ink-2";
   return (
-    <div className="border-b border-border/60 pb-2 pt-1">
+    <div className="pb-2 pt-1">
       <div
         className={cn(
-          "flex h-6 min-w-0 items-baseline gap-2 px-1 text-sm leading-relaxed tabular-nums",
+          "flex h-6 min-w-0 items-baseline gap-2 px-1 text-body leading-relaxed tabular-nums",
           tone,
         )}
       >
@@ -150,7 +150,7 @@ function SetupHeaderRow({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
           <span className="block truncate">{text}</span>
           {running ? <ShimmerOverlay>{text}</ShimmerOverlay> : null}
         </span>
-        <span className="ml-auto shrink-0 text-xs text-muted-foreground empty:hidden">
+        <span className="ml-auto shrink-0 text-meta text-ink-2 empty:hidden">
           <Elapsed startedAt={snapshot.startedAt} endedAt={snapshot.endedAt} live={running} />
         </span>
       </div>
@@ -185,7 +185,7 @@ function StageRow({
       data-worktree-setup-stage={stage.id}
       data-worktree-setup-status={stage.status}
       icon={
-        <span className={cn("text-icon-muted", stage.status === "pending" && "opacity-40")}>
+        <span className={cn("text-ink-3", stage.status === "pending" && "opacity-40")}>
           <StageIcon status={stage.status} />
         </span>
       }
@@ -201,12 +201,12 @@ function StageRow({
       trailing={
         <>
           {trailing ? (
-            <span className="max-w-1/2 min-w-0 truncate text-xs text-muted-foreground tabular-nums">
+            <span className="max-w-1/2 min-w-0 truncate text-meta text-ink-2 tabular-nums">
               {trailing}
             </span>
           ) : null}
           {stage.status !== "skipped" && stage.status !== "pending" ? (
-            <span className="shrink-0 text-xs text-muted-foreground tabular-nums empty:hidden">
+            <span className="shrink-0 text-meta text-ink-2 tabular-nums empty:hidden">
               <Elapsed
                 startedAt={stage.startedAt}
                 // A stage interrupted by the setup ending stops with it.
@@ -232,10 +232,10 @@ function OutputTail({ lines, failed }: { lines: ReadonlyArray<string>; failed: b
   return (
     <pre
       className={cn(
-        "mb-1 ml-8 overflow-hidden rounded-md border px-2.5 py-1.5 font-mono text-2xs leading-relaxed select-text",
+        "mb-1 ml-6 overflow-hidden rounded-row border px-2 py-2 font-mono text-meta leading-relaxed select-text",
         failed
           ? "border-destructive/20 bg-error-surface text-destructive-foreground"
-          : "border-border bg-code text-muted-foreground",
+          : "border-border bg-code text-ink-2",
       )}
     >
       {rows.map(({ slot, line }) => (
@@ -249,10 +249,10 @@ function OutputTail({ lines, failed }: { lines: ReadonlyArray<string>; failed: b
 
 function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
   return (
-    <dl className="mt-1 mb-1.5 ml-8 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
+    <dl className="mt-1 mb-2 ml-6 grid grid-cols-(--grid-lead) gap-x-2 text-meta text-ink-2">
       {snapshot.branch ? (
         <>
-          <dt className="text-foreground/80">Branch</dt>
+          <dt className="text-ink-2">Branch</dt>
           <dd className="min-w-0 font-mono">
             <MiddleTruncate value={snapshot.branch} className="flex" />
           </dd>
@@ -260,7 +260,7 @@ function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
       ) : null}
       {snapshot.baseRef ? (
         <>
-          <dt className="text-foreground/80">Base</dt>
+          <dt className="text-ink-2">Base</dt>
           <dd className="min-w-0 font-mono">
             <MiddleTruncate value={snapshot.baseRef} className="flex" />
           </dd>
@@ -268,7 +268,7 @@ function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
       ) : null}
       {snapshot.worktreePath ? (
         <>
-          <dt className="text-foreground/80">Path</dt>
+          <dt className="text-ink-2">Path</dt>
           <dd className="min-w-0 font-mono">
             <MiddleTruncate value={snapshot.worktreePath} className="flex" />
           </dd>
@@ -276,7 +276,7 @@ function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
       ) : null}
       {snapshot.setupScript ? (
         <>
-          <dt className="text-foreground/80">Setup</dt>
+          <dt className="text-ink-2">Setup</dt>
           <dd className="truncate font-mono">{snapshot.setupScript.command}</dd>
         </>
       ) : null}
@@ -297,13 +297,13 @@ function CollapsedSummaryRow({ snapshot }: { snapshot: WorktreeSetupSnapshot }) 
       data-worktree-setup-stage="summary"
       data-worktree-setup-status={status}
       icon={
-        <span className="text-icon-muted">
+        <span className="text-ink-3">
           <StageIcon status={status} />
         </span>
       }
       label={<span className={stageRowClassName(status)}>{label}</span>}
       trailing={
-        <span className="shrink-0 text-xs text-muted-foreground tabular-nums empty:hidden">
+        <span className="shrink-0 text-meta text-ink-2 tabular-nums empty:hidden">
           <Elapsed startedAt={snapshot.startedAt} endedAt={snapshot.endedAt} live={false} />
         </span>
       }
@@ -337,7 +337,7 @@ export function WorktreeSetupCard({
       {collapsed ? (
         <CollapsedSummaryRow snapshot={snapshot} />
       ) : (
-        <div className={showHeader ? "pt-1.5" : undefined}>
+        <div className={showHeader ? "pt-2" : undefined}>
           {snapshot.stages.map((stage) => (
             <div key={stage.id}>
               <StageRow
@@ -355,10 +355,10 @@ export function WorktreeSetupCard({
       )}
 
       {snapshot.phase === "failed" && snapshot.error ? (
-        <p className="mt-1 ml-8 text-xs text-muted-foreground">{snapshot.error}</p>
+        <p className="mt-1 ml-6 text-meta text-ink-2">{snapshot.error}</p>
       ) : null}
 
-      <div className="mt-0.5 ml-[calc(--spacing(6)+2px-(--spacing(2)-1px))] flex flex-wrap items-center gap-0.5">
+      <div className="ml-2 flex flex-wrap items-center">
         <Button
           type="button"
           size="xs"

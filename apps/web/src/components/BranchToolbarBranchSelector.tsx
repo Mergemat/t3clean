@@ -724,12 +724,12 @@ export function BranchToolbarBranchSelector({
           onClick={() => selectPickerItem(itemValue)}
         >
           <div className="flex min-w-0 items-center gap-2 py-1">
-            <SourceControlIcon className="size-3.5 shrink-0 text-muted-foreground" />
+            <SourceControlIcon className="size-4 shrink-0 text-ink-2" />
             <span className="flex min-w-0 flex-col items-start">
               <span className="truncate font-medium">
                 Checkout {sourceControlPresentation.terminology.singular}
               </span>
-              <span className="truncate text-muted-foreground text-xs">{prReference}</span>
+              <span className="truncate text-ink-2 text-meta">{prReference}</span>
             </span>
           </div>
         </ComboboxItem>

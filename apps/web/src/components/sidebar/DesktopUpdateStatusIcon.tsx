@@ -46,7 +46,7 @@ function DesktopUpdateAvailableIcon() {
       <DownloadIcon className="size-4" />
       <span
         aria-hidden="true"
-        className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-current ring-2 ring-sidebar-control-surface"
+        className="absolute -top-1 -right-1 size-2 rounded-full bg-current ring-2 ring-sidebar-control-surface"
       />
     </span>
   );
@@ -81,7 +81,7 @@ function DesktopUpdateDownloadingIcon({ percent }: { readonly percent: number | 
           strokeDashoffset={progressOffset}
           strokeLinecap="round"
           strokeWidth="1.5"
-          className="transition-[stroke-dashoffset] duration-300 ease-out motion-reduce:transition-none"
+          className="transition duration-300 ease-out motion-reduce:transition-none"
         />
       </svg>
       <DownloadIcon className="size-4" />
@@ -93,7 +93,7 @@ function DesktopUpdateDownloadedIcon() {
   return (
     <span className="relative grid size-4 place-items-center">
       <RotateCwIcon className="size-4" />
-      <span className="absolute -right-1 -bottom-1 grid size-2.5 place-items-center rounded-full bg-foreground text-background ring-2 ring-background">
+      <span className="absolute -right-1 -bottom-1 grid size-3 place-items-center rounded-full bg-foreground text-background ring-2 ring-background">
         <CheckIcon className="size-2" strokeWidth={3} />
       </span>
     </span>

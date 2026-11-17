@@ -147,7 +147,7 @@ export function TimelineMinimap({
           />
           <button
             aria-label={`Jump to message: ${activeItem?.userText ?? "User message"}`}
-            className="absolute inset-y-0 left-0 w-full cursor-pointer bg-transparent before:absolute before:inset-x-0 before:-inset-y-1 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
+            className="absolute inset-y-0 left-0 w-full cursor-pointer bg-transparent before:absolute before:inset-x-0 before:-inset-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
             onBlur={() => setActiveIndex(null)}
             onClick={(event) => {
               const nextIndex = resolveActiveIndexFromPointer(event);
@@ -199,15 +199,15 @@ export function TimelineMinimap({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "pointer-events-none absolute left-0 h-0.5 w-6 origin-left -translate-y-1/2 rounded-full transition-transform duration-150 after:absolute after:inset-0 after:rounded-full after:bg-foreground/55 after:opacity-0 after:transition-opacity after:duration-150 data-[in-view=true]:after:opacity-100",
+                    "pointer-events-none absolute left-0 h-1 w-6 origin-left -translate-y-1/2 rounded-full transition-transform duration-150 after:absolute after:inset-0 after:rounded-full after:bg-foreground/55 after:opacity-0 after:transition-opacity after:duration-150 data-[in-view=true]:after:opacity-100",
                     activeDistance === 0 ? "bg-muted-foreground/60" : "bg-muted-foreground/25",
                     activeDistance === 0
                       ? "scale-x-100"
                       : activeDistance === 1
-                        ? "scale-x-[0.667]"
+                        ? "scale-x-67"
                         : activeDistance === 2
-                          ? "scale-x-[0.417]"
-                          : "scale-x-[0.333]",
+                          ? "scale-x-42"
+                          : "scale-x-33",
                   )}
                   data-in-view="false"
                   data-minimap-strip
@@ -229,13 +229,13 @@ export function TimelineMinimap({
                 className="pointer-events-none absolute left-8 w-80 -translate-y-1/2"
                 style={{ top: `${activeTopPercent}%` }}
               >
-                <span className="dropdown-glass block rounded-xl p-3 text-left text-popover-foreground">
-                  <span className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium leading-5">
+                <span className="dropdown-glass block rounded-box p-2 text-left text-popover-foreground">
+                  <span className="block max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-body font-medium leading-5">
                     {activeItem.userText ?? "User message"}
                   </span>
                   {activeItem.assistantText ? (
                     <span
-                      className="mt-1 max-h-[3.75rem] overflow-hidden text-muted-foreground text-sm leading-5"
+                      className="mt-1 max-h-16 overflow-hidden text-ink-2 text-body leading-5"
                       style={{
                         display: "-webkit-box",
                         WebkitBoxOrient: "vertical",
@@ -286,7 +286,7 @@ function TimelineMinimapNavigationButton({
             className={cn(
               "absolute left-1 z-10 inline-flex -translate-x-1/2 opacity-0 transition-opacity duration-150 hover:opacity-100 focus-within:opacity-100",
               interactive ? "pointer-events-auto" : "pointer-events-none",
-              previous ? "bottom-[calc(100%+6px)]" : "top-[calc(100%+6px)]",
+              previous ? "bottom-full mb-2" : "top-full mt-2",
             )}
           />
         }
@@ -295,11 +295,11 @@ function TimelineMinimapNavigationButton({
           aria-label={label}
           disabled={disabled}
           onClick={onClick}
-          size="icon-micro"
+          size="icon-xs"
           type="button"
           variant="ghost-muted"
         >
-          <Icon className="size-4 text-foreground/90" />
+          <Icon className="text-ink-1" />
         </Button>
       </TooltipTrigger>
       <TooltipPopup side={previous ? "top" : "bottom"}>{label}</TooltipPopup>

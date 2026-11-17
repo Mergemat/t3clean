@@ -139,7 +139,7 @@ function RecoveryActions({ runId, resetAt, recovery, snoozedUntil, onChange }: R
   }
   // Inline errors would widen the actions column and crush the title.
   return (
-    <span className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1">
+    <span className="flex flex-wrap items-center gap-x-2 gap-y-1 px-1">
       <InlineButton touchTarget="padded" disabled={pending} onClick={() => void toggle("resume")}>
         {pending ? "Saving..." : scheduled ? "Cancel auto-resume" : "Resume at reset"}
       </InlineButton>

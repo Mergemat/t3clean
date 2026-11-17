@@ -253,7 +253,7 @@ function resolvedThemeFromDocument(): "light" | "dark" {
 }
 
 const CHIP_NODE_SELECTION_CLASS_NAME =
-  "relative inline-flex min-w-0 max-w-full select-none items-baseline data-[composer-chip-selected]:after:pointer-events-none data-[composer-chip-selected]:after:absolute data-[composer-chip-selected]:after:inset-0 data-[composer-chip-selected]:after:rounded-sm data-[composer-chip-selected]:after:bg-[Highlight] data-[composer-chip-selected]:after:opacity-30 data-[composer-chip-selected]:after:content-['']";
+  "relative inline-flex min-w-0 max-w-full select-none items-baseline data-[composer-chip-selected]:after:pointer-events-none data-[composer-chip-selected]:after:absolute data-[composer-chip-selected]:after:inset-0 data-[composer-chip-selected]:after:rounded-row data-[composer-chip-selected]:after:bg-[Highlight] data-[composer-chip-selected]:after:opacity-30";
 
 const ComposerMentionExtension = Node.create({
   name: "composer-mention",
@@ -1084,7 +1084,7 @@ function ComposerPromptEditorTiptapInner(
 
   const editorAttributes = {
     class: cn(
-      "composer-tiptap -m-1 block max-h-52 min-h-[calc(2lh+--spacing(2))] overflow-y-auto p-1 whitespace-pre-wrap wrap-break-word bg-transparent leading-relaxed text-foreground focus:outline-none",
+      "composer-tiptap -m-1 block max-h-52 overflow-y-auto p-1 whitespace-pre-wrap wrap-break-word bg-transparent leading-relaxed text-ink-1 focus:outline-none",
       className,
     ),
     "data-testid": "composer-editor",
@@ -1896,7 +1896,7 @@ function ComposerPromptEditorTiptapInner(
             {isEmpty && contextRecords.size === 0 && placeholder ? (
               <div
                 className={cn(
-                  "pointer-events-none absolute inset-0 leading-relaxed text-placeholder",
+                  "pointer-events-none absolute inset-0 leading-relaxed text-ink-3",
                   placeholderClassName,
                 )}
               >

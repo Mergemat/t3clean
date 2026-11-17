@@ -248,7 +248,7 @@ function GitActionItemIcon({
 function GitQuickActionIcon({
   quickAction,
   SourceControlIcon,
-  className = "size-3.5",
+  className = "size-4",
 }: {
   quickAction: GitQuickAction;
   className?: string;
@@ -316,11 +316,11 @@ function GitActionProgressButtonContent({
       aria-live="polite"
       className={cn(
         "grid min-w-0 flex-1 items-center",
-        "grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[1.125rem] gap-x-3",
+        "min-h-5 grid-cols-(--grid-lead-trail) gap-x-2",
       )}
       role="status"
     >
-      <Spinner aria-hidden="true" className="row-start-1 -mx-0.5 shrink-0" />
+      <Spinner aria-hidden="true" className="row-start-1 shrink-0" />
       <p
         className={cn(
           "row-start-1 min-w-0 self-baseline truncate text-left",
@@ -331,20 +331,18 @@ function GitActionProgressButtonContent({
       </p>
       <GitActionElapsedTime
         startedAtMs={progress.startedAtMs}
-        className="col-start-3 row-start-1 self-baseline text-2xs font-normal tabular-nums text-muted-foreground"
+        className="col-start-3 row-start-1 self-baseline text-meta font-normal tabular-nums text-ink-2"
       />
       <div
         className={cn(
-          "col-start-2 grid min-w-0 transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none",
-          hasOutput ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+          "col-start-2 grid min-w-0 transition-all duration-200 ease-out motion-reduce:transition-none",
+          hasOutput ? "grid-rows-(--grid-open) opacity-100" : "grid-rows-(--grid-closed) opacity-0",
         )}
       >
         <div className="min-h-0 overflow-hidden">
           <Tooltip>
             <TooltipTrigger
-              render={
-                <p className="truncate pt-0.5 text-left text-2xs font-normal text-muted-foreground" />
-              }
+              render={<p className="truncate pt-1 text-left text-meta font-normal text-ink-2" />}
             >
               {progress.output}
             </TooltipTrigger>
@@ -364,25 +362,25 @@ function GitActionSuccessButtonContent({ success }: { success: InlineGitActionSu
   return (
     <div
       aria-live="polite"
-      className="grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] grid-rows-[1.125rem] items-center gap-x-3"
+      className="grid min-w-0 flex-1 min-h-5 grid-cols-(--grid-lead) items-center gap-x-2"
       role="status"
     >
-      <CheckIcon aria-hidden="true" className="size-3.5 shrink-0 text-success" />
+      <CheckIcon aria-hidden="true" className="size-4 shrink-0 text-success" />
       <p className={cn("min-w-0 truncate text-left", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
         {success.title}
       </p>
       <div
         className={cn(
-          "col-start-2 grid min-w-0 transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none",
-          hasDescription ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+          "col-start-2 grid min-w-0 transition-all duration-200 ease-out motion-reduce:transition-none",
+          hasDescription
+            ? "grid-rows-(--grid-open) opacity-100"
+            : "grid-rows-(--grid-closed) opacity-0",
         )}
       >
         <div className="min-h-0 overflow-hidden">
           <Tooltip>
             <TooltipTrigger
-              render={
-                <p className="truncate pt-0.5 text-left text-2xs font-normal text-muted-foreground" />
-              }
+              render={<p className="truncate pt-1 text-left text-meta font-normal text-ink-2" />}
             >
               {success.description}
             </TooltipTrigger>
@@ -584,7 +582,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
 
         <WizardPanel>
           <div className={cn("space-y-2", publishWizardStep !== 0 && "hidden")}>
-            <span id="publish-provider-cards-label" className="text-xs font-medium text-foreground">
+            <span id="publish-provider-cards-label" className="text-meta font-medium text-ink-1">
               Provider
             </span>
             <RadioGroup
@@ -603,10 +601,10 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                   return (
                     <div
                       key={option.value}
-                      className="relative flex cursor-not-allowed items-center gap-3 rounded-lg border border-border bg-background px-3 py-3 text-left opacity-64 dark:border-transparent dark:bg-white/[0.035]"
+                      className="relative flex cursor-not-allowed items-center gap-2 rounded-row border border-border bg-background px-2 py-2 text-left opacity-64 dark:border-transparent dark:bg-white/4"
                     >
-                      <option.Icon className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-                      <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
+                      <option.Icon className="size-5 shrink-0 text-ink-2" aria-hidden />
+                      <span className="min-w-0 flex-1 truncate text-body font-medium text-ink-1">
                         {option.label}
                       </span>
                       <Tooltip>
@@ -614,7 +612,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                           render={
                             <Button
                               variant="warning-outline"
-                              size="micro"
+                              size="xs"
                               onClick={(event) => {
                                 event.preventDefault();
                                 event.stopPropagation();
@@ -639,15 +637,15 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                     key={option.value}
                     value={option.value}
                     className={cn(
-                      "relative flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-3 text-left outline-none transition-[background-color,border-color,box-shadow]",
+                      "relative flex cursor-pointer items-center gap-2 rounded-row border px-2 py-2 text-left outline-none transition",
                       "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
                       isSelected
                         ? "border-primary bg-background shadow-sm ring-2 ring-inset ring-primary/35 dark:border-transparent dark:bg-primary/10 dark:shadow-none dark:ring-1 dark:ring-primary/30"
-                        : "border-border bg-background hover:border-foreground/20 hover:bg-muted/50 dark:border-transparent dark:bg-white/[0.035] dark:hover:bg-accent",
+                        : "border-border bg-background hover:border-foreground/20 hover:bg-muted/50 dark:border-transparent dark:bg-white/4 dark:hover:bg-accent",
                     )}
                   >
                     <option.Icon className="size-5 shrink-0" aria-hidden />
-                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
+                    <span className="min-w-0 flex-1 truncate text-body font-medium text-ink-1">
                       {option.label}
                     </span>
                   </RadioPrimitive.Root>
@@ -656,17 +654,14 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
             </RadioGroup>
           </div>
 
-          <div className={cn("space-y-5", publishWizardStep !== 1 && "hidden")}>
+          <div className={cn("space-y-2", publishWizardStep !== 1 && "hidden")}>
             <div className="space-y-2">
-              <label
-                htmlFor="publish-repository-path"
-                className="text-xs font-medium text-foreground"
-              >
+              <label htmlFor="publish-repository-path" className="text-meta font-medium text-ink-1">
                 Repository
               </label>
-              <div className="flex items-stretch overflow-hidden rounded-md border border-input bg-background focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-ring">
-                <span className="flex shrink-0 items-center gap-1.5 border-r border-input bg-muted/50 px-2.5 font-mono text-xs text-muted-foreground">
-                  <currentPublishProvider.Icon className="size-3.5" />
+              <div className="flex items-stretch overflow-hidden rounded-row border border-input bg-background focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-ring">
+                <span className="flex shrink-0 items-center gap-2 border-r border-input bg-muted/50 px-2 font-mono text-meta text-ink-2">
+                  <currentPublishProvider.Icon className="size-4" />
                   {publishHost}/
                 </span>
                 <input
@@ -688,7 +683,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                   }}
                   placeholder={publishPathPlaceholder}
                   disabled={publishRepositoryAction.isPending}
-                  className="w-full bg-transparent px-3 py-2 font-mono text-sm placeholder:text-muted-foreground/60 focus:outline-none"
+                  className="w-full bg-transparent px-2 py-2 font-mono text-body placeholder:text-ink-3 focus:outline-none"
                 />
               </div>
             </div>
@@ -696,7 +691,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
             <div className="space-y-2">
               <span
                 id="publish-visibility-cards-label"
-                className="text-xs font-medium text-foreground"
+                className="text-meta font-medium text-ink-1"
               >
                 Visibility
               </span>
@@ -729,21 +724,19 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                       key={option.value}
                       value={option.value}
                       className={cn(
-                        "relative flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-left outline-none transition-[background-color,border-color,box-shadow]",
+                        "relative flex cursor-pointer items-center gap-2 rounded-row border px-2 py-2 text-left outline-none transition",
                         "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
                         isSelected
                           ? "border-primary bg-background shadow-sm ring-2 ring-inset ring-primary/35 dark:border-transparent dark:bg-primary/10 dark:shadow-none dark:ring-1 dark:ring-primary/30"
-                          : "border-border bg-background hover:border-foreground/20 hover:bg-muted/50 dark:border-transparent dark:bg-white/[0.035] dark:hover:bg-accent",
+                          : "border-border bg-background hover:border-foreground/20 hover:bg-muted/50 dark:border-transparent dark:bg-white/4 dark:hover:bg-accent",
                       )}
                     >
-                      <option.Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+                      <option.Icon className="size-4 shrink-0 text-ink-2" aria-hidden />
                       <span className="min-w-0 flex-1">
-                        <span className="block text-sm font-medium text-foreground">
+                        <span className="block text-body font-medium text-ink-1">
                           {option.label}
                         </span>
-                        <span className="block text-xs text-muted-foreground">
-                          {option.description}
-                        </span>
+                        <span className="block text-meta text-ink-2">{option.description}</span>
                       </span>
                     </RadioPrimitive.Root>
                   );
@@ -756,20 +749,20 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                 type="button"
                 onClick={() => setPublishAdvancedOpen((prev) => !prev)}
                 aria-expanded={publishAdvancedOpen}
-                className="flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="flex items-center gap-1 text-meta font-medium text-ink-2 transition-colors hover:text-ink-1"
               >
                 <ChevronDownIcon
                   className={cn(
-                    "size-3.5 transition-transform",
+                    "size-4 transition-transform",
                     publishAdvancedOpen ? "" : "-rotate-90",
                   )}
                 />
                 Advanced
               </button>
               {publishAdvancedOpen ? (
-                <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                  <label className="space-y-1.5" htmlFor="publish-remote-name">
-                    <span className="text-xs font-medium text-foreground">Remote</span>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  <label className="space-y-2" htmlFor="publish-remote-name">
+                    <span className="text-meta font-medium text-ink-1">Remote</span>
                     <Input
                       id="publish-remote-name"
                       value={publishRemoteName}
@@ -778,11 +771,8 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                       disabled={publishRepositoryAction.isPending}
                     />
                   </label>
-                  <div className="space-y-1.5">
-                    <span
-                      id="publish-protocol-label"
-                      className="text-xs font-medium text-foreground"
-                    >
+                  <div className="space-y-2">
+                    <span id="publish-protocol-label" className="text-meta font-medium text-ink-1">
                       Protocol
                     </span>
                     <ToggleGroup
@@ -808,7 +798,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
               <div
                 role="status"
                 aria-live="polite"
-                className="flex items-center gap-2 rounded-md border border-input bg-muted/40 px-3 py-2 text-xs text-muted-foreground dark:border-transparent dark:bg-white/[0.035]"
+                className="flex items-center gap-2 rounded-row border border-input bg-muted/40 px-2 py-2 text-meta text-ink-2 dark:border-transparent dark:bg-white/4"
               >
                 <Spinner size="sm" aria-hidden />
                 Publishing repository to {publishProviderLabel}...
@@ -817,35 +807,35 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
             {publishError && !publishRepositoryAction.isPending ? (
               <div
                 role="alert"
-                className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+                className="rounded-row border border-destructive/40 bg-destructive/10 px-2 py-2 text-meta text-destructive"
               >
                 <p className="font-medium">Publish failed</p>
-                <p className="mt-0.5 text-destructive/90">{publishError}</p>
+                <p className="text-destructive/90">{publishError}</p>
               </div>
             ) : null}
           </div>
 
-          <div className={cn("space-y-4", publishWizardStep !== 2 && "hidden")}>
+          <div className={cn("space-y-2", publishWizardStep !== 2 && "hidden")}>
             {publishResult ? (
               <>
                 <div className="flex flex-col items-center gap-2 py-1 text-center">
                   <span className="grid size-8 place-items-center rounded-full bg-success/15 text-success">
                     <CheckIcon className="size-4" aria-hidden />
                   </span>
-                  <h3 className="text-sm font-semibold text-foreground">
+                  <h3 className="text-body font-semibold text-ink-1">
                     {publishResult.status === "pushed"
                       ? "Repository published"
                       : "Repository created"}
                   </h3>
-                  <p className="max-w-xs text-pretty text-xs text-muted-foreground">
+                  <p className="max-w-xs text-pretty text-meta text-ink-2">
                     {publishResult.status === "pushed"
                       ? `${publishResult.branch} is now live on ${publishProviderLabel}.`
                       : `Remote "${publishResult.remoteName}" is set up. Make a commit and push it to share your code.`}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 rounded-lg border border-input bg-muted/40 px-3 py-2 dark:border-transparent dark:bg-white/[0.035]">
-                  <currentPublishProvider.Icon className="size-3.5 shrink-0 text-muted-foreground" />
-                  <span className="min-w-0 flex-1 truncate font-mono text-xs text-foreground">
+                <div className="flex items-center gap-2 rounded-row border border-input bg-muted/40 px-2 py-2 dark:border-transparent dark:bg-white/4">
+                  <currentPublishProvider.Icon className="size-4 shrink-0 text-ink-2" />
+                  <span className="min-w-0 flex-1 truncate font-mono text-meta text-ink-1">
                     {publishResult.repository.nameWithOwner}
                   </span>
                 </div>
@@ -861,7 +851,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                 </Button>
               </>
             ) : (
-              <div className="rounded-md border border-input bg-background px-3 py-2 text-xs text-muted-foreground dark:border-transparent dark:bg-white/[0.035]">
+              <div className="rounded-row border border-input bg-background px-2 py-2 text-meta text-ink-2 dark:border-transparent dark:bg-white/4">
                 Publish result unavailable.
               </div>
             )}
@@ -1538,15 +1528,15 @@ export default function GitActionsControl({
         </MenuItem>
       ) : null}
       {isDetachedHead && (
-        <p className="px-2 py-1.5 text-xs text-warning">
+        <p className="px-2 py-2 text-meta text-warning">
           Detached HEAD: create and check out a branch to enable push and{" "}
           {changeRequestTerminology.singular} actions.
         </p>
       )}
       {isCleanAndBehind && (
-        <p className="px-2 py-1.5 text-xs text-warning">Behind upstream. Pull/rebase first.</p>
+        <p className="px-2 py-2 text-meta text-warning">Behind upstream. Pull/rebase first.</p>
       )}
-      {gitStatusError && <p className="px-2 py-1.5 text-xs text-destructive">{gitStatusError}</p>}
+      {gitStatusError && <p className="px-2 py-2 text-meta text-destructive">{gitStatusError}</p>}
     </>
   );
 
@@ -1563,8 +1553,8 @@ export default function GitActionsControl({
           disabled={!canWriteSourceControl || initAction.isPending}
           onClick={initializeGit}
         >
-          <GitBranchPlusIcon className="size-3.5" aria-hidden />
-          <span className={cn("ml-0.5", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
+          <GitBranchPlusIcon className="size-4" aria-hidden />
+          <span className={cn("", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
             {initAction.isPending ? "Initializing..." : "Initialize Git"}
           </span>
         </ThreadDetailsControl>
@@ -1578,7 +1568,7 @@ export default function GitActionsControl({
           className={cn(
             "shrink-0",
             THREAD_DETAILS_PANEL_SPLIT_GROUP_CLASS,
-            gitActionProgress && "bg-black/[0.035] dark:bg-white/[0.055]",
+            gitActionProgress && "bg-black/4 dark:bg-white/6",
           )}
         >
           {gitActionProgress ? (
@@ -1618,7 +1608,7 @@ export default function GitActionsControl({
                 />
                 <span
                   className={cn(
-                    "sr-only @3xl/header-actions:not-sr-only @3xl/header-actions:ml-0.5",
+                    "sr-only @3xl/header-actions:not-sr-only",
                     cn("not-sr-only ml-0 truncate", THREAD_DETAILS_PANEL_LABEL_CLASS),
                   )}
                 >
@@ -1651,7 +1641,7 @@ export default function GitActionsControl({
                 />
                 <span
                   className={cn(
-                    "sr-only @3xl/header-actions:not-sr-only @3xl/header-actions:ml-0.5",
+                    "sr-only @3xl/header-actions:not-sr-only",
                     cn("not-sr-only ml-0 truncate", THREAD_DETAILS_PANEL_LABEL_CLASS),
                   )}
                 >
@@ -1715,13 +1705,13 @@ export default function GitActionsControl({
           onClick={onOpenChanges}
         >
           <FileDiffIcon className={THREAD_DETAILS_PANEL_ICON_CLASS} aria-hidden />
-          <span className="flex min-w-0 flex-1 items-baseline gap-1.5">
+          <span className="flex min-w-0 flex-1 items-baseline gap-2">
             <span className="shrink-0">Changes</span>
             {changesBaseLabel ? (
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <span className="pointer-events-auto min-w-0 truncate font-normal text-muted-foreground" />
+                    <span className="pointer-events-auto min-w-0 truncate font-normal text-ink-2" />
                   }
                 >
                   {changesBaseLabel}
@@ -1734,19 +1724,13 @@ export default function GitActionsControl({
             <span className="ml-auto flex shrink-0 items-baseline gap-2 ps-2 font-mono tabular-nums">
               <span
                 className={
-                  changesTotals.insertions
-                    ? "text-diff-addition-foreground"
-                    : "text-muted-foreground"
+                  changesTotals.insertions ? "text-diff-addition-foreground" : "text-ink-2"
                 }
               >
                 +{formatDiffCount(changesTotals.insertions)}
               </span>
               <span
-                className={
-                  changesTotals.deletions
-                    ? "text-diff-deletion-foreground"
-                    : "text-muted-foreground"
-                }
+                className={changesTotals.deletions ? "text-diff-deletion-foreground" : "text-ink-2"}
               >
                 -{formatDiffCount(changesTotals.deletions)}
               </span>
@@ -1772,9 +1756,9 @@ export default function GitActionsControl({
             <DialogDescription>{COMMIT_DIALOG_DESCRIPTION}</DialogDescription>
           </DialogHeader>
           <DialogPanel>
-            <div className="space-y-3 rounded-xl bg-zinc-25 p-3 text-sm ring-1 ring-black/5 dark:bg-white/[0.035] dark:ring-white/5">
-              <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1">
-                <span className="text-muted-foreground">Branch</span>
+            <div className="space-y-2 rounded-box bg-zinc-25 p-4 text-body ring-1 ring-black/5 dark:bg-white/4 dark:ring-white/5">
+              <div className="grid grid-cols-(--grid-lead) items-center gap-x-2 gap-y-1">
+                <span className="text-ink-2">Branch</span>
                 <span className="flex items-center justify-between gap-2">
                   <span className="font-medium">
                     {gitStatusForActions?.refName ?? "(detached HEAD)"}
@@ -1796,9 +1780,9 @@ export default function GitActionsControl({
                         }}
                       />
                     )}
-                    <span className="text-muted-foreground">Files</span>
+                    <span className="text-ink-2">Files</span>
                     {!allSelected && !isEditingFiles && (
-                      <span className="text-muted-foreground">
+                      <span className="text-ink-2">
                         ({selectedFiles.length} of {allFiles.length})
                       </span>
                     )}
@@ -1817,7 +1801,7 @@ export default function GitActionsControl({
                   <p className="font-medium">none</p>
                 ) : (
                   <div className="space-y-2">
-                    <div className="h-44 rounded-lg bg-card ring-1 ring-black/5 dark:bg-white/[0.025] dark:ring-white/5">
+                    <div className="h-44 rounded-row bg-card ring-1 ring-black/5 dark:bg-white/3 dark:ring-white/5">
                       <ScrollArea>
                         <div className="space-y-1 p-1">
                           {allFiles.map((file) => {
@@ -1825,7 +1809,7 @@ export default function GitActionsControl({
                             return (
                               <div
                                 key={file.path}
-                                className="flex w-full items-center gap-2 rounded-md px-2 py-1 font-mono hover:bg-accent/50"
+                                className="flex w-full items-center gap-2 rounded-row px-2 py-1 font-mono hover:bg-accent/50"
                               >
                                 {isEditingFiles && (
                                   <Checkbox
@@ -1845,24 +1829,24 @@ export default function GitActionsControl({
                                 )}
                                 <button
                                   type="button"
-                                  className="flex min-w-0 flex-1 items-center justify-between gap-3 text-left enabled:cursor-pointer"
+                                  className="flex min-w-0 flex-1 items-center justify-between gap-2 text-left enabled:cursor-pointer"
                                   disabled={!canOperateThread || workingTreeRoot === null}
                                   aria-label={`Open ${file.path} in editor`}
                                   onClick={() => openChangedFileInEditor(file.path)}
                                 >
                                   <StartTruncatedPath
                                     path={file.path}
-                                    className={`flex-1${isExcluded ? " text-muted-foreground" : ""}`}
+                                    className={`flex-1${isExcluded ? " text-ink-2" : ""}`}
                                   />
                                   <span className="shrink-0">
                                     {isExcluded ? (
-                                      <span className="text-muted-foreground">Excluded</span>
+                                      <span className="text-ink-2">Excluded</span>
                                     ) : (
                                       <>
                                         <span className="text-diff-addition">
                                           +{formatDiffCount(file.insertions)}
                                         </span>
-                                        <span className="text-muted-foreground"> / </span>
+                                        <span className="text-ink-2"> / </span>
                                         <span className="text-diff-deletion">
                                           -{formatDiffCount(file.deletions)}
                                         </span>
@@ -1880,7 +1864,7 @@ export default function GitActionsControl({
                       <span className="text-diff-addition">
                         +{formatDiffCount(selectedFiles.reduce((sum, f) => sum + f.insertions, 0))}
                       </span>
-                      <span className="text-muted-foreground"> / </span>
+                      <span className="text-ink-2"> / </span>
                       <span className="text-diff-deletion">
                         -{formatDiffCount(selectedFiles.reduce((sum, f) => sum + f.deletions, 0))}
                       </span>
@@ -1890,7 +1874,7 @@ export default function GitActionsControl({
               </div>
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-medium">Commit message (optional)</p>
+              <p className="text-body font-medium">Commit message (optional)</p>
               <Textarea
                 value={dialogCommitMessage}
                 onChange={(event) => setDialogCommitMessage(event.target.value)}
@@ -1956,7 +1940,7 @@ export default function GitActionsControl({
             </DialogTitle>
             <DialogDescription>{pendingDefaultBranchActionCopy?.description}</DialogDescription>
             {featureBranchUnavailableReason && (
-              <p className="text-xs text-muted-foreground">{featureBranchUnavailableReason}</p>
+              <p className="text-meta text-ink-2">{featureBranchUnavailableReason}</p>
             )}
           </DialogHeader>
           <DialogFooter variant="bare" className="sm:flex-wrap sm:items-center">
@@ -1970,8 +1954,9 @@ export default function GitActionsControl({
             </Button>
             <Button
               className="w-full max-w-full sm:w-auto"
+              wrap
               variant="outline"
-              size="sm-multiline"
+              size="sm"
               onClick={() => continuePendingDefaultBranchAction(false)}
               disabled={!canWriteSourceControl}
             >
@@ -1979,7 +1964,8 @@ export default function GitActionsControl({
             </Button>
             <Button
               className="w-full max-w-full sm:w-auto"
-              size="sm-multiline"
+              wrap
+              size="sm"
               onClick={() => continuePendingDefaultBranchAction(true)}
               disabled={!canChangeThreadBranch || featureBranchUnavailableReason !== null}
             >

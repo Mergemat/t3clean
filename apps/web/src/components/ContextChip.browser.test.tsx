@@ -13,7 +13,7 @@ function BaselineMarker(props: { id: string }) {
 describe("ContextChip", () => {
   it("sets its label on the sentence baseline at the sentence size without growing the line", async () => {
     await using screen = await render(
-      <p className="w-[60ch] text-sm leading-relaxed">
+      <p className="w-120 text-sm leading-relaxed">
         Open
         <BaselineMarker id="text" /> the{" "}
         <ContextChip kind="mention" render={<button type="button" />}>

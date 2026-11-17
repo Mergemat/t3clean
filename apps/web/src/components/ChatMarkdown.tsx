@@ -303,20 +303,20 @@ function CodexArtifactTemplateCard(props: {
       aria-label={`${props.template.displayName} template`}
       dir={textDirection(props.template.displayName)}
       data-chat-markdown-artifact-template
-      className="my-[0.65rem] flex w-full min-w-0 items-center gap-3 rounded-xl border border-border/70 bg-card/60 px-3 py-2.5 text-foreground shadow-xs"
+      className="my-2 flex w-full min-w-0 items-center gap-2 rounded-box border border-border/70 bg-card/60 px-2 py-2 text-ink-1 shadow-xs"
       data-artifact-kind={props.template.artifactKind}
       data-markdown-copy={`${props.template.displayName} (${presentationLabel})\n\n`}
       data-skill-name={props.template.skillName}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-3">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-background text-muted-foreground shadow-xs">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-row border border-border/70 bg-background text-ink-2 shadow-xs">
           <Icon aria-hidden className="size-5" />
         </span>
         <div className="min-w-0">
-          <div className="truncate text-sm font-medium text-foreground">
+          <div className="truncate text-body font-medium text-ink-1">
             {props.template.displayName}
           </div>
-          <div className="text-xs text-muted-foreground">{presentationLabel}</div>
+          <div className="text-meta text-ink-2">{presentationLabel}</div>
         </div>
       </div>
       {props.onUse ? (
@@ -1082,14 +1082,14 @@ const CHAT_MARKDOWN_COMPONENTS = {
         role="note"
         data-markdown-alert={alertKind}
         dir={props.dir}
-        className={cn("my-1 border-s-2 ps-3", alert.borderClassName)}
+        className={cn("my-1 border-s-2 ps-2", alert.borderClassName)}
       >
         <p
           data-thread-find-ignore="true"
           data-markdown-alert-label=""
-          className={cn("flex items-center gap-1.5 font-medium", alert.titleClassName)}
+          className={cn("flex items-center gap-2 font-medium", alert.titleClassName)}
         >
-          <alert.Icon aria-hidden className="size-3.5 shrink-0" />
+          <alert.Icon aria-hidden className="size-4 shrink-0" />
           {alert.label}
         </p>
         {children}
@@ -1888,9 +1888,9 @@ function ChatMarkdown({
     <Root
       ref={bindMarkdownRef}
       className={cn(
-        "chat-markdown w-full min-w-0 [overflow-wrap:anywhere] [word-break:break-word]",
+        "chat-markdown w-full min-w-0 wrap-anywhere",
         !inline &&
-          "text-sm leading-relaxed text-foreground/[calc(90%+var(--appearance-contrast-boost)/10)]",
+          "text-body leading-relaxed text-foreground/[calc(90%+var(--appearance-contrast-boost)/10)]",
         className,
       )}
       data-streaming={componentState.isStreaming ? "" : undefined}

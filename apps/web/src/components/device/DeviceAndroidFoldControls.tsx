@@ -75,12 +75,12 @@ export function DeviceAndroidFoldControls(props: {
 
   return (
     <div aria-label="Android fold controls" className="flex flex-col items-center gap-2">
-      <div className="pointer-events-auto flex shrink-0 flex-col items-center gap-1 rounded-full border border-border/50 bg-background/80 p-1 shadow-sm">
+      <div className="pointer-events-auto flex shrink-0 flex-col items-center gap-1 rounded-box border border-border/50 bg-background/80 p-2 shadow-sm">
         <Tooltip>
           <TooltipTrigger
             render={
               <Button
-                size="icon"
+                size="icon-sm"
                 variant={fold.posture === "closed" ? "secondary" : "ghost"}
                 aria-label="Fold device"
                 aria-pressed={fold.posture === "closed"}
@@ -97,7 +97,7 @@ export function DeviceAndroidFoldControls(props: {
           <TooltipTrigger
             render={
               <Button
-                size="icon"
+                size="icon-sm"
                 variant={fold.posture === "opened" ? "secondary" : "ghost"}
                 aria-label="Unfold device"
                 aria-pressed={fold.posture === "opened"}
@@ -119,7 +119,7 @@ export function DeviceAndroidFoldControls(props: {
                 tabIndex={0}
                 role="alert"
                 aria-label={error}
-                className="pointer-events-auto text-xs text-destructive"
+                className="pointer-events-auto text-meta text-destructive"
               >
                 !
               </span>

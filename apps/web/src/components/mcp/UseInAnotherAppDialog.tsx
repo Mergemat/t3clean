@@ -145,8 +145,8 @@ function Wizard({
         ) : step === 0 ? (
           <AppStep choice={choice} onChoose={setChoice} />
         ) : step === 1 ? (
-          <section className="space-y-3">
-            <h3 className="text-sm font-medium">What can {appName} do?</h3>
+          <section className="space-y-2">
+            <h3 className="text-body font-medium">What can {appName} do?</h3>
             <RadioGroup
               aria-label={`What can ${appName} do?`}
               value={access}
@@ -371,7 +371,7 @@ function GateScreen({
   switch (gate.kind) {
     case "checking":
       return (
-        <p role="status" className="flex items-center gap-2 text-sm text-muted-foreground">
+        <p role="status" className="flex items-center gap-2 text-body text-ink-2">
           <Spinner size="sm" tone="muted" />
           Checking T3 Connect…
         </p>
@@ -454,11 +454,11 @@ function GateScreen({
                 {connecting ? "Connecting…" : "Turn on"}
               </Button>
               {operationError ? (
-                <p className="text-xs text-destructive-foreground">{operationError}</p>
+                <p className="text-meta text-destructive-foreground">{operationError}</p>
               ) : null}
               {tunnelLimit !== null ? (
                 <>
-                  <p className="text-sm text-destructive-foreground">
+                  <p className="text-body text-destructive-foreground">
                     Your T3 Connect account is out of tunnels.
                   </p>
                   <ManageAccessButton environment={environment} label="Manage tunnels" />
@@ -466,9 +466,9 @@ function GateScreen({
               ) : null}
             </div>
           ) : turnOnHere.kind === "policy" ? (
-            <p className="text-sm text-muted-foreground">{turnOnHere.reason}</p>
+            <p className="text-body text-ink-2">{turnOnHere.reason}</p>
           ) : (
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-body">
               <CommandBlock command="t3 connect link" />
               <p>Restart T3 Code on {name}.</p>
               {checkAgain}
@@ -492,10 +492,10 @@ function GateMessage({
   readonly children?: ReactNode;
 }) {
   return (
-    <section className="space-y-3">
+    <section className="space-y-2">
       <h3 className="text-base font-medium">{title}</h3>
       {lines.length > 0 ? (
-        <div className="space-y-1 text-sm text-muted-foreground">
+        <div className="space-y-1 text-body text-ink-2">
           {lines.map((line) => (
             <p key={line}>{line}</p>
           ))}
@@ -514,8 +514,8 @@ function AppStep({
   readonly onChoose: (choice: Choice) => void;
 }) {
   return (
-    <section className="space-y-3">
-      <h3 className="text-sm font-medium">Which app?</h3>
+    <section className="space-y-2">
+      <h3 className="text-body font-medium">Which app?</h3>
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
         {MCP_APPS.filter((app) => !app.hidden).map((app) => (
           <button
@@ -523,14 +523,14 @@ function AppStep({
             type="button"
             aria-pressed={choice === app}
             onClick={() => onChoose(app)}
-            className="flex min-w-0 flex-col items-center gap-2 rounded-lg border border-transparent px-1 py-3 outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring aria-pressed:border-primary aria-pressed:bg-primary/8"
+            className="flex min-w-0 flex-col items-center gap-2 rounded-row border border-transparent px-1 py-2 outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring aria-pressed:border-primary aria-pressed:bg-primary/8"
           >
             <img
               src={app.logo}
               alt=""
-              className="size-10 rounded-lg ring-1 ring-black/10 dark:ring-white/12"
+              className="size-10 rounded-row ring-1 ring-black/10 dark:ring-white/12"
             />
-            <span className="max-w-full truncate whitespace-nowrap text-xs font-medium">
+            <span className="max-w-full truncate whitespace-nowrap text-meta font-medium">
               {app.name}
             </span>
           </button>
@@ -540,7 +540,7 @@ function AppStep({
         type="button"
         aria-pressed={choice === "other"}
         onClick={() => onChoose("other")}
-        className="w-full rounded-lg border border-border px-3 py-2.5 text-sm font-medium outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring aria-pressed:border-primary aria-pressed:bg-primary/8"
+        className="w-full rounded-row border border-border px-2 py-2 text-body font-medium outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring aria-pressed:border-primary aria-pressed:bg-primary/8"
       >
         Something else…
       </button>
@@ -564,7 +564,7 @@ function ConnectStep({
   const app = choice === "other" ? null : choice;
   const code =
     access === null ? (
-      <p className="text-sm text-muted-foreground">
+      <p className="text-body text-ink-2">
         When {app?.name ?? "the app"} opens the sign-in page, choose what it may do and approve with
         your T3 Connect account.
       </p>
@@ -579,16 +579,16 @@ function ConnectStep({
   if (anotherWay || app === null) {
     const message = app?.handoff.kind === "copy-message" ? app.handoff.message(mcpUrl) : null;
     return (
-      <section className="space-y-4">
+      <section className="space-y-2">
         <CopyRow label="URL" value={mcpUrl} />
         {message ? <CopyRow label="Message" value={message} /> : null}
-        <ol className="list-decimal space-y-1 ps-5 text-sm">
+        <ol className="list-decimal space-y-1 ps-4 text-body">
           {(app?.steps ?? OTHER_MCP_APP_STEPS).map((step) => (
             <li key={step}>{step}</li>
           ))}
         </ol>
         {app === null ? (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             Apps that require their own client ID cannot connect.
           </p>
         ) : app.docs ? (
@@ -605,7 +605,7 @@ function ConnectStep({
     );
   }
   return (
-    <section className="space-y-4">
+    <section className="space-y-2">
       <PrimaryAction app={app} mcpUrl={mcpUrl} />
       <CopyRow label="URL" value={mcpUrl} />
       {code}
@@ -626,7 +626,7 @@ function TextButton({
     <button
       type="button"
       onClick={onClick}
-      className="block text-sm font-medium underline-offset-4 outline-none hover:underline focus-visible:underline"
+      className="block text-body font-medium underline-offset-4 outline-none hover:underline focus-visible:underline"
     >
       {children}
     </button>
@@ -647,7 +647,7 @@ function openLink(url: string) {
 
 function PrimaryAction({ app, mcpUrl }: { readonly app: McpApp; readonly mcpUrl: string }) {
   const action = mcpHandoffAction(app, mcpUrl);
-  const note = app.note ? <p className="text-xs text-muted-foreground">{app.note}</p> : null;
+  const note = app.note ? <p className="text-meta text-ink-2">{app.note}</p> : null;
   if (action === null) {
     return (
       <div className="space-y-2">
@@ -656,7 +656,7 @@ function PrimaryAction({ app, mcpUrl }: { readonly app: McpApp; readonly mcpUrl:
               .commands(mcpUrl)
               .map((command) => <CommandBlock key={command} command={command} />)
           : null}
-        <p className="text-xs text-muted-foreground">Run these where {app.name} runs.</p>
+        <p className="text-meta text-ink-2">Run these where {app.name} runs.</p>
         {note}
       </div>
     );
@@ -744,9 +744,9 @@ function ApprovalCode({
   };
   const left = code === null ? 0 : Math.max(0, Math.floor((code.expiresAt - now) / 1000));
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="text-sm">
+        <span className="text-body">
           Code to approve <span className="font-medium">{accessConfig[access].label}</span>
         </span>
         {live ? null : (
@@ -759,15 +759,15 @@ function ApprovalCode({
         live ? (
           <>
             <CopyRow label="Code" value={code.credential} />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               Expires {Math.floor(left / 60)}:{String(left % 60).padStart(2, "0")} · one use
             </p>
           </>
         ) : (
-          <p className="text-xs text-muted-foreground">The code expired.</p>
+          <p className="text-meta text-ink-2">The code expired.</p>
         )
       ) : null}
-      {error ? <p className="text-xs text-destructive-foreground">{error}</p> : null}
+      {error ? <p className="text-meta text-destructive-foreground">{error}</p> : null}
     </div>
   );
 }
@@ -775,16 +775,16 @@ function ApprovalCode({
 function CopyRow({ label, value }: { readonly label: string; readonly value: string }) {
   const { copyToClipboard, isCopied } = useCopyToClipboard({ timeout: 1500, target: label });
   return (
-    <div className="flex min-w-0 items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2">
-      <span className="shrink-0 text-xs text-muted-foreground">{label}</span>
-      <span className="min-w-0 flex-1 truncate font-mono text-sm">{value}</span>
+    <div className="flex min-w-0 items-center gap-2 rounded-row border border-border bg-muted/50 px-2 py-2">
+      <span className="shrink-0 text-meta text-ink-2">{label}</span>
+      <span className="min-w-0 flex-1 truncate font-mono text-body">{value}</span>
       <Button
         size="icon-xs"
         variant="ghost"
         aria-label={`Copy ${label}`}
         onClick={() => copyToClipboard(value, undefined)}
       >
-        {isCopied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
+        {isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
       </Button>
     </div>
   );
@@ -818,7 +818,7 @@ function LinkedLine({
       access === null || levelRank(link.access) < levelRank(access) ? link.access : access;
     return `${name} · ${link.status === "expired" ? "Expired" : accessConfig[level].label}`;
   });
-  return <p className="text-xs text-muted-foreground">Linked: {named.join(", ")}</p>;
+  return <p className="text-meta text-ink-2">Linked: {named.join(", ")}</p>;
 }
 
 /** Opens Sharing & access on this environment, where its clients and T3 Connect tunnels live. */

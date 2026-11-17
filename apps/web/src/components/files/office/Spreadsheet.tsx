@@ -115,7 +115,7 @@ export default function Spreadsheet(props: {
       <div
         role="tablist"
         aria-label="Sheets"
-        className="flex h-9 shrink-0 items-center gap-1 overflow-x-auto border-t border-border px-2"
+        className="flex h-8 shrink-0 items-center gap-1 overflow-x-auto border-t border-border px-2"
         onKeyDown={(event) => {
           const current = opened.tabs.findIndex(
             (tab) => tab.index === opened.layout.info.activeSheet,
@@ -145,7 +145,7 @@ export default function Spreadsheet(props: {
             aria-selected={tab.index === opened.layout.info.activeSheet}
             tabIndex={tab.index === opened.layout.info.activeSheet ? 0 : -1}
             onClick={() => show(tab.index)}
-            className="h-7 shrink-0 rounded-md px-2.5 text-xs text-muted-foreground hover:bg-accent aria-selected:bg-accent aria-selected:text-foreground"
+            className="h-6 shrink-0 rounded-row px-2 text-meta text-ink-2 hover:bg-accent aria-selected:bg-accent aria-selected:text-ink-1"
           >
             {tab.name}
           </button>
@@ -726,7 +726,7 @@ function SpreadsheetGrid(props: {
         <div aria-hidden="true" className="sticky left-0 top-0 h-0 w-0">
           <canvas ref={canvas} className="absolute left-0 top-0 block" />
           <div ref={columnHeaderBand} className="absolute left-11 top-0 h-5 touch-none" />
-          <div ref={rowHeaderBand} className="absolute left-0 top-5 w-11 touch-none" />
+          <div ref={rowHeaderBand} className="absolute left-0 top-5 w-12 touch-none" />
         </div>
         <div className="sr-only">
           {[...new Set(reader.map((cell) => cell.row))].map((row) => (
@@ -751,7 +751,7 @@ function SpreadsheetGrid(props: {
       {notice ? (
         <div
           role="status"
-          className="absolute inset-x-3 bottom-3 rounded-md bg-background p-2 text-xs text-foreground shadow-md"
+          className="absolute inset-x-3 bottom-3 rounded-row bg-background p-2 text-meta text-ink-1 shadow-md"
         >
           {notice}
         </div>

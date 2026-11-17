@@ -302,7 +302,7 @@ export function UsagePriceOverrides({
                   <span id="usage-prices-selection" className="truncate">
                     {selectionLabel}
                   </span>
-                  <ChevronDownIcon className="size-3.5 shrink-0" aria-hidden />
+                  <ChevronDownIcon className="size-4 shrink-0" aria-hidden />
                 </MenuTrigger>
                 <MenuPopup align="start">
                   <MenuCheckboxItem
@@ -325,12 +325,10 @@ export function UsagePriceOverrides({
                         selectEnvironments(next.size === environments.length ? null : next);
                       }}
                     >
-                      <span className="flex min-w-0 items-center gap-3">
+                      <span className="flex min-w-0 items-center gap-2">
                         <span className="min-w-0 flex-1 truncate">{environment.label}</span>
                         {environment.unavailable ? (
-                          <span className="text-xs text-muted-foreground">
-                            {environment.unavailable}
-                          </span>
+                          <span className="text-meta text-ink-2">{environment.unavailable}</span>
                         ) : null}
                       </span>
                     </MenuCheckboxItem>
@@ -338,21 +336,21 @@ export function UsagePriceOverrides({
                 </MenuPopup>
               </Menu>
             </div>
-            <span className="text-xs text-muted-foreground">USD / million tokens</span>
+            <span className="text-meta text-ink-2">USD / million tokens</span>
           </div>
           {selected.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-body text-ink-2">
               {environments.length === 0
                 ? "Connect an environment to set model prices."
                 : "Select an environment to see and change its model prices."}
             </p>
           ) : (
             <>
-              <div className="min-w-0 overflow-hidden rounded-lg border border-border">
+              <div className="min-w-0 overflow-hidden rounded-row border border-border">
                 <Table className="min-w-180 table-fixed" aria-label="Custom model prices">
                   <colgroup>
-                    <col className="w-[22%]" />
-                    <col className="w-[18%]" />
+                    <col className="w-1/5" />
+                    <col className="w-1/5" />
                     {USAGE_PRICE_FIELDS.map((field) => (
                       <col key={field.key} />
                     ))}
@@ -386,7 +384,7 @@ export function UsagePriceOverrides({
                     {rows.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={7} className="text-center whitespace-normal">
-                          <p className="py-6 text-muted-foreground">
+                          <p className="py-6 text-ink-2">
                             {selected.some((environment) => environment.prices === null)
                               ? "Some environment prices are unavailable."
                               : "No custom prices or mappings. Add a row to set one."}
@@ -428,7 +426,7 @@ export function UsagePriceOverrides({
                                 <span
                                   className={cn(
                                     "block break-all",
-                                    row.removed && "text-muted-foreground line-through",
+                                    row.removed && "text-ink-2 line-through",
                                   )}
                                 >
                                   {row.model}
@@ -437,16 +435,14 @@ export function UsagePriceOverrides({
                               {error !== undefined &&
                               (row.model.trim() !== "" ||
                                 Object.values(row.values).some((value) => value !== "")) ? (
-                                <p role="alert" className="mt-1 text-xs text-destructive">
+                                <p role="alert" className="mt-1 text-meta text-destructive">
                                   {error}
                                 </p>
                               ) : null}
                             </TableCell>
                             {row.removed ? (
                               <TableCell colSpan={5}>
-                                <span className="text-muted-foreground">
-                                  Automatic pricing after saving
-                                </span>
+                                <span className="text-ink-2">Automatic pricing after saving</span>
                               </TableCell>
                             ) : (
                               <TableCell>
@@ -465,9 +461,7 @@ export function UsagePriceOverrides({
                             )}
                             {row.removed ? null : alias !== "" ? (
                               <TableCell colSpan={4} className="whitespace-normal">
-                                <span className="break-all text-muted-foreground">
-                                  Counted as {alias}
-                                </span>
+                                <span className="break-all text-ink-2">Counted as {alias}</span>
                               </TableCell>
                             ) : (
                               USAGE_PRICE_FIELDS.map((field) => {
@@ -562,7 +556,7 @@ export function UsagePriceOverrides({
                     <option key={model} value={model} />
                   ))}
               </datalist>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 Blank cache rates use the input price. Enter 0 for free tokens. A mapped model’s
                 usage counts as the model it maps to.
                 {selected.length > 1
@@ -572,17 +566,15 @@ export function UsagePriceOverrides({
             </>
           )}
           {attempt ? (
-            <div role="status" className="grid gap-1 text-xs">
+            <div role="status" className="grid gap-1 text-meta">
               {attempt.destinations.map((destination) => {
                 const result = attempt.results.get(destination.environmentId);
                 return (
-                  <div key={destination.environmentId} className="flex justify-between gap-3">
-                    <span className="truncate text-muted-foreground">{destination.label}</span>
+                  <div key={destination.environmentId} className="flex justify-between gap-2">
+                    <span className="truncate text-ink-2">{destination.label}</span>
                     <span
                       className={
-                        result?.status === "failed"
-                          ? "text-right text-destructive"
-                          : "text-muted-foreground"
+                        result?.status === "failed" ? "text-right text-destructive" : "text-ink-2"
                       }
                     >
                       {result?.status === "failed"
@@ -598,7 +590,7 @@ export function UsagePriceOverrides({
           ) : null}
         </DialogPanel>
         <DialogFooter variant="bare" className="items-center sm:justify-between">
-          <span className="text-xs text-muted-foreground">
+          <span className="text-meta text-ink-2">
             {hasChanges ? `Changes apply to ${destinationLabel}` : ""}
           </span>
           <div className="flex w-full flex-wrap justify-end gap-2 sm:w-auto">

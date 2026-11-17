@@ -83,13 +83,14 @@ export function AnimatedHeight({
   return (
     <div
       data-slot="animated-height"
-      className="transition-[height] duration-200 ease-out motion-reduce:transition-none [overflow-clip-margin:2px]"
+      className="transition-all duration-200 ease-out motion-reduce:transition-none"
       style={
         heightState.height === null
           ? undefined
           : {
               height: heightState.height,
               overflow: holdHeight || heightState.isClipping ? "clip" : "visible",
+              overflowClipMargin: 2,
             }
       }
       onTransitionEnd={(event) => {

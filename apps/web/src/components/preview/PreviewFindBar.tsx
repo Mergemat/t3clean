@@ -80,7 +80,7 @@ export function PreviewFindBar({ tabId, focusRequestId, onClose }: PreviewFindBa
   const navigationDisabled = !result || result.matches === 0;
 
   return (
-    <div className="absolute top-3 right-3 z-40 w-[min(22rem,calc(100%-1.5rem))]">
+    <div className="absolute inset-x-2 top-2 z-40 ml-auto max-w-88">
       <InputGroup
         variant="popover"
         size="lg"
@@ -105,8 +105,8 @@ export function PreviewFindBar({ tabId, focusRequestId, onClose }: PreviewFindBa
           <span
             aria-live="polite"
             className={cn(
-              "min-w-10 text-center text-xs tabular-nums",
-              noResults ? "text-destructive" : "text-muted-foreground",
+              "min-w-10 text-center text-meta tabular-nums",
+              noResults ? "text-destructive" : "text-ink-2",
             )}
           >
             {label}

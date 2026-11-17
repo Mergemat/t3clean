@@ -78,7 +78,7 @@ export function PullRequestComposer({
       }}
     >
       <PopoverTrigger
-        render={<Button size="icon" variant="glass" />}
+        render={<Button size="icon-sm" variant="glass" />}
         aria-label={
           pendingComments.length > 0
             ? `Review ${term}, ${pendingComments.length} ${pendingComments.length === 1 ? "comment" : "comments"} pending`
@@ -91,7 +91,7 @@ export function PullRequestComposer({
         {pendingComments.length > 0 ? (
           <span
             aria-hidden
-            className="absolute -top-1 -right-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-info px-1 text-3xs font-semibold tabular-nums text-white"
+            className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-info px-1 text-meta font-semibold tabular-nums text-white"
           >
             {pendingComments.length}
           </span>
@@ -106,7 +106,7 @@ export function PullRequestComposer({
         initialFocus={mode === "review" ? reviewRef : commentRef}
         aria-label={`${capitalizeTerm(term)} composer`}
       >
-        <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="mb-2 flex items-center justify-between gap-2">
           {canComment && verdicts.length > 0 ? (
             <ToggleGroup
               aria-label="Composer mode"
@@ -137,14 +137,14 @@ export function PullRequestComposer({
                 disabled={reviewPending}
                 onClick={() => clearComments(reviewKey)}
               >
-                <Trash2Icon className="size-3.5" />
+                <Trash2Icon className="size-4" />
               </Button>
             ) : null}
             <PopoverClose
               render={<Button size="icon-xs" variant="ghost" />}
               aria-label="Close composer"
             >
-              <XIcon className="size-3.5" />
+              <XIcon className="size-4" />
             </PopoverClose>
           </div>
         </div>

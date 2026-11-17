@@ -88,7 +88,7 @@ export function SidebarUpdateCapsule({
     <Popover>
       <div
         className={cn(
-          "relative flex h-8 flex-1 items-center rounded-full bg-sidebar-control-surface text-sidebar-foreground",
+          "relative flex h-8 flex-1 items-center rounded-row bg-sidebar-control-surface text-sidebar-foreground",
           view.tone === "slow" && "ring-1 ring-warning/40 ring-inset",
           view.tone === "failed" && "ring-1 ring-destructive/40 ring-inset",
         )}
@@ -100,13 +100,13 @@ export function SidebarUpdateCapsule({
               aria-label={
                 view.slow ? `${view.label} ${view.slow.status} ${view.slow.elapsed}` : view.label
               }
-              className="absolute inset-0 cursor-pointer rounded-full outline-hidden ring-ring hover:bg-sidebar-row-hover focus-visible:ring-2 focus-visible:ring-inset"
+              className="absolute inset-0 cursor-pointer rounded-row outline-hidden ring-ring hover:bg-sidebar-row-hover focus-visible:ring-2 focus-visible:ring-inset"
             />
           }
         />
         {/* w-0 keeps the label out of the capsule's minimum width, so a shared footer row
             can squeeze the label but never push the action past the sidebar edge. */}
-        <span className="pointer-events-none relative w-0 min-w-0 flex-1 truncate pl-3 text-xs">
+        <span className="pointer-events-none relative w-0 min-w-0 flex-1 truncate pl-2 text-meta">
           <span className={cn(view.tone === "failed" && "text-destructive")}>{view.label}</span>
           {view.slow ? (
             <span className="text-warning tabular-nums"> {view.slow.elapsed}</span>
@@ -115,7 +115,7 @@ export function SidebarUpdateCapsule({
         {view.action !== null ? (
           <button
             type="button"
-            className="relative shrink-0 cursor-pointer pr-3 pl-1.5 text-xs underline decoration-muted-foreground/60 underline-offset-3 hover:decoration-current"
+            className="relative shrink-0 cursor-pointer pr-2 pl-2 text-meta underline decoration-muted-foreground/60 underline-offset-3 hover:decoration-current"
             onClick={runAction}
           >
             {actionLabel}
@@ -127,16 +127,14 @@ export function SidebarUpdateCapsule({
         )}
       </div>
       <PopoverPopup side="top" align="end" padding="compact" width="sm">
-        <div className="flex flex-col gap-1 text-xs">
+        <div className="flex flex-col gap-1 text-meta">
           {run.localVersion !== null ? (
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-2">
               <span>This app</span>
-              <span className="text-muted-foreground tabular-nums">
-                {localStatusLabel(run, local, now)}
-              </span>
+              <span className="text-ink-2 tabular-nums">{localStatusLabel(run, local, now)}</span>
             </div>
           ) : onRestart ? (
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-2">
               <span>This app</span>
               <Button size="xs" variant="outline" onClick={() => void onRestart()}>
                 Restart to update
@@ -145,12 +143,12 @@ export function SidebarUpdateCapsule({
           ) : null}
           {machines.map(({ machine, status }) => (
             <div key={machine.environmentId} className="flex min-w-0 flex-col">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center justify-between gap-2">
                 <span className="truncate">{machine.label}</span>
                 <span
                   className={cn(
                     "shrink-0 tabular-nums",
-                    status === "failed" ? "text-destructive" : "text-muted-foreground",
+                    status === "failed" ? "text-destructive" : "text-ink-2",
                   )}
                 >
                   {RUN_STATUS_LABELS[status]}
@@ -160,7 +158,7 @@ export function SidebarUpdateCapsule({
                 </span>
               </div>
               {machine.failure !== null ? (
-                <span className="break-words text-muted-foreground">{machine.failure}</span>
+                <span className="break-words text-ink-2">{machine.failure}</span>
               ) : null}
             </div>
           ))}

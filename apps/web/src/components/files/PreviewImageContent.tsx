@@ -37,7 +37,7 @@ export default function PreviewImageContent(props: {
   if (failed) return <FileSurfaceFailure message="Unable to load image." />;
   return (
     <>
-      <div className="flex min-h-10 shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border/60 px-3 py-1 text-xs text-muted-foreground">
+      <div className="flex min-h-10 shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border/60 px-2 py-1 text-meta text-ink-2">
         <span className="tabular-nums">
           {natural.width
             ? `${natural.width.toLocaleString()} × ${natural.height.toLocaleString()}`
@@ -49,7 +49,7 @@ export default function PreviewImageContent(props: {
             disabled={!natural.width || scale <= 0.05}
             onPress={() => changeZoom(1 / 1.25)}
           >
-            <MinusIcon className="size-3.5" />
+            <MinusIcon className="size-4" />
           </FileSurfaceAction>
           <span className="min-w-10 text-center tabular-nums">{Math.round(scale * 100)}%</span>
           <FileSurfaceAction
@@ -57,21 +57,21 @@ export default function PreviewImageContent(props: {
             disabled={!natural.width || scale >= 8}
             onPress={() => changeZoom(1.25)}
           >
-            <PlusIcon className="size-3.5" />
+            <PlusIcon className="size-4" />
           </FileSurfaceAction>
           <FileSurfaceAction
             label="Fit image"
             pressed={zoom === null}
             onPress={() => setZoom(null)}
           >
-            <ScanIcon className="size-3.5" />
+            <ScanIcon className="size-4" />
           </FileSurfaceAction>
           <FileSurfaceAction
             label="Actual image size"
             pressed={zoom === 1}
             onPress={() => setZoom(1)}
           >
-            <MaximizeIcon className="size-3.5" />
+            <MaximizeIcon className="size-4" />
           </FileSurfaceAction>
         </div>
       </div>

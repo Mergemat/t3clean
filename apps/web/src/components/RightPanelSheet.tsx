@@ -22,7 +22,8 @@ export function RightPanelSheet(props: {
         side="right"
         showCloseButton={false}
         keepMounted
-        className="w-[min(42vw,28rem)] min-w-80 max-w-[28rem] max-[760px]:w-[min(88vw,24rem)] max-[760px]:min-w-0 wco:mt-(--workspace-topbar-height) wco:h-[calc(100%-var(--workspace-topbar-height))] wco:max-h-[calc(100%-var(--workspace-topbar-height))]"
+        // Stretched by the sheet viewport, so the top margin alone shortens it under the titlebar.
+        className="w-2/5 min-w-80 max-w-112 max-[760px]:w-96 max-[760px]:min-w-0 max-[760px]:max-w-(--viewport-inset) wco:mt-(--workspace-topbar-height)"
       >
         <SheetHeader className="sr-only">
           <SheetTitle>Workspace panel</SheetTitle>

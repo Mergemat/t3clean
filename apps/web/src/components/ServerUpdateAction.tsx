@@ -76,7 +76,7 @@ function refusedCrossing(
 }
 
 function CrossTrackNote() {
-  return <span className="text-muted-foreground text-xs">{CROSS_TRACK_NOTE}</span>;
+  return <span className="text-ink-2 text-meta">{CROSS_TRACK_NOTE}</span>;
 }
 
 function updateFailureMessage(error: unknown): string {
@@ -238,8 +238,8 @@ export function ServerUpdateProgress({
 }) {
   if (state.status === "failed") {
     return (
-      <div className="mt-1 flex min-w-0 items-center gap-2 text-xs text-destructive" role="alert">
-        <span className="size-1.5 shrink-0 rounded-full bg-destructive" aria-hidden="true" />
+      <div className="mt-1 flex min-w-0 items-center gap-2 text-meta text-destructive" role="alert">
+        <span className="size-2 shrink-0 rounded-full bg-destructive" aria-hidden="true" />
         <Tooltip>
           <TooltipTrigger render={<span className="min-w-0 truncate">{state.message}</span>} />
           <TooltipPopup side="top">{state.message}</TooltipPopup>
@@ -248,8 +248,8 @@ export function ServerUpdateProgress({
     );
   }
   return (
-    <div className="mt-1 flex items-center gap-2 text-xs font-medium text-foreground">
-      <span className="size-1.5 shrink-0 rounded-full bg-foreground" aria-hidden="true" />
+    <div className="mt-1 flex items-center gap-2 text-meta font-medium text-ink-1">
+      <span className="size-2 shrink-0 rounded-full bg-foreground" aria-hidden="true" />
       <span>{serverUpdateStageLabel(state.stage)}</span>
     </div>
   );
@@ -329,17 +329,17 @@ export function ServerUpdateAction({
     return appearance === "icon" ? (
       <ManagedControl reason={updatesDenial}>
         <Button size="icon-xs" variant="ghost-muted" aria-label={updatesDenial} disabled>
-          <CircleArrowUpIcon className="size-3.5" />
+          <CircleArrowUpIcon className="size-4" />
         </Button>
       </ManagedControl>
     ) : (
-      <span className="text-muted-foreground text-xs">{updatesDenial}</span>
+      <span className="text-ink-2 text-meta">{updatesDenial}</span>
     );
   }
 
   if (selfUpdate === "desktop-managed" && !desktopAppUpdate) {
     return (
-      <span className="text-muted-foreground text-xs">
+      <span className="text-ink-2 text-meta">
         Update the desktop app on that machine to update this server.
       </span>
     );
@@ -377,7 +377,7 @@ export function ServerUpdateAction({
             />
           }
         >
-          <CircleArrowUpIcon className="size-3.5" />
+          <CircleArrowUpIcon className="size-4" />
         </TooltipTrigger>
         <TooltipPopup side="top">{actionLabel}</TooltipPopup>
       </Tooltip>

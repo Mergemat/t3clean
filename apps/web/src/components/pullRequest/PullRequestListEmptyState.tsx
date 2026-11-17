@@ -11,14 +11,14 @@ function BranchMark({ joined }: { joined: boolean }) {
     <svg
       aria-hidden
       viewBox="0 0 120 72"
-      className="h-20 w-32 text-muted-foreground/60"
+      className="h-20 w-32 text-ink-3"
       fill="none"
       stroke="currentColor"
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M10 58h100" className="text-muted-foreground/30" stroke="currentColor" />
+      <path d="M10 58h100" className="text-ink-3" stroke="currentColor" />
       <circle cx="10" cy="58" r="5" fill="currentColor" fillOpacity={0.25} />
       <circle cx="110" cy="58" r="5" fill="currentColor" fillOpacity={0.25} />
       {joined ? (
@@ -26,11 +26,7 @@ function BranchMark({ joined }: { joined: boolean }) {
       ) : (
         <>
           <path d="M30 58c0-18 8-26 24-26h4" />
-          <path
-            d="M90 58c0-18-8-26-24-26h-4"
-            strokeDasharray="2 7"
-            className="text-muted-foreground/50"
-          />
+          <path d="M90 58c0-18-8-26-24-26h-4" strokeDasharray="2 7" className="text-ink-3" />
         </>
       )}
       <circle
@@ -39,7 +35,7 @@ function BranchMark({ joined }: { joined: boolean }) {
         r={joined ? 5 : 4}
         fill={joined ? "currentColor" : "none"}
         fillOpacity={0.25}
-        className={joined ? undefined : "text-muted-foreground/45"}
+        className={joined ? undefined : "text-ink-3"}
       />
     </svg>
   );
@@ -80,7 +76,7 @@ export function PullRequestListEmptyState({
         </EmptyHeader>
         <EmptyContent>
           <Button size="sm" onClick={() => openCommandPalette({ open: "add-project" })}>
-            <PlusIcon className="size-3.5" />
+            <PlusIcon className="size-4" />
             Add project
           </Button>
         </EmptyContent>
@@ -111,7 +107,7 @@ export function PullRequestListEmptyState({
         </EmptyHeader>
         <div className="flex flex-wrap justify-center gap-2">
           <Button size="sm" variant="outline" onClick={onClearQuery}>
-            <SearchIcon className="size-3.5" />
+            <SearchIcon className="size-4" />
             Clear search
           </Button>
           <Button size="sm" variant="outline" disabled={refreshing} onClick={onRefresh}>

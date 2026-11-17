@@ -55,12 +55,12 @@ function T3ConnectEnvironmentRow(props: {
   return (
     <ClerkUserProfileRow icon={<ServerIcon className="size-4" />}>
       <Collapsible open={props.confirmationOpen} onOpenChange={props.onConfirmationChange}>
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className="truncate text-sm leading-4.5 font-medium text-foreground">
+            <h3 className="truncate text-body leading-4 font-medium text-ink-1">
               {environment.label}
             </h3>
-            <p className="mt-1 text-xs leading-4.5 text-muted-foreground">
+            <p className="mt-1 text-meta leading-4 text-ink-2">
               {linkedAtLabel(environment.linkedAt)} · {endpointLabel(environment)}
             </p>
           </div>
@@ -74,23 +74,21 @@ function T3ConnectEnvironmentRow(props: {
         </div>
 
         <CollapsiblePanel>
-          <div className="pt-3">
+          <div className="pt-2">
             <div
-              className="rounded-lg border border-input bg-muted/32 px-5 py-4 shadow-xs/5"
+              className="rounded-box border border-input bg-muted/32 px-4 py-4 shadow-xs/5"
               role="group"
               aria-label={`Confirm deregistration of ${environment.label}`}
             >
-              <h4 className="text-sm leading-4.5 font-semibold text-foreground">
-                Deregister server
-              </h4>
-              <p className="mt-1 text-xs leading-4.5 text-muted-foreground">
+              <h4 className="text-body leading-4 font-semibold text-ink-1">Deregister server</h4>
+              <p className="mt-1 text-meta leading-4 text-ink-2">
                 “{environment.label}” will be removed from this account.
               </p>
-              <p className="mt-4 max-w-xl text-xs leading-4.5 text-muted-foreground">
+              <p className="mt-2 max-w-xl text-meta leading-4 text-ink-2">
                 T3 Connect access will be revoked, any managed tunnel will be removed, and a host
                 space will become available. Local connections on your devices are not changed.
               </p>
-              <div className="mt-4 flex justify-end gap-2">
+              <div className="mt-2 flex justify-end gap-2">
                 <Button
                   size="sm"
                   variant="ghost"
@@ -124,7 +122,7 @@ function T3ConnectTunnelUsage() {
     <div className="border-t py-4">
       <TunnelUsageMeter used={usage.used} limit={usage.limit} />
       {usage.upgrade ? (
-        <p className="mt-2 text-xs leading-4.5 text-muted-foreground">
+        <p className="mt-2 text-meta leading-4 text-ink-2">
           {usage.upgrade === "link" && t3Chat.linkUrl ? (
             <>
               Confirm on{" "}
@@ -271,16 +269,16 @@ export function T3ConnectUserProfilePage() {
       <div>
         <T3ConnectTunnelUsage />
         {environmentsState.error ? (
-          <div className="mb-4 border-t border-destructive/35 py-3 text-xs" role="alert">
+          <div className="mb-2 border-t border-destructive/35 py-2 text-meta" role="alert">
             <p className="font-medium text-destructive-foreground">
               Could not load T3 Connect environments
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">{environmentsState.error}</p>
+            <p className="mt-1 text-meta text-ink-2">{environmentsState.error}</p>
           </div>
         ) : null}
 
         {isInitialLoad ? (
-          <p className="border-t py-4 text-xs text-muted-foreground" role="status">
+          <p className="border-t py-4 text-meta text-ink-2" role="status">
             Loading environments…
           </p>
         ) : environments.length > 0 ? (

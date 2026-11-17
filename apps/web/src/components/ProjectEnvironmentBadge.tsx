@@ -28,14 +28,14 @@ export function ProjectEnvironmentBadge(props: {
           <span
             role="img"
             aria-label={description}
-            className="inline-flex shrink-0 items-center text-muted-foreground"
+            className="inline-flex shrink-0 items-center text-ink-2"
           />
         }
       >
         <EnvironmentMachineIcon
           aria-hidden
           kind={props.machineByEnvironmentId.get(first.environmentId) ?? "server"}
-          className="size-3.5"
+          className="size-4"
         />
       </TooltipTrigger>
       <TooltipPopup side="top">{description}</TooltipPopup>

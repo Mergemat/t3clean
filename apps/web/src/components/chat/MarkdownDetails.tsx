@@ -43,18 +43,18 @@ export function MarkdownDetails({
         data-markdown-details-open={expanded ? "true" : "false"}
       >
         <CollapsibleTrigger
-          className="flex w-full items-center gap-2 py-2 text-start text-sm font-medium text-foreground [&:dir(rtl):not([data-panel-open])_svg]:rotate-180 data-panel-open:[&_svg]:rotate-90"
+          className="flex w-full items-center gap-2 py-2 text-start text-body font-medium text-ink-1 [&:dir(rtl):not([data-panel-open])_svg]:rotate-180 data-panel-open:[&_svg]:rotate-90"
           data-markdown-details-summary=""
         >
           <ChevronRightIcon
-            className="size-4 shrink-0 text-muted-foreground transition-transform"
+            className="size-4 shrink-0 text-ink-2 transition-transform"
             aria-hidden
           />
           <span>{summary}</span>
         </CollapsibleTrigger>
         <CollapsiblePanel ref={revealRef} hiddenUntilFound={searching}>
           <div
-            className="pb-3 ps-6 text-foreground/[calc(90%+var(--appearance-contrast-boost)/10)]"
+            className="pb-2 ps-6 text-foreground/[calc(90%+var(--appearance-contrast-boost)/10)]"
             data-markdown-details-content=""
           >
             {content}

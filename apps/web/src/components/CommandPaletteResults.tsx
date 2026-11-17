@@ -4,7 +4,6 @@ import { type ResolvedKeybindingsConfig } from "@t3tools/contracts";
 import { LegendList, type LegendListRef } from "@legendapp/list/react";
 import { ChevronRightIcon } from "lucide-react";
 import { type ReactNode, type RefObject, useState } from "react";
-import { cn } from "~/lib/utils";
 import { textDirection } from "~/textDirection";
 import { shortcutLabelForCommand } from "../keybindings";
 import {
@@ -23,9 +22,10 @@ import {
   CommandListVirtualized,
   CommandShortcut,
 } from "./ui/command";
-import { getVirtualizedScrollFadeClassName } from "./ui/scroll-area";
+import { virtualizedScrollFadeProps } from "./ui/scroll-area";
 import { ProjectPinButton } from "./ProjectPinButton";
 import { SearchMatchHintLine, ThreadSearchMatchExcerpt } from "./ThreadSearchMatch";
+import { ListRowGap } from "./ui/list-row-gap";
 
 interface CommandPaletteResultsProps {
   emptyStateMessage?: string;
@@ -38,7 +38,7 @@ interface CommandPaletteResultsProps {
 
 function CommandPaletteEmptyState(props: { emptyStateMessage?: string; isActionsOnly: boolean }) {
   return (
-    <div className="py-10 text-center text-sm text-muted-foreground">
+    <div className="py-6 text-center text-body text-ink-2">
       {props.emptyStateMessage ??
         (props.isActionsOnly
           ? "No matching actions."
@@ -127,10 +127,11 @@ export function CommandPaletteVirtualizedResults(props: CommandPaletteVirtualize
         initialScrollOffset={0}
         keyExtractor={(row) => row.key}
         getItemType={(row) => row.kind}
+        ItemSeparatorComponent={ListRowGap}
         extraData={props.highlightedItemValue}
         renderItem={({ item: row }) =>
           row.kind === "label" ? (
-            <div className={row.first ? undefined : "pt-1.5"}>
+            <div className={row.first ? undefined : "pt-2"}>
               <CommandListHeading>{row.label}</CommandListHeading>
             </div>
           ) : row.itemIndex === null ? (
@@ -153,17 +154,15 @@ export function CommandPaletteVirtualizedResults(props: CommandPaletteVirtualize
         // Legend counts style padding (not class padding) in its size, end state and row positions.
         style={{ paddingTop: 8, paddingBottom: 8 }}
         contentContainerClassName="px-2"
-        className={cn(
-          "min-h-0 scroll-py-6 overflow-x-hidden overscroll-y-contain [&::-webkit-scrollbar-track]:my-2",
-          getVirtualizedScrollFadeClassName(scrollFade),
-        )}
+        className="virtualized-scroll-fade min-h-0 scroll-py-6 overflow-x-hidden overscroll-y-contain [&::-webkit-scrollbar-track]:my-2"
+        {...virtualizedScrollFadeProps(scrollFade)}
       />
     </CommandListVirtualized>
   );
 }
 
 export function CommandPaletteTitleIcon(props: { children: ReactNode }) {
-  return <span className="flex h-5 shrink-0 items-center self-start pt-0.5">{props.children}</span>;
+  return <span className="flex h-lh shrink-0 items-center self-start">{props.children}</span>;
 }
 
 function CommandPaletteTitle({
@@ -194,9 +193,7 @@ function ThreadRowContext({
     .filter((part) => part && part !== item.matchHint?.text)
     .join(" · ");
   return context ? (
-    <span className="max-w-[45%] shrink-0 truncate text-muted-foreground/70 text-xs">
-      {context}
-    </span>
+    <span className="max-w-9/20 shrink-0 truncate text-ink-2 text-meta">{context}</span>
   ) : null;
 }
 
@@ -204,11 +201,11 @@ function DisabledCommandPaletteResultRow(props: {
   item: CommandPaletteActionItem | CommandPaletteSubmenuItem;
 }) {
   return (
-    <div className="flex min-h-8 select-none items-center gap-2 rounded-sm px-2 py-1.5 text-base opacity-64 sm:min-h-7 sm:text-sm">
+    <div className="flex min-h-8 select-none items-center gap-2 rounded-row px-2 py-2 text-base opacity-64 sm:min-h-6 sm:text-body">
       <CommandPaletteTitleIcon>{props.item.icon}</CommandPaletteTitleIcon>
       {props.item.description || props.item.threadContentMatch ? (
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="flex min-w-0 items-center gap-1.5 text-sm text-foreground">
+          <span className="flex min-w-0 items-center gap-2 text-body text-ink-1">
             {props.item.titleLeadingContent}
             <CommandPaletteTitle item={props.item} />
             <ThreadRowContext item={props.item} />
@@ -218,13 +215,11 @@ function DisabledCommandPaletteResultRow(props: {
           ) : props.item.matchHint ? (
             <SearchMatchHintLine hint={props.item.matchHint} />
           ) : props.item.description ? (
-            <span className="min-w-0 text-muted-foreground/70 text-xs">
-              {props.item.description}
-            </span>
+            <span className="min-w-0 text-ink-2 text-meta">{props.item.description}</span>
           ) : null}
         </span>
       ) : (
-        <span className="flex min-w-0 flex-1 items-center gap-1.5 text-sm text-foreground">
+        <span className="flex min-w-0 flex-1 items-center gap-2 text-body text-ink-1">
           {props.item.titleLeadingContent}
           <CommandPaletteTitle item={props.item} />
         </span>
@@ -273,7 +268,7 @@ function CommandPaletteResultRow(props: {
       <CommandPaletteTitleIcon>{props.item.icon}</CommandPaletteTitleIcon>
       {props.item.description || props.item.threadContentMatch ? (
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="flex min-w-0 items-center gap-1.5 text-sm text-foreground">
+          <span className="flex min-w-0 items-center gap-2 text-body text-ink-1">
             {props.item.titleLeadingContent}
             <CommandPaletteTitle item={props.item} />
             <ThreadRowContext item={props.item} />
@@ -283,13 +278,11 @@ function CommandPaletteResultRow(props: {
           ) : props.item.matchHint ? (
             <SearchMatchHintLine hint={props.item.matchHint} />
           ) : props.item.description ? (
-            <span className="min-w-0 text-muted-foreground/70 text-xs">
-              {props.item.description}
-            </span>
+            <span className="min-w-0 text-ink-2 text-meta">{props.item.description}</span>
           ) : null}
         </span>
       ) : (
-        <span className="flex min-w-0 flex-1 items-center gap-1.5 text-sm text-foreground">
+        <span className="flex min-w-0 flex-1 items-center gap-2 text-body text-ink-1">
           {props.item.titleLeadingContent}
           <CommandPaletteTitle item={props.item} />
         </span>
@@ -304,13 +297,13 @@ function CommandPaletteResultRow(props: {
         />
       ) : null}
       {props.item.timestamp ? (
-        <span className="min-w-12 shrink-0 text-right text-xs tabular-nums text-muted-foreground/70">
+        <span className="min-w-12 shrink-0 text-right text-meta tabular-nums text-ink-2">
           {props.item.timestamp}
         </span>
       ) : null}
       {shortcutLabel ? <CommandShortcut>{shortcutLabel}</CommandShortcut> : null}
       {props.item.kind === "submenu" ? (
-        <ChevronRightIcon className="-me-0.5 ms-auto size-4 shrink-0 text-muted-foreground/70" />
+        <ChevronRightIcon className="ms-auto size-4 shrink-0 text-ink-2" />
       ) : null}
     </CommandItem>
   );

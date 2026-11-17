@@ -59,7 +59,7 @@ function pullRequestStatusTone(state: string | undefined): string {
     case "open":
       return "text-emerald-600 dark:text-emerald-300/90";
     default:
-      return "text-muted-foreground";
+      return "text-ink-2";
   }
 }
 
@@ -218,8 +218,8 @@ export function PullRequestThreadDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogPanel>
-          <label className="grid gap-1.5">
-            <span className="text-xs font-medium text-foreground capitalize">
+          <label className="grid gap-2">
+            <span className="text-meta font-medium text-ink-1 capitalize">
               {terminology.singular}
             </span>
             <Input
@@ -246,16 +246,16 @@ export function PullRequestThreadDialog({
           </label>
 
           {resolvedPullRequest ? (
-            <div className="rounded-xl border border-border/70 bg-muted/24 p-3">
-              <div className="flex items-start justify-between gap-3">
+            <div className="rounded-row border border-border/70 bg-muted/24 p-2">
+              <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="truncate font-medium text-sm">{resolvedPullRequest.title}</p>
-                  <p className="truncate text-muted-foreground text-xs">
+                  <p className="truncate font-medium text-body">{resolvedPullRequest.title}</p>
+                  <p className="truncate text-ink-2 text-meta">
                     #{resolvedPullRequest.number} · {resolvedPullRequest.headBranch} to{" "}
                     {resolvedPullRequest.baseBranch}
                   </p>
                 </div>
-                <span className={cn("shrink-0 text-xs capitalize", statusTone)}>
+                <span className={cn("shrink-0 text-meta capitalize", statusTone)}>
                   {resolvedPullRequest.state}
                 </span>
               </div>
@@ -263,13 +263,13 @@ export function PullRequestThreadDialog({
           ) : null}
 
           {isResolving ? (
-            <div className="flex items-center gap-2 text-muted-foreground text-xs">
+            <div className="flex items-center gap-2 text-ink-2 text-meta">
               <Spinner size="sm" />
               Resolving {terminology.singular}...
             </div>
           ) : null}
 
-          {errorMessage ? <p className="text-destructive text-xs">{errorMessage}</p> : null}
+          {errorMessage ? <p className="text-destructive text-meta">{errorMessage}</p> : null}
         </DialogPanel>
         <DialogFooter>
           <Button

@@ -25,7 +25,7 @@ export function ManagedControl({
             role="group"
             aria-disabled="true"
             aria-label={reason}
-            className="inline-flex rounded-md outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+            className="inline-flex rounded-row outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
           />
         }
       >
@@ -41,8 +41,8 @@ export function ManagedControl({
 /** One line of policy text with the building mark, for places a whole feature is managed. */
 export function ManagedNotice({ children }: { children: ReactNode }) {
   return (
-    <p className="flex items-start gap-2 text-muted-foreground text-xs leading-relaxed">
-      <BuildingIcon aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
+    <p className="flex items-start gap-2 text-ink-2 text-meta leading-relaxed">
+      <BuildingIcon aria-hidden="true" className="h-lh w-4 shrink-0" />
       <span>{children}</span>
     </p>
   );
@@ -60,7 +60,7 @@ export function ManagedByOrganization({ policy }: { policy: ManagedPolicySummary
             href={policy.supportUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-foreground underline underline-offset-2"
+            className="text-ink-1 underline underline-offset-2"
           >
             Get help
           </a>

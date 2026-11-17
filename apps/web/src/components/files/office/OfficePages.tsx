@@ -95,7 +95,7 @@ export function OfficePages(props: {
         }
       }}
     >
-      <div className="flex flex-col items-center gap-4 py-6">
+      <div className="flex flex-col items-center gap-2 py-6">
         {props.pages.slice(0, mounted).map((page, index) => (
           <OfficePage
             key={index}
@@ -182,7 +182,7 @@ function OfficePage(props: {
     }
   }, [near]);
   return (
-    <div className="flex shrink-0 flex-col gap-3" style={{ width: page.width * scale }}>
+    <div className="flex shrink-0 flex-col gap-2" style={{ width: page.width * scale }}>
       <div
         ref={(el) => {
           row.current = el;

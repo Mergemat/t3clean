@@ -311,7 +311,7 @@ function BrowserMiniPlayer({ threadRef, tabId, miniPlayer }: Props & { readonly 
       {(frame) =>
         serverTab ? (
           <div
-            className="pointer-events-auto absolute inset-0 overflow-hidden rounded-[inherit]"
+            className="pointer-events-auto absolute inset-0 overflow-hidden rounded-inherit"
             style={{ zIndex: PREVIEW_MINI_PLAYER_WEBVIEW_Z_INDEX }}
           >
             <ServerBrowserSurface
@@ -350,7 +350,7 @@ function BrowserMiniPlayer({ threadRef, tabId, miniPlayer }: Props & { readonly 
               className="absolute inset-0"
             />
             {loadFailed ? (
-              <div className="pointer-events-auto absolute inset-0 z-[48] overflow-hidden rounded-[inherit]">
+              <div className="pointer-events-auto absolute inset-0 z-48 overflow-hidden rounded-inherit">
                 <PreviewUnreachable
                   url={loadFailed.url}
                   code={loadFailed.code}
@@ -359,7 +359,7 @@ function BrowserMiniPlayer({ threadRef, tabId, miniPlayer }: Props & { readonly 
                 />
               </div>
             ) : !desktopOverlay?.hasWebContents ? (
-              <div className="pointer-events-none absolute inset-0 z-[49] flex items-center justify-center rounded-[inherit] bg-muted text-xs text-muted-foreground">
+              <div className="pointer-events-none absolute inset-0 z-49 flex items-center justify-center rounded-inherit bg-muted text-meta text-ink-2">
                 Reconnecting preview…
               </div>
             ) : null}
@@ -408,7 +408,7 @@ function DeviceMiniPlayer({
     >
       {() => (
         <div
-          className="pointer-events-auto absolute inset-0 overflow-hidden rounded-[inherit]"
+          className="pointer-events-auto absolute inset-0 overflow-hidden rounded-inherit"
           style={{ zIndex: PREVIEW_MINI_PLAYER_WEBVIEW_Z_INDEX }}
         >
           <DeviceStreamView
@@ -602,7 +602,7 @@ function MiniPlayerShell({
           <div
             ref={handleRef}
             data-pill-open={pillOpen ? "" : undefined}
-            className="group pointer-events-auto absolute z-[49] size-3 touch-none cursor-grab active:cursor-grabbing pointer-coarse:-m-2.5 pointer-coarse:size-8"
+            className="group pointer-events-auto absolute z-49 size-3 touch-none cursor-grab active:cursor-grabbing pointer-coarse:-m-2 pointer-coarse:size-8"
             style={{ right: pillInset, top: pillInset }}
             onPointerDown={(event) => beginGesture(event, null)}
             onPointerMove={handlePointerMove}
@@ -619,7 +619,7 @@ function MiniPlayerShell({
               role={recording ? "status" : undefined}
               aria-label={recording ? "Recording preview" : undefined}
               aria-hidden={!recording}
-              className="absolute right-0 top-0 size-2 transition-opacity group-hover:opacity-0 group-focus-within:opacity-0 group-data-pill-open:opacity-0 pointer-coarse:right-2.5 pointer-coarse:top-2.5"
+              className="absolute right-0 top-0 size-2 transition-opacity group-hover:opacity-0 group-focus-within:opacity-0 group-data-pill-open:opacity-0 pointer-coarse:right-3 pointer-coarse:top-3"
             >
               <span
                 className={cn(
@@ -630,7 +630,7 @@ function MiniPlayerShell({
                 )}
               />
             </div>
-            <div className="pointer-events-none absolute right-0 top-0 flex h-8 cursor-grab items-center gap-0.5 rounded-lg border border-border/80 bg-popover/92 p-0.5 opacity-0 shadow-lg/20 backdrop-blur-xl transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-data-pill-open:pointer-events-auto group-data-pill-open:opacity-100 active:cursor-grabbing pointer-coarse:right-2.5 pointer-coarse:top-2.5">
+            <div className="pointer-events-none absolute right-0 top-0 flex h-8 cursor-grab items-center rounded-row border border-border/80 bg-popover/92 p-1 opacity-0 shadow-lg/20 backdrop-blur-xl transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-data-pill-open:pointer-events-auto group-data-pill-open:opacity-100 active:cursor-grabbing pointer-coarse:right-3 pointer-coarse:top-3">
               {recording ? (
                 <span aria-hidden className="flex size-6 shrink-0 items-center justify-center">
                   <span className="size-2 rounded-full bg-destructive motion-safe:animate-status-pulse" />
@@ -672,15 +672,15 @@ function MiniPlayerShell({
             </div>
           </div>
 
-          <div className="absolute inset-0 z-[47] rounded-[inherit] bg-muted shadow-2xl/35" />
+          <div className="absolute inset-0 z-47 rounded-inherit bg-muted shadow-2xl/35" />
           {children(frame)}
-          <div className="pointer-events-none absolute inset-0 z-[49] rounded-[inherit] ring-1 ring-inset ring-border/80" />
+          <div className="pointer-events-none absolute inset-0 z-49 rounded-inherit ring-1 ring-inset ring-border/80" />
           {RESIZE_HANDLES.map(({ direction, className }) => (
             <div
               key={direction}
               role="presentation"
               data-preview-mini-player-resize={direction}
-              className={cn("pointer-events-auto absolute z-[49] touch-none", className)}
+              className={cn("pointer-events-auto absolute z-49 touch-none", className)}
               onPointerDown={(event) => beginGesture(event, direction)}
               onPointerMove={handlePointerMove}
               onPointerUp={endGesture}

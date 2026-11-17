@@ -245,10 +245,10 @@ export function PullRequestActionsMenu({
           Refresh
         </MenuItem>
         <MenuItem disabled={handoff !== null} onClick={askAboutPullRequest}>
-          <MessageCircleQuestionIcon className="mt-1 size-3.5 shrink-0 self-start" />
+          <MessageCircleQuestionIcon className="mt-1 size-4 shrink-0 self-start" />
           <span className="flex min-w-0 flex-col">
             <span>{handoff === "ask" ? "Opening..." : "Ask a question"}</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-meta text-ink-2">
               {attachesToComposer
                 ? `Adds the ${terminology.singular} to this thread's composer.`
                 : `Opens a thread that knows which ${terminology.singular} you mean.`}
@@ -256,23 +256,23 @@ export function PullRequestActionsMenu({
           </span>
         </MenuItem>
         <MenuItem disabled={handoff !== null} onClick={explainPullRequest}>
-          <BookOpenIcon className="mt-1 size-3.5 shrink-0 self-start" />
+          <BookOpenIcon className="mt-1 size-4 shrink-0 self-start" />
           <span className="flex min-w-0 flex-col">
             <span>
               {handoff === "explain" ? "Opening..." : `Explain this ${terminology.shortLabel}`}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-meta text-ink-2">
               A walk through the diff and what to read closely.
             </span>
           </span>
         </MenuItem>
         <MenuItem disabled={handoff !== null || !canFixFindings} onClick={startFixFindings}>
-          <HammerIcon className="size-3.5" />
+          <HammerIcon className="size-4" />
           {handoff === "findings" ? "Preparing..." : handoffLabels.fixFindings}
         </MenuItem>
         {canWriteGuide ? (
           <MenuItem disabled={guideRunning} onClick={writeGuide}>
-            <ScrollTextIcon className="size-3.5" />
+            <ScrollTextIcon className="size-4" />
             {guideRunning ? "Writing guide..." : !guideWritten ? "Write guide" : "Rewrite guide"}
           </MenuItem>
         ) : null}
@@ -296,14 +296,14 @@ export function PullRequestActionsMenu({
               aria-describedby={maintainerEditsHintId}
               onCheckedChange={(value) => void saveMaintainerEdits(value)}
             >
-              <span className="flex max-w-xs flex-col gap-0.5">
+              <span className="flex max-w-xs flex-col">
                 <span>Allow edits from maintainers</span>
-                <span id={maintainerEditsHintId} className="text-xs text-muted-foreground">
+                <span id={maintainerEditsHintId} className="text-meta text-ink-2">
                   Maintainers can push to this branch. If your fork has workflows, this can also
                   give access to its secrets.
                 </span>
                 {maintainerEditsSaving ? (
-                  <span role="status" className="text-xs text-muted-foreground">
+                  <span role="status" className="text-meta text-ink-2">
                     Saving…
                   </span>
                 ) : null}
@@ -320,9 +320,9 @@ export function PullRequestActionsMenu({
                 onClick={() => void perform(detail.isDraft ? "ready" : "draft")}
               >
                 {detail.isDraft ? (
-                  <PullRequestGlyph.pullRequest className="size-3.5" />
+                  <PullRequestGlyph.pullRequest className="size-4" />
                 ) : (
-                  <PullRequestGlyph.draft className="size-3.5" />
+                  <PullRequestGlyph.draft className="size-4" />
                 )}
                 {detail.isDraft ? "Ready for review" : "Convert to draft"}
               </MenuItem>
@@ -334,13 +334,13 @@ export function PullRequestActionsMenu({
                 disabled={actionPending}
                 {...inlineConfirm.props("merge", () => void perform("merge", selectedMergeMethod))}
               >
-                <PullRequestGlyph.merged className="size-3.5" />
+                <PullRequestGlyph.merged className="size-4" />
                 {inlineConfirm.isArmed("merge") ? "Confirm merge?" : "Merge now"}
               </MenuItem>
             ) : null}
             {autoMergeArmed && can("disable-auto-merge") ? (
               <MenuItem disabled={actionPending} onClick={() => void perform("disable-auto-merge")}>
-                <PullRequestGlyph.merged className="size-3.5" />
+                <PullRequestGlyph.merged className="size-4" />
                 Disable auto-merge
               </MenuItem>
             ) : showsAutoMerge ? (
@@ -357,7 +357,7 @@ export function PullRequestActionsMenu({
                   () => void perform("enable-auto-merge", selectedMergeMethod),
                 )}
               >
-                <PullRequestGlyph.merged className="size-3.5" />
+                <PullRequestGlyph.merged className="size-4" />
                 {inlineConfirm.isArmed("enable-auto-merge")
                   ? "Confirm auto-merge?"
                   : "Enable auto-merge"}
@@ -378,7 +378,7 @@ export function PullRequestActionsMenu({
                       closeOnClick
                     >
                       <span className="flex min-w-0 items-center gap-2">
-                        <PullRequestGlyph.merged className="size-3.5" />
+                        <PullRequestGlyph.merged className="size-4" />
                         <span>{PULL_REQUEST_MERGE_METHOD_LABELS[method]}</span>
                       </span>
                     </MenuRadioItem>
@@ -396,11 +396,11 @@ export function PullRequestActionsMenu({
           </>
         ) : null}
         <MenuItem onClick={() => void readLocalApi()?.shell.openExternal(detail.url)}>
-          <ArrowUpRightIcon className="size-3.5" />
+          <ArrowUpRightIcon className="size-4" />
           {openOnHostText}
         </MenuItem>
         <MenuItem onClick={() => copyReference(detail.url, `${terminology.shortLabel} link`)}>
-          <LinkIcon className="size-3.5" />
+          <LinkIcon className="size-4" />
           Copy link
           <MenuShortcut>
             {shortcutLabelForCommand(keybindings, "thread.copyReference")}
@@ -409,7 +409,7 @@ export function PullRequestActionsMenu({
         <MenuItem
           onClick={() => copyReference(`#${reference.number}`, `${terminology.shortLabel} number`)}
         >
-          <CopyIcon className="size-3.5" />
+          <CopyIcon className="size-4" />
           Copy {terminology.shortLabel} number
           <MenuShortcut>
             {shortcutLabelForCommand(keybindings, "pullRequest.copyNumber")}
@@ -427,7 +427,7 @@ export function PullRequestActionsMenu({
               disabled={actionPending}
               {...inlineConfirm.props("close", () => void perform("close"))}
             >
-              <PullRequestGlyph.closed className="size-3.5" />
+              <PullRequestGlyph.closed className="size-4" />
               {inlineConfirm.isArmed("close") ? "Confirm close?" : `Close ${terminology.singular}`}
             </MenuItem>
           </>
@@ -435,7 +435,7 @@ export function PullRequestActionsMenu({
           <>
             <MenuSeparator />
             <MenuItem disabled={actionPending} onClick={() => void perform("reopen")}>
-              <PullRequestGlyph.reopen className="size-3.5" />
+              <PullRequestGlyph.reopen className="size-4" />
               Reopen {terminology.singular}
             </MenuItem>
           </>
@@ -449,7 +449,7 @@ export function PullRequestActionsMenu({
               disabled={actionPending}
               {...inlineConfirm.props("revert", () => void perform("revert"))}
             >
-              <RotateCcwIcon className="size-3.5" />
+              <RotateCcwIcon className="size-4" />
               {inlineConfirm.isArmed("revert") ? "Confirm revert?" : "Revert changes"}
             </MenuItem>
           </>
@@ -462,12 +462,12 @@ export function PullRequestActionsMenu({
               disabled={actionPending || !environmentConnected}
               onClick={() => void confirmDeleteBranch()}
             >
-              <Trash2Icon className="mt-1 size-3.5 shrink-0 self-start" />
+              <Trash2Icon className="mt-1 size-4 shrink-0 self-start" />
               <span className="flex min-w-0 flex-col">
                 <span>
                   {pendingAction === "delete-branch" ? "Deleting branch..." : "Delete branch"}
                 </span>
-                <span className="truncate text-xs text-muted-foreground">
+                <span className="truncate text-meta text-ink-2">
                   {environmentConnected ? detail.headBranch : "Reconnect to delete this branch"}
                 </span>
               </span>

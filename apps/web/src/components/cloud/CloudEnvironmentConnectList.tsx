@@ -65,7 +65,7 @@ function RemoteEnvironmentRowsSkeleton() {
           <Skeleton shape="pill" className="h-4 w-32" />
           <Skeleton shape="pill" className="h-3 w-20" />
         </div>
-        <Skeleton className="h-7 w-16" />
+        <Skeleton className="h-6 w-16" />
       </div>
     </div>
   );
@@ -297,14 +297,14 @@ export function CloudEnvironmentConnectRows({
     if (discoveryProblem !== null && !environmentsState.refreshing) {
       return (
         <div className={ITEM_ROW_CLASSNAME}>
-          <p className="text-sm font-medium text-destructive">
+          <p className="text-body font-medium text-destructive">
             Could not load T3 Connect environments
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">{discoveryProblem}</p>
+          <p className="mt-1 text-meta text-ink-2">{discoveryProblem}</p>
           <Button
             size="sm"
             variant="outline"
-            className="mt-3"
+            className="mt-2"
             onClick={() => void refreshRelayEnvironments()}
           >
             Try again
@@ -378,7 +378,7 @@ export function CloudEnvironmentConnectRows({
       return (
         <label
           key={environment.environmentId}
-          className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background px-3 py-2.5 has-disabled:cursor-default"
+          className="flex cursor-pointer items-center gap-2 rounded-row border border-border bg-background px-2 py-2 has-disabled:cursor-default"
         >
           <Checkbox
             checked={!unsupported && selection.selectedIds.has(environment.environmentId)}
@@ -395,22 +395,20 @@ export function CloudEnvironmentConnectRows({
           <EnvironmentMachineIcon
             aria-hidden
             kind={machineKind}
-            className="size-4 shrink-0 text-muted-foreground"
+            className="size-4 shrink-0 text-ink-2"
           />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-medium">{environment.label}</span>
+            <span className="block truncate text-body font-medium">{environment.label}</span>
             {unsupportedDetail !== null ? (
-              <span className="mt-0.5 block text-xs text-muted-foreground">
-                {unsupportedDetail}
-              </span>
+              <span className="block text-meta text-ink-2">{unsupportedDetail}</span>
             ) : null}
           </span>
           <Tooltip>
             <TooltipTrigger
               render={<span tabIndex={0} />}
               className={cn(
-                "max-w-[45%] shrink-0 truncate text-xs",
-                savedConnection?.tone === "error" ? "text-destructive" : "text-muted-foreground",
+                "max-w-9/20 shrink-0 truncate text-meta",
+                savedConnection?.tone === "error" ? "text-destructive" : "text-ink-2",
               )}
             >
               {connectingEnvironmentIds.has(environment.environmentId)
@@ -461,20 +459,20 @@ export function CloudEnvironmentConnectRows({
               <EnvironmentMachineIcon
                 aria-hidden
                 kind={machineKind}
-                className="size-4 shrink-0 text-muted-foreground"
+                className="size-4 shrink-0 text-ink-2"
               />
-              <p className="truncate text-sm font-medium">{environment.label}</p>
+              <p className="truncate text-body font-medium">{environment.label}</p>
             </div>
             <p
               className={cn(
-                "mt-1 truncate text-xs",
+                "mt-1 truncate text-meta",
                 savedConnection?.tone === "error" ||
                   (savedConnection?.tone === "connecting" &&
                     savedEnvironment?.connection.error &&
                     !savedEnvironment.connection.awaitingApproval) ||
                   (savedConnection === null && availability === "error")
                   ? "text-destructive"
-                  : "text-muted-foreground",
+                  : "text-ink-2",
               )}
             >
               {statusText}

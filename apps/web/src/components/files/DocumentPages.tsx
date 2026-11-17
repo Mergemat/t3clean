@@ -95,8 +95,8 @@ export default function DocumentPages(props: {
   return (
     <>
       {!props.output ? (
-        <div className="flex min-h-10 shrink-0 flex-wrap items-center gap-1 border-b border-border/60 px-3 py-1 text-xs text-muted-foreground">
-          <span className="min-w-0 flex-1 text-muted-foreground tabular-nums" role="status">
+        <div className="flex min-h-10 shrink-0 flex-wrap items-center gap-1 border-b border-border/60 px-2 py-1 text-meta text-ink-2">
+          <span className="min-w-0 flex-1 text-ink-2 tabular-nums" role="status">
             {props.details}
           </span>
           <FileSurfaceAction
@@ -104,7 +104,7 @@ export default function DocumentPages(props: {
             disabled={zoom <= 0.5}
             onPress={() => setZoom((value) => Math.max(0.5, value - 0.25))}
           >
-            <MinusIcon className="size-3.5" />
+            <MinusIcon className="size-4" />
           </FileSurfaceAction>
           <span className="min-w-10 text-center tabular-nums">{Math.round(zoom * 100)}%</span>
           <FileSurfaceAction
@@ -112,14 +112,14 @@ export default function DocumentPages(props: {
             disabled={zoom >= 2}
             onPress={() => setZoom((value) => Math.min(2, value + 0.25))}
           >
-            <PlusIcon className="size-3.5" />
+            <PlusIcon className="size-4" />
           </FileSurfaceAction>
           <FileSurfaceAction
             label="Reset reading size"
             disabled={zoom === 1}
             onPress={() => setZoom(1)}
           >
-            <RotateCcwIcon className="size-3.5" />
+            <RotateCcwIcon className="size-4" />
           </FileSurfaceAction>
         </div>
       ) : null}

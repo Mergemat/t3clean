@@ -146,7 +146,7 @@ export function PreviewMoreMenu({
             >
               <Minus />
             </Button>
-            <span className="min-w-12 text-center text-xs tabular-nums text-muted-foreground">
+            <span className="min-w-12 text-center text-meta tabular-nums text-ink-2">
               {zoomLabel}
             </span>
             <Button

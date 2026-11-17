@@ -42,7 +42,7 @@ function ReleaseLink({
 }) {
   return (
     <a
-      className="mt-1 inline-flex items-center gap-1 rounded-sm text-xs leading-5 text-muted-foreground underline-offset-2 outline-none transition-colors hover:text-foreground hover:underline focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+      className="mt-1 inline-flex items-center gap-1 rounded-row text-meta leading-5 text-ink-2 underline-offset-2 outline-none transition-colors hover:text-ink-1 hover:underline focus-visible:text-ink-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
       href={releaseUrl}
       onClick={(event) => {
         event.preventDefault();
@@ -72,15 +72,15 @@ export function SidebarUpdateReleaseNotes({
   )?.releasedAt;
 
   return (
-    <div className="flex max-h-[calc(var(--available-height)-0.5rem)] min-h-0 w-fit max-w-[min(24rem,calc(100vw-2rem))] flex-col text-left text-pretty">
+    <div className="flex max-h-(--available-height) min-h-0 w-fit max-w-96 flex-col text-left text-pretty">
       <div className="shrink-0 px-1">
         {state.status === "available" ? (
           <div>
-            <div className="whitespace-nowrap text-sm leading-5 font-medium">
+            <div className="whitespace-nowrap text-body leading-5 font-medium">
               Update ready to download
             </div>
             {state.availableVersion ? (
-              <div className="mt-0.5 text-xs leading-4 text-muted-foreground">
+              <div className="text-meta leading-4 text-ink-2">
                 {releasedAt
                   ? `${state.availableVersion} · ${formatReleaseAge(releasedAt)}`
                   : state.availableVersion}
@@ -88,10 +88,10 @@ export function SidebarUpdateReleaseNotes({
             ) : null}
           </div>
         ) : (
-          <div className="text-sm leading-5 font-medium">{tooltip}</div>
+          <div className="text-body leading-5 font-medium">{tooltip}</div>
         )}
       </div>
-      <div className="min-h-0 max-h-[min(28rem,calc(100vh-6rem))] overflow-y-auto px-1 pt-3 pb-1">
+      <div className="min-h-0 max-h-112 overflow-y-auto px-1 pt-2 pb-1">
         {state.releaseNotes.map((releaseNote, index) => {
           const releaseUrl = getDesktopUpdateReleaseUrl(releaseNote.version);
           const omittedItemCount = Math.max(0, releaseNote.totalItems - releaseNote.items.length);
@@ -103,26 +103,26 @@ export function SidebarUpdateReleaseNotes({
 
           const generated = releaseNote.stats !== undefined || releaseNote.intro !== undefined;
           return (
-            <section className={index > 0 ? "mt-4" : undefined} key={releaseNote.version}>
+            <section className={index > 0 ? "mt-2" : undefined} key={releaseNote.version}>
               {generated ? (
                 releaseNote.version !== state.availableVersion && (
-                  <h3 className="mb-1 text-xs leading-4 font-medium text-muted-foreground">
+                  <h3 className="mb-1 text-meta leading-4 font-medium text-ink-2">
                     {releaseNote.releasedAt
                       ? `${releaseNote.version} · ${formatReleaseAge(releaseNote.releasedAt)}`
                       : releaseNote.version}
                   </h3>
                 )
               ) : (
-                <h3 className="mb-2 text-foreground text-xs leading-4 font-semibold">
+                <h3 className="mb-2 text-ink-1 text-meta leading-4 font-semibold">
                   {index === 0 ? "What's changed" : `Changes in ${releaseNote.version}`}
                 </h3>
               )}
               {releaseNote.intro ? (
-                <p className="break-words text-xs leading-5 text-popover-foreground">
+                <p className="break-words text-meta leading-5 text-popover-foreground">
                   {releaseNote.intro}
                 </p>
               ) : releaseNote.items.length > 0 ? (
-                <ul className="space-y-1.5 pl-4 text-xs leading-5 text-popover-foreground/90">
+                <ul className="space-y-2 pl-4 text-meta leading-5 text-popover-foreground/90">
                   {keyReleaseNoteItems(releaseNote.items).map(({ item, key }) => {
                     const highlight = /^\*\*([^*]+)\*\* (.+)$/.exec(item);
                     return (
@@ -140,7 +140,7 @@ export function SidebarUpdateReleaseNotes({
                 </ul>
               ) : null}
               {releaseNote.footer && (
-                <p className="mt-2 text-xs leading-5 font-semibold">{releaseNote.footer}</p>
+                <p className="mt-2 text-meta leading-5 font-semibold">{releaseNote.footer}</p>
               )}
               {releaseUrl && (
                 <ReleaseLink releaseUrl={releaseUrl} shell={shell}>
@@ -151,7 +151,7 @@ export function SidebarUpdateReleaseNotes({
           );
         })}
         {state.omittedReleaseCount > 0 ? (
-          <div className="mt-3">
+          <div className="mt-2">
             <ReleaseLink releaseUrl={getDesktopUpdateReleaseHistoryUrl()} shell={shell}>
               {`${state.omittedReleaseCount} older ${state.omittedReleaseCount === 1 ? "release" : "releases"} on GitHub`}
             </ReleaseLink>

@@ -19,7 +19,7 @@ export function TimelineSystemDivider(props: {
     <>
       <span
         className={cn(
-          "inline-flex items-baseline gap-1.5 align-baseline font-medium",
+          "inline-flex items-baseline gap-2 align-baseline font-medium",
           props.wrapDetail && "shrink-0 whitespace-nowrap",
         )}
       >
@@ -30,7 +30,7 @@ export function TimelineSystemDivider(props: {
         <span
           className={cn(
             "min-w-0 opacity-70",
-            props.wrapDetail ? "ml-1.5 wrap-anywhere" : "inline-flex items-center",
+            props.wrapDetail ? "ml-2 wrap-anywhere" : "inline-flex items-center",
             typeof props.detail === "string" &&
               (props.wrapDetail ? "whitespace-pre-wrap" : "max-w-80 truncate"),
           )}
@@ -45,11 +45,10 @@ export function TimelineSystemDivider(props: {
   return (
     <div
       className={cn(
-        "flex min-w-0 items-center gap-2 py-2 text-2xs text-muted-foreground",
+        "flex min-w-0 items-center justify-center py-2 text-meta text-ink-2",
         props.tone === "danger" && "text-destructive",
       )}
     >
-      <span aria-hidden="true" className="h-px flex-1 bg-border/70" />
       {props.onAction ? (
         <Tooltip>
           <TooltipTrigger
@@ -59,8 +58,8 @@ export function TimelineSystemDivider(props: {
                 aria-label={props.actionLabel}
                 onClick={props.onAction}
                 className={cn(
-                  "min-w-0 cursor-pointer rounded-full border border-border/70 bg-background px-2.5 py-1 transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70",
-                  props.wrapDetail ? "text-center" : "flex items-center gap-1.5",
+                  "min-w-0 cursor-pointer rounded-row border border-border/70 bg-background px-2 py-1 transition-colors hover:bg-accent hover:text-ink-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70",
+                  props.wrapDetail ? "text-center" : "flex items-center gap-2",
                 )}
               />
             }
@@ -72,14 +71,13 @@ export function TimelineSystemDivider(props: {
       ) : (
         <span
           className={cn(
-            "min-w-0 rounded-full px-2 py-1",
-            props.wrapDetail ? "text-center" : "flex flex-wrap items-center justify-center gap-1.5",
+            "min-w-0 rounded-row px-2 py-1",
+            props.wrapDetail ? "text-center" : "flex flex-wrap items-center justify-center gap-2",
           )}
         >
           {content}
         </span>
       )}
-      <span aria-hidden="true" className="h-px flex-1 bg-border/70" />
     </div>
   );
 }

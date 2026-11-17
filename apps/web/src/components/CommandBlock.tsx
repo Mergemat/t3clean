@@ -21,13 +21,13 @@ export function CommandBlock({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/50 font-mono",
-        prominent ? "px-4 py-3.5 text-base" : "px-3 py-2.5 text-sm",
+        "flex items-center justify-between gap-2 border border-border bg-muted/50 font-mono",
+        prominent ? "rounded-box px-4 py-4 text-base" : "rounded-row px-2 py-2 text-body",
         className,
       )}
     >
       <span className="min-w-0 truncate">
-        <span className="mr-2 text-muted-foreground">$</span>
+        <span className="mr-2 text-ink-2">$</span>
         {command}
       </span>
       <Button
@@ -36,7 +36,7 @@ export function CommandBlock({
         aria-label="Copy command"
         onClick={() => copyToClipboard(command, undefined)}
       >
-        {isCopied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
+        {isCopied ? <CheckIcon /> : <CopyIcon />}
       </Button>
     </div>
   );

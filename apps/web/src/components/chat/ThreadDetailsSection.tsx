@@ -2,48 +2,53 @@ import type { ComponentProps, ReactNode } from "react";
 
 import { cn } from "../../lib/utils";
 
+/**
+ * A group of rows in the details card. Its heading names a list (side chats, servers) or a group
+ * of several rows; a lone row names itself, so its group is only the space above it. A heading
+ * that holds actions always shows.
+ */
 export function ThreadDetailsSection({
   headingId,
   title,
   actions,
-  separated = true,
-  showHeading = true,
+  rowsClassName,
   children,
   ...props
 }: Omit<ComponentProps<"section">, "className" | "style" | "title" | "aria-labelledby"> & {
   headingId: string;
   title: string;
   actions?: ReactNode;
-  separated?: boolean;
-  showHeading?: boolean;
+  /** Lays out the rows (a grid for aligned columns); rows stay its direct children. */
+  rowsClassName?: string;
 }) {
+  const hasActions = actions !== undefined && actions !== null;
   return (
     <section
       {...props}
-      aria-labelledby={showHeading ? headingId : undefined}
-      aria-label={showHeading ? undefined : title}
-      // A row can still render nothing (a fresh draft quiets Git actions), so an empty section
-      // collapses, and a divider only follows a section that has content.
-      className={cn(
-        "px-2 pt-2 pb-2.5 has-[>div:last-child:empty]:hidden",
-        separated && "border-border/65 [section:not(:has(>div:last-child:empty))~&]:border-t",
-      )}
+      aria-labelledby={headingId}
+      // A row can still render nothing (a fresh draft quiets Git actions), so an empty group
+      // collapses.
+      className="group/details-section has-[>[data-details-rows]:empty]:hidden"
     >
       <div
         className={cn(
-          "mb-1 flex min-h-8 min-w-0 items-center justify-between gap-2 px-2.5",
-          !showHeading && "hidden",
+          "min-h-8 min-w-0 items-center justify-between gap-2 px-2",
+          hasActions
+            ? "flex"
+            : "hidden group-has-[>[data-details-rows]>:nth-child(2)]/details-section:flex group-has-[>[data-details-rows]_ul]/details-section:flex",
         )}
       >
         <h3
           id={headingId}
-          className="min-w-0 truncate text-2xs font-medium text-muted-foreground select-none"
+          className="min-w-0 truncate text-meta font-medium text-ink-2 select-none"
         >
           {title}
         </h3>
-        {actions ? <div className="flex shrink-0 items-center gap-1">{actions}</div> : null}
+        {hasActions ? <div className="flex shrink-0 items-center gap-1">{actions}</div> : null}
       </div>
-      {children}
+      <div data-details-rows className={cn("flex flex-col gap-1", rowsClassName)}>
+        {children}
+      </div>
     </section>
   );
 }

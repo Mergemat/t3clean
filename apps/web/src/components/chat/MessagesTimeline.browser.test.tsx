@@ -2118,7 +2118,7 @@ function ChangedFilesTimeline() {
       keyExtractor={(item) => item}
       estimatedItemSize={100}
       recycleItems={false}
-      className="h-[600px]"
+      className="h-150"
       renderItem={({ item }) =>
         item === "files" ? <TimelineChangedFilesCard /> : <div data-testid="after">After</div>
       }
@@ -2147,7 +2147,7 @@ describe("ChangedFilesCard", () => {
       await act(() => {
         flushSync(() => button().click());
         expect(screen.container.textContent).not.toContain("a.ts");
-        expect(after()).toBe(topBefore - 3 * 28);
+        expect(after()).toBe(topBefore - 3 * 24);
       });
       await act(() => {
         flushSync(() => button().click());

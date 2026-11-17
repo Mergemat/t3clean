@@ -50,7 +50,7 @@ export function SecretRequestCard(props: {
     return (
       <WorkLogRow
         data-v2-item-type={item.type}
-        icon={<Icon className="size-3.5 text-icon-muted" aria-hidden />}
+        icon={<Icon className="size-4 text-ink-3" aria-hidden />}
         label={
           <>
             {item.label} · {display.label}
@@ -132,7 +132,7 @@ function PendingSecretRequestForm(props: {
   return (
     <form
       data-v2-item-type={item.type}
-      className="flex min-w-0 flex-col gap-3 rounded-xl border border-border/60 bg-card p-4"
+      className="flex min-w-0 flex-col gap-2 rounded-box border border-border/60 bg-card p-4"
       onSubmit={onSubmit}
       autoComplete="off"
       // On click, not pointerdown: the mousedown that follows a pointerdown
@@ -146,15 +146,15 @@ function PendingSecretRequestForm(props: {
       }}
     >
       <div className="flex min-w-0 flex-col gap-1">
-        <label htmlFor={inputId} className="text-sm font-medium text-foreground">
+        <label htmlFor={inputId} className="text-body font-medium text-ink-1">
           {item.label}
         </label>
         {item.reason.trim() ? (
-          <p className="text-sm wrap-anywhere text-muted-foreground">{item.reason}</p>
+          <p className="text-body wrap-anywhere text-ink-2">{item.reason}</p>
         ) : null}
       </div>
       {link !== null ? (
-        <div className="flex min-w-0 flex-col items-start gap-1.5">
+        <div className="flex min-w-0 flex-col items-start gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -165,7 +165,7 @@ function PendingSecretRequestForm(props: {
           </Button>
           {/* A link found in the reason is already shown there. */}
           {item.url !== undefined ? (
-            <p className="font-mono text-xs wrap-anywhere text-muted-foreground">{item.url}</p>
+            <p className="font-mono text-meta wrap-anywhere text-ink-2">{item.url}</p>
           ) : null}
         </div>
       ) : null}
@@ -227,16 +227,13 @@ function PendingSecretRequestForm(props: {
         </Button>
       </div>
       {error !== null ? (
-        <p id={errorId} role="alert" className="text-xs text-destructive">
+        <p id={errorId} role="alert" className="text-meta text-destructive">
           {error}
         </p>
       ) : null}
       <div className="flex min-w-0 items-center justify-between gap-2">
-        <p
-          id={privacyId}
-          className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground"
-        >
-          <ShieldCheckIcon className="size-3.5 shrink-0" aria-hidden />
+        <p id={privacyId} className="flex min-w-0 items-center gap-2 text-meta text-ink-2">
+          <ShieldCheckIcon className="size-4 shrink-0" aria-hidden />
           {secretRequestPrivacyNote(item)}
         </p>
         <Button

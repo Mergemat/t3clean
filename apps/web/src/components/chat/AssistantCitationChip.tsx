@@ -82,7 +82,7 @@ function ResponseCard({
     // One copy boundary for the card and its comment, so a copied card carries the comment once.
     <span
       data-markdown-copy={copyMarkdown}
-      className={cn("block", !leading && "mt-[0.65rem]", !trailing && "mb-[0.65rem]")}
+      className={cn("block", !leading && "mt-2", !trailing && "mb-2")}
     >
       <Link
         {...linkProps}
@@ -92,10 +92,10 @@ function ResponseCard({
         data-thread-find-ignore
         aria-label={label}
         // The message's markdown styles colour and underline links; a card is neither.
-        className="block min-w-0 rounded-lg bg-black/10 px-2.5 py-1.5 text-start text-sm text-muted-foreground! no-underline! wrap-break-word hover:bg-black/14 focus-visible:outline-2 focus-visible:outline-ring dark:bg-black/35 dark:hover:bg-black/50"
+        className="block min-w-0 rounded-row bg-black/10 px-2 py-2 text-start text-body text-ink-2! no-underline! wrap-break-word hover:bg-black/14 focus-visible:outline-2 focus-visible:outline-ring dark:bg-black/35 dark:hover:bg-black/50"
       >
         {title ? (
-          <span className="block truncate text-xs font-medium text-foreground/80" dir="auto">
+          <span className="block truncate text-meta font-medium text-ink-2" dir="auto">
             {title}
           </span>
         ) : null}
@@ -104,7 +104,7 @@ function ResponseCard({
         </span>
       </Link>
       {comment ? (
-        <span className="mt-1.5 block whitespace-pre-wrap" dir={textDirection(comment)}>
+        <span className="mt-2 block whitespace-pre-wrap" dir={textDirection(comment)}>
           {comment}
         </span>
       ) : null}
@@ -139,7 +139,7 @@ export function AssistantCitationEmbed({
         ) : (
           <>
             {citation.prefix ? `…${flat(citation.prefix)}` : null}
-            <mark className="rounded-sm bg-foreground/12 px-0.5 text-foreground">
+            <mark className="rounded-chip bg-foreground/12 px-1 text-ink-1">
               {flat(citation.text)}
             </mark>
             {citation.suffix ? `${flat(citation.suffix)}…` : null}
@@ -255,11 +255,11 @@ export function AssistantCitationChip({
   const composerSourceLink = (
     <Link
       {...sourceLinkProps}
-      className="inline-flex min-w-0 items-center gap-[0.2em] self-baseline text-inherit no-underline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current rounded-sm"
+      className="inline-flex min-w-0 items-center self-baseline text-inherit no-underline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current rounded-row"
       aria-label={`View cited assistant text: ${label}`}
     >
       <QuoteIcon aria-hidden="true" />
-      <ContextChipLabel className="max-w-[16em]" dir={textDirection(label)}>
+      <ContextChipLabel className="max-w-60" dir={textDirection(label)}>
         {label}
       </ContextChipLabel>
     </Link>

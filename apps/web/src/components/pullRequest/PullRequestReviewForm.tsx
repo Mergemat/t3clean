@@ -187,7 +187,7 @@ export function PullRequestReviewForm({
             }}
           >
             <SelectTrigger size="xs" className="w-auto min-w-0" aria-label="Review verdict">
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-2">
                 {selectedVerdict?.icon}
                 {selectedVerdict?.label}
               </span>
@@ -195,7 +195,7 @@ export function PullRequestReviewForm({
             <SelectPopup side="top" alignItemWithTrigger={false}>
               {offered.map((verdict) => (
                 <SelectItem key={verdict.value} value={verdict.value}>
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-2">
                     {verdict.icon}
                     {verdict.label}
                   </span>

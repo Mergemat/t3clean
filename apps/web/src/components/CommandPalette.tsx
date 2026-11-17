@@ -371,7 +371,7 @@ function CommandPaletteDialog(props: {
             ? "Search project contents"
             : "Command palette"
       }
-      className={cn("overflow-hidden", props.mode === "content" && "h-105")}
+      className={cn("overflow-hidden", props.mode === "content" && "h-104")}
       data-command-palette="true"
       data-palette-mode={props.mode}
       data-testid="command-palette"
@@ -1115,7 +1115,7 @@ function OpenCommandPaletteDialog(props: {
               render={
                 <Button
                   variant="warning-outline"
-                  size="micro"
+                  size="xs"
                   onClick={() => {
                     openSourceControlSettings();
                   }}
@@ -1696,6 +1696,17 @@ function OpenCommandPaletteDialog(props: {
     shortcutCommand: "usage.open",
     run: async () => {
       await navigate({ to: "/usage" });
+    },
+  });
+
+  actionItems.push({
+    kind: "action",
+    value: "action:design-lab",
+    searchTerms: ["design", "lab", "design system", "grid", "components", "ui"],
+    title: "Open design lab",
+    icon: <PaletteIcon className={ITEM_ICON_CLASS} />,
+    run: async () => {
+      await navigate({ to: "/design-lab" });
     },
   });
 
@@ -2377,7 +2388,7 @@ function OpenCommandPaletteDialog(props: {
             ...(option.environmentId === newProjectFlow.environmentId
               ? {
                   titleTrailingContent: (
-                    <CheckIcon className="ms-auto size-4 shrink-0 text-muted-foreground/70" />
+                    <CheckIcon className="ms-auto size-4 shrink-0 text-ink-2" />
                   ),
                 }
               : {}),
@@ -2398,7 +2409,7 @@ function OpenCommandPaletteDialog(props: {
               description: "Open a folder or clone a repository",
               icon: <FolderPlusIcon className={ITEM_ICON_CLASS} />,
               titleTrailingContent: (
-                <ChevronRightIcon className="-me-0.5 ms-auto size-4 shrink-0 text-muted-foreground/70" />
+                <ChevronRightIcon className="ms-auto size-4 shrink-0 text-ink-2" />
               ),
               keepOpen: true,
               run: async () => {
@@ -2960,7 +2971,7 @@ function OpenCommandPaletteDialog(props: {
   ) : isThreadSearchPending && !isLinkedThreadSearch && !isBrowsing ? (
     // In the footer, so the list keeps its height while message results may
     // still arrive below it.
-    <span className="text-muted-foreground text-xs">Searching messages…</span>
+    <span className="text-ink-2 text-meta">Searching messages…</span>
   ) : null;
 
   return (
@@ -3041,11 +3052,11 @@ function OpenCommandPaletteDialog(props: {
         />
       ) : null}
       {browseAccessError ? (
-        <div role="alert" className="px-4 py-3 text-sm text-muted-foreground">
+        <div role="alert" className="px-4 py-2 text-body text-ink-2">
           {browseAccessError}
         </div>
       ) : isBrowsePending && browseResult === null ? (
-        <div role="status" className="px-4 py-3 text-sm text-muted-foreground">
+        <div role="status" className="px-4 py-2 text-body text-ink-2">
           Loading folders...
         </div>
       ) : null}

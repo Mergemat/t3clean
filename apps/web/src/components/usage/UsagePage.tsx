@@ -357,7 +357,7 @@ export function UsagePage() {
       ? `${formatDateTimeShort(shownWindow.sinceTime, shownWindow.timeZone, hour12)} to ${formatDateTimeShort(shownWindow.untilTime, shownWindow.timeZone, hour12)}`
       : `${formatDayShort(shownWindow.sinceDay)} to ${formatDayShort(shownWindow.untilDay)}`;
   const topbarContent = (
-    <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 py-2 @4xl/usage-header:flex">
+    <div className="grid w-full min-w-0 grid-cols-(--grid-trail) items-center gap-x-2 py-2 @4xl/usage-header:flex">
       <WorkspaceBreadcrumb ariaLabel="Usage breadcrumb" className="min-w-0">
         <WorkspaceBreadcrumbItem>
           <h1>Usage</h1>
@@ -386,7 +386,7 @@ export function UsagePage() {
         </WorkspaceBreadcrumbItem>
       </WorkspaceBreadcrumb>
       {!showingLimits ? (
-        <span className="hidden min-w-0 truncate text-xs text-muted-foreground @7xl/usage-header:block">
+        <span className="hidden min-w-0 truncate text-meta text-ink-2 @7xl/usage-header:block">
           {windowLabel}
         </span>
       ) : null}
@@ -503,7 +503,7 @@ export function UsagePage() {
   return (
     <AppRouteModal label="Usage">
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <header className="@container/usage-header flex min-h-12 shrink-0 items-center gap-1 border-b ps-5 pe-2">
+        <header className="@container/usage-header flex min-h-12 shrink-0 items-center gap-1 border-b ps-4 pe-2">
           {topbarContent}
           <AppRouteModalClose />
         </header>
@@ -511,7 +511,7 @@ export function UsagePage() {
         <ScrollArea className="min-h-0 flex-1">
           <WorkspacePageContainer width="wide">
             {selectedEnvironments.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body text-ink-2">
                 {environments.length === 0
                   ? `Connect an environment to see ${showingLimits ? "limits" : "usage"}.`
                   : `Select an environment to see ${showingLimits ? "limits" : "usage"}.`}
@@ -525,7 +525,7 @@ export function UsagePage() {
             ) : shown === null ? (
               <UsageSkeleton />
             ) : !canReadDiagnostics ? (
-              <div className="space-y-2 py-12 text-center text-sm text-muted-foreground">
+              <div className="space-y-2 py-6 text-center text-body text-ink-2">
                 {selectedEnvironments.map((environment) => (
                   <p key={environment.environmentId}>
                     {selectedEnvironments.length > 1 ? `${environment.label}: ` : null}
@@ -651,22 +651,22 @@ function UsageOverview({
   return (
     <div aria-busy={loadingPartial} className="flex flex-col gap-6">
       {sourceMessages.map((message) => (
-        <p key={message} className="mb-4 text-sm text-muted-foreground">
+        <p key={message} className="mb-2 text-body text-ink-2">
           {message}
         </p>
       ))}
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
-        <div className="flex min-w-0 flex-col gap-5">
+      <section className="grid gap-6 lg:grid-cols-(--grid-lead)">
+        <div className="flex min-w-0 flex-col gap-2 lg:w-72">
           <div className="flex flex-col gap-1">
             <p
               className={cn(
-                "text-4xl font-semibold text-foreground tabular-nums",
+                "text-4xl font-semibold text-ink-1 tabular-nums",
                 figureClass(loadingPartial),
               )}
             >
               {metric === "cost" ? formatUsd(merged.costUsd) : formatTokens(merged.totalTokens)}
             </p>
-            <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+            <p className="inline-flex items-center gap-1 text-meta text-ink-2">
               <span>
                 <span className={figureClass(loadingPartial)}>
                   {formatCount(merged.sessions)} sessions
@@ -692,7 +692,7 @@ function UsageOverview({
           </div>
 
           {showChatGptSharing ? (
-            <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center justify-between gap-2 text-meta text-ink-2">
               <span>ChatGPT shared usage</span>
               <ChatGptUsageButton size="xs" />
             </div>
@@ -709,8 +709,8 @@ function UsageOverview({
             const awaitingData = providerLoading && !providersWithData.has(provider);
             return (
               <div key={provider} className="flex flex-col gap-1">
-                <dl className="flex items-baseline justify-between gap-4">
-                  <dt className="flex min-w-0 items-center gap-2 text-sm text-foreground">
+                <dl className="flex items-baseline justify-between gap-2">
+                  <dt className="flex min-w-0 items-center gap-2 text-body text-ink-1">
                     <span
                       aria-hidden
                       className="size-2 shrink-0 rounded-full"
@@ -719,11 +719,11 @@ function UsageOverview({
                       }}
                     />
                     <ProviderMark provider={provider} className="size-4" />
-                    <span className="flex min-w-0 items-baseline gap-1.5">
+                    <span className="flex min-w-0 items-baseline gap-2">
                       <span className="truncate">{PROVIDER_PRESENTATION[provider].label}</span>
                       <span
                         className={cn(
-                          "shrink-0 whitespace-nowrap text-2xs text-muted-foreground tabular-nums",
+                          "shrink-0 whitespace-nowrap text-meta text-ink-2 tabular-nums",
                           figureClass(providerLoading),
                           awaitingData && "invisible",
                         )}
@@ -734,7 +734,7 @@ function UsageOverview({
                   </dt>
                   <dd
                     className={cn(
-                      "shrink-0 text-sm font-medium text-foreground tabular-nums",
+                      "shrink-0 text-body font-medium text-ink-1 tabular-nums",
                       figureClass(providerLoading),
                     )}
                   >
@@ -747,7 +747,7 @@ function UsageOverview({
                 </dl>
                 <p
                   className={cn(
-                    "text-xs text-muted-foreground",
+                    "text-meta text-ink-2",
                     figureClass(providerLoading),
                     awaitingData && "invisible",
                   )}
@@ -761,8 +761,8 @@ function UsageOverview({
           })}
         </div>
 
-        <div className="flex min-w-0 flex-col gap-3">
-          <h2 className="text-sm font-medium text-foreground">
+        <div className="flex min-w-0 flex-col gap-2">
+          <h2 className="text-body font-medium text-ink-1">
             {shownHourly ? "Hourly" : "Daily"} {metric === "tokens" ? "processed tokens" : "cost"}
           </h2>
           <UsageProviderChart
@@ -782,8 +782,8 @@ function UsageOverview({
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-medium text-foreground">Totals</h2>
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-4 py-1 md:grid-cols-5">
+        <h2 className="text-body font-medium text-ink-1">Totals</h2>
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-2 py-1 md:grid-cols-5">
           <Metric
             loading={loadingPartial}
             label="Processed tokens"
@@ -813,9 +813,7 @@ function UsageOverview({
       </section>
 
       {merged.totalTokens > 0 ? (
-        <section
-          className={cn("grid gap-x-12 gap-y-8 lg:grid-cols-2", figureClass(loadingPartial))}
-        >
+        <section className={cn("grid gap-x-6 gap-y-6 lg:grid-cols-2", figureClass(loadingPartial))}>
           {metric === "tokens" ? (
             <UsageShareBar
               label="Tokens by type"
@@ -842,9 +840,9 @@ function UsageOverview({
         </section>
       ) : null}
 
-      <section className="flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-sm font-medium text-foreground">Breakdown</h2>
+      <section className="flex flex-col gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-body font-medium text-ink-1">Breakdown</h2>
           <ToggleGroup
             aria-label="Usage breakdown"
             variant="segmented"
@@ -868,10 +866,10 @@ function UsageOverview({
         </div>
 
         {breakdown === "model" ? (
-          <table className="w-full text-sm">
+          <table className="w-full text-body">
             <thead>
-              <tr className="border-b border-border text-right text-xs text-muted-foreground">
-                <th className="py-2 pr-3 pl-2 text-left font-normal">#</th>
+              <tr className="border-b border-border text-right text-meta text-ink-2">
+                <th className="py-2 pr-2 pl-2 text-left font-normal">#</th>
                 <th className="w-full py-2 text-left font-normal">Model</th>
                 <th className="py-2 pl-6 font-normal">Cost</th>
                 <th className="hidden py-2 pl-6 font-normal sm:table-cell">Share</th>
@@ -881,7 +879,7 @@ function UsageOverview({
             <tbody>
               {breakdownModels.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-6 text-center text-muted-foreground">
+                  <td colSpan={5} className="py-6 text-center text-ink-2">
                     No activity in this window.
                   </td>
                 </tr>
@@ -895,23 +893,23 @@ function UsageOverview({
                   return (
                     <tr
                       key={key}
-                      className="relative border-b border-border/50 text-right whitespace-nowrap text-muted-foreground tabular-nums transition-colors hover:bg-muted/50 has-focus-visible:bg-muted/50"
+                      className="relative border-b border-border/50 text-right whitespace-nowrap text-ink-2 tabular-nums transition-colors hover:bg-muted/50 has-focus-visible:bg-muted/50"
                     >
-                      <td className="py-2.5 pr-3 pl-2 text-left text-xs">{index + 1}</td>
-                      <td className="py-2.5 text-left whitespace-normal">
+                      <td className="py-2 pr-2 pl-2 text-left text-meta">{index + 1}</td>
+                      <td className="py-2 text-left whitespace-normal">
                         <button
                           type="button"
                           onClick={() => onSelectModel(key)}
                           className={cn(
-                            "flex items-center gap-2 text-left text-foreground outline-none after:absolute after:inset-0",
+                            "flex items-center gap-2 text-left text-ink-1 outline-none after:absolute after:inset-0",
                             !hasBar && "py-1",
                           )}
                         >
-                          <ProviderMark provider={model.provider} className="size-3.5" />
+                          <ProviderMark provider={model.provider} className="size-4" />
                           {model.model}
                         </button>
                         {hasBar ? (
-                          <div aria-hidden className={cn("mt-1.5 h-0.5 max-w-48", rowFigures)}>
+                          <div aria-hidden className={cn("mt-2 h-1 max-w-48", rowFigures)}>
                             <div
                               className="h-full rounded-full"
                               style={{
@@ -922,17 +920,17 @@ function UsageOverview({
                           </div>
                         ) : null}
                       </td>
-                      <td className={cn("py-2.5 pl-6 text-foreground", rowFigures)}>
+                      <td className={cn("py-2 pl-6 text-ink-1", rowFigures)}>
                         {isModelCostUnknown(model) ? (
-                          <span className="text-muted-foreground">Unpriced</span>
+                          <span className="text-ink-2">Unpriced</span>
                         ) : (
                           formatUsd(model.costUsd)
                         )}
                       </td>
-                      <td className={cn("hidden py-2.5 pl-6 sm:table-cell", rowFigures)}>
+                      <td className={cn("hidden py-2 pl-6 sm:table-cell", rowFigures)}>
                         {share === null ? "" : formatPercent(share)}
                       </td>
-                      <td className={cn("py-2.5 pr-2 pl-6", rowFigures)}>
+                      <td className={cn("py-2 pr-2 pl-6", rowFigures)}>
                         {formatTokens(model.totalTokens)}
                       </td>
                     </tr>
@@ -948,12 +946,12 @@ function UsageOverview({
             aria-label="Usage breakdown by time"
             tabIndex={0}
           >
-            <table className="w-full text-sm whitespace-nowrap">
+            <table className="w-full text-body whitespace-nowrap">
               <colgroup>
                 <col className="w-2/5" />
               </colgroup>
               <thead>
-                <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                <tr className="border-b border-border text-left text-meta text-ink-2">
                   <th className="py-2 pl-2 font-normal">{shownHourly ? "Hour" : "Day"}</th>
                   {activeProviders.map((provider) => (
                     <th key={provider} className="py-2 pl-4 text-right font-normal">
@@ -969,7 +967,7 @@ function UsageOverview({
                   <tr>
                     <td
                       colSpan={activeProviders.length + 3}
-                      className="py-6 text-center text-muted-foreground"
+                      className="py-6 text-center text-ink-2"
                     >
                       No activity in this window.
                     </td>
@@ -980,7 +978,7 @@ function UsageOverview({
                       key={"hourStart" in period ? period.hourStart : period.day}
                       className="border-b border-border/50 transition-colors hover:bg-muted/50"
                     >
-                      <td className="py-2 pl-2 text-foreground">
+                      <td className="py-2 pl-2 text-ink-1">
                         {"hourStart" in period
                           ? formatHourShort(period.hourStart, shownWindow.timeZone, hour12)
                           : formatDayShort(period.day)}
@@ -989,7 +987,7 @@ function UsageOverview({
                         <td
                           key={provider}
                           className={cn(
-                            "py-2 pl-4 text-right text-muted-foreground tabular-nums",
+                            "py-2 pl-4 text-right text-ink-2 tabular-nums",
                             figureClass(loadingProviders.has(provider)),
                           )}
                         >
@@ -998,7 +996,7 @@ function UsageOverview({
                       ))}
                       <td
                         className={cn(
-                          "py-2 pl-4 text-right text-foreground tabular-nums",
+                          "py-2 pl-4 text-right text-ink-1 tabular-nums",
                           figureClass(loadingPartial),
                         )}
                       >
@@ -1006,7 +1004,7 @@ function UsageOverview({
                       </td>
                       <td
                         className={cn(
-                          "py-2 pr-2 pl-4 text-right text-muted-foreground tabular-nums",
+                          "py-2 pr-2 pl-4 text-right text-ink-2 tabular-nums",
                           figureClass(loadingPartial),
                         )}
                       >
@@ -1055,11 +1053,9 @@ function Metric({
   readonly loading: boolean;
 }) {
   return (
-    <div className="flex min-w-0 flex-col gap-0.5">
-      <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd
-        className={cn("text-base font-medium text-foreground tabular-nums", figureClass(loading))}
-      >
+    <div className="flex min-w-0 flex-col">
+      <dt className="text-meta text-ink-2">{label}</dt>
+      <dd className={cn("text-base font-medium text-ink-1 tabular-nums", figureClass(loading))}>
         {value}
       </dd>
     </div>
@@ -1088,7 +1084,7 @@ function UsageCoverageNotice({
   }
 
   return (
-    <div className="flex flex-col gap-1 border-t border-border px-2 py-2 text-xs text-muted-foreground">
+    <div className="flex flex-col gap-1 px-2 py-2 text-meta text-ink-2">
       {failed.map((environment) => (
         <span key={environment.label}>
           {environment.label}: {environment.error}
@@ -1146,15 +1142,15 @@ function UsageEnvironmentFilter({
     <Menu>
       <MenuTrigger render={<InlineButton />} className="group/usage-environment min-w-0 max-w-full">
         <WorkspaceBreadcrumbText>{label}</WorkspaceBreadcrumbText>
-        <span className="flex size-3.5 shrink-0 items-center justify-center text-muted-foreground">
+        <span className="flex size-4 shrink-0 items-center justify-center text-ink-2">
           {showUsageStatus && hasIssue ? (
             <CircleAlertIcon
-              className="size-3.5 text-warning-foreground"
+              className="size-4 text-warning-foreground"
               aria-label="Some environments could not report usage"
             />
           ) : (
             <ChevronDownIcon
-              className="size-3.5 opacity-60 transition-opacity group-hover/usage-environment:opacity-100 group-focus-visible/usage-environment:opacity-100 group-data-popup-open/usage-environment:opacity-100"
+              className="size-4 opacity-60 transition-opacity group-hover/usage-environment:opacity-100 group-focus-visible/usage-environment:opacity-100 group-data-popup-open/usage-environment:opacity-100"
               aria-hidden
             />
           )}
@@ -1204,12 +1200,12 @@ function UsageEnvironmentFilter({
                 onSelectionChange(next.size === environments.length ? null : next);
               }}
             >
-              <span className="flex min-w-0 items-center gap-3">
+              <span className="flex min-w-0 items-center gap-2">
                 <span className="min-w-0 flex-1 truncate">{environment.label}</span>
                 {showUsageStatus ? (
                   <span
                     className={cn(
-                      "shrink-0 text-xs text-muted-foreground",
+                      "shrink-0 text-meta text-ink-2",
                       environment.error !== null && "text-destructive",
                     )}
                   >
@@ -1221,10 +1217,10 @@ function UsageEnvironmentFilter({
           );
         })}
         {environments.length === 0 ? (
-          <p className="px-2 py-2 text-xs text-muted-foreground">No environments connected.</p>
+          <p className="px-2 py-2 text-meta text-ink-2">No environments connected.</p>
         ) : null}
         {showUsageStatus && isPartial ? (
-          <p className="px-2 py-2 text-xs text-muted-foreground">
+          <p className="px-2 py-2 text-meta text-ink-2">
             Totals are partial while selected environments scan.
           </p>
         ) : null}
@@ -1267,7 +1263,7 @@ function UsageProviderFilter({
       <MenuTrigger render={<InlineButton />} className="group/usage-provider min-w-0 max-w-full">
         <span className="min-w-0 truncate">{label}</span>
         <ChevronDownIcon
-          className="size-3.5 shrink-0 text-muted-foreground opacity-60 transition-opacity group-hover/usage-provider:opacity-100 group-focus-visible/usage-provider:opacity-100 group-data-popup-open/usage-provider:opacity-100"
+          className="size-4 shrink-0 text-ink-2 opacity-60 transition-opacity group-hover/usage-provider:opacity-100 group-focus-visible/usage-provider:opacity-100 group-data-popup-open/usage-provider:opacity-100"
           aria-hidden
         />
       </MenuTrigger>
@@ -1294,7 +1290,7 @@ function UsageProviderFilter({
             }
           >
             <span className="flex min-w-0 items-center gap-2">
-              <ProviderMark provider={provider} className="size-3.5" />
+              <ProviderMark provider={provider} className="size-4" />
               <span className="truncate">{PROVIDER_PRESENTATION[provider].label}</span>
             </span>
           </MenuCheckboxItem>
@@ -1307,55 +1303,55 @@ function UsageProviderFilter({
 function UsageSkeleton() {
   return (
     <>
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
-        <div className="flex flex-col gap-5">
+      <section className="grid gap-6 lg:grid-cols-(--grid-lead)">
+        <div className="flex flex-col gap-2 lg:w-72">
           <div className="flex flex-col gap-1">
             <Skeleton className="h-10 w-36" />
             <Skeleton className="h-4 w-32" />
           </div>
           {PROVIDER_ORDER.map((provider) => (
             <div key={provider} className="flex flex-col gap-1">
-              <div className="flex min-h-5 items-center justify-between gap-4">
+              <div className="flex min-h-5 items-center justify-between gap-2">
                 <span className="flex items-center gap-2">
                   <Skeleton shape="pill" className="size-2 shrink-0" />
                   <Skeleton shape="pill" className="size-4 shrink-0" />
-                  <Skeleton className="h-3.5 w-20" />
+                  <Skeleton className="h-4 w-20" />
                 </span>
-                <Skeleton className="h-3.5 w-14" />
+                <Skeleton className="h-4 w-14" />
               </div>
               <Skeleton className="h-4 w-36" />
             </div>
           ))}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           <Skeleton className="h-5 w-24" />
           <div className="flex flex-col gap-1">
-            <Skeleton className="ml-16 h-56" />
-            <Skeleton className="ml-16 h-4" />
+            <Skeleton className="ml-6 h-56" />
+            <Skeleton className="ml-6 h-4" />
           </div>
         </div>
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-medium text-foreground">Totals</h2>
+        <h2 className="text-body font-medium text-ink-1">Totals</h2>
         <MetricSkeletons
           labels={["Processed tokens", "Cached input", "Uncached input", "Output", "Cache savings"]}
         />
       </section>
 
-      <section className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
-        <div className="flex flex-col gap-2.5">
+      <section className="grid gap-x-6 gap-y-6 lg:grid-cols-2">
+        <div className="flex flex-col gap-2">
           <Skeleton className="h-5 w-28" />
           <Skeleton className="h-2" />
           <Skeleton className="h-4 w-72" />
         </div>
       </section>
 
-      <section className="flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-sm font-medium text-foreground">Breakdown</h2>
-          <Skeleton shape="card" className="h-7 w-28" />
+      <section className="flex flex-col gap-2">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-body font-medium text-ink-1">Breakdown</h2>
+          <Skeleton shape="card" className="h-6 w-28" />
         </div>
         <Skeleton className="h-44" />
       </section>
@@ -1365,10 +1361,10 @@ function UsageSkeleton() {
 
 function MetricSkeletons({ labels }: { readonly labels: readonly string[] }) {
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-4 py-1 md:grid-cols-5">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-2 py-1 md:grid-cols-5">
       {labels.map((label) => (
-        <div key={label} className="flex flex-col gap-0.5">
-          <span className="text-xs text-muted-foreground">{label}</span>
+        <div key={label} className="flex flex-col">
+          <span className="text-meta text-ink-2">{label}</span>
           <Skeleton className="h-6 w-16" />
         </div>
       ))}

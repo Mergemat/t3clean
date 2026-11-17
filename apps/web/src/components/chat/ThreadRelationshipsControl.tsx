@@ -119,7 +119,7 @@ function ThreadLineageRowList(props: {
       {/* ScrollArea's max-height viewport measures badly inside this scrolling panel. */}
       <ul
         aria-label="Related threads"
-        className="m-0 max-h-[13.5rem] list-none overflow-y-auto p-0 has-data-workflow-expanded:max-h-[min(28rem,55dvh)]"
+        className="m-0 max-h-54 list-none overflow-y-auto p-0 has-data-workflow-expanded:max-h-112"
       >
         {props.children}
       </ul>
@@ -127,7 +127,7 @@ function ThreadLineageRowList(props: {
         <button
           type="button"
           onClick={props.onShowMore}
-          className={`flex h-8 w-full cursor-pointer items-center rounded-lg ${THREAD_DETAILS_PANEL_ROW_CONTENT_CLASS} text-sm font-medium text-muted-foreground/70 hover:bg-black/[0.055] hover:text-foreground/80 dark:hover:bg-white/[0.075]`}
+          className={`flex h-8 w-full cursor-pointer items-center rounded-row ${THREAD_DETAILS_PANEL_ROW_CONTENT_CLASS} text-body text-ink-2 hover:bg-black/4 dark:hover:bg-white/8`}
         >
           <PlusIcon aria-hidden className="size-4 shrink-0" />
           Show {Math.min(props.hiddenCount, THREAD_LINEAGE_PAGE_COUNT)} more
@@ -174,7 +174,7 @@ function ThreadLineageGroup<Row extends LineageRow>(props: {
           </span>
           {failedCount > 0 ? <SectionHeaderStatus>{failedCount} failed</SectionHeaderStatus> : null}
           {expanded ? null : (
-            <span className="shrink-0 text-xs font-normal tabular-nums text-muted-foreground">
+            <span className="shrink-0 text-meta font-normal tabular-nums text-ink-2">
               {props.rows.length}
             </span>
           )}
@@ -221,7 +221,7 @@ function LineageTooltipContent(props: { readonly title: string; readonly hint: s
   return (
     <>
       <span className="block font-medium">{props.title}</span>
-      <span className="block text-muted-foreground">{props.hint}</span>
+      <span className="block text-ink-2">{props.hint}</span>
     </>
   );
 }
@@ -276,7 +276,7 @@ function RemoteSubagentRow(props: {
     isSubagent: true,
   });
   return (
-    <li className="group relative flex h-8 items-center rounded-lg">
+    <li className="group relative flex h-8 items-center rounded-row">
       <Tooltip>
         <TooltipTrigger
           delay={200}
@@ -307,12 +307,10 @@ function RemoteSubagentRow(props: {
             status={status}
           />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-left text-sm font-medium leading-4 text-foreground/85">
-              {title}
-            </span>
+            <span className="block truncate text-left text-body text-ink-2">{title}</span>
           </span>
           <span
-            className={`flex max-w-1/2 shrink-0 gap-1 text-2xs ${failed ? "text-destructive" : "text-muted-foreground"}`}
+            className={`flex max-w-1/2 shrink-0 gap-1 text-meta ${failed ? "text-destructive" : "text-ink-2"}`}
           >
             <span className="truncate">on {remoteChild.label}</span>
             <span className="shrink-0">· {threadRelationshipStatusLabel(status)}</span>
@@ -381,7 +379,7 @@ function DelegatedFromRow(props: {
     });
   };
   return (
-    <li className="group relative flex h-8 items-center rounded-lg">
+    <li className="group relative flex h-8 items-center rounded-row">
       <Tooltip>
         <TooltipTrigger
           delay={200}
@@ -404,14 +402,10 @@ function DelegatedFromRow(props: {
             status={null}
           />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-left text-sm font-medium leading-4 text-foreground/85">
-              {title}
-            </span>
+            <span className="block truncate text-left text-body text-ink-2">{title}</span>
           </span>
           {label ? (
-            <span className="max-w-1/2 shrink-0 truncate text-2xs text-muted-foreground">
-              on {label}
-            </span>
+            <span className="max-w-1/2 shrink-0 truncate text-meta text-ink-2">on {label}</span>
           ) : null}
         </TooltipTrigger>
         <TooltipPopup side="left">
@@ -827,16 +821,14 @@ export function ThreadRelationshipsPanel(props: {
           status={rowStatus}
         />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-left text-sm font-medium leading-4 text-foreground/85">
-            {threadTitle}
-          </span>
+          <span className="block truncate text-left text-body text-ink-2">{threadTitle}</span>
         </span>
         {agent ? null : (
-          <ArrowRightIcon className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+          <ArrowRightIcon className="size-3 shrink-0 text-ink-2 opacity-0 transition-opacity group-hover:opacity-100" />
         )}
         {agent && !failed && (deriveSubagentElapsedMs(agent, 0) !== null || canStopWorkflow) ? (
           <span
-            className={`shrink-0 text-2xs font-normal tabular-nums text-muted-foreground ${canStopWorkflow ? "min-w-6 text-end" : ""} ${trailingVisibilityClass}`}
+            className={`shrink-0 text-meta font-normal tabular-nums text-ink-2 ${canStopWorkflow ? "min-w-6 text-end" : ""} ${trailingVisibilityClass}`}
           >
             <AgentElapsed agent={agent} compact />
           </span>
@@ -845,7 +837,7 @@ export function ThreadRelationshipsPanel(props: {
             className={
               workflowGroup
                 ? "sr-only"
-                : `shrink-0 text-2xs ${failed ? "text-destructive" : "text-muted-foreground"} ${trailingVisibilityClass}`
+                : `shrink-0 text-meta ${failed ? "text-destructive" : "text-ink-2"} ${trailingVisibilityClass}`
             }
           >
             {threadRelationshipStatusLabel(rowStatus)}
@@ -890,7 +882,7 @@ export function ThreadRelationshipsPanel(props: {
       );
     }
     return (
-      <li key={threadId} className="group relative flex h-8 items-center rounded-lg">
+      <li key={threadId} className="group relative flex h-8 items-center rounded-row">
         {isMergeTarget ? (
           <div className={THREAD_DETAILS_PANEL_SPLIT_GROUP_CLASS}>
             <Tooltip>
@@ -942,7 +934,7 @@ export function ThreadRelationshipsPanel(props: {
                     : "Merge this conversation back into its source"}
               </TooltipPopup>
             </Tooltip>
-            <span className="shrink-0 border border-transparent ps-1 pe-2.5 text-2xs font-medium text-muted-foreground">
+            <span className="shrink-0 border border-transparent ps-1 pe-2 text-meta font-medium text-ink-2">
               {threadRelationshipStatusLabel(rowStatus)}
             </span>
           </div>
@@ -985,15 +977,6 @@ export function ThreadRelationshipsPanel(props: {
         <ThreadDetailsSection
           headingId="thread-details-lineage-heading"
           title={runningCount > 0 ? `Lineage · ${runningCount} running` : "Lineage"}
-          // A lone "Previous agents" row names itself; the heading returns for status or actions.
-          showHeading={
-            runningCount > 0 ||
-            canDetach ||
-            related.length > 0 ||
-            active.length > 0 ||
-            remoteActive.length > 0 ||
-            delegatedFrom !== undefined
-          }
           data-thread-relationships-panel
           actions={
             canDetach ? (
@@ -1009,11 +992,11 @@ export function ThreadRelationshipsPanel(props: {
                     />
                   }
                 >
-                  <MoreHorizontalIcon className="size-3.5" />
+                  <MoreHorizontalIcon className="size-4" />
                 </MenuTrigger>
                 <MenuPopup align="end" className="min-w-60 max-w-(--available-width)">
                   <MenuItem onClick={() => void detach()}>
-                    <UnplugIcon className="size-3.5" />
+                    <UnplugIcon className="size-4" />
                     Disconnect agent session
                   </MenuItem>
                 </MenuPopup>

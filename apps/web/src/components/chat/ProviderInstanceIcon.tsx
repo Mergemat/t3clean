@@ -111,7 +111,7 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
       } as CSSProperties)
     : undefined;
   const badgeContent = props.badgeContent ?? "initials";
-  const iconClassName = cn(props.size === "compact" && "size-3.5", props.iconClassName);
+  const iconClassName = cn(props.size === "compact" && "size-4", props.iconClassName);
   const isAcpRegistry = props.driverKind === "acpRegistry";
   // A custom OpenAI-compatible endpoint has no brand: show its name, marked with the protocol.
   const isCustomEndpoint = props.driverKind === "openaiCompatible";
@@ -140,7 +140,7 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
         // The tile is a size container: below ~18px it keeps one letter and drops the mark.
         <span
           className={cn(
-            "@container relative flex size-5 shrink-0 items-center justify-center rounded-md border bg-card text-4xs font-semibold leading-none text-foreground",
+            "@container relative flex size-5 shrink-0 items-center justify-center rounded-chip border bg-card text-meta font-semibold leading-none text-ink-1",
             iconClassName,
           )}
           aria-hidden
@@ -151,7 +151,7 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
           </span>
           <span
             className={cn(
-              "pointer-events-none absolute right-[-0.3125rem] bottom-[-0.3125rem] z-10 flex size-3 items-center justify-center rounded-full border bg-card text-foreground shadow-sm @max-[1.1rem]:hidden",
+              "pointer-events-none absolute -right-2 -bottom-2 z-10 flex size-3 items-center justify-center rounded-full border bg-card text-ink-1 shadow-sm @max-[1.1rem]:hidden",
               props.badgeClassName,
             )}
             style={{ borderColor: indicatorBackground }}
@@ -168,19 +168,18 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
       ) : Icon ? (
         <Icon className={cn("size-5 shrink-0", iconClassName)} aria-hidden />
       ) : (
-        <span className={cn("text-3xs font-semibold leading-none", iconClassName)}>
+        <span className={cn("text-meta font-semibold leading-none", iconClassName)}>
           {providerInstanceInitials(props.displayName)}
         </span>
       )}
       {isCustomEndpoint ? null : props.showBadge ? (
         <span
           className={cn(
-            "pointer-events-none absolute right-0 bottom-0 z-10 flex h-3.5 min-w-3.5 items-center justify-center rounded-full border px-0.5 text-4xs font-semibold leading-none shadow-sm",
+            "pointer-events-none absolute right-0 bottom-0 z-10 flex h-4 min-w-4 items-center justify-center rounded-full border px-1 text-meta font-semibold leading-none shadow-sm",
             accentColor
               ? "bg-(--provider-accent) text-(--provider-accent-foreground)"
-              : "bg-card text-muted-foreground",
-            props.size === "compact" &&
-              "right-[-0.1875rem] bottom-[-0.1875rem] h-3 min-w-3 px-0.5 text-5xs",
+              : "bg-card text-ink-2",
+            props.size === "compact" && "-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta",
             props.badgeClassName,
           )}
           style={{ borderColor: indicatorBackground }}

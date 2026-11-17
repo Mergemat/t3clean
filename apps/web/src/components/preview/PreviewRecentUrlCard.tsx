@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 
 import { isValidHistoryTimestamp, type BrowserHistoryEntry } from "~/browserHistoryStore";
 import { RelativeTime } from "~/components/RelativeTime";
+import { Button } from "~/components/ui/button";
 
 import { PreviewFaviconIcon } from "./PreviewFaviconIcon";
 
@@ -25,27 +26,27 @@ export function PreviewRecentUrlCard({ threadRef, entry, onOpen, onRemove }: Pro
       <button
         type="button"
         onClick={onOpen}
-        className="flex w-full items-center gap-3 px-3 py-3 pr-10 text-left hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+        className="flex w-full items-center gap-2 rounded-row px-2 py-2 pr-8 text-left hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
       >
         <PreviewFaviconIcon threadRef={threadRef} url={entry.url} />
         <div className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-sm font-medium text-foreground">
-            {entry.title ?? label}
-          </span>
-          <span className="truncate text-xs text-muted-foreground">
+          <span className="truncate text-body font-medium text-ink-1">{entry.title ?? label}</span>
+          <span className="truncate text-meta text-ink-2">
             {entry.title ? `${label} · ` : ""}
             {visitedAt}
           </span>
         </div>
       </button>
-      <button
-        type="button"
-        aria-label={`Remove ${label} from history`}
-        onClick={onRemove}
-        className="absolute right-3 rounded p-1 text-muted-foreground opacity-0 hover:bg-accent hover:text-foreground focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring group-hover:opacity-100"
-      >
-        <X className="size-3.5" />
-      </button>
+      <span className="absolute right-2 flex opacity-0 focus-within:opacity-100 group-hover:opacity-100">
+        <Button
+          size="icon-xs"
+          variant="ghost-muted"
+          aria-label={`Remove ${label} from history`}
+          onClick={onRemove}
+        >
+          <X />
+        </Button>
+      </span>
     </div>
   );
 }

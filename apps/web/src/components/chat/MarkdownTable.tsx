@@ -38,7 +38,7 @@ export function MarkdownTable({ children, ...props }: ComponentProps<"table">) {
         <table {...props}>{children}</table>
       </ScrollArea>
       {/* Stays within the row's px-1: the chat lane clips sideways overflow. */}
-      <div className="mt-0.5 -mx-1 flex items-center justify-end select-none">
+      <div className="-mx-1 flex items-center justify-end select-none">
         <Menu>
           <Tooltip>
             <TooltipTrigger

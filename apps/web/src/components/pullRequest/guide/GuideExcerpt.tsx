@@ -119,9 +119,9 @@ export function GuideExcerpt({
   const slice = excerptSlice(file, excerpt);
 
   return (
-    <figure className="flex min-w-0 flex-col gap-1.5">
+    <figure className="flex min-w-0 flex-col gap-2">
       {excerpt.caption.trim() !== "" ? (
-        <figcaption className="text-xs text-muted-foreground">
+        <figcaption className="text-meta text-ink-2">
           <GuideProse text={excerpt.caption} plain />
         </figcaption>
       ) : null}
@@ -138,13 +138,13 @@ export function GuideExcerpt({
           onOpenFile={onOpenFile}
         />
       ) : loading ? (
-        <p className="rounded-lg border border-border/60 px-3 py-2 text-xs text-muted-foreground">
+        <p className="rounded-row border border-border/60 px-2 py-2 text-meta text-ink-2">
           Loading {excerpt.path}...
         </p>
       ) : (
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-border/60 px-3 py-2 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between gap-2 rounded-row border border-border/60 px-2 py-2 text-meta text-ink-2">
           <span className="min-w-0 truncate">
-            <span className="font-mono text-foreground">{excerpt.path}</span> lines {excerpt.start}-
+            <span className="font-mono text-ink-1">{excerpt.path}</span> lines {excerpt.start}-
             {excerpt.end} are not in the loaded diff.
           </span>
           <Button size="xs" variant="outline" onClick={() => onOpenFile(excerpt.path)}>
@@ -267,7 +267,7 @@ function ExcerptDiff({
   };
 
   return (
-    <div className="min-w-0 overflow-hidden rounded-lg border border-border/60">
+    <div className="min-w-0 overflow-hidden rounded-row border border-border/60">
       <FileDiff<ExcerptAnnotation>
         fileDiff={slice.fileDiff}
         options={options}
@@ -276,11 +276,11 @@ function ExcerptDiff({
         renderAnnotation={(annotation) => (
           <div className="font-sans">
             {annotation.metadata.markers.length > 0 ? (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-1 text-xs">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-2 py-1 text-meta">
                 {annotation.metadata.markers.map((entry) => (
-                  <span key={entry.marker} className="inline-flex items-center gap-1.5">
+                  <span key={entry.marker} className="inline-flex items-center gap-2">
                     <GuideNoteMarker marker={entry.marker} />
-                    <span className="text-foreground">{entry.title}</span>
+                    <span className="text-ink-1">{entry.title}</span>
                   </span>
                 ))}
               </div>
@@ -330,7 +330,7 @@ function ExcerptDiff({
           </div>
         )}
         renderHeaderMetadata={() => (
-          <span className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span className="flex items-center gap-2 text-meta text-ink-2">
             <span className="tabular-nums">
               {excerpt.side === "old" ? "removed code, " : ""}showing {slice.shown} of {slice.total}{" "}
               diff lines

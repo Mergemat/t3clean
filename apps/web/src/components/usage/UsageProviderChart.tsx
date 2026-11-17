@@ -240,18 +240,18 @@ function UsageChartTooltip({
   return (
     <div
       ref={tooltipRef}
-      className="surface-glass pointer-events-none absolute z-10 min-w-36 max-w-full rounded-xl border border-border/50 px-2.5 py-2 text-xs shadow-lg"
+      className="surface-glass pointer-events-none absolute z-10 min-w-36 max-w-full rounded-box border border-border/50 px-2 py-2 text-meta shadow-lg"
       style={{
         left: "var(--usage-tooltip-left, 0px)",
         top: "var(--usage-tooltip-top, 0px)",
       }}
     >
-      <div className="mb-1 text-muted-foreground">{label}</div>
+      <div className="mb-1 text-ink-2">{label}</div>
       {providers.map((provider) => {
         const { label: providerLabel, driverKind } = PROVIDER_PRESENTATION[provider];
         return (
-          <div key={provider} className="flex items-center justify-between gap-3">
-            <span className="flex items-center gap-1.5 text-muted-foreground">
+          <div key={provider} className="flex items-center justify-between gap-2">
+            <span className="flex items-center gap-2 text-ink-2">
               <ProviderInstanceIcon
                 driverKind={driverKind}
                 displayName={providerLabel}
@@ -262,7 +262,7 @@ function UsageChartTooltip({
             <span
               className={cn(
                 "tabular-nums",
-                loadingProviders.has(provider) ? "text-muted-foreground" : "text-foreground",
+                loadingProviders.has(provider) ? "text-ink-2" : "text-ink-1",
               )}
             >
               {format(column?.bands.find((band) => band.provider === provider)?.value ?? 0)}
@@ -270,9 +270,9 @@ function UsageChartTooltip({
           </div>
         );
       })}
-      <div className="mt-1 flex items-center justify-between gap-3 border-t border-border pt-1">
-        <span className="text-muted-foreground">Total</span>
-        <span className={cn("tabular-nums", partial ? "text-muted-foreground" : "text-foreground")}>
+      <div className="mt-1 flex items-center justify-between gap-2 border-t border-border pt-1">
+        <span className="text-ink-2">Total</span>
+        <span className={cn("tabular-nums", partial ? "text-ink-2" : "text-ink-1")}>
           {format(column?.total ?? 0)}
         </span>
       </div>
@@ -382,7 +382,7 @@ function UsageChartPlot({
             y2={VIEW_HEIGHT}
             stroke="currentColor"
             strokeWidth={1}
-            className="text-muted-foreground"
+            className="text-ink-2"
             vectorEffect="non-scaling-stroke"
           />
         )}
@@ -447,7 +447,7 @@ export function UsageProviderChart({
             ? scale.ticks.map((tick) => (
                 <span
                   key={tick}
-                  className="absolute right-0 -translate-y-1/2 text-3xs text-muted-foreground tabular-nums"
+                  className="absolute right-0 -translate-y-1/2 text-meta text-ink-2 tabular-nums"
                   style={{ top: `${(toY(tick) / VIEW_HEIGHT) * 100}%` }}
                 >
                   {tick === 0 ? "0" : format(tick)}
@@ -505,10 +505,7 @@ export function UsageProviderChart({
         </UsageChartPlot>
       </div>
 
-      <div
-        aria-hidden
-        className="flex justify-between pl-16 text-3xs text-muted-foreground uppercase"
-      >
+      <div aria-hidden className="flex justify-between pl-6 text-meta text-ink-2 uppercase">
         <span>{periods[0] === undefined ? "" : formatPeriod(periods[0])}</span>
         <span>
           {periods[Math.floor(periods.length / 2)] === undefined

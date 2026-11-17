@@ -96,11 +96,12 @@ export function FastBolt(props: { ultra: boolean }) {
     );
   }
   return (
-    <span aria-hidden="true" className="relative h-3 w-3.75 shrink-0">
-      <ZapIcon className="absolute top-0 left-0.75 size-3" />
+    <span aria-hidden="true" className="relative h-3 w-4 shrink-0">
+      <ZapIcon className="absolute top-0 left-1 size-3" />
       <ZapIcon
         strokeWidth={4}
-        className="absolute top-0 left-0 size-3 fill-current stroke-(--chat-composer-glass-surface) [paint-order:stroke]"
+        paintOrder="stroke"
+        className="absolute top-0 left-0 size-3 fill-current stroke-(--chat-composer-glass-surface)"
       />
     </span>
   );

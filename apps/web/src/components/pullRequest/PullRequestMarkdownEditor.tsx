@@ -94,9 +94,9 @@ export function PullRequestMarkdownEditor({
         <Toggle value="preview">Preview</Toggle>
       </ToggleGroup>
       {preview ? (
-        <div className="rounded-lg border border-border/60 px-3 py-2">
+        <div className="rounded-row border border-border/60 px-2 py-2">
           {empty ? (
-            <p className="text-xs text-muted-foreground">Nothing to preview.</p>
+            <p className="text-meta text-ink-2">Nothing to preview.</p>
           ) : (
             <PullRequestMarkdown
               text={draft}

@@ -111,9 +111,9 @@ export function WorktreeBaseBranchPicker({
         render={<Button variant="outline" size="sm" />}
         className="w-full justify-between "
       >
-        <GitBranchIcon className="size-3.5 shrink-0 text-muted-foreground" />
+        <GitBranchIcon className="size-4 shrink-0 text-ink-2" />
         <MiddleTruncate value={label} className="flex-1 text-left" />
-        <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+        <ChevronDownIcon className="size-4 shrink-0 text-ink-2" />
       </ComboboxTrigger>
     </BranchPicker>
   );

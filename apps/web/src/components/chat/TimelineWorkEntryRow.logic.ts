@@ -59,24 +59,24 @@ export function workToneIcon(tone: TimelineWorkEntry["tone"]): {
   if (tone === "error") {
     return {
       iconName: "circle-alert",
-      className: "text-foreground/92",
+      className: "text-ink-1",
     };
   }
   if (tone === "thinking") {
     return {
       iconName: "brain",
-      className: "text-icon-muted",
+      className: "text-ink-3",
     };
   }
   if (tone === "info") {
     return {
       iconName: "check",
-      className: "text-muted-foreground",
+      className: "text-ink-2",
     };
   }
   return {
     iconName: "zap",
-    className: "text-foreground/92",
+    className: "text-ink-1",
   };
 }
 

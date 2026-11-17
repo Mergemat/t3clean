@@ -196,7 +196,7 @@ export default function BinaryViewer(props: {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       {archive ? (
-        <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border/60 px-3 text-xs">
+        <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border/60 px-2 text-meta">
           <FileSurfaceAction
             label={selectedPath ? "Back to archive" : "Parent folder"}
             disabled={!selectedPath && !folder}
@@ -207,12 +207,12 @@ export default function BinaryViewer(props: {
               else setFolder(folder.replace(/(?:[^/]+)?\/$/, ""));
             }}
           >
-            <ChevronLeftIcon className="size-3.5" />
+            <ChevronLeftIcon className="size-4" />
           </FileSurfaceAction>
           <span className="min-w-0 flex-1 truncate">
             {selectedPath ?? (folder || "Archive contents")}
           </span>
-          <span className="shrink-0 text-muted-foreground">
+          <span className="shrink-0 text-ink-2">
             {countLabel(archive.entries.length, "entry", "entries")}
             {sizeBytes !== null ? ` · ${formatAttachmentSize(sizeBytes)}` : ""}
           </span>
@@ -220,7 +220,7 @@ export default function BinaryViewer(props: {
       ) : null}
       {database && table ? (
         <>
-          <div className="flex min-h-10 shrink-0 flex-wrap items-center gap-2 border-b border-border/60 px-3 py-1 text-xs">
+          <div className="flex min-h-10 shrink-0 flex-wrap items-center gap-2 border-b border-border/60 px-2 py-1 text-meta">
             <div className="min-w-32 flex-1">
               <Select
                 value={selectedTable}
@@ -247,7 +247,7 @@ export default function BinaryViewer(props: {
               disabled={busy || page === 0}
               onPress={() => selectPage(page - 1)}
             >
-              <ChevronLeftIcon className="size-3.5" />
+              <ChevronLeftIcon className="size-4" />
             </FileSurfaceAction>
             <span className="shrink-0 tabular-nums" aria-live="polite">
               {table.count === 0
@@ -259,11 +259,11 @@ export default function BinaryViewer(props: {
               disabled={busy || (page + 1) * SQLITE_PAGE_SIZE >= table.count}
               onPress={() => selectPage(page + 1)}
             >
-              <ChevronRightIcon className="size-3.5" />
+              <ChevronRightIcon className="size-4" />
             </FileSurfaceAction>
           </div>
           <div
-            className="border-b border-border/60 px-3 py-2 text-xs text-muted-foreground tabular-nums"
+            className="border-b border-border/60 px-2 py-2 text-meta text-ink-2 tabular-nums"
             role="status"
           >
             {countLabel(table.count, "row", "rows")} ·{" "}
@@ -290,17 +290,17 @@ export default function BinaryViewer(props: {
         <div className="scrollbar-gutter-both min-h-0 flex-1 overflow-auto">
           <table
             aria-label="Archive entries"
-            className="w-full border-separate border-spacing-0 text-xs"
+            className="w-full border-separate border-spacing-0 text-meta"
           >
-            <thead className="sticky top-0 bg-background text-muted-foreground">
+            <thead className="sticky top-0 bg-background text-ink-2">
               <tr>
-                <th scope="col" className="px-3 py-2 text-left font-normal">
+                <th scope="col" className="px-2 py-2 text-left font-normal">
                   Name
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-normal">
+                <th scope="col" className="px-2 py-2 text-right font-normal">
                   Size
                 </th>
-                <th scope="col" className="px-3 py-2 text-right font-normal">
+                <th scope="col" className="px-2 py-2 text-right font-normal">
                   Modified
                 </th>
               </tr>
@@ -319,7 +319,7 @@ export default function BinaryViewer(props: {
                     <td className="max-w-0 border-b border-border/60">
                       <button
                         type="button"
-                        className="flex w-full items-center gap-2 px-3 py-2 text-left hover:text-primary focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                        className="flex w-full items-center gap-2 px-2 py-2 text-left hover:text-primary focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
                         onClick={() => {
                           if (item.directory) setFolder(`${item.path}/`);
                           else {
@@ -330,17 +330,17 @@ export default function BinaryViewer(props: {
                         }}
                       >
                         {item.directory ? (
-                          <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
+                          <FolderIcon className="size-4 shrink-0 text-ink-2" />
                         ) : (
-                          <FileIcon className="size-4 shrink-0 text-muted-foreground" />
+                          <FileIcon className="size-4 shrink-0 text-ink-2" />
                         )}
                         <span className="truncate">{item.path.slice(folder.length)}</span>
                       </button>
                     </td>
-                    <td className="w-20 border-b border-border/60 px-3 py-2 text-right whitespace-nowrap text-muted-foreground tabular-nums">
+                    <td className="w-20 border-b border-border/60 px-2 py-2 text-right whitespace-nowrap text-ink-2 tabular-nums">
                       {formatAttachmentSize(item.size)}
                     </td>
-                    <td className="w-28 border-b border-border/60 px-3 py-2 text-right whitespace-nowrap text-muted-foreground">
+                    <td className="w-28 border-b border-border/60 px-2 py-2 text-right whitespace-nowrap text-ink-2">
                       {item.modified ? new Date(item.modified).toLocaleDateString() : "-"}
                     </td>
                   </tr>
@@ -348,14 +348,14 @@ export default function BinaryViewer(props: {
             </tbody>
           </table>
           {children.size === 0 ? (
-            <p className="p-6 text-xs text-muted-foreground">This folder is empty.</p>
+            <p className="p-6 text-meta text-ink-2">This folder is empty.</p>
           ) : null}
         </div>
       ) : rows ? (
         <div className="scrollbar-gutter-both min-h-0 flex-1 overflow-auto">
           <table
             aria-label={`${props.name}: ${rows.table}`}
-            className="min-w-full border-separate border-spacing-0 text-xs"
+            className="min-w-full border-separate border-spacing-0 text-meta"
           >
             <thead className="sticky top-0 bg-background">
               <tr>
@@ -363,7 +363,7 @@ export default function BinaryViewer(props: {
                   <th
                     key={name}
                     scope="col"
-                    className="border-r border-b border-border/60 px-3 py-2 text-left font-medium whitespace-nowrap"
+                    className="border-r border-b border-border/60 px-2 py-2 text-left font-medium whitespace-nowrap"
                   >
                     {name}
                   </th>
@@ -376,7 +376,7 @@ export default function BinaryViewer(props: {
                   {row.map((cell, column) => (
                     <td
                       key={column}
-                      className="max-w-80 min-w-32 border-r border-b border-border/60 px-3 py-1.5 align-top whitespace-pre-wrap break-words tabular-nums"
+                      className="max-w-80 min-w-32 border-r border-b border-border/60 px-2 py-2 align-top whitespace-pre-wrap break-words tabular-nums"
                     >
                       {cell}
                     </td>
@@ -386,11 +386,11 @@ export default function BinaryViewer(props: {
             </tbody>
           </table>
           {rows.rows.length === 0 ? (
-            <p className="p-6 text-xs text-muted-foreground">This table is empty.</p>
+            <p className="p-6 text-meta text-ink-2">This table is empty.</p>
           ) : null}
         </div>
       ) : (
-        <p className="p-6 text-xs text-muted-foreground">This database has no readable tables.</p>
+        <p className="p-6 text-meta text-ink-2">This database has no readable tables.</p>
       )}
     </div>
   );

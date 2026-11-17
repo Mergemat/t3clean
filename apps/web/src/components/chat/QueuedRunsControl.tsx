@@ -239,7 +239,7 @@ export function QueuedRunsControl({
       <span className="sr-only" aria-live="polite">
         {items.length} queued
       </span>
-      <ol className="flex flex-col items-end gap-3" id={queueListId}>
+      <ol className="flex flex-col items-end gap-2" id={queueListId}>
         {visibleItems.map((item, position) => {
           const previewText = isAttachmentOnlyBootstrapPrompt(item.text)
             ? ""
@@ -298,7 +298,7 @@ export function QueuedRunsControl({
                 ) : null}
                 {isEditing ? (
                   <>
-                    <span className="px-1 text-foreground">Editing in the composer</span>
+                    <span className="px-1 text-ink-1">Editing in the composer</span>
                     <Button
                       size="xs"
                       variant="ghost"
@@ -368,7 +368,7 @@ export function QueuedRunsControl({
         })}
       </ol>
       {collapsible ? (
-        <div className="self-end pe-1 text-xs pointer-coarse:[&_[data-slot=inline-button]]:relative pointer-coarse:[&_[data-slot=inline-button]]:after:absolute pointer-coarse:[&_[data-slot=inline-button]]:after:-inset-x-1.5 pointer-coarse:[&_[data-slot=inline-button]]:after:-inset-y-3.5">
+        <div className="self-end pe-1 text-meta pointer-coarse:[&_[data-slot=inline-button]]:relative pointer-coarse:[&_[data-slot=inline-button]]:after:absolute pointer-coarse:[&_[data-slot=inline-button]]:after:-inset-x-2 pointer-coarse:[&_[data-slot=inline-button]]:after:-inset-y-4">
           <InlineButton
             tone="muted"
             aria-expanded={showAll}
@@ -381,7 +381,7 @@ export function QueuedRunsControl({
             <ChevronDownIcon
               aria-hidden
               className={cn(
-                "size-3.5 transition-transform duration-150 motion-reduce:transition-none",
+                "size-4 transition-transform duration-150 motion-reduce:transition-none",
                 showAll && "rotate-180",
               )}
             />
@@ -440,7 +440,7 @@ function QueuedMessage(props: {
   return (
     <>
       {attribution === "t3code" ? (
-        <p className="me-1 text-2xs text-muted-foreground/70">Sent by T3 Code</p>
+        <p className="me-1 text-meta text-ink-2">Sent by T3 Code</p>
       ) : null}
       {presentation?.guestName === undefined ? null : (
         <GuestMessageName name={presentation.guestName} />
@@ -448,13 +448,13 @@ function QueuedMessage(props: {
       {/* Dashed and unfilled: a turn that has not been sent yet. */}
       <div
         className={cn(
-          "flex min-w-0 max-w-[80%] flex-col rounded-2xl border border-dashed text-sm",
+          "flex min-w-0 max-w-4/5 flex-col rounded-box border border-dashed text-body",
           props.isEditing
-            ? "border-primary/60 text-foreground"
+            ? "border-primary/60 text-ink-1"
             : attribution === "guest"
-              ? "border-guest/50 text-muted-foreground"
-              : "border-muted-foreground/40 text-muted-foreground",
-          fold === null && "px-3 py-2",
+              ? "border-guest/50 text-ink-2"
+              : "border-muted-foreground/40 text-ink-2",
+          fold === null && "px-2 py-2",
           fold !== null && expanded && "w-full",
         )}
       >
@@ -471,7 +471,7 @@ function QueuedMessage(props: {
           <div
             className={cn(
               "flex flex-col gap-2",
-              fold !== null && "max-h-96 overflow-auto px-3 pb-2",
+              fold !== null && "max-h-96 overflow-auto px-2 pb-2",
             )}
           >
             {props.thumbnails.length > 0 ? (
@@ -482,7 +482,7 @@ function QueuedMessage(props: {
                     type="button"
                     aria-label={`Preview ${thumbnail.name}`}
                     disabled={!thumbnail.previewUrl}
-                    className="size-8 overflow-hidden rounded-md border border-border/70 bg-background enabled:cursor-zoom-in"
+                    className="size-8 overflow-hidden rounded-row border border-border/70 bg-background enabled:cursor-zoom-in"
                     onPointerDown={(event) => event.preventDefault()}
                     onClick={() => {
                       const preview = buildExpandedImagePreview(props.thumbnails, thumbnail.id);
@@ -509,7 +509,7 @@ function QueuedMessage(props: {
           </div>
         ) : null}
       </div>
-      <div className="flex items-center gap-0.5 pe-1 text-xs text-muted-foreground">
+      <div className="flex items-center pe-1 text-meta text-ink-2">
         {props.message ? (
           <span className="me-1 flex items-center gap-2 px-1 opacity-0 transition-opacity duration-200 pointer-coarse:opacity-100 focus-within:opacity-100 group-hover/queued:opacity-100">
             {attribution === "agent" &&

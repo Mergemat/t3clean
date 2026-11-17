@@ -87,12 +87,12 @@ export function UsageModelDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogPanel>
-          <div className="flex flex-col gap-8">
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
+          <div className="flex flex-col gap-6">
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-4">
               {stats.map((stat) => (
-                <div key={stat.label} className="flex min-w-0 flex-col gap-0.5">
-                  <dt className="text-xs text-muted-foreground">{stat.label}</dt>
-                  <dd className="text-2xl font-semibold text-foreground">{stat.value}</dd>
+                <div key={stat.label} className="flex min-w-0 flex-col">
+                  <dt className="text-meta text-ink-2">{stat.label}</dt>
+                  <dd className="text-title font-semibold text-ink-1">{stat.value}</dd>
                 </div>
               ))}
             </dl>
@@ -111,7 +111,7 @@ export function UsageModelDialog({
               hour12={chartWindow.hour12}
             />
 
-            <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
               {costUnknown ? null : (
                 <UsageShareBar
                   label="Cost by type"
@@ -137,7 +137,7 @@ export function UsageModelDialog({
         </DialogPanel>
         {model.unpricedTokens > 0 ? (
           <DialogFooter variant="bare" className="items-center sm:justify-between">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-meta text-ink-2">
               {formatTokens(model.unpricedTokens)} tokens have no known price
             </span>
             <Button onClick={onSetPrice}>Set price</Button>
@@ -150,8 +150,8 @@ export function UsageModelDialog({
 
 export function SpeedPremium({ premiumUsd }: { readonly premiumUsd: number }) {
   return (
-    <span className="text-xs text-muted-foreground">
-      Premium <span className="text-foreground tabular-nums">{formatUsd(premiumUsd)}</span>
+    <span className="text-meta text-ink-2">
+      Premium <span className="text-ink-1 tabular-nums">{formatUsd(premiumUsd)}</span>
     </span>
   );
 }

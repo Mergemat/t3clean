@@ -12,7 +12,7 @@ export function ProjectRowActions(props: {
           {props.settings}
         </span>
       ) : null}
-      {props.pin ?? <span className="size-7 sm:size-6" />}
+      {props.pin ?? <span className="size-6 sm:size-6" />}
     </span>
   );
 }

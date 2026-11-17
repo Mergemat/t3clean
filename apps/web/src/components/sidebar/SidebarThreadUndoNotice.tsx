@@ -43,7 +43,7 @@ export function SidebarThreadUndoNotice() {
         // second line that overflow hides, instead of truncating mid-word. Browse mode
         // reads the button first; the live announcement carries the full sentence.
         className={cn(
-          "flex h-6 min-w-0 flex-1 flex-row-reverse flex-wrap gap-x-1 overflow-hidden text-2xs leading-6 whitespace-nowrap text-sidebar-muted-foreground transition-opacity duration-200 ease-out starting:opacity-0",
+          "flex h-6 min-w-0 flex-1 flex-row-reverse flex-wrap gap-x-1 overflow-hidden text-meta leading-6 whitespace-nowrap text-ink-2 transition-opacity duration-200 ease-out starting:opacity-0",
           !summary && "opacity-0",
         )}
       >
@@ -51,7 +51,7 @@ export function SidebarThreadUndoNotice() {
           {/* The icon's negative margin cancels its width, so beside the label it sits in
               clipped space; once the label is too wide it wraps away and the icon shows. */}
           <span className="flex h-6 min-w-0 flex-wrap justify-end overflow-hidden">
-            <Undo2Icon className="-ml-4 h-6 w-4 @max-[1rem]:invisible" />
+            <Undo2Icon className="-ml-2 h-6 w-4 @max-[1rem]:invisible" />
             <span>{threadUndoLabel(keybindings)}</span>
           </span>
         </InlineButton>

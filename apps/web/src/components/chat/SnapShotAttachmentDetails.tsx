@@ -11,7 +11,7 @@ import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { HighlightedTokens } from "./HighlightedTokens";
 
 export const SNAP_SHOT_ATTACHMENT_FRAME_CLASS =
-  "relative h-28 w-52 max-w-full overflow-hidden rounded-lg border border-border/80";
+  "relative h-28 w-52 max-w-full overflow-hidden rounded-row border border-border/80";
 
 interface SnapShotAccessibilityDetails {
   content: string;
@@ -98,7 +98,7 @@ export function SnapShotContentsButton({
                   }
                   className={className}
                   onClick={(event) => event.stopPropagation()}
-                  size="icon-micro"
+                  size="icon-xs"
                   variant="overlay"
                 />
               }
@@ -110,20 +110,20 @@ export function SnapShotContentsButton({
         <TooltipPopup side={side}>{tooltip}</TooltipPopup>
       </Tooltip>
       <PopoverPopup side={side} align="center" width="md">
-        <div className="max-h-[min(28rem,70vh)] space-y-2 overflow-y-auto">
+        <div className="max-h-112 space-y-2 overflow-y-auto">
           <PopoverTitle>Accessibility data</PopoverTitle>
           {accessibilityDetails ? (
             <SnapShotAccessibilityData
               details={accessibilityDetails}
-              className="max-h-64 rounded-md border border-border/70 bg-muted/45 p-2.5 text-2xs leading-4"
+              className="max-h-64 rounded-row border border-border/70 bg-muted/45 p-2 text-meta leading-4"
             />
           ) : includesAccessibility ? (
-            <div className="rounded-md border border-border/70 bg-muted/45 p-2.5 text-muted-foreground text-xs leading-4">
+            <div className="rounded-row border border-border/70 bg-muted/45 p-2 text-ink-2 text-meta leading-4">
               Structured accessibility elements were included, but they have no readable names or
               values.
             </div>
           ) : (
-            <div className="rounded-md border border-border/70 bg-muted/45 p-2.5 text-muted-foreground text-xs leading-4">
+            <div className="rounded-row border border-border/70 bg-muted/45 p-2 text-ink-2 text-meta leading-4">
               The app or capture backend did not provide verified accessibility data.
             </div>
           )}
@@ -143,23 +143,23 @@ export function SnapShotAttachmentDetails({
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-x-0 bottom-0 flex min-w-0 items-center gap-1.5 bg-linear-to-t from-black/85 via-black/55 to-transparent px-2.5 pb-2 pt-6",
+        "pointer-events-none absolute inset-x-0 bottom-0 flex min-w-0 items-center gap-2 bg-linear-to-t from-black/85 via-black/55 to-transparent px-2 pb-2 pt-6",
         className,
       )}
     >
       {source.appIconDataUrl ? (
-        <img src={source.appIconDataUrl} alt="" className="size-7 shrink-0 rounded-md" />
+        <img src={source.appIconDataUrl} alt="" className="size-6 shrink-0 rounded-row" />
       ) : (
-        <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white/20 text-3xs font-medium text-white uppercase">
+        <div className="flex size-6 shrink-0 items-center justify-center rounded-row bg-white/20 text-meta font-medium text-white uppercase">
           {source.appName.slice(0, 1)}
         </div>
       )}
       <div className="min-w-0 flex-1">
-        <div className="flex min-w-0 items-center gap-1.5 text-2xs font-medium leading-3.5 text-white">
+        <div className="flex min-w-0 items-center gap-2 text-meta font-medium leading-4 text-white">
           <span className="truncate">{source.appName}</span>
           <SnapShotContentsButton source={source} className="pointer-events-auto" />
         </div>
-        <div className="truncate text-3xs leading-3.5 text-white/70">
+        <div className="truncate text-meta leading-4 text-white/70">
           {source.windowTitle || "Captured window"}
         </div>
       </div>

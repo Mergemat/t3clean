@@ -236,7 +236,7 @@ export function McpConsent({
     return (
       <StandalonePage>
         <ConnectAgentHeading title="This sign-in cannot continue" description={loaded.message} />
-        <p className="mt-4 text-sm text-muted-foreground">
+        <p className="mt-2 text-body text-ink-2">
           Close this page and start the sign-in again from your agent.
         </p>
         {footer}
@@ -261,38 +261,32 @@ export function McpConsent({
         description={
           <>
             This agent wants to use the threads in every project on{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-medium text-ink-1">
               {environmentLabel ?? details.environmentHost}
             </span>
             {environmentLabel ? ` (${details.environmentHost})` : null}.
           </>
         }
       />
-      <dl className="mt-4 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">
-        <dt className="text-muted-foreground">App</dt>
+      <dl className="mt-2 grid grid-cols-(--grid-lead) gap-x-2 gap-y-1 text-body">
+        <dt className="text-ink-2">App</dt>
         <dd className="min-w-0 break-words">
-          {details.clientName} <span className="text-muted-foreground">· name set by the app</span>
+          {details.clientName} <span className="text-ink-2">· name set by the app</span>
         </dd>
-        <dt className="text-muted-foreground">Access goes to</dt>
+        <dt className="text-ink-2">Access goes to</dt>
         <dd className="min-w-0 break-words font-medium">
           {details.redirectHost}
           {redirectsToThisComputer(details.redirectHost) ? (
-            <span className="font-normal text-muted-foreground">
-              {" "}
-              on the computer that opened this page
-            </span>
+            <span className="font-normal text-ink-2"> on the computer that opened this page</span>
           ) : (
-            <span className="font-normal text-muted-foreground">
-              {" "}
-              · whoever runs it gets this access
-            </span>
+            <span className="font-normal text-ink-2"> · whoever runs it gets this access</span>
           )}
         </dd>
       </dl>
-      <p className="mt-2 text-xs text-muted-foreground">Only approve a sign-in you just started.</p>
+      <p className="mt-2 text-meta text-ink-2">Only approve a sign-in you just started.</p>
 
       <form
-        className="mt-6 space-y-5"
+        className="mt-6 space-y-2"
         onSubmit={(event) => {
           event.preventDefault();
           if (canApprove) void decide("approve", details);
@@ -300,7 +294,7 @@ export function McpConsent({
       >
         {acceptsCode ? (
           <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="connect-agent-pairing-code">
+            <label className="text-body font-medium" htmlFor="connect-agent-pairing-code">
               Sign-in code
             </label>
             <Input
@@ -315,7 +309,7 @@ export function McpConsent({
               spellCheck={false}
               value={pairingCode}
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               Get one from Use T3 Code in another app (MCP), Settings → Sharing & access, or{" "}
               <code>t3 auth pairing create</code> on this machine.
             </p>
@@ -323,13 +317,13 @@ export function McpConsent({
         ) : null}
 
         {codeAccess ? (
-          <p className="text-sm">
-            <span className="text-muted-foreground">Access</span>{" "}
+          <p className="text-body">
+            <span className="text-ink-2">Access</span>{" "}
             <span className="font-medium">{accessConfig[codeAccess].label}</span>
           </p>
         ) : (
           <div className="space-y-2">
-            <span id="connect-agent-access-label" className="text-sm font-medium">
+            <span id="connect-agent-access-label" className="text-body font-medium">
               What it may do
             </span>
             <RadioGroup
@@ -346,7 +340,7 @@ export function McpConsent({
                 />
               ))}
             </RadioGroup>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               Beyond read only, it can start, message and stop threads, and none of them can run
               with more than the mode you pick.
             </p>
@@ -422,25 +416,20 @@ export function AccessOption({
       value={access}
       disabled={disabledReason !== undefined}
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-lg border px-3 py-2.5 text-left outline-none transition-[background-color,border-color,box-shadow]",
+        "flex cursor-pointer items-start gap-2 rounded-row border px-2 py-2 text-left outline-none transition",
         "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
         selected
           ? "border-primary bg-background ring-2 ring-inset ring-primary/25 dark:border-transparent dark:bg-primary/10 dark:ring-1 dark:ring-primary/30"
-          : "border-border bg-background hover:bg-muted/50 dark:border-transparent dark:bg-white/[0.035] dark:hover:bg-accent",
+          : "border-border bg-background hover:bg-muted/50 dark:border-transparent dark:bg-white/4 dark:hover:bg-accent",
       )}
     >
       <Icon
         aria-hidden
-        className={cn(
-          "mt-0.5 size-4 shrink-0",
-          selected ? "text-primary" : "text-muted-foreground",
-        )}
+        className={cn("h-lh w-4 shrink-0", selected ? "text-primary" : "text-ink-2")}
       />
       <span className="min-w-0">
-        <span className="block text-sm font-medium text-foreground">{label}</span>
-        {detail === null ? null : (
-          <span className="block text-xs text-muted-foreground">{detail}</span>
-        )}
+        <span className="block text-body font-medium text-ink-1">{label}</span>
+        {detail === null ? null : <span className="block text-meta text-ink-2">{detail}</span>}
       </span>
     </RadioPrimitive.Root>
   );

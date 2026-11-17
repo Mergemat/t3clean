@@ -11,7 +11,7 @@ interface WorkspaceBreadcrumbProps {
 export function WorkspaceBreadcrumb({ ariaLabel, children, className }: WorkspaceBreadcrumbProps) {
   return (
     <nav aria-label={ariaLabel} className={cn("min-w-0", className)}>
-      <ol className="m-0 flex min-w-0 list-none items-center gap-2 p-0 text-sm sm:gap-3">
+      <ol className="m-0 flex min-w-0 list-none items-center gap-2 p-0 text-body sm:gap-2">
         {children}
       </ol>
     </nav>
@@ -29,7 +29,7 @@ export function WorkspaceBreadcrumbText({ children, className, ...props }: Compo
     <span
       data-slot="workspace-breadcrumb-text"
       className={cn(
-        "block min-w-0 truncate [text-box:trim-both_cap_alphabetic] supports-[text-box:trim-both_cap_alphabetic]:py-1.5",
+        "block min-w-0 truncate text-box-trim supports-[text-box:trim-both_cap_alphabetic]:py-2",
         className,
       )}
       {...props}
@@ -49,7 +49,7 @@ export function WorkspaceBreadcrumbItem({
       aria-current={current ? "page" : undefined}
       className={cn(
         "flex min-w-0 items-center font-medium",
-        current ? "text-foreground" : "shrink-0 text-muted-foreground",
+        current ? "text-ink-1" : "shrink-0 text-ink-2",
         className,
       )}
     >
@@ -66,7 +66,7 @@ export function WorkspaceBreadcrumbSeparator({
   readonly children?: ReactNode;
 }) {
   return (
-    <li aria-hidden="true" className={cn("flex shrink-0 items-center text-icon-muted", className)}>
+    <li aria-hidden="true" className={cn("flex shrink-0 items-center text-ink-3", className)}>
       {children}
     </li>
   );

@@ -179,54 +179,50 @@ export function ThreadDetailsPanel(props: ThreadDetailsPanelProps) {
         };
         return (
           <>
-            <div className="group/details-items">
+            <div className="group/details-items flex flex-col gap-2">
               {show.environment || show.openIn || show.scripts ? (
                 <ThreadDetailsSection
                   headingId="thread-details-workspace-heading"
                   title="Workspace"
-                  separated={false}
-                  showHeading={false}
                 >
-                  <div className="flex flex-col">
-                    {show.environment ? (
-                      <BranchToolbar
-                        layout="panel"
-                        panelSection="workspace"
-                        availableEnvironments={props.availableEnvironments}
-                        {...(props.onEnvironmentChange
-                          ? { onEnvironmentChange: props.onEnvironmentChange }
-                          : {})}
-                        autoEnvironmentLabel={props.autoEnvironmentLabel}
-                        onAutoEnvironment={props.onAutoEnvironment}
-                        {...branchToolbarProps}
-                      />
-                    ) : null}
+                  {show.environment ? (
+                    <BranchToolbar
+                      layout="panel"
+                      panelSection="workspace"
+                      availableEnvironments={props.availableEnvironments}
+                      {...(props.onEnvironmentChange
+                        ? { onEnvironmentChange: props.onEnvironmentChange }
+                        : {})}
+                      autoEnvironmentLabel={props.autoEnvironmentLabel}
+                      onAutoEnvironment={props.onAutoEnvironment}
+                      {...branchToolbarProps}
+                    />
+                  ) : null}
 
-                    {show.openIn ? (
-                      <OpenInPicker
-                        keybindings={props.keybindings}
-                        environmentId={props.environmentId}
-                        availableEditors={props.availableEditors}
-                        openInCwd={props.gitCwd}
-                        enableShortcut={props.openInShortcutEnabled}
-                        displayMode="panel"
-                      />
-                    ) : null}
+                  {show.openIn ? (
+                    <OpenInPicker
+                      keybindings={props.keybindings}
+                      environmentId={props.environmentId}
+                      availableEditors={props.availableEditors}
+                      openInCwd={props.gitCwd}
+                      enableShortcut={props.openInShortcutEnabled}
+                      displayMode="panel"
+                    />
+                  ) : null}
 
-                    {show.scripts && props.activeProjectScripts ? (
-                      <ProjectScriptsControl
-                        environmentId={props.environmentId}
-                        displayMode="panel"
-                        scripts={props.activeProjectScripts}
-                        fileScripts={fileScripts}
-                        preferredScriptId={props.preferredScriptId}
-                        onRunScript={props.onRunProjectScript}
-                        onAddScript={props.onAddProjectScript}
-                        onUpdateScript={props.onUpdateProjectScript}
-                        onDeleteScript={props.onDeleteProjectScript}
-                      />
-                    ) : null}
-                  </div>
+                  {show.scripts && props.activeProjectScripts ? (
+                    <ProjectScriptsControl
+                      environmentId={props.environmentId}
+                      displayMode="panel"
+                      scripts={props.activeProjectScripts}
+                      fileScripts={fileScripts}
+                      preferredScriptId={props.preferredScriptId}
+                      onRunScript={props.onRunProjectScript}
+                      onAddScript={props.onAddProjectScript}
+                      onUpdateScript={props.onUpdateProjectScript}
+                      onDeleteScript={props.onDeleteProjectScript}
+                    />
+                  ) : null}
                 </ThreadDetailsSection>
               ) : null}
 
@@ -234,33 +230,29 @@ export function ThreadDetailsPanel(props: ThreadDetailsPanelProps) {
                 <ThreadDetailsSection
                   headingId="thread-details-version-control-heading"
                   title="Version Control"
-                  showHeading={false}
-                  separated={density === "full"}
                 >
-                  <div className="flex flex-col">
-                    {show.branch ? (
-                      <BranchToolbar layout="panel" panelSection="branch" {...branchToolbarProps} />
-                    ) : null}
-                    {show.pullRequests ? (
-                      <ThreadDetailsThreadPrRows
-                        threadRef={activeThreadRef}
-                        project={project}
-                        composerTarget={props.composerDraftTarget}
-                      />
-                    ) : null}
-                    {show.git && props.gitCwd ? (
-                      <GitActionsControl
-                        compact={density !== "full"}
-                        showActions={visible.gitActions}
-                        showChanges={visible.changes}
-                        gitCwd={props.gitCwd}
-                        workspaceMutationId={props.workspaceMutationId}
-                        activeThreadRef={activeThreadRef}
-                        {...(props.draftId ? { draftId: props.draftId } : {})}
-                        {...(props.onOpenChanges ? { onOpenChanges: props.onOpenChanges } : {})}
-                      />
-                    ) : null}
-                  </div>
+                  {show.branch ? (
+                    <BranchToolbar layout="panel" panelSection="branch" {...branchToolbarProps} />
+                  ) : null}
+                  {show.pullRequests ? (
+                    <ThreadDetailsThreadPrRows
+                      threadRef={activeThreadRef}
+                      project={project}
+                      composerTarget={props.composerDraftTarget}
+                    />
+                  ) : null}
+                  {show.git && props.gitCwd ? (
+                    <GitActionsControl
+                      compact={density !== "full"}
+                      showActions={visible.gitActions}
+                      showChanges={visible.changes}
+                      gitCwd={props.gitCwd}
+                      workspaceMutationId={props.workspaceMutationId}
+                      activeThreadRef={activeThreadRef}
+                      {...(props.draftId ? { draftId: props.draftId } : {})}
+                      {...(props.onOpenChanges ? { onOpenChanges: props.onOpenChanges } : {})}
+                    />
+                  ) : null}
                 </ThreadDetailsSection>
               ) : null}
 
@@ -291,7 +283,7 @@ export function ThreadDetailsPanel(props: ThreadDetailsPanelProps) {
               ) : null}
 
               {/* Shown only when no section above has content, so an emptied card can be refilled. */}
-              <div className="p-2 group-has-[>section>:last-child:not(:empty)]/details-items:hidden">
+              <div className="group-has-[>section>:last-child:not(:empty)]/details-items:hidden">
                 <ThreadDetailsControl
                   size="xs"
                   variant="ghost"
@@ -303,7 +295,7 @@ export function ThreadDetailsPanel(props: ThreadDetailsPanelProps) {
                   }}
                 >
                   <SlidersHorizontalIcon className={THREAD_DETAILS_PANEL_ICON_CLASS} aria-hidden />
-                  <span className={cn("ml-0.5", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
+                  <span className={cn("", THREAD_DETAILS_PANEL_LABEL_CLASS)}>
                     Choose what to show
                   </span>
                 </ThreadDetailsControl>

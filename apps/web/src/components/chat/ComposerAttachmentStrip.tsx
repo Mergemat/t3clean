@@ -65,7 +65,7 @@ function ComposerImageFallback() {
     <span
       role="img"
       aria-label="Image attachment"
-      className="flex size-full items-center justify-center p-3 text-secondary-label"
+      className="flex size-full items-center justify-center p-2 text-ink-2"
     >
       <ImageIcon aria-hidden="true" className="size-4" />
     </span>
@@ -124,7 +124,7 @@ function SnapShotAttachmentFrame({
       className={cn(
         animateArrival &&
           !animationId &&
-          "origin-center transition-[opacity,scale] duration-300 ease-drawer starting:scale-95 starting:opacity-0 motion-reduce:transition-none motion-reduce:starting:scale-100 motion-reduce:starting:opacity-100",
+          "origin-center transition duration-300 ease-drawer starting:scale-95 starting:opacity-0 motion-reduce:transition-none motion-reduce:starting:scale-100 motion-reduce:starting:opacity-100",
         className,
       )}
       {...props}
@@ -178,10 +178,10 @@ export function ComposerAttachmentMediaRow({
   return (
     <div
       className={cn(
-        "mb-3 flex max-w-full gap-2",
+        "mb-2 flex max-w-full gap-2",
         pendingSnapShotIds.length > 0 ||
           expandedImages.some((image) => image.source?.kind === "snap-shot")
-          ? "snap-x snap-proximity overflow-x-auto overscroll-x-contain pb-1 scrollbar-thumb-foreground/18 scrollbar-track-transparent [scrollbar-width:thin] [&::-webkit-scrollbar]:h-2.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-3 [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-foreground/18 [&::-webkit-scrollbar-thumb]:bg-clip-content [&::-webkit-scrollbar-thumb:hover]:bg-foreground/28 [&::-webkit-scrollbar-track]:mx-1 [&::-webkit-scrollbar-track]:bg-transparent"
+          ? "snap-x snap-proximity overflow-x-auto overscroll-x-contain pb-1 scrollbar-thumb-foreground/18 scrollbar-track-transparent scrollbar-thin [&::-webkit-scrollbar]:h-3 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border-3 [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-foreground/18 [&::-webkit-scrollbar-thumb]:bg-clip-content [&::-webkit-scrollbar-thumb:hover]:bg-foreground/28 [&::-webkit-scrollbar-track]:mx-1 [&::-webkit-scrollbar-track]:bg-transparent"
           : "flex-wrap",
       )}
     >
@@ -213,7 +213,7 @@ export function ComposerAttachmentMediaRow({
                 "group/attachment shrink-0 snap-start bg-background",
                 source?.kind === "snap-shot"
                   ? SNAP_SHOT_ATTACHMENT_FRAME_CLASS
-                  : "relative h-16 w-16 overflow-hidden rounded-lg border border-border/80",
+                  : "relative h-16 w-16 overflow-hidden rounded-row border border-border/80",
                 snapShotAnimationPending && "invisible",
               )}
             >
@@ -267,7 +267,7 @@ export function ComposerAttachmentMediaRow({
                       <span
                         role="img"
                         aria-label="Draft attachment may not persist"
-                        className="absolute left-1 top-1 inline-flex items-center justify-center rounded bg-background/85 p-0.5 text-warning-foreground"
+                        className="absolute left-1 top-1 inline-flex items-center justify-center rounded-chip bg-background/85 p-1 text-warning-foreground"
                       >
                         <CircleAlertIcon className="size-3" />
                       </span>
@@ -279,7 +279,7 @@ export function ComposerAttachmentMediaRow({
                 </Tooltip>
               )}
               {(!ready || upload?.status === "uploading") && (
-                <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-background/85 px-1 text-center text-3xs text-foreground">
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-background/85 px-1 text-center text-meta text-ink-1">
                   {upload?.status === "uploading" ? (
                     <ComposerAttachmentUploadProgress id={image.id} upload={upload} />
                   ) : (
@@ -356,7 +356,7 @@ export function ComposerAttachmentMediaRow({
         return (
           <div
             key={file.id}
-            className="relative h-16 w-16 shrink-0 snap-start overflow-hidden rounded-lg border border-border/80 bg-black"
+            className="relative h-16 w-16 shrink-0 snap-start overflow-hidden rounded-row border border-border/80 bg-black"
           >
             <button
               type="button"
@@ -381,7 +381,7 @@ export function ComposerAttachmentMediaRow({
               <PlayIcon className="relative z-10 size-4 fill-current drop-shadow-md" />
             </button>
             {upload?.status === "uploading" && (
-              <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-background/85 px-1 text-center text-3xs text-foreground">
+              <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-background/85 px-1 text-center text-meta text-ink-1">
                 <ComposerAttachmentUploadProgress id={file.id} upload={upload} />
               </span>
             )}
@@ -452,7 +452,7 @@ export function ComposerAttachmentFileList({
 }) {
   const uploadsByImageId = useAttachmentUploadStore((state) => state.uploadsByImageId);
   return (
-    <div className="mb-3 flex flex-col gap-1">
+    <div className="mb-2 flex flex-col gap-1">
       {files.map((file) => {
         const fileCanUpload =
           supportsAttachmentUploads &&
@@ -462,10 +462,7 @@ export function ComposerAttachmentFileList({
         const needsReattach = composerFileNeedsReattach(file);
         const canReattachFile = fileStagingLimit !== null && file.sizeBytes <= fileStagingLimit;
         return (
-          <div
-            key={file.id}
-            className="flex min-w-0 items-center gap-2 py-1 text-sm text-foreground"
-          >
+          <div key={file.id} className="flex min-w-0 items-center gap-2 py-1 text-body text-ink-1">
             <PierreEntryIcon pathValue={file.name} kind="file" theme={resolvedTheme} />
             <button
               type="button"
@@ -475,7 +472,7 @@ export function ComposerAttachmentFileList({
             >
               {file.name}
             </button>
-            <span className="shrink-0 text-xs text-secondary-label">
+            <span className="shrink-0 text-meta text-ink-2">
               {needsReattach ? (
                 canReattachFile ? (
                   "Attach again"
@@ -550,7 +547,7 @@ export function ComposerFilePreviewDialog({
     >
       <DialogPopup
         {...composerFloatingLayerProps}
-        className="h-[min(85vh,52rem)] max-w-4xl overflow-hidden"
+        className="h-208 max-w-4xl overflow-hidden"
         showCloseButton={false}
       >
         <DialogTitle className="sr-only">{file.name}</DialogTitle>
@@ -602,7 +599,7 @@ export function ComposerRestingImagePreviews({
         <button
           key={image.id}
           type="button"
-          className="relative size-7 shrink-0 cursor-zoom-in overflow-hidden rounded-md border border-border/70 bg-muted/60"
+          className="relative size-6 shrink-0 cursor-zoom-in overflow-hidden rounded-row border border-border/70 bg-muted/60"
           aria-label={`Preview ${image.name}`}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => {
@@ -629,7 +626,7 @@ export function ComposerRestingImagePreviews({
                     pathValue={image.name}
                     kind="file"
                     theme={resolvedTheme}
-                    className="m-auto size-3.5"
+                    className="m-auto size-4"
                   />
                 )
               }
@@ -639,7 +636,7 @@ export function ComposerRestingImagePreviews({
               pathValue={image.name}
               kind="file"
               theme={resolvedTheme}
-              className="m-auto size-3.5"
+              className="m-auto size-4"
             />
           )}
         </button>
@@ -647,7 +644,7 @@ export function ComposerRestingImagePreviews({
       {counts.overflowCount > 0 ? (
         <button
           type="button"
-          className="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border/70 bg-muted/60 font-medium text-secondary-label text-xs tabular-nums outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
+          className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-row border border-border/70 bg-muted/60 font-medium text-ink-2 text-meta tabular-nums outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
           aria-label={`Show ${String(counts.overflowCount)} more image attachments`}
           onPointerDown={(event) => event.preventDefault()}
           onClick={onShowMore}
@@ -671,16 +668,16 @@ export function ComposerQueuedAttachmentRow({
   readonly onRemove: (attachmentId: string) => void;
 }) {
   return (
-    <div className="mb-3 flex flex-wrap gap-2">
+    <div className="mb-2 flex flex-wrap gap-2">
       {attachments.map(({ attachment, url }) => (
         <div
           key={attachment.id}
-          className="relative h-16 w-16 overflow-hidden rounded-lg border border-border/80 bg-background"
+          className="relative h-16 w-16 overflow-hidden rounded-row border border-border/80 bg-background"
         >
           {attachment.type === "image" && url ? (
             <img src={url} alt={attachment.name} className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center px-1 text-center text-3xs text-secondary-label">
+            <div className="flex h-full w-full items-center justify-center px-1 text-center text-meta text-ink-2">
               {attachment.name}
             </div>
           )}

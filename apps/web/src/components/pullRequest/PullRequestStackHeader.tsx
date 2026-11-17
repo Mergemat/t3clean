@@ -16,7 +16,7 @@ export function PullRequestStackHeader({
         <span>Stack #{number}</span>
         {notice ? (
           <Tooltip>
-            <TooltipTrigger render={<span role="status" className="text-xs font-normal" />}>
+            <TooltipTrigger render={<span role="status" className="text-meta font-normal" />}>
               {stale ? "May be stale" : "Refreshing…"}
             </TooltipTrigger>
             <TooltipPopup>{notice}</TooltipPopup>

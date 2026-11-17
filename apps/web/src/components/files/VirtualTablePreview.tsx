@@ -88,7 +88,7 @@ export default function VirtualTablePreview(props: {
         <table
           ref={measureRef}
           aria-hidden="true"
-          className="invisible absolute top-0 border-separate border-spacing-0 text-xs"
+          className="invisible absolute top-0 border-separate border-spacing-0 text-meta"
           style={{ width: Math.max(width - rowHeader, props.columns * 128) }}
         >
           <thead>
@@ -96,7 +96,7 @@ export default function VirtualTablePreview(props: {
               {props.header.map((cell, i) => (
                 <th
                   key={i}
-                  className="min-w-32 max-w-80 border-b px-3 py-1.5 text-left font-medium whitespace-nowrap"
+                  className="min-w-32 max-w-80 border-b px-2 py-2 text-left font-medium whitespace-nowrap"
                 >
                   {cell}
                 </th>
@@ -112,7 +112,7 @@ export default function VirtualTablePreview(props: {
                   {row.map((cell, j) => (
                     <td
                       key={j}
-                      className="max-w-80 border-b px-3 py-1.5 whitespace-pre-wrap break-words tabular-nums"
+                      className="max-w-80 border-b px-2 py-2 whitespace-pre-wrap break-words tabular-nums"
                     >
                       {cell}
                     </td>
@@ -128,13 +128,13 @@ export default function VirtualTablePreview(props: {
           aria-label={props.name}
           aria-rowcount={props.count}
           aria-colcount={props.source ? undefined : props.columns}
-          className="flex h-full min-h-0 flex-col text-xs"
+          className="flex h-full min-h-0 flex-col text-meta"
           style={{ width: tableWidth }}
         >
           {!props.source ? (
             <div
               role="row"
-              className="relative z-10 flex min-h-[29px] shrink-0 border-b border-border bg-muted/60 font-medium backdrop-blur"
+              className="relative z-10 flex min-h-6 shrink-0 border-b border-border bg-muted/60 font-medium backdrop-blur"
             >
               <div className="sticky left-0 z-10 w-14 shrink-0 border-r border-border bg-background" />
               <div style={{ width: offset(firstColumn), flexShrink: 0 }} />
@@ -145,7 +145,7 @@ export default function VirtualTablePreview(props: {
                       <div
                         role="columnheader"
                         aria-colindex={column + 1}
-                        className="shrink-0 overflow-hidden border-r border-border/40 px-3 py-1.5 text-ellipsis whitespace-pre"
+                        className="shrink-0 overflow-hidden border-r border-border/40 px-2 py-2 text-ellipsis whitespace-pre"
                         style={{ width: sizes[column] }}
                       >
                         {props.header?.[column] ?? columnLabel(column)}
@@ -205,8 +205,8 @@ function RowPage(
             aria-rowindex={props.source ? undefined : index + 1}
             className={
               props.source
-                ? `flex min-h-[29px] font-mono ${props.revealLine != null && Math.min(props.count, Math.max(1, props.revealLine)) === index + 1 ? "bg-primary/10" : ""}`
-                : `flex min-h-[29px] border-b border-border/60 ${(index - (props.header ? 1 : 0)) % 2 ? "bg-muted/30" : ""}`
+                ? `flex min-h-6 font-mono ${props.revealLine != null && Math.min(props.count, Math.max(1, props.revealLine)) === index + 1 ? "bg-primary/10" : ""}`
+                : `flex min-h-6 border-b border-border/60 ${(index - (props.header ? 1 : 0)) % 2 ? "bg-muted/30" : ""}`
             }
             data-preview-reveal={
               props.revealLine != null &&
@@ -217,7 +217,7 @@ function RowPage(
           >
             <div
               role={props.source ? undefined : "rowheader"}
-              className={`${props.source ? "sticky left-0" : "relative"} z-1 shrink-0 border-r border-border bg-background px-2 py-1.5 text-right font-normal text-muted-foreground tabular-nums select-none`}
+              className={`${props.source ? "sticky left-0" : "relative"} z-1 shrink-0 border-r border-border bg-background px-2 py-2 text-right font-normal text-ink-2 tabular-nums select-none`}
               style={{
                 width: props.rowHeader,
                 transform: props.source ? undefined : "translateX(var(--preview-scroll-left, 0px))",
@@ -240,8 +240,8 @@ function RowPage(
                 aria-colindex={props.source ? undefined : column + 1}
                 className={
                   props.source
-                    ? `min-w-0 flex-1 px-3 py-1 ${props.wrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"}`
-                    : "shrink-0 border-r border-border/40 px-3 py-1.5 whitespace-pre-wrap break-words tabular-nums"
+                    ? `min-w-0 flex-1 px-2 py-1 ${props.wrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"}`
+                    : "shrink-0 border-r border-border/40 px-2 py-2 whitespace-pre-wrap break-words tabular-nums"
                 }
                 style={props.source ? undefined : { width: props.sizes[column] }}
               >

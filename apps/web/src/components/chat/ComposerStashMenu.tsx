@@ -148,7 +148,7 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
         <ComposerBanner.Icon>
           <BookmarkIcon />
         </ComposerBanner.Icon>
-        <ComposerBanner.Content className="text-muted-foreground">Stash</ComposerBanner.Content>
+        <ComposerBanner.Content className="text-ink-2">Stash</ComposerBanner.Content>
         <ComposerBanner.Actions>
           <ComposerBanner.Count>{entries.length}</ComposerBanner.Count>
           <ComposerBanner.ToggleIcon expanded />
@@ -159,7 +159,7 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
           {entries.length === 0 ? (
             <ComposerBanner.Row render={<li />}>
               <ComposerBanner.Icon />
-              <ComposerBanner.Content className="text-muted-foreground">
+              <ComposerBanner.Content className="text-ink-2">
                 Nothing stashed yet.
                 {stashShortcutLabel
                   ? ` Press ${stashShortcutLabel} with a prompt in the composer to stash it.`
@@ -174,7 +174,7 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
                 data-stash-entry={entry.id}
                 data-highlighted={highlightedEntry?.id === entry.id || undefined}
                 className={cn(
-                  "relative rounded-sm",
+                  "relative rounded-row",
                   highlightedEntry?.id === entry.id && "bg-accent text-accent-foreground",
                 )}
                 onMouseMove={() => {
@@ -188,7 +188,7 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
                 <ComposerBanner.Content>
                   <button
                     type="button"
-                    className="min-w-0 flex-1 cursor-pointer truncate text-left text-foreground/80 outline-none before:absolute before:inset-0 before:rounded-sm focus-visible:before:ring-2 focus-visible:before:ring-inset focus-visible:before:ring-ring"
+                    className="min-w-0 flex-1 cursor-pointer truncate text-left text-ink-2 outline-none before:absolute before:inset-0 before:rounded-row focus-visible:before:ring-2 focus-visible:before:ring-inset focus-visible:before:ring-ring"
                     data-stash-restore={entry.id}
                     aria-label={`Restore stashed prompt: ${stashEntrySnippet(entry)}`}
                     onPointerDown={(event) => event.preventDefault()}
@@ -199,7 +199,7 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
                 </ComposerBanner.Content>
                 <ComposerBanner.Actions>
                   {entry.pendingImageCount ? (
-                    <span className="shrink-0 text-muted-foreground">
+                    <span className="shrink-0 text-ink-2">
                       saving {entry.pendingImageCount} image
                       {entry.pendingImageCount === 1 ? "" : "s"}…
                     </span>
@@ -210,27 +210,27 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
                     </span>
                   ) : null}
                   {entry.attachments.length > 0 ? (
-                    <span className="flex shrink-0 items-center -space-x-1.5">
+                    <span className="flex shrink-0 items-center -space-x-2">
                       {entry.attachments.slice(0, 3).map((attachment) => (
                         <img
                           key={attachment.id}
                           src={attachment.dataUrl}
                           alt=""
                           aria-hidden="true"
-                          className="size-4 rounded border border-border/70 object-cover"
+                          className="size-4 rounded-chip border border-border/70 object-cover"
                         />
                       ))}
                     </span>
                   ) : null}
                   {(entry.files?.length ?? 0) > 0 ? (
-                    <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
+                    <span className="flex shrink-0 items-center gap-1 text-ink-2">
                       <FileIcon className="size-3" aria-hidden />
                       {entry.files!.length}
                     </span>
                   ) : null}
                   <time
                     dateTime={entry.createdAt}
-                    className="shrink-0 text-muted-foreground tabular-nums max-sm:hidden"
+                    className="shrink-0 text-ink-2 tabular-nums max-sm:hidden"
                   >
                     <RelativeTime timestamp={entry.createdAt} />
                   </time>

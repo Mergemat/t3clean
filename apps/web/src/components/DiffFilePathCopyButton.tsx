@@ -25,7 +25,7 @@ export function DiffFilePathCopyButton({
         render={
           <Button
             ref={ref}
-            size="icon-micro"
+            size="icon-xs"
             variant="ghost-muted"
             aria-label="Copy file path"
             onClick={() =>

@@ -118,9 +118,9 @@ export const Route = createRootRoute({
 function RootRouteNotFoundView() {
   return (
     <main className="flex min-h-0 min-w-0 flex-1 items-center justify-center p-6">
-      <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-        <h1 className="text-lg font-medium text-foreground">Page not found</h1>
-        <p className="text-sm text-muted-foreground">
+      <div className="flex max-w-sm flex-col items-center gap-2 text-center">
+        <h1 className="text-title font-medium text-ink-1">Page not found</h1>
+        <p className="text-body text-ink-2">
           This link doesn't point to a page in {APP_DISPLAY_NAME}. Go home to choose a project or
           start a thread.
         </p>
@@ -158,7 +158,8 @@ function RootRouteBranch() {
     authGateState.status === "hosted-static",
   );
 
-  if (pathname === GUEST_PAGE_PATH) return <Outlet />;
+  // The guest page and the design lab stand alone, outside the app shell.
+  if (pathname === GUEST_PAGE_PATH || pathname === "/design-lab") return <Outlet />;
 
   if (
     pathname === "/pair" ||
@@ -249,7 +250,7 @@ function RootRouteErrorView({ error }: ErrorComponentProps) {
     <StandalonePage>
       <StandalonePageHeader title="Something went wrong." description={message} />
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-2 flex flex-wrap gap-2">
         <Button
           size="sm"
           onClick={() =>
@@ -264,9 +265,9 @@ function RootRouteErrorView({ error }: ErrorComponentProps) {
         <CopyErrorButton report={report} />
       </div>
 
-      <div className="mt-5 overflow-hidden rounded-lg border border-border/70 bg-background/55">
-        <p className="px-3 py-1.5 text-xs font-medium text-muted-foreground">Error report</p>
-        <pre className="max-h-64 overflow-auto border-t border-border/70 bg-background/80 px-3 py-2 text-xs whitespace-pre-wrap text-foreground/85">
+      <div className="mt-2 overflow-hidden rounded-row border border-border/70 bg-background/55">
+        <p className="px-2 py-2 text-meta font-medium text-ink-2">Error report</p>
+        <pre className="max-h-64 overflow-auto bg-background/80 px-2 py-2 text-meta whitespace-pre-wrap text-ink-1">
           {report}
         </pre>
       </div>

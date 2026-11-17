@@ -28,7 +28,7 @@ export function PullRequestDiffUnavailableState({
 
   return (
     <Empty size="compact" className="min-h-full" role="status">
-      <div className="flex size-11 items-center justify-center rounded-full bg-warning-surface text-warning">
+      <div className="flex size-12 items-center justify-center rounded-full bg-warning-surface text-warning">
         <TriangleAlertIcon aria-hidden className="size-5" />
       </div>
       <EmptyHeader>
@@ -49,11 +49,11 @@ export function PullRequestDiffUnavailableState({
           Open on {providerName}
         </Button>
       </div>
-      <details className="w-full max-w-lg text-xs text-muted-foreground">
-        <summary className="mx-auto w-fit cursor-pointer rounded-sm -outline-offset-2 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
+      <details className="w-full max-w-lg text-meta text-ink-2">
+        <summary className="mx-auto w-fit cursor-pointer rounded-row -outline-offset-2 hover:text-ink-1 focus-visible:outline-2 focus-visible:outline-ring">
           Technical details
         </summary>
-        <pre className="scrollbar-gutter-both mt-3 max-h-40 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-border bg-muted/40 p-3 text-left font-mono text-xs">
+        <pre className="scrollbar-gutter-both mt-2 max-h-40 overflow-auto whitespace-pre-wrap break-words rounded-row border border-border bg-muted/40 p-2 text-left font-mono text-meta">
           {error}
         </pre>
       </details>

@@ -28,9 +28,9 @@ interface Props {
 type HandleKind = "horizontal" | "vertical" | "corner";
 
 const EDGE_BUTTON_CLASS =
-  "group absolute z-20 touch-none border-0 bg-transparent p-0 outline-none before:absolute before:-inset-1 before:content-[''] focus-visible:bg-foreground/[0.04]";
+  "group absolute z-20 touch-none border-0 bg-transparent p-0 outline-none before:absolute before:-inset-1 focus-visible:bg-foreground/4";
 const EDGE_GRIP_CLASS =
-  "pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center text-muted-foreground/55 transition-colors duration-150 group-hover:text-foreground/85 group-focus-visible:text-foreground group-active:text-foreground";
+  "pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center text-ink-3 transition-colors duration-150 group-hover:text-ink-1 group-focus-visible:text-ink-1 group-active:text-ink-1";
 
 function ResizeHandle(props: {
   readonly direction: BrowserViewportResizeDirection;
@@ -66,10 +66,10 @@ function ResizeHandle(props: {
       <span
         className={cn(
           EDGE_GRIP_CLASS,
-          kind === "vertical" && "h-8 w-1.5",
-          kind === "horizontal" && "h-1.5 w-8",
+          kind === "vertical" && "h-8 w-2",
+          kind === "horizontal" && "h-2 w-8",
           kind === "corner" && "size-3",
-          active && "text-foreground",
+          active && "text-ink-1",
         )}
       >
         {kind === "vertical" ? (
@@ -87,8 +87,8 @@ function ResizeHandle(props: {
             className={cn("relative block size-3", mirrorCorner && "-scale-x-100")}
             aria-hidden="true"
           >
-            <span className="absolute bottom-[3px] left-0 h-px w-3 -rotate-45 rounded-full bg-current" />
-            <span className="absolute bottom-0 left-[5px] h-px w-2 -rotate-45 rounded-full bg-current" />
+            <span className="absolute bottom-1 left-0 h-px w-3 -rotate-45 rounded-full bg-current" />
+            <span className="absolute bottom-0 left-2 h-px w-2 -rotate-45 rounded-full bg-current" />
           </span>
         )}
       </span>

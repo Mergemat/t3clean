@@ -318,11 +318,11 @@ function FileViewedToggle({
   const viewed = viewedFiles.isViewed(path);
   const stale = viewedFiles.isStale(path);
   return (
-    <span className="flex items-center gap-3">
+    <span className="flex items-center gap-2">
       {stat}
       <label
         data-viewed-toggle=""
-        className="flex h-8 w-18 shrink-0 cursor-pointer select-none items-center gap-1.5 text-2xs text-muted-foreground"
+        className="flex h-8 w-18 shrink-0 cursor-pointer select-none items-center gap-2 text-meta text-ink-2"
         onClick={(event) => event.stopPropagation()}
       >
         <Checkbox
@@ -911,22 +911,22 @@ function PullRequestCodeTab({
       : [];
   const rawSlicesView =
     files.length === 0 && rawSlices.length > 0 ? (
-      <div className="space-y-4 px-4 py-5">
+      <div className="space-y-2 px-4 py-4">
         {rawSlices.map((slice) => (
           <div key={`${slice.reason}:${slice.text.slice(0, 64)}`} className="space-y-2">
-            <p className="text-xs text-muted-foreground">{slice.reason}</p>
-            <pre className="whitespace-pre-wrap break-words font-mono text-xs">{slice.text}</pre>
+            <p className="text-meta text-ink-2">{slice.reason}</p>
+            <pre className="whitespace-pre-wrap break-words font-mono text-meta">{slice.text}</pre>
           </div>
         ))}
       </div>
     ) : null;
   const unstructured =
     rawSlices.length === 0 ? null : (
-      <div className="space-y-4 border-t border-border/60 px-4 py-5">
+      <div className="space-y-2 px-4 py-4">
         {rawSlices.map((slice) => (
           <div key={`${slice.reason}:${slice.text.slice(0, 64)}`} className="space-y-2">
-            <p className="text-xs text-muted-foreground">{slice.reason}</p>
-            <pre className="whitespace-pre-wrap break-words font-mono text-xs">{slice.text}</pre>
+            <p className="text-meta text-ink-2">{slice.reason}</p>
+            <pre className="whitespace-pre-wrap break-words font-mono text-meta">{slice.text}</pre>
           </div>
         ))}
       </div>
@@ -1093,7 +1093,7 @@ function PullRequestCodeTab({
     nextCursor === null ? null : (
       <div
         ref={sentinelRef}
-        className="flex items-center justify-center gap-2 py-2 text-xs text-muted-foreground"
+        className="flex items-center justify-center gap-2 py-2 text-meta text-ink-2"
       >
         {diffQuery.error !== null ? (
           <>
@@ -1112,7 +1112,7 @@ function PullRequestCodeTab({
     const collapsed = item.collapsed === true;
     return (
       <Button
-        size="icon-micro"
+        size="icon-xs"
         variant="ghost-muted"
         aria-expanded={!collapsed}
         aria-label={collapsed ? "Expand diff" : "Collapse diff"}
@@ -1147,7 +1147,7 @@ function PullRequestCodeTab({
           <PullRequestDiffStat
             additions={additions}
             deletions={deletions}
-            className="font-mono text-2xs"
+            className="font-mono text-meta"
           />
         }
       />
@@ -1276,9 +1276,9 @@ function PullRequestCodeTab({
 
   const renderAnnotation = (...[annotation]: CodeViewAnnotationArgs<ReviewAnnotationGroup>) => (
     // Folded resolved conversations alone add no row, so the code reads straight through.
-    <div className="relative font-sans text-foreground has-[>:not([data-resolved-threads])]:py-1">
+    <div className="relative font-sans text-ink-1 has-[>:not([data-resolved-threads])]:py-1">
       {annotation.metadata.image ? (
-        <div className="flex justify-center p-3">
+        <div className="flex justify-center p-2">
           <ChatMarkdownAssetImage
             environmentId={environmentId}
             resource={{
@@ -1363,8 +1363,8 @@ function PullRequestCodeTab({
     setSelectedLines(null);
   };
   const toolbar = (
-    <div className="@container flex h-10 min-h-10 shrink-0 items-center justify-between gap-2 border-b border-border/60 bg-background px-4 text-xs text-muted-foreground">
-      <div className="flex min-w-0 flex-1 items-center gap-3">
+    <div className="@container flex h-10 min-h-10 shrink-0 items-center justify-between gap-2 border-b border-border/60 bg-background px-4 text-meta text-ink-2">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
         {orderedCommits.length > 0 ? (
           <DropdownMenu>
             <DropdownMenuTrigger
@@ -1373,10 +1373,11 @@ function PullRequestCodeTab({
               aria-label={`Diff scope: ${scopeLabel}`}
             >
               <span className="truncate">{scopeLabel}</span>
-              <ChevronDownIcon className="size-3.5 shrink-0 opacity-70" />
+              <ChevronDownIcon className="size-4 shrink-0 opacity-70" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="max-w-[min(28rem,calc(100vw-2rem))]">
+            <DropdownMenuContent align="start">
               <DropdownMenuRadioGroup
+                className="max-w-md"
                 value={commit ?? "all"}
                 onValueChange={(value) => onSelectedCommitChange(value === "all" ? null : value)}
               >
@@ -1392,7 +1393,7 @@ function PullRequestCodeTab({
                         />
                         <TooltipPopup side="top">{entry.messageHeadline}</TooltipPopup>
                       </Tooltip>
-                      <span className="ml-auto shrink-0 font-mono text-xs text-muted-foreground">
+                      <span className="ml-auto shrink-0 font-mono text-meta text-ink-2">
                         {entry.oid.slice(0, 7)}
                       </span>
                     </span>
@@ -1404,7 +1405,7 @@ function PullRequestCodeTab({
                   closeOnClick={false}
                   onClick={() => setVisibleCommitCount((count) => count + COMMIT_PAGE_SIZE)}
                 >
-                  <span className="text-muted-foreground">
+                  <span className="text-ink-2">
                     Show more ({orderedCommits.length - visibleCommitCount} left)
                   </span>
                 </DropdownMenuItem>
@@ -1435,7 +1436,7 @@ function PullRequestCodeTab({
                   <TooltipTrigger render={<span className="flex shrink-0 items-center" />}>
                     <InfoIcon
                       aria-label="These ticks are kept here, not on the host"
-                      className="text-muted-foreground size-3.5"
+                      className="text-ink-2 size-4"
                     />
                   </TooltipTrigger>
                   <TooltipPopup side="bottom">
@@ -1450,7 +1451,7 @@ function PullRequestCodeTab({
                   <TooltipTrigger render={<span className="flex shrink-0 items-center" />}>
                     <TriangleAlertIcon
                       aria-label="Your ticks could not be read"
-                      className="size-3.5 text-warning-foreground"
+                      className="size-4 text-warning-foreground"
                     />
                   </TooltipTrigger>
                   <TooltipPopup side="bottom">
@@ -1464,7 +1465,7 @@ function PullRequestCodeTab({
                   <TooltipTrigger render={<span className="flex shrink-0 items-center" />}>
                     <TriangleAlertIcon
                       aria-label="This count covers only part of the change"
-                      className="size-3.5 text-warning-foreground"
+                      className="size-4 text-warning-foreground"
                     />
                   </TooltipTrigger>
                   <TooltipPopup side="bottom">
@@ -1480,7 +1481,7 @@ function PullRequestCodeTab({
               <TooltipTrigger render={<span className="flex shrink-0 items-center" />}>
                 <TriangleAlertIcon
                   aria-label="Some of this diff was not shown"
-                  className="size-3.5 text-warning-foreground"
+                  className="size-4 text-warning-foreground"
                 />
               </TooltipTrigger>
               <TooltipPopup side="bottom">
@@ -1493,7 +1494,7 @@ function PullRequestCodeTab({
               <TooltipTrigger render={<span className="flex shrink-0 items-center" />}>
                 <MessageSquareOffIcon
                   aria-label="Line comments are written from the whole change"
-                  className="size-3.5"
+                  className="size-4"
                 />
               </TooltipTrigger>
               <TooltipPopup side="bottom">
@@ -1515,7 +1516,7 @@ function PullRequestCodeTab({
                 />
               }
             >
-              <Settings2Icon className="size-3.5" />
+              <Settings2Icon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">Diff options</TooltipPopup>
           </Tooltip>
@@ -1559,13 +1560,13 @@ function PullRequestCodeTab({
                     ignoreWhitespace ? "Show whitespace changes" : "Hide whitespace changes"
                   }
                   variant="ghost"
-                  size="sm"
+                  size="icon-sm"
                   pressed={ignoreWhitespace}
                   onPressedChange={(pressed) => changeIgnoreWhitespace(Boolean(pressed))}
                 />
               }
             >
-              <PilcrowIcon className="size-3.5" />
+              <PilcrowIcon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">
               {ignoreWhitespace ? "Show whitespace changes" : "Hide whitespace changes"}
@@ -1583,11 +1584,11 @@ function PullRequestCodeTab({
               }
             }}
           >
-            <Toggle aria-label="Stacked diff view" value="stacked">
-              <Rows3Icon className="size-3.5" />
+            <Toggle size="icon-sm" aria-label="Stacked diff view" value="stacked">
+              <Rows3Icon className="size-4" />
             </Toggle>
-            <Toggle aria-label="Split diff view" value="split">
-              <Columns2Icon className="size-3.5" />
+            <Toggle size="icon-sm" aria-label="Split diff view" value="split">
+              <Columns2Icon className="size-4" />
             </Toggle>
           </ToggleGroup>
           <Tooltip>
@@ -1596,7 +1597,7 @@ function PullRequestCodeTab({
                 <Toggle
                   aria-label={wordWrap ? "Disable diff line wrapping" : "Enable diff line wrapping"}
                   variant="ghost"
-                  size="sm"
+                  size="icon-sm"
                   pressed={wordWrap}
                   onPressedChange={(pressed) => {
                     setWordWrapOverride(Boolean(pressed));
@@ -1604,7 +1605,7 @@ function PullRequestCodeTab({
                 />
               }
             >
-              <TextWrapIcon className="size-3.5" />
+              <TextWrapIcon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">
               {wordWrap ? "Disable line wrapping" : "Enable line wrapping"}
@@ -1625,9 +1626,9 @@ function PullRequestCodeTab({
               }
             >
               {allFilesCollapsed ? (
-                <ChevronsUpDownIcon className="size-3.5" />
+                <ChevronsUpDownIcon className="size-4" />
               ) : (
-                <ChevronsDownUpIcon className="size-3.5" />
+                <ChevronsDownUpIcon className="size-4" />
               )}
             </TooltipTrigger>
             <TooltipPopup side="top">
@@ -1642,13 +1643,13 @@ function PullRequestCodeTab({
                 <Toggle
                   aria-label="Hide test files"
                   variant="ghost"
-                  size="sm"
+                  size="icon-sm"
                   pressed={hideTestFiles}
                   onPressedChange={(pressed) => setHideTestFiles(Boolean(pressed))}
                 />
               }
             >
-              <FlaskConicalOffIcon className="size-3.5" />
+              <FlaskConicalOffIcon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">
               {hideTestFiles ? "Show test files" : "Hide test files"}
@@ -1662,13 +1663,13 @@ function PullRequestCodeTab({
                 <Toggle
                   aria-label={fileTreeOpen ? "Hide file tree" : "Show file tree"}
                   variant="ghost"
-                  size="sm"
+                  size="icon-sm"
                   pressed={fileTreeOpen}
                   onPressedChange={(pressed) => setFileTreeOpen(Boolean(pressed))}
                 />
               }
             >
-              <FolderTreeIcon className="size-3.5" />
+              <FolderTreeIcon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">
               {fileTreeOpen ? "Hide file tree" : "Show file tree"}
@@ -1778,7 +1779,7 @@ function PullRequestCodeTab({
 
   if (items.length === 0 && nextCursor === null) {
     return withToolbar(
-      <p className="px-4 py-5 text-sm text-muted-foreground">
+      <p className="px-4 py-4 text-body text-ink-2">
         {commit === null ? `This ${term} has no file changes.` : "This commit has no file changes."}
       </p>,
     );
@@ -1799,7 +1800,7 @@ function PullRequestCodeTab({
         <div className="shrink-0 border-b border-border/60">
           <Collapsible open={orphansOpen} onOpenChange={setOrphansOpen}>
             <h2>
-              <CollapsibleTrigger className="flex w-full items-center gap-1.5 px-4 py-2 text-left text-xs text-muted-foreground">
+              <CollapsibleTrigger className="flex w-full items-center gap-2 px-4 py-2 text-left text-meta text-ink-2">
                 <span>
                   {nextCursor === null
                     ? "Conversations not on the current diff"
@@ -1807,7 +1808,7 @@ function PullRequestCodeTab({
                 </span>
                 <ChevronRightIcon
                   aria-hidden
-                  className={cn("size-3.5 transition-transform", orphansOpen && "rotate-90")}
+                  className={cn("size-4 transition-transform", orphansOpen && "rotate-90")}
                 />
                 <span aria-hidden className="tabular-nums">
                   {orphanThreads.length}
@@ -1825,9 +1826,7 @@ function PullRequestCodeTab({
                   <div key={path}>
                     <Tooltip>
                       <TooltipTrigger
-                        render={
-                          <p className="truncate px-3 text-xs text-muted-foreground">{path}</p>
-                        }
+                        render={<p className="truncate px-2 text-meta text-ink-2">{path}</p>}
                       />
                       <TooltipPopup side="top">{path}</TooltipPopup>
                     </Tooltip>
@@ -1835,7 +1834,7 @@ function PullRequestCodeTab({
                       {threads.map((thread) => (
                         <div key={thread.id}>
                           {thread.line === null ? null : (
-                            <p className="px-3 text-xs text-muted-foreground">Line {thread.line}</p>
+                            <p className="px-2 text-meta text-ink-2">Line {thread.line}</p>
                           )}
                           {renderThreadCard(thread)}
                         </div>
@@ -1879,7 +1878,7 @@ function PullRequestCodeTab({
           {/* The viewer must own its scroll element to position virtual rows within it. */}
           <FileViewedToggleContext value={fileViewedToggle}>
             <StyledDiffCodeView<ReviewAnnotationGroup>
-              className="@container h-full overflow-auto [scrollbar-gutter:stable]"
+              className="@container h-full overflow-auto scrollbar-gutter-stable"
               containerRef={scrollerRef}
               viewerRef={codeViewReveal.attach}
               items={items}
@@ -1946,8 +1945,8 @@ function WithheldFileNotice({
   readonly onLoad: ((path: string) => void) | undefined;
 }) {
   return (
-    <div className="flex items-center gap-2 bg-warning/8 px-3 py-2 text-xs text-warning-foreground">
-      <TriangleAlertIcon aria-hidden className="size-3.5 shrink-0 text-warning" />
+    <div className="flex items-center gap-2 bg-warning/8 px-2 py-2 text-meta text-warning-foreground">
+      <TriangleAlertIcon aria-hidden className="size-4 shrink-0 text-warning" />
       <span>
         {status === "error"
           ? "Couldn't load this diff."
@@ -1957,7 +1956,7 @@ function WithheldFileNotice({
       </span>
       {onLoad === undefined || status === "empty" ? null : (
         <Button
-          size="micro"
+          size="xs"
           variant="warning-outline"
           disabled={status === "loading"}
           onClick={() => onLoad(path)}

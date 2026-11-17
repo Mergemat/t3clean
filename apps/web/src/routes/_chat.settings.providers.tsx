@@ -9,7 +9,7 @@ function SettingsProvidersRoute() {
   const { environment, scope } = useSettingsScope();
   if (!environment) {
     return (
-      <p className="p-8 text-sm text-muted-foreground">
+      <p className="p-6 text-body text-ink-2">
         {scope.kind === "environment"
           ? `Reconnect ${scope.label} to set up its providers.`
           : "Connect an environment to set up its providers."}

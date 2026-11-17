@@ -174,18 +174,18 @@ export function ImageChipButton({
           key={previewUrl}
           src={previewUrl}
           alt=""
-          className="size-[1em] shrink-0 self-center rounded-sm object-cover"
+          className="size-em shrink-0 self-center rounded-row object-cover"
           onError={onPreviewError}
         />
       ) : (
         <ImageIcon />
       )}
-      <ContextChipLabel className="flex items-baseline gap-[0.33em]">
+      <ContextChipLabel className="flex items-baseline gap-1">
         <span className="min-w-0 max-w-72 overflow-x-clip text-ellipsis whitespace-nowrap">
           {middleTruncateAttachmentName(name)}
         </span>
-        <span className="shrink-0 text-3xs text-current">{size}</span>
-        {suffix ? <span className="text-3xs text-current">{suffix}</span> : null}
+        <span className="shrink-0 text-meta text-current">{size}</span>
+        {suffix ? <span className="text-meta text-current">{suffix}</span> : null}
       </ContextChipLabel>
     </ContextChip>
   );
@@ -329,12 +329,12 @@ function FileChipContent(props: {
       ) : (
         <PierreEntryIcon pathValue={props.name} kind="file" theme={props.theme} />
       )}
-      <ContextChipLabel className="flex items-baseline gap-[0.33em]">
+      <ContextChipLabel className="flex items-baseline gap-1">
         <span className="min-w-0 max-w-72 overflow-x-clip text-ellipsis whitespace-nowrap">
           {middleTruncateAttachmentName(props.name)}
         </span>
-        <span className="shrink-0 text-3xs text-current">{props.size}</span>
-        {props.suffix ? <span className="text-3xs text-current">{props.suffix}</span> : null}
+        <span className="shrink-0 text-meta text-current">{props.size}</span>
+        {props.suffix ? <span className="text-meta text-current">{props.suffix}</span> : null}
       </ContextChipLabel>
     </>
   );

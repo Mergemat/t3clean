@@ -34,7 +34,7 @@ function AccountSummary({ account }: { readonly account: UsageLimitsReport["acco
           ariaLabel="Toggle account label visibility"
           revealTooltip="Click to reveal account"
           hideTooltip="Click to hide account"
-          className="max-w-full truncate align-bottom font-sans text-xs leading-normal"
+          className="max-w-full truncate align-bottom font-sans text-meta leading-normal"
         />
       ) : (
         label
@@ -112,7 +112,7 @@ function UsageLimitsBannerBody({
   const now = Date.parse(report.createdAt);
   return (
     <ComposerBanner.Scroll>
-      <ComposerBanner.Body className="flex flex-col gap-2 pt-1 pb-1.5 pe-2">
+      <ComposerBanner.Body className="flex flex-col gap-2 pt-1 pb-2 pe-2">
         {report.accounts.map((account) => {
           const resetCreditInput =
             account.resetCreditInput ??
@@ -122,12 +122,12 @@ function UsageLimitsBannerBody({
           return (
             <div key={account.id} className="flex min-w-0 flex-col gap-1">
               {report.accounts.length > 1 ? (
-                <span className="truncate text-xs text-muted-foreground">
+                <span className="truncate text-meta text-ink-2">
                   <AccountSummary account={account} />
                 </span>
               ) : null}
               {notice ? (
-                <span className="text-xs text-muted-foreground">{notice}</span>
+                <span className="text-meta text-ink-2">{notice}</span>
               ) : (
                 <LimitWindows
                   compact
@@ -159,7 +159,7 @@ function UsageLimitsBannerBody({
           );
         })}
         {report.notices.map((notice) => (
-          <span key={notice} className="text-xs text-muted-foreground">
+          <span key={notice} className="text-meta text-ink-2">
             {notice}
           </span>
         ))}

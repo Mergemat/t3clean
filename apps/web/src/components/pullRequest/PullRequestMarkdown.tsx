@@ -56,7 +56,7 @@ function PullRequestHostVideo({
       originalUrl={url}
       label="Pull request video"
       className="w-full"
-      videoClassName="rounded-lg border border-border/60"
+      videoClassName="rounded-row border border-border/60"
       onRetry={refreshAssetUrl}
     />
   );
@@ -81,19 +81,19 @@ function PullRequestBodySegmentView({
   const repository = context?.repository ?? undefined;
   if (segment.kind === "table") {
     return (
-      <div className="space-y-3">
+      <div className="space-y-2">
         {segment.rows.map((cells, rowIndex) => (
           <div
             // oxlint-disable-next-line react/no-array-index-key -- rows have no identity besides position
             key={rowIndex}
-            className="grid gap-3"
+            className="grid gap-2"
             style={{ gridTemplateColumns: `repeat(${cells.length}, minmax(0, 1fr))` }}
           >
             {cells.map((cell, cellIndex) => (
               <div
                 // oxlint-disable-next-line react/no-array-index-key -- cells have no identity besides position
                 key={cellIndex}
-                className={cn("min-w-0 space-y-3", cell.header && "font-medium")}
+                className={cn("min-w-0 space-y-2", cell.header && "font-medium")}
               >
                 {cell.segments.map((cellSegment) => (
                   <PullRequestBodySegmentView
@@ -158,7 +158,7 @@ function PullRequestBodySegmentView({
         originalUrl={segment.url}
         label="Pull request video"
         className="w-full"
-        videoClassName="rounded-lg border border-border/60"
+        videoClassName="rounded-row border border-border/60"
       />
     );
   }
@@ -168,13 +168,13 @@ function PullRequestBodySegmentView({
       href={segment.url}
       rel="noreferrer noopener"
       target="_blank"
-      className="flex items-center gap-2 rounded-lg border border-border/60 bg-muted/30 px-3 py-2 text-sm hover:bg-muted/60"
+      className="flex items-center gap-2 rounded-row border border-border/60 bg-muted/30 px-2 py-2 text-body hover:bg-muted/60"
     >
-      <PaperclipIcon aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
+      <PaperclipIcon aria-hidden className="size-4 shrink-0 text-ink-2" />
       <span className="min-w-0 flex-1 truncate">
         Open attachment on {hostMedia?.definition.label ?? new URL(segment.url).hostname}
       </span>
-      <ExternalLinkIcon aria-hidden className="size-3 shrink-0 text-muted-foreground" />
+      <ExternalLinkIcon aria-hidden className="size-3 shrink-0 text-ink-2" />
     </a>
   );
 }
@@ -203,7 +203,7 @@ export function PullRequestMarkdown({
   return (
     <div
       className={cn(
-        "space-y-3 [&_[data-markdown-details]]:border-0 [&_[data-markdown-details-summary]]:text-foreground/80 [&_[data-markdown-details-summary]>svg]:text-muted-foreground/60",
+        "space-y-2 [&_[data-markdown-details]]:border-0 [&_[data-markdown-details-summary]]:text-ink-2 [&_[data-markdown-details-summary]>svg]:text-ink-3",
         className,
       )}
       data-image-gallery

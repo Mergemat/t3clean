@@ -152,7 +152,7 @@ export function PullRequestStackMenu({
                   />
                 }
               >
-                <PullRequestGlyph.stack aria-hidden className="size-3.5" /> {position}/
+                <PullRequestGlyph.stack aria-hidden className="size-4" /> {position}/
                 {stack.layers.length}
                 {onRetry ? <TriangleAlertIcon aria-hidden className="size-3 text-warning" /> : null}
               </MenuTrigger>
@@ -200,7 +200,7 @@ export function PullRequestStackMenu({
                 </MenuItem>
               ) : null}
               {mergeHasClosed || mergeLayers.some((layer) => layer.isDraft) ? (
-                <p className="px-2 py-1 text-xs text-muted-foreground">
+                <p className="px-2 py-1 text-meta text-ink-2">
                   Every layer being merged must be open and ready for review.
                 </p>
               ) : null}
@@ -221,7 +221,7 @@ export function PullRequestStackMenu({
                   aria-description={stale ? (notice ?? undefined) : undefined}
                   onClick={mergeDisabled ? undefined : () => setConfirmation("merge")}
                 >
-                  <PullRequestGlyph.merged aria-hidden className="size-3.5" />
+                  <PullRequestGlyph.merged aria-hidden className="size-4" />
                   Merge stack
                 </Button>
               </span>
@@ -254,11 +254,11 @@ export function PullRequestStackMenu({
             </DialogDescription>
           </DialogHeader>
           <DialogPanel>
-            <ul className="max-h-48 space-y-1 overflow-y-auto text-sm">
+            <ul className="max-h-48 space-y-1 overflow-y-auto text-body">
               {confirmationLayers.map((layer) => (
                 <li
                   key={layer.number}
-                  className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2"
+                  className="flex items-center gap-2 rounded-row bg-muted/50 px-2 py-2"
                 >
                   <PullRequestStackLayerContent layer={layer} compact />
                 </li>

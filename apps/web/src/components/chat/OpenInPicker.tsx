@@ -201,7 +201,7 @@ const resolveOpenInOptions = (platform: string, availableEditors: ReadonlyArray<
 };
 
 function getOpenInIconClass(kind: OpenInOption["kind"]) {
-  return cn(kind === "brand" ? "text-foreground opacity-100" : "text-muted-foreground");
+  return cn(kind === "brand" ? "text-ink-1 opacity-100" : "text-ink-2");
 }
 
 export const OpenInPicker = memo(function OpenInPicker({
@@ -388,7 +388,7 @@ export const OpenInPicker = memo(function OpenInPicker({
         <primaryOption.Icon
           aria-hidden="true"
           className={cn(
-            isPanel ? THREAD_DETAILS_PANEL_ICON_CLASS : "size-3.5",
+            isPanel ? THREAD_DETAILS_PANEL_ICON_CLASS : "size-4",
             getOpenInIconClass(primaryOption.kind),
           )}
         />
@@ -397,9 +397,7 @@ export const OpenInPicker = memo(function OpenInPicker({
       ) : null}
       <span
         className={cn(
-          compact
-            ? "sr-only"
-            : "sr-only @3xl/header-actions:not-sr-only @3xl/header-actions:ml-0.5",
+          compact ? "sr-only" : "sr-only @3xl/header-actions:not-sr-only",
           isPanel && cn("not-sr-only ml-0 min-w-0 truncate", THREAD_DETAILS_PANEL_LABEL_CLASS),
         )}
       >

@@ -26,16 +26,16 @@ export function PreviewFileNotShown({
   const host = safeHost(url) ?? url;
   return (
     <div className="scrollbar-gutter-both relative flex h-full min-h-0 w-full overflow-y-auto bg-background">
-      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-8 py-12 sm:py-16">
-        <ErrorIcon className="mb-6 size-12 text-muted-foreground/70" />
-        <h1 className="mb-3 text-2xl font-semibold leading-tight text-foreground">
+      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6 sm:py-6">
+        <ErrorIcon className="mb-6 size-12 text-ink-2" />
+        <h1 className="mb-2 text-title font-semibold leading-tight text-ink-1">
           This file can&rsquo;t be shown here
         </h1>
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          <span className="font-semibold text-foreground">{fileName}</span> from {host} was
-          downloaded instead.
+        <p className="text-body leading-relaxed text-ink-2">
+          <span className="font-semibold text-ink-1">{fileName}</span> from {host} was downloaded
+          instead.
         </p>
-        <div className="mt-auto flex items-center gap-2 pt-8">
+        <div className="mt-auto flex items-center gap-2 pt-6">
           <div className="flex-1" />
           <Button type="button" variant="outline" size="sm" onClick={onOpen}>
             Open in browser
@@ -59,19 +59,19 @@ export function PreviewUnreachable({ url, code, description, onReload, move }: P
 
   return (
     <div className="scrollbar-gutter-both relative flex h-full min-h-0 w-full overflow-y-auto bg-background">
-      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-8 py-12 sm:py-16">
-        <ErrorIcon className="mb-6 size-12 text-muted-foreground/70" />
-        <h1 className="mb-3 text-2xl font-semibold leading-tight text-foreground">
+      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 py-6 sm:py-6">
+        <ErrorIcon className="mb-6 size-12 text-ink-2" />
+        <h1 className="mb-2 text-title font-semibold leading-tight text-ink-1">
           This site can&rsquo;t be reached
         </h1>
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          <span className="font-semibold text-foreground">{host}</span>: {friendly}.
+        <p className="text-body leading-relaxed text-ink-2">
+          <span className="font-semibold text-ink-1">{host}</span>: {friendly}.
         </p>
 
         {showDetails ? (
-          <div className="mt-6 rounded-lg border border-border bg-muted/40 p-4 text-sm">
-            <p className="mb-2 font-medium text-foreground">Try:</p>
-            <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
+          <div className="mt-6 rounded-box border border-border bg-muted/40 p-4 text-body">
+            <p className="mb-2 font-medium text-ink-1">Try:</p>
+            <ul className="list-disc space-y-1 pl-4 text-ink-2">
               <li>Checking your connection</li>
               <li>Confirming the dev server is running</li>
               {move ? (
@@ -82,11 +82,9 @@ export function PreviewUnreachable({ url, code, description, onReload, move }: P
           </div>
         ) : null}
 
-        <div className="mt-8 text-xs uppercase tracking-wide text-muted-foreground/70">
-          {errorLabel}
-        </div>
+        <div className="mt-6 text-meta uppercase tracking-wide text-ink-2">{errorLabel}</div>
 
-        <div className="mt-auto flex items-center gap-2 pt-8">
+        <div className="mt-auto flex items-center gap-2 pt-6">
           <Button
             type="button"
             variant="outline"

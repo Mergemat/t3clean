@@ -213,7 +213,7 @@ function WorkspaceImagePreview(props: {
   if (assetUrl._tag === "Failure") {
     return (
       <MediaActions source={actionsSource}>
-        <div className="flex min-h-0 flex-1 items-center justify-center px-6 text-center text-xs leading-relaxed text-destructive">
+        <div className="flex min-h-0 flex-1 items-center justify-center px-6 text-center text-meta leading-relaxed text-destructive">
           Unable to load workspace image.
         </div>
       </MediaActions>
@@ -227,7 +227,7 @@ function WorkspaceImagePreview(props: {
       </div>
     </MediaActions>
   ) : (
-    <div className="flex min-h-0 flex-1 items-center justify-center text-muted-foreground">
+    <div className="flex min-h-0 flex-1 items-center justify-center text-ink-2">
       <Spinner size="lg" />
     </div>
   );
@@ -271,7 +271,7 @@ export function WorkspaceBrowserPreview(props: {
 
   if (assetUrl._tag === "Failure") {
     return (
-      <div className="flex min-h-0 flex-1 items-center justify-center px-6 text-center text-xs leading-relaxed text-destructive">
+      <div className="flex min-h-0 flex-1 items-center justify-center px-6 text-center text-meta leading-relaxed text-destructive">
         Unable to load file preview.
       </div>
     );
@@ -281,7 +281,7 @@ export function WorkspaceBrowserPreview(props: {
     (pdf && assetUrl.fileRevision === undefined && assetUrl.waiting)
   ) {
     return (
-      <div className="flex min-h-0 flex-1 items-center justify-center text-muted-foreground">
+      <div className="flex min-h-0 flex-1 items-center justify-center text-ink-2">
         <Spinner size="lg" />
       </div>
     );
@@ -1451,14 +1451,14 @@ export default function FilePreviewPanel({
   if (attachment === undefined && !canReadFiles) {
     if (fileAccess.isPending) {
       return (
-        <div className="flex min-h-0 flex-1 items-center justify-center gap-2 text-sm text-muted-foreground">
+        <div className="flex min-h-0 flex-1 items-center justify-center gap-2 text-body text-ink-2">
           <Spinner className="size-4" />
           Checking file access...
         </div>
       );
     }
     return (
-      <div className="p-4 text-sm text-muted-foreground">
+      <div className="p-4 text-body text-ink-2">
         {fileAccess.error ?? "This connection cannot read host files."}
       </div>
     );
@@ -1476,7 +1476,7 @@ export default function FilePreviewPanel({
             className="min-w-0 flex-1"
             data-file-breadcrumbs
           >
-            <div className="flex h-full w-max min-w-full items-center text-xs">
+            <div className="flex h-full w-max min-w-full items-center text-meta">
               <FileBreadcrumbs
                 cwd={cwd}
                 environmentId={environmentId}
@@ -1519,11 +1519,11 @@ export default function FilePreviewPanel({
               }}
             >
               {rendered ? (
-                <Code2Icon className="size-3.5" />
+                <Code2Icon className="size-4" />
               ) : renderedMode === "table" ? (
-                <Table2Icon className="size-3.5" />
+                <Table2Icon className="size-4" />
               ) : (
-                <EyeIcon className="size-3.5" />
+                <EyeIcon className="size-4" />
               )}
             </FileSurfaceAction>
           ) : null}
@@ -1533,12 +1533,12 @@ export default function FilePreviewPanel({
               pressed={wordWrap}
               onPress={() => setWordWrapOverride(!wordWrap)}
             >
-              <WrapTextIcon className="size-3.5" />
+              <WrapTextIcon className="size-4" />
             </FileSurfaceAction>
           ) : null}
           {canOpenInBrowser ? (
             <FileSurfaceAction label="Open file in preview browser" onPress={handleOpenInBrowser}>
-              <Globe2 className="size-3.5" />
+              <Globe2 className="size-4" />
             </FileSurfaceAction>
           ) : null}
           {!isHostFile && previewPath !== null ? (
@@ -1547,13 +1547,13 @@ export default function FilePreviewPanel({
               pressed={explorerOpen}
               onPress={toggleExplorer}
             >
-              <FolderTree className="size-3.5" />
+              <FolderTree className="size-4" />
             </FileSurfaceAction>
           ) : null}
         </div>
       ) : null}
       {relativePath && !attachment && !isHostFile && !canWriteFiles && !fileAccess.isPending ? (
-        <div className="shrink-0 border-b px-3 py-1.5 text-2xs text-muted-foreground">
+        <div className="shrink-0 border-b px-2 py-2 text-meta text-ink-2">
           Read-only connection. Unsaved edits are kept until write access returns.
         </div>
       ) : null}
@@ -1563,7 +1563,7 @@ export default function FilePreviewPanel({
       !renderBrowserFile &&
       file.data?.truncated &&
       (draft || isMarkdown || isMermaid || isHtml) ? (
-        <div className="shrink-0 border-b border-warning/20 bg-warning-surface px-3 py-1.5 text-2xs text-warning-foreground">
+        <div className="shrink-0 border-b border-warning/20 bg-warning-surface px-2 py-2 text-meta text-warning-foreground">
           Preview limited to the first 1 MB of a {file.data.byteLength.toLocaleString()} byte file.
         </div>
       ) : null}
@@ -1679,20 +1679,20 @@ export default function FilePreviewPanel({
               role="alert"
               className="scrollbar-gutter-both flex min-h-0 flex-1 flex-col overflow-auto"
             >
-              <div className="my-auto flex shrink-0 flex-col gap-3 px-6 py-6 text-center text-xs leading-relaxed">
+              <div className="my-auto flex shrink-0 flex-col gap-2 px-6 py-6 text-center text-meta leading-relaxed">
                 <p className="text-destructive">
                   {file.readError ? filePreviewReadErrorMessage(file.readError) : file.error}
                 </p>
                 {attemptedPath ? (
-                  <p className="text-muted-foreground">
+                  <p className="text-ink-2">
                     Attempted path
-                    <code className="block break-all font-mono text-foreground select-all">
+                    <code className="block break-all font-mono text-ink-1 select-all">
                       {attemptedPath}
                     </code>
                   </p>
                 ) : null}
                 {!isHostFile ? (
-                  <p className="text-muted-foreground">
+                  <p className="text-ink-2">
                     Workspace folder:{" "}
                     <code className="break-all font-mono select-all">
                       {file.readError?.cwd ?? cwd}
@@ -1703,7 +1703,7 @@ export default function FilePreviewPanel({
               </div>
             </div>
           ) : relativePath && file.data === null ? (
-            <div className="flex min-h-0 flex-1 items-center justify-center text-muted-foreground">
+            <div className="flex min-h-0 flex-1 items-center justify-center text-ink-2">
               <Spinner size="lg" />
             </div>
           ) : relativePath && file.data ? (
@@ -1857,12 +1857,12 @@ export function WorkspaceLargeTextPreview(props: {
       />
     );
   if (assetUrl._tag !== "Success" || loaded === null)
-    return <div className="p-6 text-xs text-muted-foreground">Loading…</div>;
+    return <div className="p-6 text-meta text-ink-2">Loading…</div>;
   const src = `${loaded.url}${loaded.url.includes("?") ? "&" : "?"}revision=${encodeURIComponent(loaded.revision)}`;
   return (
     <>
       <div className={FILE_SURFACE_SUBHEADER_CLASS}>
-        <span className="min-w-0 flex-1 text-xs text-muted-foreground">Full file</span>
+        <span className="min-w-0 flex-1 text-meta text-ink-2">Full file</span>
         <FileSurfaceAction
           label={isCopied ? "Copied" : "Copy contents"}
           onPress={() => {
@@ -1873,7 +1873,7 @@ export function WorkspaceLargeTextPreview(props: {
               .catch(showError);
           }}
         >
-          {isCopied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
+          {isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
         </FileSurfaceAction>
         <FileSurfaceAction
           label={saving ? "Preparing file…" : "Save file"}
@@ -1896,10 +1896,10 @@ export function WorkspaceLargeTextPreview(props: {
               .finally(() => setSaving(false));
           }}
         >
-          <DownloadIcon className="size-3.5" />
+          <DownloadIcon className="size-4" />
         </FileSurfaceAction>
       </div>
-      <Suspense fallback={<div className="p-6 text-xs text-muted-foreground">Loading…</div>}>
+      <Suspense fallback={<div className="p-6 text-meta text-ink-2">Loading…</div>}>
         <LargeTextViewer
           key={`${src}:${revision}`}
           name={props.name}

@@ -73,9 +73,9 @@ export const PierreEntryIcon = memo(function PierreEntryIcon(props: {
 
   if (!icon) {
     return props.kind === "directory" ? (
-      <FolderIcon className={cn("size-4 text-icon-muted", props.className)} />
+      <FolderIcon className={cn("size-4 text-ink-3", props.className)} />
     ) : (
-      <FileIcon className={cn("size-4 text-icon-muted", props.className)} />
+      <FileIcon className={cn("size-4 text-ink-3", props.className)} />
     );
   }
 

@@ -56,7 +56,7 @@ import {
 } from "~/hooks/useSettings";
 import { announce } from "~/lib/announce";
 import { cn } from "~/lib/utils";
-import { getVirtualizedScrollFadeClassName } from "../ui/scroll-area";
+import { virtualizedScrollFadeProps } from "../ui/scroll-area";
 import { TooltipProvider } from "../ui/tooltip";
 import { InlineButton } from "../ui/button";
 import {
@@ -67,6 +67,7 @@ import {
 } from "../../providerInstances";
 import { providerModelKey, sortProviderModelItems } from "../../modelOrdering";
 import { hasRuntimeModelCatalog } from "../../providerModels";
+import { ListRowGap } from "../ui/list-row-gap";
 
 type ModelPickerItem = {
   slug: string;
@@ -166,14 +167,10 @@ function adjacentModelPickerProvider(input: {
 
 const EMPTY_MODEL_JUMP_LABELS = new Map<string, string>();
 const MODEL_LIST_ESTIMATED_ITEM_SIZE = 32;
-// Rendered heights in `--spacing` units. Chrome is the search box and list padding, plus a 1px border.
+// Rendered heights in `--spacing` units. Chrome is the search row and the list padding.
 const ROW_UNITS = 8;
-const ROW_SEPARATOR_UNITS = 0.5;
-const LIST_CHROME_UNITS = 15.5;
-
-function ModelListSeparator() {
-  return <div className="h-0.5" />;
-}
+const ROW_SEPARATOR_UNITS = 1;
+const LIST_CHROME_UNITS = 14;
 
 function modelJumpLabelsByKey(
   modelKeys: ReadonlyArray<string>,
@@ -212,12 +209,10 @@ function ModelPickerProviderNotices({
   return (
     <>
       {setupEntries.length > 0 ? (
-        <div className="max-h-44 shrink-0 overflow-y-auto border-t border-border/70 p-2">
+        <div className="max-h-44 shrink-0 overflow-y-auto p-2">
           {setupEntries.map((entry) => (
-            <div key={entry.instanceId} className="px-1 py-1.5 text-xs leading-snug">
-              <p className="line-clamp-3 text-muted-foreground">
-                {getProviderStatusMessage(entry.snapshot)}
-              </p>
+            <div key={entry.instanceId} className="px-1 py-2 text-meta leading-snug">
+              <p className="line-clamp-3 text-ink-2">{getProviderStatusMessage(entry.snapshot)}</p>
               <InlineButton
                 className="mt-1"
                 onClick={() => {
@@ -234,10 +229,7 @@ function ModelPickerProviderNotices({
         <ComboboxEmpty className="empty:h-0">{emptyLabel}</ComboboxEmpty>
       )}
       {updateRequiredNotices.map(({ instanceId, notice }) => (
-        <p
-          key={instanceId}
-          className="shrink-0 border-t border-border/70 px-3 py-2 text-xs leading-snug text-muted-foreground"
-        >
+        <p key={instanceId} className="shrink-0 px-2 py-2 text-meta leading-snug text-ink-2">
           {notice}{" "}
           <InlineButton
             onClick={() => {
@@ -291,18 +283,16 @@ function ModelPickerList({
           estimatedItemSize={MODEL_LIST_ESTIMATED_ITEM_SIZE}
           drawDistance={480}
           recycleItems
-          contentContainerClassName="pl-2 pr-px"
-          ItemSeparatorComponent={ModelListSeparator}
+          contentContainerClassName="pr-px"
+          ItemSeparatorComponent={ListRowGap}
           onLayout={updateScrollFades}
           onScroll={updateScrollFades}
           onReady={updateScrollFades}
-          className={cn(
-            "scrollbar-gutter-stable h-full overflow-x-hidden overscroll-y-contain py-1.5 [&::-webkit-scrollbar-track]:my-2",
-            getVirtualizedScrollFadeClassName({
-              top: showTopScrollFade,
-              bottom: showBottomScrollFade,
-            }),
-          )}
+          className="virtualized-scroll-fade h-full overflow-x-hidden overscroll-y-contain [&::-webkit-scrollbar-track]:my-2"
+          {...virtualizedScrollFadeProps({
+            top: showTopScrollFade,
+            bottom: showBottomScrollFade,
+          })}
         />
       </ComboboxListVirtualized>
     </div>
@@ -589,12 +579,11 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
 
   const isLocked = lockedProvider !== null;
   const isSearching = searchQuery.trim().length > 0;
-  // Fit the tallest tab so switching tabs never resizes the popup and moves the rail under the cursor.
-  const tallestTabUnits = (() => {
-    const unitsByTab = new Map<ProviderInstanceId | "favorites", number>();
+  const unitsByTab = (() => {
+    const units = new Map<ProviderInstanceId | "favorites", number>();
     const addRow = (tab: ProviderInstanceId | "favorites") => {
-      const previous = unitsByTab.get(tab);
-      unitsByTab.set(
+      const previous = units.get(tab);
+      units.set(
         tab,
         previous === undefined ? ROW_UNITS : previous + ROW_SEPARATOR_UNITS + ROW_UNITS,
       );
@@ -611,8 +600,12 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
       }
     }
     for (const instanceId of tabsWithLegacyRow) addRow(instanceId);
-    return Math.max(0, ...unitsByTab.values());
+    return units;
   })();
+  // Floating, fit the tallest tab so switching tabs never resizes the popup and moves the rail
+  // under the cursor. Docked beside the effort column, the list is as tall as the tab it shows.
+  const tallestTabUnits = Math.max(0, ...unitsByTab.values());
+  const listUnits = props.docked ? (unitsByTab.get(selectedInstanceId) ?? 0) : tallestTabUnits;
   const lockedDisabledInstanceIds = (() => {
     if (!isLocked) {
       return undefined;
@@ -642,6 +635,11 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
     return [...available, ...disabled];
   })();
   const showSidebar = !isSearching && sidebarInstanceEntries.length > 0;
+  // The strip's squares (Favorites and each provider) one gap apart, inside its step of padding.
+  const stripItems = sidebarInstanceEntries.length + 1;
+  const stripUnits = showSidebar
+    ? stripItems * ROW_UNITS + (stripItems - 1) * ROW_SEPARATOR_UNITS + 4
+    : 0;
   const instanceOrder = instanceEntries.map((entry) => entry.instanceId);
 
   const filteredModels = (() => {
@@ -844,17 +842,15 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
         ref={pickerContentRef}
         className={cn(
           "relative flex w-screen max-w-90 flex-row overflow-hidden",
-          props.docked ? "max-sm:h-56 max-sm:w-full max-sm:max-w-none" : "max-h-86.5",
+          props.docked ? "max-sm:h-56 max-sm:w-full max-sm:max-w-none" : "max-h-86",
         )}
-        // Docked, the popup sets the height; a minimum here would overflow short windows.
         style={
-          props.docked
-            ? undefined
-            : isSearching
-              ? { height: searchHeight }
-              : {
-                  minHeight: `min(calc(var(--spacing) * ${tallestTabUnits + LIST_CHROME_UNITS} + 1px), calc(var(--spacing) * 86.5))`,
-                }
+          isSearching
+            ? { height: searchHeight }
+            : {
+                [props.docked ? "height" : "minHeight"]:
+                  `max(calc(var(--spacing) * ${stripUnits}), min(calc(var(--spacing) * ${listUnits + LIST_CHROME_UNITS}), calc(var(--spacing) * 86)))`,
+              }
         }
         data-model-picker-content="true"
       >
@@ -918,12 +914,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
             }
           }}
         >
-          <div
-            className={cn(
-              "flex min-h-0 flex-1 flex-col overflow-hidden bg-muted/40",
-              showSidebar && "border-l border-border/70",
-            )}
-          >
+          <div className={cn("flex min-h-0 flex-1 flex-col overflow-hidden")}>
             <ComboboxSearchInput
               ref={searchInputRef}
               placeholder="Search models..."
@@ -1026,7 +1017,7 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
                       aria-expanded={legacySection.isExpanded}
                       className="group w-full cursor-pointer"
                     >
-                      <span className="text-sm leading-snug text-muted-foreground group-hover:text-foreground group-data-highlighted:text-foreground">
+                      <span className="text-body leading-snug text-ink-2 group-hover:text-ink-1 group-data-highlighted:text-ink-1">
                         {legacySection.isExpanded ? "Show less" : "Show more"}
                       </span>
                     </ComboboxItem>

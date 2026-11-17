@@ -114,7 +114,7 @@ function ThreadServersList(props: ThreadServersPanelProps) {
             <li
               key={key}
               data-thread-details-server-overflow={index >= SERVER_PAGE_COUNT || undefined}
-              className="group relative flex items-center rounded-lg"
+              className="group relative flex items-center rounded-row"
             >
               <Tooltip>
                 <TooltipTrigger
@@ -133,11 +133,9 @@ function ThreadServersList(props: ThreadServersPanelProps) {
                 >
                   <GlobeIcon aria-hidden className={THREAD_DETAILS_PANEL_ICON_CLASS} />
                   {/* The end padding keeps text clear of the stop button. */}
-                  <span className={cn("flex min-w-0 flex-1 flex-col gap-0.5", stoppable && "pe-6")}>
-                    <span className="truncate text-sm font-medium leading-4 text-foreground/85">
-                      localhost:{server.port}
-                    </span>
-                    <span className="truncate text-2xs font-normal leading-4 text-muted-foreground">
+                  <span className={cn("flex min-w-0 flex-1 flex-col", stoppable && "pe-6")}>
+                    <span className="truncate text-body text-ink-2">localhost:{server.port}</span>
+                    <span className="truncate text-meta font-normal leading-4 text-ink-2">
                       {[server.terminal === null ? "Agent" : "Terminal", server.processName]
                         .filter(Boolean)
                         .join(" · ")}

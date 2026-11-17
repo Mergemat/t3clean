@@ -36,27 +36,23 @@ function MobileClientStatusBadge({
 function MobileClientRow({ device }: { readonly device: RelayClientDeviceRecord }) {
   return (
     <ClerkUserProfileRow icon={<SmartphoneIcon className="size-4" />}>
-      <div className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:gap-2">
         <div className="min-w-0">
-          <h3 className="truncate text-sm leading-4.5 font-medium text-foreground">
-            {device.label}
-          </h3>
-          <p className="text-xs leading-4.5 text-muted-foreground">
-            {mobileClientPlatformLabel(device)}
-          </p>
+          <h3 className="truncate text-body leading-4 font-medium text-ink-1">{device.label}</h3>
+          <p className="text-meta leading-4 text-ink-2">{mobileClientPlatformLabel(device)}</p>
         </div>
-        <p className="shrink-0 text-2xs leading-4 text-muted-foreground/75">
+        <p className="shrink-0 text-meta leading-4 text-ink-2">
           {mobileClientUpdatedAtLabel(device.updatedAt)}
         </p>
       </div>
-      <div className="mt-2 flex flex-wrap gap-1.5">
+      <div className="mt-2 flex flex-wrap gap-2">
         <MobileClientStatusBadge
           enabled={device.notifications.enabled}
           label="Push notifications"
         />
         <MobileClientStatusBadge enabled={device.liveActivities.enabled} label="Live Activities" />
       </div>
-      <p className="mt-1.5 text-xs leading-4.5 text-muted-foreground/80">
+      <p className="mt-2 text-meta leading-4 text-ink-2">
         {mobileClientNotificationDetail(device)}
       </p>
     </ClerkUserProfileRow>
@@ -68,14 +64,14 @@ function MobileClientsSkeleton() {
     <div aria-label="Loading mobile clients" className="divide-y border-t" role="status">
       {MOBILE_CLIENT_SKELETON_ROWS.map((row) => (
         <div key={row} className="py-4">
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <Skeleton shape="card" className="size-8 shrink-0" />
             <div className="flex-1 space-y-2">
-              <Skeleton className="h-3.5 w-36" />
+              <Skeleton className="h-4 w-36" />
               <Skeleton className="h-3 w-28" />
               <div className="flex gap-2">
-                <Skeleton className="h-4.5 w-28" />
-                <Skeleton className="h-4.5 w-24" />
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-4 w-24" />
               </div>
             </div>
           </div>
@@ -123,14 +119,14 @@ export function MobileClientsUserProfilePage() {
       <div>
         {devicesState.error ? (
           <div
-            className="mb-4 flex flex-col gap-3 border-t border-destructive/35 py-3 text-xs sm:flex-row sm:items-center sm:justify-between"
+            className="mb-2 flex flex-col gap-2 border-t border-destructive/35 py-2 text-meta sm:flex-row sm:items-center sm:justify-between"
             role="alert"
           >
             <div>
               <p className="font-medium text-destructive-foreground">
                 Could not load mobile clients
               </p>
-              <p className="mt-0.5 text-xs text-muted-foreground">{devicesState.error}</p>
+              <p className="text-meta text-ink-2">{devicesState.error}</p>
             </div>
             <Button size="xs" variant="outline" onClick={devicesState.refresh}>
               Try again

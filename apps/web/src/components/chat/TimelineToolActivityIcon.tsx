@@ -195,7 +195,7 @@ function ToolActivityImageIcon(props: {
         <span
           className={cn(
             props.className,
-            "inline-block overflow-hidden rounded-xs bg-background",
+            "inline-block overflow-hidden rounded-chip bg-background",
             props.muted && "dark:opacity-70",
           )}
         >

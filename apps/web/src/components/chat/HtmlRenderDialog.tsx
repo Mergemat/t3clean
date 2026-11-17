@@ -41,12 +41,12 @@ export function HtmlRenderDialog(props: {
         variant="media"
         showCloseButton={false}
         bottomStickOnMobile={false}
-        className="row-start-1"
+        className="row-start-1 max-h-full"
         initialFocus={closeButtonRef}
       >
         <DialogTitle className="sr-only">Expanded {title} preview</DialogTitle>
         {/* 1144px is the widest the server measures a page; pages are written for the reply column and stretch badly beyond it. */}
-        <div className="relative w-[min(92vw,1176px)]">
+        <div className="relative mt-6 flex min-h-0 w-294 max-w-full flex-col">
           <Button
             ref={closeButtonRef}
             aria-label="Close"
@@ -57,7 +57,7 @@ export function HtmlRenderDialog(props: {
           >
             <XIcon />
           </Button>
-          <div className="max-h-[min(86vh,calc(100vh-160px))] overflow-y-auto overscroll-contain rounded-lg bg-background p-4 shadow-2xl ring-1 ring-border/70">
+          <div className="min-h-0 overflow-y-auto overscroll-contain rounded-row bg-background p-4 shadow-2xl ring-1 ring-border/70">
             <div ref={measureBox}>
               <div style={{ zoom, height }}>
                 <HtmlRenderDocument
@@ -70,7 +70,7 @@ export function HtmlRenderDialog(props: {
               </div>
             </div>
           </div>
-          <div className="mt-2 flex min-w-0 items-center justify-center gap-3 text-xs text-white/80">
+          <div className="mt-2 flex min-w-0 items-center justify-center gap-2 text-meta text-white/80">
             <span className="truncate">{title}</span>
             <div className="flex shrink-0 items-center gap-1">
               <Button

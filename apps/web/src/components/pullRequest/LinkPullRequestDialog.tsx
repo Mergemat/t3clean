@@ -145,12 +145,12 @@ function LinkPullRequestDialog({
             }}
           />
           {resolved !== null && "link" in resolved ? (
-            <p className="truncate text-muted-foreground text-xs">
+            <p className="truncate text-ink-2 text-meta">
               {resolved.link.host}/{resolved.link.repository} #{resolved.link.number}
             </p>
           ) : null}
           {(validation ?? submitError) ? (
-            <p className="text-destructive text-xs">{validation ?? submitError}</p>
+            <p className="text-destructive text-meta">{validation ?? submitError}</p>
           ) : null}
         </DialogPanel>
         <DialogFooter>

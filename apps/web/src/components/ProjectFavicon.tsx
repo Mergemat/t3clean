@@ -38,19 +38,21 @@ export function ProjectFavicon(input: {
   fallbackIcon?: ComponentType<{ className?: string }>;
 }) {
   const { project } = input;
+  // A favicon always sits beside text, so it centres on the text's x-height (DESIGN.md, Row).
+  const className = cn("optical-centre", input.className);
   if (project.projectIcon?.kind === "monogram") {
     return (
       <ProjectMonogram
         text={project.projectIcon.text}
         color={project.projectIcon.color}
-        className={input.className}
+        className={className}
       />
     );
   }
   if (project.projectIcon?.kind === "emoji") {
     return (
       <ProjectFaviconFallback
-        className={input.className}
+        className={className}
         icon={FolderCodeIcon}
         emoji={project.projectIcon.emoji}
       />
@@ -59,9 +61,9 @@ export function ProjectFavicon(input: {
   if (project.projectIcon?.kind === "lucide") {
     const colorClassName = projectIconColorClassName(project.projectIcon.color);
     const iconClassName = cn(
-      "inline-flex size-3.5 shrink-0 items-center justify-center",
+      "inline-flex size-4 shrink-0 items-center justify-center",
       colorClassName,
-      input.className,
+      className,
     );
     return (
       <span aria-hidden="true" className={iconClassName}>
@@ -74,7 +76,7 @@ export function ProjectFavicon(input: {
       </span>
     );
   }
-  return <AutomaticProjectFavicon {...input} />;
+  return <AutomaticProjectFavicon {...input} className={className} />;
 }
 
 function AutomaticProjectFavicon(input: Parameters<typeof ProjectFavicon>[0]) {
@@ -138,16 +140,18 @@ function ProjectFaviconFallback({
       <span
         aria-hidden="true"
         className={cn(
-          "inline-flex size-3.5 shrink-0 items-center justify-center leading-none [container-type:size]",
+          "inline-flex size-4 shrink-0 items-center justify-center leading-none @container-size",
           className,
         )}
       >
-        <span className="text-[length:80cqh] leading-none">{emoji}</span>
+        <span className="leading-none" data-slot="project-favicon-emoji">
+          {emoji}
+        </span>
       </span>
     );
   }
 
-  return <Icon className={cn("size-3.5 shrink-0 text-icon-muted", className)} />;
+  return <Icon className={cn("size-4 shrink-0 text-ink-3", className)} />;
 }
 
 function ProjectFaviconImage({
@@ -182,7 +186,7 @@ function ProjectFaviconImage({
         <img
           src={displayedSrc}
           alt=""
-          className={cn("size-3.5 shrink-0 rounded-[25%] object-contain", className)}
+          className={cn("size-4 shrink-0 rounded-chip object-contain", className)}
           onError={() => handleLoadError(displayedSrc)}
         />
       ) : null}

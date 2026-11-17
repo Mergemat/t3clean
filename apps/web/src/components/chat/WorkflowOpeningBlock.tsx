@@ -59,31 +59,31 @@ export function WorkflowOpeningBlock(props: {
   return (
     <section
       aria-label={`Workflow started: ${headline.title}`}
-      className="flex min-w-0 flex-col gap-3 px-1 py-0.5"
+      className="flex min-w-0 flex-col gap-2 px-1 py-1"
       data-workflow-opening
     >
       <header className="flex min-w-0 items-start gap-2">
-        <WorkflowIcon aria-hidden className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
-        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <p className="text-2xs font-medium text-muted-foreground">Workflow started</p>
-          <h3 className="truncate text-sm font-medium text-foreground" data-thread-find-text="true">
+        <WorkflowIcon aria-hidden className="h-lh w-4 shrink-0 text-ink-2" />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <p className="text-meta font-medium text-ink-2">Workflow started</p>
+          <h3 className="truncate text-body font-medium text-ink-1" data-thread-find-text="true">
             {headline.title}
           </h3>
           {headline.description ? (
-            <p className="text-xs text-muted-foreground" data-thread-find-text="true">
+            <p className="text-meta text-ink-2" data-thread-find-text="true">
               {headline.description}
             </p>
           ) : null}
         </div>
         {headline.agents ? (
-          <span aria-live="polite" className="shrink-0 text-2xs tabular-nums text-muted-foreground">
+          <span aria-live="polite" className="shrink-0 text-meta tabular-nums text-ink-2">
             {headline.agents}
           </span>
         ) : null}
       </header>
       {phases.map((phase) => (
         <section key={phase.index} aria-label={`${phase.title} phase`}>
-          <h4 className="flex items-baseline gap-2 px-2 pb-0.5 text-2xs font-medium text-muted-foreground">
+          <h4 className="flex items-baseline gap-2 px-2 pb-1 text-meta font-medium text-ink-2">
             <span className="min-w-0 truncate" data-thread-find-text="true">
               {phase.title}
             </span>
@@ -91,11 +91,13 @@ export function WorkflowOpeningBlock(props: {
               {phase.settledCount}/{phase.members.length}
             </span>
           </h4>
-          <ul className="m-0 list-none p-0">{phase.members.map(memberRow)}</ul>
+          <ul className="m-0 flex list-none flex-col gap-1 p-0">{phase.members.map(memberRow)}</ul>
         </section>
       ))}
       {opening.group && opening.group.unphasedMembers.length > 0 ? (
-        <ul className="m-0 list-none p-0">{opening.group.unphasedMembers.map(memberRow)}</ul>
+        <ul className="m-0 flex list-none flex-col gap-1 p-0">
+          {opening.group.unphasedMembers.map(memberRow)}
+        </ul>
       ) : null}
       <WorkflowScript script={opening.script} />
     </section>
@@ -122,7 +124,7 @@ function WorkflowMemberRow(props: {
     .replace(/\s+/g, " ")
     .trim();
   const className =
-    "group/subagent flex w-full min-w-0 items-center gap-2.5 rounded-md px-2 py-1.5 text-left";
+    "group/subagent flex w-full min-w-0 items-center gap-2 rounded-row px-2 py-2 text-left";
   return (
     <li>
       <Tooltip>
@@ -152,14 +154,12 @@ function WorkflowMemberRow(props: {
             status={member.status}
           />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-xs font-medium text-foreground">
-              {member.title}
-            </span>
+            <span className="block truncate text-meta font-medium text-ink-1">{member.title}</span>
             {detail ? (
               <span
                 className={cn(
-                  "block truncate text-2xs leading-relaxed",
-                  failed ? "text-destructive" : "text-muted-foreground",
+                  "block truncate text-meta leading-relaxed",
+                  failed ? "text-destructive" : "text-ink-2",
                 )}
               >
                 {detail}
@@ -167,14 +167,14 @@ function WorkflowMemberRow(props: {
             ) : null}
           </span>
           {member.startedAt ? (
-            <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+            <span className="shrink-0 text-meta text-ink-2 tabular-nums">
               <AgentElapsed agent={member} />
             </span>
           ) : null}
           {threadId !== null ? (
             <ChevronRightIcon
               aria-hidden
-              className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover/subagent:text-foreground"
+              className="size-4 shrink-0 text-ink-3 transition-colors group-hover/subagent:text-ink-1"
             />
           ) : null}
         </TooltipTrigger>

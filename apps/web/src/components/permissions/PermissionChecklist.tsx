@@ -21,14 +21,14 @@ export function PermissionChecklist({
   return (
     <div className="space-y-2">
       {permissions.map((permission) => (
-        <div key={permission.id} className="flex items-center gap-3 rounded-lg border px-3 py-2">
+        <div key={permission.id} className="flex items-center gap-2 rounded-row border px-2 py-2">
           {permission.icon}
           <div className="min-w-0 flex-1">
             <p className="font-medium">{permission.title}</p>
-            <p className="text-xs text-muted-foreground">{permission.description}</p>
+            <p className="text-meta text-ink-2">{permission.description}</p>
           </div>
           {permission.granted ? (
-            <span role="status" className="flex items-center gap-1 text-xs text-success">
+            <span role="status" className="flex items-center gap-1 text-meta text-success">
               <CircleCheckIcon className="size-4" aria-hidden="true" />
               Allowed
             </span>

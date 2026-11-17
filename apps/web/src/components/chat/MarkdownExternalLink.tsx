@@ -8,7 +8,7 @@ import { cn } from "../../lib/utils";
 import { sourceControlIcon } from "../../sourceControlPresentation";
 
 // Inline-level and selectable: triple-click selection stops at block-level and select-none boxes.
-const MARKDOWN_LINK_FAVICON_CLASS_NAME = "inline-block size-[14px] [vertical-align:-0.125em]";
+const MARKDOWN_LINK_FAVICON_CLASS_NAME = "inline-block size-4";
 
 const failedFaviconHosts = new Set<string>();
 
@@ -24,7 +24,7 @@ const MarkdownLinkFavicon = memo(function MarkdownLinkFavicon({ host }: { host: 
   const brandIcon = sourceControlHostIcon(host);
   const faviconUrl = brandIcon ? null : faviconUrlForOrigin(`https://${host}`);
   return (
-    <span className="ms-[0.25em] me-[0.2em]" aria-hidden>
+    <span className="ms-1" aria-hidden>
       {brandIcon ? (
         brandIcon
       ) : faviconUrl === null || failedHost === host || failedFaviconHosts.has(host) ? (
@@ -35,7 +35,7 @@ const MarkdownLinkFavicon = memo(function MarkdownLinkFavicon({ host }: { host: 
           alt=""
           loading="lazy"
           draggable={false}
-          className={cn(MARKDOWN_LINK_FAVICON_CLASS_NAME, "rounded-sm")}
+          className={cn(MARKDOWN_LINK_FAVICON_CLASS_NAME, "rounded-row")}
           onError={() => {
             failedFaviconHosts.add(host);
             setFailedHost(host);
@@ -59,7 +59,7 @@ function breakableExternalLinkText(text: string): ReactNode[] {
     word.length <= 16 ? (
       word
     ) : (
-      <span key={start} className="[overflow-wrap:anywhere]">
+      <span key={start} className="wrap-anywhere">
         {word}
       </span>
     ),
@@ -107,7 +107,7 @@ export function MarkdownExternalLinkContent({
 
   return (
     <>
-      <span className="[overflow-wrap:anywhere]">
+      <span className="wrap-anywhere">
         <MarkdownLinkFavicon host={host} />
         {firstChild}
       </span>

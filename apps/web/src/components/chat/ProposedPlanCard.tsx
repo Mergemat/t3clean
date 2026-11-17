@@ -158,12 +158,12 @@ export const ProposedPlanCard = memo(function ProposedPlanCard({
   };
 
   return (
-    <div className="rounded-2xl border border-border/80 bg-card/70 p-4 sm:p-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="rounded-box border border-border/80 bg-card/70 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
           <Badge variant="secondary">Plan</Badge>
           {}
-          <h3 data-thread-find-text="true" className="truncate text-sm font-medium text-foreground">
+          <h3 data-thread-find-text="true" className="truncate text-body font-medium text-ink-1">
             {title}
           </h3>
         </div>
@@ -171,7 +171,7 @@ export const ProposedPlanCard = memo(function ProposedPlanCard({
           <MenuTrigger
             render={<Button aria-label="Plan actions" size="icon-xs" variant="outline" />}
           >
-            <EllipsisIcon aria-hidden="true" className="size-4" />
+            <EllipsisIcon aria-hidden="true" />
           </MenuTrigger>
           <MenuPopup align="end">
             <MenuItem onClick={handleCopyPlan}>
@@ -187,7 +187,7 @@ export const ProposedPlanCard = memo(function ProposedPlanCard({
           </MenuPopup>
         </Menu>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <div
           ref={revealRef}
           className={cn("relative", isCollapsed && "max-h-104 overflow-hidden")}
@@ -218,7 +218,7 @@ export const ProposedPlanCard = memo(function ProposedPlanCard({
           ) : null}
         </div>
         {canCollapse ? (
-          <div className="mt-4 flex justify-center">
+          <div className="mt-2 flex justify-center">
             <Button
               size="sm"
               variant="outline"
@@ -283,8 +283,8 @@ function SavePlanToWorkspaceForm({
         </DialogDescription>
       </DialogHeader>
       <DialogPanel>
-        <label htmlFor={savePathInputId} className="grid gap-1.5">
-          <span className="text-xs font-medium text-foreground">Workspace path</span>
+        <label htmlFor={savePathInputId} className="grid gap-2">
+          <span className="text-meta font-medium text-ink-1">Workspace path</span>
           <Input
             id={savePathInputId}
             value={savePath}

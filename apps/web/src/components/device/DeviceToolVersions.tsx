@@ -48,7 +48,7 @@ export function DeviceToolVersions({
       <PopoverPopup align="end" width="md">
         <PopoverTitle>{kind ? label : "Device tools"}</PopoverTitle>
         {tools ? (
-          <div className="mt-4 divide-y divide-border/50">
+          <div className="mt-2 flex flex-col gap-6">
             {(
               [
                 ["Device hub", tools.hub],
@@ -57,14 +57,14 @@ export function DeviceToolVersions({
             )
               .filter(([name]) => !kind || name === label)
               .map(([name, tool]) => (
-                <div key={name} className="space-y-2 py-3 first:pt-0 last:pb-0">
-                  {!kind ? <p className="text-xs font-medium">{name}</p> : null}
-                  <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-xs">
-                    <dt className="text-muted-foreground">Running</dt>
+                <div key={name} className="space-y-2">
+                  {!kind ? <p className="text-meta font-medium">{name}</p> : null}
+                  <dl className="grid grid-cols-(--grid-lead) gap-x-6 gap-y-1 text-meta">
+                    <dt className="text-ink-2">Running</dt>
                     <dd className="text-right font-mono">{tool.runningVersion ?? "Not running"}</dd>
-                    <dt className="text-muted-foreground">Required</dt>
+                    <dt className="text-ink-2">Required</dt>
                     <dd className="text-right font-mono">{tool.requiredVersion}</dd>
-                    <dt className="text-muted-foreground">Installed</dt>
+                    <dt className="text-ink-2">Installed</dt>
                     <dd className="text-right font-mono break-words">
                       {tool.installedVersions.join(", ") || "None"}
                     </dd>
@@ -73,17 +73,17 @@ export function DeviceToolVersions({
               ))}
           </div>
         ) : (
-          <p className="mt-3 text-xs text-muted-foreground">Versions have not been checked.</p>
+          <p className="mt-2 text-meta text-ink-2">Versions have not been checked.</p>
         )}
-        <p className="mt-4 border-t border-border/50 pt-3 text-xs text-muted-foreground">
+        <p className="mt-6 text-meta text-ink-2">
           {owner ? `Managed by ${owner}. ` : ""}Tools update automatically on this host when needed.
         </p>
         {error ? (
-          <p role="status" className="mt-2 text-xs text-destructive">
+          <p role="status" className="mt-2 text-meta text-destructive">
             {error}
           </p>
         ) : null}
-        {action ? <div className="mt-3">{action}</div> : null}
+        {action ? <div className="mt-2">{action}</div> : null}
       </PopoverPopup>
     </Popover>
   );

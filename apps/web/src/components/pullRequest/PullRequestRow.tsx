@@ -61,7 +61,7 @@ function PullRequestRowLabels({ labels }: { labels: EnvironmentPullRequestEntry[
   );
 }
 
-const PAGE_ROW_CLASS = "px-3 py-2.5";
+const PAGE_ROW_CLASS = "px-2 py-2";
 
 export type PullRequestRowTarget = Pick<
   EnvironmentPullRequestEntry,
@@ -110,7 +110,7 @@ function PullRequestRowImpl({
       data-pull-request-stats-key={statsKey}
       data-pull-request-key={statsKey}
       className={cn(
-        "flex items-center rounded-md [content-visibility:auto] [contain-intrinsic-block-size:56.5px]",
+        "flex items-center rounded-row content-visibility-auto contain-intrinsic-block-14",
         selected ? "bg-accent" : "hover:bg-accent/60",
       )}
     >
@@ -137,7 +137,7 @@ function PullRequestRowImpl({
           isDraft={entry.isDraft}
           mergeability={entry.mergeability}
           baseBranch={entry.baseBranch}
-          className="mt-0.75 self-start"
+          className="self-start"
         />
         <PullRequestRowLines
           number={
@@ -213,7 +213,7 @@ function PullRequestRowImpl({
                 <Tooltip>
                   <TooltipTrigger
                     render={
-                      <span className="flex min-w-6 items-center gap-1 overflow-hidden rounded-full border border-border/60 px-1 text-3xs" />
+                      <span className="flex min-w-6 items-center gap-1 overflow-hidden rounded-chip border border-border/60 px-1 text-meta" />
                     }
                   >
                     <span className="sr-only">matched in the description</span>
@@ -235,7 +235,7 @@ function PullRequestRowImpl({
               ) : null}
               <PullRequestRowAuthor
                 actor={entry.author}
-                className="min-w-3.5 max-w-40"
+                className="min-w-4 max-w-40"
                 labelClassName="sr-only @xs/pr-row-meta:not-sr-only @xs/pr-row-meta:truncate"
               />
               {showProjectTitle ? <span className="truncate">{entry.repository}</span> : null}

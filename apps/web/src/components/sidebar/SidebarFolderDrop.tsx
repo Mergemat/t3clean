@@ -121,9 +121,9 @@ export function SidebarFolderDrop(props: { children: ReactNode }) {
       {isActive ? (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-1.5 z-30 flex flex-col items-center justify-center gap-2 rounded-lg px-4 text-center bg-sidebar/90 text-sm text-sidebar-foreground ring-1 ring-inset ring-primary/70"
+          className="pointer-events-none absolute inset-2 z-30 flex flex-col items-center justify-center gap-2 rounded-row px-2 text-center bg-sidebar/90 text-body text-sidebar-foreground ring-1 ring-inset ring-primary/70"
         >
-          <FolderPlusIcon className="size-5 text-sidebar-muted-foreground" />
+          <FolderPlusIcon className="size-5 text-ink-2" />
           {bridge === undefined
             ? "Dropping folders needs the desktop app"
             : "Drop folders to add projects"}

@@ -43,7 +43,7 @@ import {
 } from "./PullRequestMarkdownTextarea";
 
 const CARD_CLASS =
-  "mx-3 my-2 rounded-xl border border-border/70 bg-background p-3 text-sm shadow-sm";
+  "mx-2 my-2 rounded-row border border-border/70 bg-background p-2 text-body shadow-sm";
 
 function submitKeys(input: {
   readonly value: string;
@@ -98,8 +98,8 @@ export function PendingReviewCommentCard({
       contentEditable={false}
       onPointerDown={(event) => event.stopPropagation()}
     >
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <MessageSquareIcon className="size-3.5" />
+      <div className="flex items-center gap-2 text-meta text-ink-2">
+        <MessageSquareIcon className="size-4" />
         <span>Pending. Sent when you submit the review</span>
         <Button
           size="icon-xs"
@@ -108,7 +108,7 @@ export function PendingReviewCommentCard({
           aria-label="Discard this comment"
           onClick={onRemove}
         >
-          <Trash2Icon className="size-3.5" />
+          <Trash2Icon className="size-4" />
         </Button>
       </div>
       <p className="mt-2 whitespace-pre-wrap leading-relaxed">{comment.body}</p>
@@ -151,7 +151,7 @@ export function InlineReviewThreads({
                 aria-label={label}
                 aria-expanded={expanded}
                 // Sits on the commented line, which is the row above this annotation.
-                className="absolute right-3 bottom-full flex h-[var(--diffs-line-height,20px)] cursor-pointer items-center -space-x-1 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                className="absolute right-3 bottom-full flex h-5 cursor-pointer items-center -space-x-1 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                 contentEditable={false}
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={() =>
@@ -305,15 +305,15 @@ export function ReviewThreadCard({
       contentEditable={false}
       onPointerDown={(event) => event.stopPropagation()}
     >
-      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-2 text-meta text-ink-2">
         {thread.isResolved ? (
-          <CircleCheckIcon className="size-3.5 text-success-foreground" />
+          <CircleCheckIcon className="size-4 text-success-foreground" />
         ) : (
-          <CircleIcon className="size-3.5" />
+          <CircleIcon className="size-4" />
         )}
         <button
           type="button"
-          className="hover:text-foreground"
+          className="hover:text-ink-1"
           aria-expanded={expanded}
           onClick={() => setExpanded((current) => !current)}
         >
@@ -323,7 +323,7 @@ export function ReviewThreadCard({
         {thread.isOutdated ? <span>outdated</span> : null}
         {onFix ? (
           <Button
-            size="compact"
+            size="sm"
             variant="ghost"
             className="ml-auto"
             disabled={pending || fixPending}
@@ -335,7 +335,7 @@ export function ReviewThreadCard({
         ) : null}
         {onAddToChat && comments.some((comment) => visibleBody(comment.body) !== null) ? (
           <Button
-            size="compact"
+            size="sm"
             variant="ghost"
             className={onFix ? undefined : "ml-auto"}
             onClick={() => onAddToChat({ ...thread, comments })}
@@ -346,7 +346,7 @@ export function ReviewThreadCard({
         ) : null}
         {canResolve ? (
           <Button
-            size="compact"
+            size="sm"
             variant="ghost"
             className={onFix || onAddToChat ? undefined : "ml-auto"}
             disabled={pending}
@@ -359,10 +359,10 @@ export function ReviewThreadCard({
 
       {expanded ? (
         <>
-          <div className="mt-2 space-y-3">
+          <div className="mt-2 space-y-2">
             {comments.map((comment) => (
               <article key={comment.id} className="group min-w-0">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-2 text-meta text-ink-2">
                   <PullRequestActorLabel actor={comment.author} />
                   <span>
                     <RelativeTime timestamp={comment.createdAt} />
@@ -392,7 +392,7 @@ export function ReviewThreadCard({
                 ) : (
                   <div className="mt-1 flex items-start gap-1">
                     <PullRequestMarkdown
-                      className="min-w-0 flex-1 text-sm"
+                      className="min-w-0 flex-1 text-body"
                       text={comment.body}
                       cwd={workspaceRoot}
                       environmentId={environmentId}

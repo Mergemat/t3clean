@@ -38,7 +38,6 @@ import {
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
-  MenuRadioItemIndicator,
   MenuSearchInput,
   MenuSeparator,
   MenuSub,
@@ -72,9 +71,9 @@ export function PullRequestFilterOptionIcon<Value extends string>({
   option: PullRequestFilterOption<Value>;
 }) {
   return option.project ? (
-    <ProjectFavicon project={option.project} className="size-3.5" />
+    <ProjectFavicon project={option.project} className="size-4" />
   ) : (
-    <option.Icon aria-hidden className="size-3.5" />
+    <option.Icon aria-hidden className="size-4" />
   );
 }
 
@@ -106,7 +105,7 @@ export function PullRequestSearchInput({
 }) {
   const [draft, setDraft] = useState<string | null>(null);
   return (
-    <InputGroup className="min-w-0 flex-1 **:[input]:h-9 sm:**:[input]:h-8">
+    <InputGroup className="min-w-0 flex-1 **:[input]:h-8 sm:**:[input]:h-8">
       <InputGroupAddon>
         {busy ? <Spinner aria-hidden /> : <SearchIcon aria-hidden />}
       </InputGroupAddon>
@@ -195,7 +194,6 @@ function PullRequestFilterRadioGroup<Value extends string>({
               <PullRequestFilterOptionIcon option={option} />
               <span className="min-w-0 flex-1 truncate">{option.label}</span>
               {option.unavailable ? <span className="shrink-0">· Unavailable</span> : null}
-              <MenuRadioItemIndicator />
             </span>
           </MenuRadioItem>
         );
@@ -229,9 +227,7 @@ function PullRequestFilterRadioSubmenu<Value extends string>({
       <MenuSubTrigger>
         <PullRequestFilterOptionIcon option={current} />
         <span className="flex-1">{label}</span>
-        <span className="min-w-0 max-w-32 truncate text-xs text-muted-foreground">
-          {current.label}
-        </span>
+        <span className="min-w-0 max-w-32 truncate text-meta text-ink-2">{current.label}</span>
       </MenuSubTrigger>
       <MenuSubPopup>
         <PullRequestFilterRadioGroup
@@ -304,7 +300,7 @@ function PullRequestAuthorChoices({
       <MenuRadioGroup value={selected?.actor.login ?? value ?? ""} onValueChange={select}>
         <MenuRadioItem value="">
           <span className="flex min-w-0 items-center gap-2">
-            <LayersIcon aria-hidden className="size-3.5" />
+            <LayersIcon aria-hidden className="size-4" />
             Anyone
           </span>
         </MenuRadioItem>
@@ -314,7 +310,7 @@ function PullRequestAuthorChoices({
               <PullRequestActorAvatar actor={option.actor} />
               <span className="min-w-0 flex-1 truncate">{option.actor.login}</span>
               {option.mergedCount > 0 ? (
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-meta text-ink-2 tabular-nums">
                   {option.mergedCount} merges loaded
                 </span>
               ) : null}
@@ -345,11 +341,9 @@ function PullRequestAuthorFilter({
   return (
     <MenuSub>
       <MenuSubTrigger>
-        <UserRoundIcon aria-hidden className="size-3.5" />
+        <UserRoundIcon aria-hidden className="size-4" />
         <span className="flex-1">Author</span>
-        <span className="min-w-0 max-w-32 truncate text-xs text-muted-foreground">
-          {value ?? "Anyone"}
-        </span>
+        <span className="min-w-0 max-w-32 truncate text-meta text-ink-2">{value ?? "Anyone"}</span>
       </MenuSubTrigger>
       <MenuSubPopup>
         <PullRequestAuthorChoices
@@ -417,14 +411,12 @@ function PullRequestLabelChoices({
             <span className="flex min-w-0 items-center gap-2">
               <span
                 aria-hidden
-                className="size-2.5 shrink-0 rounded-full bg-muted-foreground"
+                className="size-3 shrink-0 rounded-full bg-muted-foreground"
                 {...(dot ? { style: { backgroundColor: dot } } : {})}
               />
               <span className="min-w-0 flex-1 truncate">{option.name}</span>
               {option.count > 0 ? (
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                  {option.count}
-                </span>
+                <span className="shrink-0 text-meta text-ink-2 tabular-nums">{option.count}</span>
               ) : null}
             </span>
           </MenuCheckboxItem>
@@ -448,9 +440,9 @@ function PullRequestLabelFilter({
   return (
     <MenuSub>
       <MenuSubTrigger>
-        <TagIcon aria-hidden className="size-3.5" />
+        <TagIcon aria-hidden className="size-4" />
         <span className="flex-1">Labels</span>
-        <span className="text-xs text-muted-foreground">
+        <span className="text-meta text-ink-2">
           {value.length === 0 ? "Any" : `${value.length} selected`}
         </span>
       </MenuSubTrigger>
@@ -566,7 +558,7 @@ export function PullRequestFiltersMenu({
         <ListFilterIcon className="size-4" />
         <span>Filters</span>
         {filterCount > 0 ? (
-          <span className="rounded-full bg-muted px-1.5 text-xs text-muted-foreground tabular-nums">
+          <span className="rounded-row bg-muted px-2 text-meta text-ink-2 tabular-nums">
             {filterCount}
           </span>
         ) : null}

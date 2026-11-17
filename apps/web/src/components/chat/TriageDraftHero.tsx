@@ -15,19 +15,17 @@ export function TriageDraftHero(props: {
   const { copyToClipboard, isCopied } = useCopyToClipboard({ timeout: 1500, target: "command" });
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
-      <h1 className="w-full text-center font-normal text-2xl text-foreground tracking-tight sm:text-3xl">
+      <h1 className="w-full text-center font-normal text-title text-ink-1 tracking-tight sm:text-3xl">
         What went wrong?
       </h1>
-      <p className="mt-2 flex h-6 w-full items-center justify-center gap-1.5 text-sm">
+      <p className="mt-2 flex h-6 w-full items-center justify-center gap-2 text-body">
         <Tooltip>
           <TooltipTrigger
-            render={<span tabIndex={0} className="min-w-0 truncate font-medium text-foreground" />}
+            render={<span tabIndex={0} className="min-w-0 truncate font-medium text-ink-1" />}
           >
             {props.machineLabel ?? "This machine"}
             {props.serverVersion === null ? null : (
-              <span className="ml-1.5 font-normal text-muted-foreground">
-                v{props.serverVersion}
-              </span>
+              <span className="ml-2 font-normal text-ink-2">v{props.serverVersion}</span>
             )}
           </TooltipTrigger>
           <TooltipPopup side="bottom">
@@ -35,7 +33,7 @@ export function TriageDraftHero(props: {
             posts anything.
           </TooltipPopup>
         </Tooltip>
-        <span aria-hidden className="text-muted-foreground">
+        <span aria-hidden className="text-ink-2">
           ·
         </span>
         <Tooltip>
@@ -49,7 +47,9 @@ export function TriageDraftHero(props: {
             }
           >
             {isCopied ? "Copied" : "or run"}
-            {isCopied ? null : <code className="ml-1 font-mono text-xs">{TRIAGE_CLI_COMMAND}</code>}
+            {isCopied ? null : (
+              <code className="ml-1 font-mono text-meta">{TRIAGE_CLI_COMMAND}</code>
+            )}
           </TooltipTrigger>
           <TooltipPopup side="bottom">Copy command, for a terminal</TooltipPopup>
         </Tooltip>

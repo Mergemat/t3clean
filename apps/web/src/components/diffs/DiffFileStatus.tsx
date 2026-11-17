@@ -17,7 +17,7 @@ export function DiffFileStatus({
       <TooltipTrigger
         render={
           <Button
-            size="icon-micro"
+            size="icon-xs"
             variant="ghost-muted"
             aria-label={error ? "Retry loading diff" : "Partial diff preview"}
             onClick={(event) => {

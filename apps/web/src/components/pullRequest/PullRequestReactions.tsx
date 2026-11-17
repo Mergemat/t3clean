@@ -24,7 +24,7 @@ import {
 } from "@t3tools/client-runtime/pull-request-reactions";
 
 const PILL_CLASS =
-  "inline-flex h-6 shrink-0 items-center gap-1 rounded-full border px-2 text-xs outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring";
+  "inline-flex h-6 shrink-0 items-center gap-1 rounded-row border px-2 text-meta outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring";
 
 const EMPTY_PENDING: ReadonlyMap<PullRequestReactionContent, boolean> = new Map();
 
@@ -98,8 +98,8 @@ export function PullRequestReactionBar({
                 className={cn(
                   PILL_CLASS,
                   reaction.viewerHasReacted
-                    ? "border-primary/60 bg-primary/10 text-foreground"
-                    : "border-border/70 bg-muted/40 text-muted-foreground",
+                    ? "border-primary/60 bg-primary/10 text-ink-1"
+                    : "border-border/70 bg-muted/40 text-ink-2",
                   canReact ? "hover:border-primary/60" : "cursor-default",
                 )}
                 onClick={() => void toggle(reaction.content, !reaction.viewerHasReacted)}
@@ -122,15 +122,15 @@ export function PullRequestReactionBar({
                 aria-label="Add a reaction"
                 className={cn(
                   PILL_CLASS,
-                  "border-border/70 px-1.5 text-muted-foreground hover:border-primary/60 hover:text-foreground",
+                  "border-border/70 px-2 text-ink-2 hover:border-primary/60 hover:text-ink-1",
                 )}
               />
             }
           >
-            <SmilePlusIcon aria-hidden className="size-3.5" />
+            <SmilePlusIcon aria-hidden className="size-4" />
           </PopoverTrigger>
           <PopoverPopup align="start" side="top" padding="compact">
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center">
               {PULL_REQUEST_REACTION_ORDER.map((content) => {
                 const reacted =
                   shown.find((reaction) => reaction.content === content)?.viewerHasReacted ?? false;
@@ -141,7 +141,7 @@ export function PullRequestReactionBar({
                     aria-pressed={reacted}
                     aria-label={pullRequestReactionName(content)}
                     className={cn(
-                      "flex size-7 items-center justify-center rounded-md text-base outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+                      "flex size-6 items-center justify-center rounded-row text-base outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
                       reacted && "bg-primary/10",
                     )}
                     onClick={() => {

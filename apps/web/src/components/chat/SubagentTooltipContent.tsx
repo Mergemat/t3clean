@@ -134,7 +134,7 @@ export function SubagentTooltipContent(props: {
         ) : (
           <BotIcon className="size-3 shrink-0" />
         )}
-        <span className="inline-flex min-w-0 items-center gap-1 text-foreground/75">
+        <span className="inline-flex min-w-0 items-center gap-1 text-ink-2">
           <span className="min-w-0 truncate">
             {showInstanceBadge ? `${modelLabel} · ${entry.displayName}` : modelLabel}
           </span>
@@ -149,17 +149,17 @@ export function SubagentTooltipContent(props: {
           ) : null}
         </span>
       </div>
-      <div className="flex min-w-0 items-center justify-between gap-4">
+      <div className="flex min-w-0 items-center justify-between gap-2">
         <span
           className={cn(
-            "inline-flex items-center gap-1 rounded-sm font-medium capitalize",
+            "inline-flex items-center gap-1 rounded-row font-medium capitalize",
             working
               ? "text-info"
               : failed
                 ? "text-error"
                 : props.status === "completed"
                   ? "text-success"
-                  : "text-muted-foreground",
+                  : "text-ink-2",
           )}
         >
           <StatusIcon aria-hidden className="size-3 shrink-0" />

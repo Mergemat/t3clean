@@ -47,7 +47,7 @@ export function PullRequestsUnavailableState({
               variant="outline"
               render={<a href={host.url} target="_blank" rel="noopener noreferrer" />}
             >
-              <ExternalLinkIcon aria-hidden className="size-3.5" />
+              <ExternalLinkIcon aria-hidden className="size-4" />
               {host.openLabel}
             </Button>
           ) : null}

@@ -126,7 +126,7 @@ function CompletionRow({ completion }: { completion: PullRequestCompletion }) {
         <PullRequestActorAvatar actor={actor} className="size-5" />
         <span className="truncate font-medium">{actor.login}</span>
         {actor.name && actor.name !== actor.login ? (
-          <span className="min-w-0 truncate text-muted-foreground">{actor.name}</span>
+          <span className="min-w-0 truncate text-ink-2">{actor.name}</span>
         ) : null}
       </>
     );
@@ -136,7 +136,7 @@ function CompletionRow({ completion }: { completion: PullRequestCompletion }) {
     <>
       <ReferenceStateIcon candidate={candidate} />
       <span className="shrink-0 font-medium tabular-nums">{candidate.reference}</span>
-      <span className="min-w-0 truncate text-muted-foreground">{candidate.title}</span>
+      <span className="min-w-0 truncate text-ink-2">{candidate.title}</span>
     </>
   );
 }
@@ -300,7 +300,7 @@ export function PullRequestMarkdownTextarea({
               id={listId}
               role="listbox"
               aria-label={EMPTY_STATE[trigger?.kind ?? "mention"].label}
-              className="-mx-1.5"
+              className="-mx-2"
             >
               {candidates.map((completion, index) => (
                 <div
@@ -309,7 +309,7 @@ export function PullRequestMarkdownTextarea({
                   role="option"
                   aria-selected={index === activeIndex}
                   className={cn(
-                    "flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm",
+                    "flex cursor-pointer items-center gap-2 rounded-row px-2 py-2 text-body",
                     index === activeIndex && "bg-accent text-accent-foreground",
                   )}
                   onMouseMove={() => {
@@ -324,7 +324,7 @@ export function PullRequestMarkdownTextarea({
               ))}
             </div>
           ) : (
-            <p className="px-1 text-xs text-muted-foreground">
+            <p className="px-1 text-meta text-ink-2">
               {
                 EMPTY_STATE[trigger?.kind ?? "mention"][
                   isPending ? "pending" : failed ? "failed" : "none"

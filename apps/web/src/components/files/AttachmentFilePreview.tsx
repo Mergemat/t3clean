@@ -309,7 +309,7 @@ export function AttachmentFilePreview(props: {
         <ChatMarkdown
           text={maskMarkdownFrontmatter(content.text)}
           cwd={undefined}
-          className="mx-auto max-w-4xl px-6 py-5"
+          className="mx-auto max-w-4xl px-6 py-4"
         />
       </ScrollArea>
     ) : (
@@ -378,8 +378,8 @@ export function AttachmentFilePreview(props: {
     />
   ) : (
     <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-1 px-6 text-center">
-      <p className="text-sm font-medium">No preview for this file</p>
-      <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
+      <p className="text-body font-medium">No preview for this file</p>
+      <p className="max-w-sm text-meta leading-relaxed text-ink-2">
         Save it to open in an app that supports {props.name.split(".").at(-1) || "this format"}{" "}
         files.
       </p>
@@ -389,16 +389,14 @@ export function AttachmentFilePreview(props: {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-background">
       <div className={cn(FILE_SURFACE_SUBHEADER_CLASS)} data-surface-subheader>
-        <div className="flex min-w-0 flex-1 items-center text-xs">
-          <span className="shrink-0 px-0.5 text-muted-foreground">
-            {props.origin ?? "Attachment"}
-          </span>
-          <ChevronRightIcon className="mx-1 size-3.5 shrink-0 text-muted-foreground/60" />
-          <span aria-current="page" className="min-w-0 truncate px-0.5 font-medium text-foreground">
+        <div className="flex min-w-0 flex-1 items-center text-meta">
+          <span className="shrink-0 px-1 text-ink-2">{props.origin ?? "Attachment"}</span>
+          <ChevronRightIcon className="mx-1 size-4 shrink-0 text-ink-3" />
+          <span aria-current="page" className="min-w-0 truncate px-1 font-medium text-ink-1">
             {props.name}
           </span>
           {props.sizeBytes > 0 ? (
-            <span className="ml-2 shrink-0 text-muted-foreground">
+            <span className="ml-2 shrink-0 text-ink-2">
               {formatAttachmentSize(props.sizeBytes)}
             </span>
           ) : null}
@@ -410,11 +408,11 @@ export function AttachmentFilePreview(props: {
             onPress={() => setRendered((value) => !value)}
           >
             {rendered ? (
-              <Code2Icon className="size-3.5" />
+              <Code2Icon className="size-4" />
             ) : renderedMode === "table" ? (
-              <Table2Icon className="size-3.5" />
+              <Table2Icon className="size-4" />
             ) : (
-              <EyeIcon className="size-3.5" />
+              <EyeIcon className="size-4" />
             )}
           </FileSurfaceAction>
         ) : null}
@@ -424,7 +422,7 @@ export function AttachmentFilePreview(props: {
             pressed={wordWrap}
             onPress={() => setWordWrapOverride(!wordWrap)}
           >
-            <WrapTextIcon className="size-3.5" />
+            <WrapTextIcon className="size-4" />
           </FileSurfaceAction>
         ) : null}
         {content || streamsText ? (
@@ -455,7 +453,7 @@ export function AttachmentFilePreview(props: {
                 );
             }}
           >
-            {isCopied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
+            {isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
           </FileSurfaceAction>
         ) : null}
         {url ? (
@@ -464,17 +462,17 @@ export function AttachmentFilePreview(props: {
             disabled={saving}
             onPress={save}
           >
-            <DownloadIcon className="size-3.5" />
+            <DownloadIcon className="size-4" />
           </FileSurfaceAction>
         ) : null}
         {props.onRemove ? (
           <FileSurfaceAction label="Remove from draft" onPress={props.onRemove}>
-            <Trash2Icon className="size-3.5" />
+            <Trash2Icon className="size-4" />
           </FileSurfaceAction>
         ) : null}
         {props.onClose ? (
           <FileSurfaceAction label="Close" onPress={props.onClose}>
-            <XIcon className="size-3.5" />
+            <XIcon className="size-4" />
           </FileSurfaceAction>
         ) : null}
       </div>

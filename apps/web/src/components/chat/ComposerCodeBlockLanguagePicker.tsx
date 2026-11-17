@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -24,7 +24,7 @@ import { PierreEntryIcon } from "./PierreEntryIcon";
 function LanguageIcon(props: { language: string; theme: "light" | "dark" }) {
   const fileName = props.language ? syntheticFileNameForLanguageId(props.language) : "file.txt";
   return (
-    <PierreEntryIcon pathValue={fileName} kind="file" theme={props.theme} className="size-3.5" />
+    <PierreEntryIcon pathValue={fileName} kind="file" theme={props.theme} className="size-4" />
   );
 }
 
@@ -48,7 +48,7 @@ export function ComposerCodeBlockLanguagePicker(props: {
   const selected = items.find((entry) => entry.id === current) ?? null;
 
   return (
-    <span className="-ml-1.5 flex min-w-0">
+    <span className="-ml-2 flex min-w-0">
       <Combobox
         items={items}
         filteredItems={filteredItems}
@@ -91,7 +91,6 @@ export function ComposerCodeBlockLanguagePicker(props: {
               <ComboboxItem key={entry.id || "plain"} value={entry}>
                 <LanguageIcon language={entry.id} theme={props.theme} />
                 <span className="min-w-0 flex-1 truncate">{entry.label}</span>
-                {entry.id === current ? <CheckIcon className="ml-auto" /> : null}
               </ComboboxItem>
             )}
           </ComboboxList>

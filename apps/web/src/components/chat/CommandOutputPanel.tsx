@@ -50,8 +50,8 @@ export function CommandOutputPanel(props: {
 
   if (text.length === 0) {
     if (error) return <div className="text-destructive">Couldn&apos;t load output: {error}</div>;
-    if (data === null) return <div className="text-muted-foreground italic">Loading output…</div>;
-    return data.running ? null : <div className="text-muted-foreground italic">No output.</div>;
+    if (data === null) return <div className="text-ink-2 italic">Loading output…</div>;
+    return data.running ? null : <div className="text-ink-2 italic">No output.</div>;
   }
   // Parse after all hooks to preserve the text/theme compiler cache.
   const spans = terminalOutputSpans(text, TERMINAL_PALETTES[resolvedTheme]);
@@ -63,7 +63,7 @@ export function CommandOutputPanel(props: {
         followRef.current =
           element.scrollHeight - element.scrollTop - element.clientHeight <= FOLLOW_SLACK_PX;
       }}
-      className="max-h-80 overflow-auto text-muted-foreground"
+      className="max-h-80 overflow-auto text-ink-2"
     >
       {data?.output.truncated ? <div className="italic">Earlier output not shown</div> : null}
       {spans.map((span, index) =>

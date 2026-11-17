@@ -65,7 +65,7 @@ const SCRIPT_ICONS: Array<{ id: ProjectScriptIcon; label: string }> = [
 
 export function ScriptIcon({
   icon,
-  className = "size-3.5",
+  className = "size-4",
 }: {
   icon: ProjectScriptIcon;
   className?: string;
@@ -412,22 +412,22 @@ function ProjectScriptEditorForm({
       </DialogHeader>
       <DialogPanel>
         <form id={formId} onSubmit={submit}>
-          <fieldset className="space-y-4" disabled={isSaving || !canEditActions}>
-            <div className="space-y-1.5">
+          <fieldset className="space-y-2" disabled={isSaving || !canEditActions}>
+            <div className="space-y-2">
               <Label htmlFor="script-name">Name</Label>
               <div className="flex items-center gap-2">
                 <Popover onOpenChange={setIconPickerOpen} open={iconPickerOpen}>
                   <PopoverTrigger
                     render={
                       <Button
+                        size="icon-sm"
                         type="button"
                         variant="outline"
-                        className="size-9 shrink-0"
                         aria-label="Choose icon"
                       />
                     }
                   >
-                    <ScriptIcon icon={icon} className="size-4.5" />
+                    <ScriptIcon icon={icon} className="size-4" />
                   </PopoverTrigger>
                   <PopoverPopup align="start">
                     <div className="grid grid-cols-3 gap-2">
@@ -437,10 +437,10 @@ function ProjectScriptEditorForm({
                           <button
                             key={entry.id}
                             type="button"
-                            className={`relative flex flex-col items-center gap-2 rounded-md border px-2 py-2 text-xs dark:border-transparent ${
+                            className={`relative flex flex-col items-center gap-2 rounded-row border px-2 py-2 text-meta dark:border-transparent ${
                               isSelected
                                 ? "border-primary/70 bg-primary/10 ring-inset dark:ring-1 dark:ring-primary/30"
-                                : "border-border/70 hover:bg-accent/60 dark:bg-white/[0.035]"
+                                : "border-border/70 hover:bg-accent/60 dark:bg-white/4"
                             }`}
                             onClick={() => {
                               setIcon(entry.id);
@@ -464,7 +464,7 @@ function ProjectScriptEditorForm({
                 />
               </div>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="script-keybinding">Keybinding</Label>
               <Input
                 disabled={!canWriteSettings}
@@ -474,12 +474,12 @@ function ProjectScriptEditorForm({
                 readOnly
                 onKeyDown={captureKeybinding}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 Press a shortcut. Use <code>Backspace</code> to clear. Shortcuts are
                 environment-wide. Projects using the same action share its shortcut.
               </p>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="script-command">Command</Label>
               <Textarea
                 id="script-command"
@@ -488,7 +488,7 @@ function ProjectScriptEditorForm({
                 onChange={(event) => setCommand(event.target.value)}
               />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="script-preview-url">Preview URL (optional)</Label>
               <Input
                 id="script-preview-url"
@@ -496,11 +496,11 @@ function ProjectScriptEditorForm({
                 value={previewUrl}
                 onChange={(event) => setPreviewUrl(event.target.value)}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 Open this URL in the in-app preview when this action runs.
               </p>
             </div>
-            <label className="flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-sm dark:border-transparent dark:bg-white/[0.035]">
+            <label className="flex items-center justify-between gap-2 rounded-row border border-border/70 px-2 py-2 text-body dark:border-transparent dark:bg-white/4">
               <span>Run automatically on worktree creation</span>
               <Switch
                 checked={runOnWorktreeCreate}
@@ -508,7 +508,7 @@ function ProjectScriptEditorForm({
               />
             </label>
             <label
-              className={`flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-sm dark:border-transparent dark:bg-white/[0.035] ${
+              className={`flex items-center justify-between gap-2 rounded-row border border-border/70 px-2 py-2 text-body dark:border-transparent dark:bg-white/4 ${
                 runOnWorktreeCreate ? "" : "opacity-60"
               }`}
             >
@@ -519,14 +519,14 @@ function ProjectScriptEditorForm({
                 onCheckedChange={(checked) => setWaitForSetup(Boolean(checked))}
               />
             </label>
-            <label className="flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-sm dark:border-transparent dark:bg-white/[0.035]">
+            <label className="flex items-center justify-between gap-2 rounded-row border border-border/70 px-2 py-2 text-body dark:border-transparent dark:bg-white/4">
               <span>Run in the thread's worktree when the thread settles</span>
               <Switch
                 checked={runOnSettle}
                 onCheckedChange={(checked) => setRunOnSettle(Boolean(checked))}
               />
             </label>
-            <label className="flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-sm dark:border-transparent dark:bg-white/[0.035]">
+            <label className="flex items-center justify-between gap-2 rounded-row border border-border/70 px-2 py-2 text-body dark:border-transparent dark:bg-white/4">
               <span>Stop this action when the thread settles</span>
               <Switch
                 checked={stopOnSettle}
@@ -534,7 +534,7 @@ function ProjectScriptEditorForm({
               />
             </label>
             <label
-              className={`flex items-center justify-between gap-3 rounded-md border border-border/70 px-3 py-2 text-sm dark:border-transparent dark:bg-white/[0.035] ${
+              className={`flex items-center justify-between gap-2 rounded-row border border-border/70 px-2 py-2 text-body dark:border-transparent dark:bg-white/4 ${
                 previewUrl.trim().length === 0 ? "opacity-60" : ""
               }`}
             >
@@ -545,7 +545,7 @@ function ProjectScriptEditorForm({
                 onCheckedChange={(checked) => setAutoOpenPreview(Boolean(checked))}
               />
             </label>
-            {validationError && <p className="text-sm text-destructive">{validationError}</p>}
+            {validationError && <p className="text-body text-destructive">{validationError}</p>}
           </fieldset>
         </form>
       </DialogPanel>

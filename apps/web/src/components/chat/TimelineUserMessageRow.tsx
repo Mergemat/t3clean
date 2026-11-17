@@ -99,10 +99,7 @@ import {
 
 // Drawn inside the media so dark screenshots keep an edge on the dark background.
 const MEDIA_EDGE_CLASS_NAME =
-  "relative after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-[inherit] after:ring-1 after:ring-inset after:ring-black/9 dark:after:ring-white/12";
-
-const BUBBLE_CHIP_CLASS_NAME =
-  "[&_[data-slot=context-chip]]:[--context-chip-ink:var(--context-chip-message,var(--context-chip-accent))]";
+  "relative after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-inherit after:ring-1 after:ring-inset after:ring-black/9 dark:after:ring-white/12";
 
 function UserFileCard({
   file,
@@ -117,14 +114,14 @@ function UserFileCard({
   const extension = /\.([a-z0-9]{1,8})$/i.exec(file.name)?.[1]?.toUpperCase() ?? "File";
   const identity = (
     <>
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-background/60">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-row bg-background/60">
         <PierreEntryIcon pathValue={file.name} kind="file" theme={ctx.resolvedTheme} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-medium group-hover/file:underline">
+        <span className="block truncate text-body font-medium group-hover/file:underline">
           {label}
         </span>
-        <span className="block text-xs text-muted-foreground tabular-nums">
+        <span className="block text-meta text-ink-2 tabular-nums">
           {file.downloadable === false ? (
             "Sending…"
           ) : (
@@ -140,11 +137,11 @@ function UserFileCard({
   return (
     <div
       data-markdown-copy={copyMarkdown}
-      className="flex w-64 max-w-full items-center gap-1 rounded-2xl bg-message py-2 ps-2 pe-1 text-message-foreground"
+      className="flex w-64 max-w-full items-center gap-1 rounded-box bg-message py-2 ps-2 pe-1 text-message-foreground"
     >
       {file.downloadable === false ? (
         <>
-          <div className="flex min-w-0 flex-1 items-center gap-3">{identity}</div>
+          <div className="flex min-w-0 flex-1 items-center gap-2">{identity}</div>
           <Button size="icon-xs" variant="ghost-muted" disabled aria-label="Sending attachment">
             <DownloadIcon />
           </Button>
@@ -155,7 +152,7 @@ function UserFileCard({
             type="button"
             aria-label={`Preview ${label}`}
             onClick={() => ctx.onFileOpen(file)}
-            className="group/file focus-visible:ring-ring/70 flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-xl text-left focus-visible:ring-2 focus-visible:ring-inset focus-visible:outline-none"
+            className="group/file focus-visible:ring-ring/70 flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-box text-left focus-visible:ring-2 focus-visible:ring-inset focus-visible:outline-none"
           >
             {identity}
           </button>
@@ -207,10 +204,10 @@ function UserVideoAttachment({
     return (
       <div
         className={cn(
-          "flex aspect-[4/3] w-full items-center justify-center bg-black px-2 py-3 text-center text-2xs text-white/70",
+          "flex aspect-4/3 w-full items-center justify-center bg-black px-2 py-2 text-center text-meta text-white/70",
           standalone
-            ? cn(MEDIA_EDGE_CLASS_NAME, "rounded-2xl", cornerClassName)
-            : "rounded-lg border border-border/80",
+            ? cn(MEDIA_EDGE_CLASS_NAME, "rounded-box", cornerClassName)
+            : "rounded-row border border-border/80",
         )}
       >
         {file.name}
@@ -230,21 +227,21 @@ function UserVideoAttachment({
         const preview = buildAttachmentVideoPreview(ctx.activeThreadEnvironmentId, file);
         if (preview) ctx.onImageExpand(preview);
       }}
-      className="block aspect-[4/3] w-full"
+      className="block aspect-4/3 w-full"
       videoClassName={cn(
         "aspect-auto size-full",
-        !standalone && "rounded-lg border border-border/80",
+        !standalone && "rounded-row border border-border/80",
       )}
       stateClassName={cn(
         "aspect-auto min-h-full bg-black text-white",
-        !standalone && "rounded-lg border border-border/80",
+        !standalone && "rounded-row border border-border/80",
       )}
       onRetry={asset ? refreshAssetUrl : undefined}
       actionsSource={asset ? { kind: "video", name: file.name, src, asset } : undefined}
     />
   );
   return standalone ? (
-    <div className={cn(MEDIA_EDGE_CLASS_NAME, "overflow-hidden rounded-2xl", cornerClassName)}>
+    <div className={cn(MEDIA_EDGE_CLASS_NAME, "overflow-hidden rounded-box", cornerClassName)}>
       {player}
     </div>
   ) : (
@@ -309,8 +306,7 @@ function AutomationMessageRow({ row }: { row: Extract<TimelineRow, { kind: "mess
       ) : null}
       <div
         className={cn(
-          "min-w-0 max-w-[80%] rounded-2xl bg-message text-message-foreground",
-          BUBBLE_CHIP_CLASS_NAME,
+          "min-w-0 max-w-4/5 rounded-box bg-message text-message-foreground",
           expanded && "w-full",
         )}
         data-user-message-bubble=""
@@ -328,7 +324,7 @@ function AutomationMessageRow({ row }: { row: Extract<TimelineRow, { kind: "mess
           <div
             ref={revealRef}
             hidden={!expanded}
-            className={cn("px-3 pb-3", !ctx.findActive && "max-h-96 overflow-auto")}
+            className={cn("px-2 pb-2", !ctx.findActive && "max-h-96 overflow-auto")}
             data-thread-find-text="true"
           >
             <UserMessageBody text={text} skills={ctx.skills} markdownCwd={ctx.markdownCwd} />
@@ -337,13 +333,13 @@ function AutomationMessageRow({ row }: { row: Extract<TimelineRow, { kind: "mess
       </div>
       <UserMessageProjectedStatus row={row} />
       {expanded ? (
-        <div className="flex w-full max-w-[80%] items-center justify-end pe-1 text-xs tabular-nums opacity-0 transition-opacity duration-200 pointer-coarse:opacity-100 focus-within:opacity-100 group-hover:opacity-100">
+        <div className="flex w-full max-w-4/5 items-center justify-end pe-1 text-meta tabular-nums opacity-0 transition-opacity duration-200 pointer-coarse:opacity-100 focus-within:opacity-100 group-hover:opacity-100">
           <div className="flex shrink-0 items-center gap-2">
             {scheduledTaskId ? (
               <Link
                 to="/settings/scheduled-tasks"
                 search={{ environmentId: ctx.activeThreadEnvironmentId, taskId: scheduledTaskId }}
-                className="rounded-sm text-xs text-muted-foreground hover:underline focus-visible:outline-2 focus-visible:outline-ring"
+                className="rounded-row text-meta text-ink-2 hover:underline focus-visible:outline-2 focus-visible:outline-ring"
               >
                 Open automation
               </Link>
@@ -353,7 +349,7 @@ function AutomationMessageRow({ row }: { row: Extract<TimelineRow, { kind: "mess
               timestampFormat={ctx.timestampFormat}
               alwaysVisible
             />
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center">
               {typeof revertTurnCount === "number" && (
                 <RevertUserMessageButton turnCount={revertTurnCount} messageId={row.message.id} />
               )}
@@ -398,14 +394,14 @@ export function FoldedMessageHeader(props: {
       aria-expanded={props.expanded}
       data-scroll-anchor-ignore
       onClick={props.onToggle}
-      className="flex w-full min-w-0 items-center gap-1.5 rounded-2xl px-3 py-2 text-left text-sm focus-visible:outline-2 focus-visible:outline-ring"
+      className="flex w-full min-w-0 items-center gap-2 rounded-box px-2 py-2 text-left text-body focus-visible:outline-2 focus-visible:outline-ring"
     >
-      <Icon className="size-4 shrink-0 stroke-2 text-muted-foreground" />
-      <span className="max-w-1/2 shrink-0 truncate text-muted-foreground">{props.label}</span>
+      <Icon className="size-4 shrink-0 stroke-2 text-ink-2" />
+      <span className="max-w-1/2 shrink-0 truncate text-ink-2">{props.label}</span>
       <span className="min-w-0 flex-1 truncate">{props.summary}</span>
       <ChevronDownIcon
         className={cn(
-          "size-3.5 shrink-0 text-muted-foreground transition-transform",
+          "size-4 shrink-0 text-ink-2 transition-transform",
           props.expanded && "rotate-180",
         )}
       />
@@ -423,8 +419,8 @@ function UserMessageProjectedStatus({ row }: { row: Extract<TimelineRow, { kind:
   )
     return null;
   return (
-    <div className="me-1 flex items-center gap-1.5">
-      <span className="rounded-full border border-destructive/25 bg-destructive/8 px-1.5 py-0.5 text-3xs font-medium text-destructive">
+    <div className="me-1 flex items-center gap-2">
+      <span className="rounded-row border border-destructive/25 bg-destructive/8 px-2 py-1 text-meta font-medium text-destructive">
         {status}
       </span>
     </div>
@@ -526,8 +522,8 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
     regularImages.every((image) => image.source?.kind !== "snap-shot");
   // Corners that touch the bubble or a neighbouring message tighten, like the bubble's.
   const mediaCornerClassName = cn(
-    row.groupedWithPrevious && "rounded-tr-md",
-    (mediaAboveText || row.groupedWithNext) && "rounded-br-md",
+    row.groupedWithPrevious && "rounded-tr-row",
+    (mediaAboveText || row.groupedWithNext) && "rounded-br-row",
   );
   // Files sent without words show as cards, not as a bubble around a name chip.
   const fileCardsOnly =
@@ -680,19 +676,19 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
         className={cn(
           "grid",
           !standaloneMedia
-            ? "mb-2 max-w-[210px] grid-cols-2 gap-2"
+            ? "mb-2 max-w-52 grid-cols-2 gap-2"
             : loneImage
               ? "max-w-full"
               : collage
                 ? cn(
                     MEDIA_EDGE_CLASS_NAME,
-                    "w-80 max-w-full gap-px overflow-hidden rounded-2xl bg-black/9 dark:bg-white/12",
+                    "w-80 max-w-full gap-px overflow-hidden rounded-box bg-black/9 dark:bg-white/12",
                     mediaCornerClassName,
                     regularImages.length === 2
-                      ? "auto-rows-[12rem] grid-cols-2"
+                      ? "h-48 grid-cols-2"
                       : regularImages.length === 3
-                        ? "auto-rows-[calc(6rem-0.5px)] grid-cols-[3fr_2fr]"
-                        : "auto-rows-[6rem] grid-cols-2",
+                        ? "h-48 grid-cols-5 grid-rows-2"
+                        : "grid-cols-2 *:h-24",
                   )
                 : regularImages.length + userVideos.length === 1
                   ? "w-80 max-w-full"
@@ -710,25 +706,26 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
                     standaloneMedia
                       ? cn(
                           MEDIA_EDGE_CLASS_NAME,
-                          "min-h-16 justify-self-end overflow-hidden rounded-2xl",
+                          "min-h-16 justify-self-end overflow-hidden rounded-box",
                           loneImage && mediaCornerClassName,
                         )
                       : SNAP_SHOT_ATTACHMENT_FRAME_CLASS,
                   )
                 : loneImage
-                  ? cn(MEDIA_EDGE_CLASS_NAME, "overflow-hidden rounded-2xl", mediaCornerClassName)
+                  ? cn(MEDIA_EDGE_CLASS_NAME, "overflow-hidden rounded-box", mediaCornerClassName)
                   : collage
                     ? cn(
                         "overflow-hidden bg-background",
-                        regularImages.length === 3 && index === 0 && "row-span-2",
+                        regularImages.length === 3 &&
+                          (index === 0 ? "col-span-3 row-span-2" : "col-span-2"),
                         regularImages.length > 3 &&
                           regularImages.length % 2 === 1 &&
                           index === regularImages.length - 1 &&
                           "col-span-2",
                       )
                     : standaloneMedia
-                      ? cn(MEDIA_EDGE_CLASS_NAME, "aspect-[4/3] overflow-hidden rounded-2xl")
-                      : "aspect-[4/3] overflow-hidden rounded-lg border border-border/80",
+                      ? cn(MEDIA_EDGE_CLASS_NAME, "aspect-4/3 overflow-hidden rounded-box")
+                      : "aspect-4/3 overflow-hidden rounded-row border border-border/80",
             )}
           >
             {image.previewUrl ? (
@@ -763,7 +760,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
             ) : (
               <div
                 className={cn(
-                  "flex min-h-[72px] items-center justify-center px-2 py-3 text-center text-2xs text-muted-foreground/70",
+                  "flex min-h-18 items-center justify-center px-2 py-2 text-center text-meta text-ink-2",
                   loneImage && "h-48 w-64 max-w-full",
                   collage && "h-full",
                 )}
@@ -795,7 +792,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
   const messageActions = (
     <div
       className={cn(
-        "flex items-center justify-end gap-x-2 gap-y-0.5",
+        "flex items-center justify-end gap-x-2",
         floatActions ? "flex-wrap" : "shrink-0",
       )}
     >
@@ -808,14 +805,14 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
         </InlineButton>
       ) : null}
       <Tooltip>
-        <TooltipTrigger render={<p className="text-muted-foreground text-xs tabular-nums" />}>
+        <TooltipTrigger render={<p className="text-ink-2 text-meta tabular-nums" />}>
           {formatDayAwareTimestamp(row.message.createdAt, ctx.timestampFormat)}
         </TooltipTrigger>
         <TooltipPopup>
           {formatChatTimestampTooltip(row.message.createdAt, ctx.timestampFormat)}
         </TooltipPopup>
       </Tooltip>
-      <div className={cn("flex items-center gap-0.5", floatActions && "flex-wrap justify-end")}>
+      <div className={cn("flex items-center", floatActions && "flex-wrap justify-end")}>
         {typeof revertTurnCount === "number" && (
           <RevertUserMessageButton turnCount={revertTurnCount} messageId={row.message.id} />
         )}
@@ -849,10 +846,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
       data-user-message-attribution={folded ? "agent" : undefined}
     >
       {userMessage.attribution === "t3code" ? (
-        <p
-          className="me-1 text-2xs text-muted-foreground/70"
-          data-user-message-attribution="t3code"
-        >
+        <p className="me-1 text-meta text-ink-2" data-user-message-attribution="t3code">
           Sent by T3 Code
         </p>
       ) : null}
@@ -871,7 +865,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
         />
       ) : null}
       {mediaAboveText ? (
-        <div className="flex max-w-[80%] justify-end">
+        <div className="flex max-w-4/5 justify-end">
           {/* The heading leads the media so screen readers reach it before the images. */}
           <MessageAuthorHeading>You</MessageAuthorHeading>
           {mediaBlock}
@@ -879,14 +873,13 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
       ) : null}
       <div
         className={cn(
-          "relative min-w-0 max-w-[80%] rounded-2xl text-message-foreground",
-          (mediaAboveText || row.groupedWithPrevious) && "rounded-tr-md",
-          row.groupedWithNext && "rounded-br-md",
-          BUBBLE_CHIP_CLASS_NAME,
+          "relative min-w-0 max-w-4/5 rounded-box text-message-foreground",
+          (mediaAboveText || row.groupedWithPrevious) && "rounded-tr-row",
+          row.groupedWithNext && "rounded-br-row",
           userMessage.attribution === "guest"
             ? guestBubbleClassName(false)
             : !mediaOnly && !fileCardsOnly && !audioOnly && "bg-message",
-          !folded && !mediaOnly && !fileCardsOnly && !audioOnly && "p-3",
+          !folded && !mediaOnly && !fileCardsOnly && !audioOnly && "px-4 py-2",
           folded && expanded && "w-full",
         )}
         data-user-message-bubble=""
@@ -917,7 +910,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
             hidden={folded && !expanded}
             dir={markdownProseDirection(resolvedContext.text)}
             className={cn(
-              folded && "px-3 pb-3",
+              folded && "px-2 pb-2",
               folded && !ctx.findActive && "max-h-96 overflow-auto",
             )}
           >
@@ -971,7 +964,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
                       <span className="min-w-0 flex-1">
                         <span className="block truncate">{label}</span>
                         {file.downloadable === false || pastedText ? (
-                          <span className="block text-xs text-muted-foreground tabular-nums">
+                          <span className="block text-meta text-ink-2 tabular-nums">
                             {file.downloadable === false ? "Sending…" : formatBytes(file.sizeBytes)}
                           </span>
                         ) : null}
@@ -985,7 +978,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
                           type="button"
                           aria-label={`Preview ${label}`}
                           onClick={() => ctx.onFileOpen(file)}
-                          className="focus-visible:ring-ring/70 flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md py-1 text-left text-sm hover:underline focus-visible:ring-2 focus-visible:ring-inset focus-visible:outline-none"
+                          className="focus-visible:ring-ring/70 flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-row py-1 text-left text-body hover:underline focus-visible:ring-2 focus-visible:ring-inset focus-visible:outline-none"
                         >
                           {fileIdentity}
                           <EyeIcon className="size-4 shrink-0" />
@@ -1010,13 +1003,16 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
                   }
 
                   return (
-                    <div key={file.id} className="flex min-w-0 items-center gap-2 py-1 text-sm">
+                    <div key={file.id} className="flex min-w-0 items-center gap-2 py-1 text-body">
                       {fileIdentity}
                     </div>
                   );
                 })}
                 {unknownAttachments.map((attachment) => (
-                  <div key={attachment.id} className="flex min-w-0 items-center gap-2 py-1 text-sm">
+                  <div
+                    key={attachment.id}
+                    className="flex min-w-0 items-center gap-2 py-1 text-body"
+                  >
                     <PierreEntryIcon
                       pathValue={attachment.name}
                       kind="file"
@@ -1043,7 +1039,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
         {floatActions ? (
           <div
             className={cn(
-              "absolute end-full top-1/2 me-2 hidden w-max max-w-[calc(20cqw-0.5rem)] -translate-y-1/2 @min-[37rem]:flex",
+              "absolute end-full top-1/2 me-2 hidden w-max max-w-28 -translate-y-1/2 @min-[37rem]:flex",
               ACTIONS_REVEAL_CLASS_NAME,
             )}
           >
@@ -1055,7 +1051,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
       {!folded || expanded ? (
         <div
           className={cn(
-            "flex w-full max-w-[80%] justify-end pe-1",
+            "flex w-full max-w-4/5 justify-end pe-1",
             floatActions && "@min-[37rem]:hidden",
             ACTIONS_REVEAL_CLASS_NAME,
           )}
@@ -1068,7 +1064,7 @@ function UserTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "message" 
 }
 
 const ACTIONS_REVEAL_CLASS_NAME =
-  "items-center text-xs tabular-nums opacity-0 transition-opacity duration-200 pointer-coarse:opacity-100 focus-within:opacity-100 group-hover:opacity-100";
+  "items-center text-meta tabular-nums opacity-0 transition-opacity duration-200 pointer-coarse:opacity-100 focus-within:opacity-100 group-hover:opacity-100";
 
 function UserMessageIntentMarker({
   intent,
@@ -1082,7 +1078,7 @@ function UserMessageIntentMarker({
       <TooltipTrigger
         render={
           <div
-            className="me-1 flex items-center justify-end gap-1 text-xs leading-none text-muted-foreground"
+            className="me-1 flex items-center justify-end gap-1 text-meta leading-none text-ink-2"
             data-user-message-intent={intent}
           />
         }
@@ -1117,7 +1113,7 @@ function RevertUserMessageButton({
         render={
           <Button
             type="button"
-            size="xs"
+            size="icon-xs"
             variant="ghost"
             disabled={activity.isRevertingCheckpoint || activity.isWorking}
             onClick={() => ctx.onRevertToTurnCount(turnCount, messageId)}
@@ -1185,7 +1181,7 @@ const CollapsibleUserMessageBody = memo(function CollapsibleUserMessageBody(prop
         </div>
       ) : null}
       {showCollapseControl ? (
-        <div className="mt-1.5 flex items-center justify-end gap-2" data-user-message-footer="true">
+        <div className="mt-2 flex items-center justify-end gap-2" data-user-message-footer="true">
           {showCollapseControl ? (
             <Button
               type="button"

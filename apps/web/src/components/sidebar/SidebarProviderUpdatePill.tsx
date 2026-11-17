@@ -1,3 +1,4 @@
+import { Button } from "~/components/ui/button";
 import { Spinner } from "~/components/ui/spinner";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "@effect/atom-react";
@@ -140,11 +141,11 @@ export function SidebarProviderUpdatePill() {
 
   return (
     <div
-      className={`group/provider-update relative flex min-h-7 w-full shrink-0 items-center overflow-hidden rounded-lg text-2xs leading-4 font-medium transform-gpu transition-all duration-180 ease-drawer will-change-transform ${
+      className={`group/provider-update relative flex min-h-6 w-full shrink-0 items-center overflow-hidden rounded-row text-meta leading-4 font-medium transform-gpu transition-all duration-180 ease-drawer will-change-transform ${
         PROVIDER_UPDATE_PILL_STYLES[displayedView.tone]
       } ${
         exitingKey === displayedView.key
-          ? "pointer-events-none translate-y-1.5 opacity-0"
+          ? "pointer-events-none translate-y-2 opacity-0"
           : "translate-y-0 opacity-100"
       }`}
     >
@@ -162,7 +163,7 @@ export function SidebarProviderUpdatePill() {
           }
         />
       ) : null}
-      <div className="pointer-events-none absolute inset-0 rounded-lg transition-colors" />
+      <div className="pointer-events-none absolute inset-0 rounded-row transition-colors" />
       <Tooltip>
         <TooltipTrigger
           render={
@@ -170,17 +171,17 @@ export function SidebarProviderUpdatePill() {
               type="button"
               aria-label={displayedView.description}
               data-provider-update-main
-              className="relative z-[1] flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5 text-left"
+              className="relative z-1 flex min-w-0 flex-1 items-center gap-2 px-2 py-2 text-left"
               onClick={openProviderSettings}
             >
               {displayedView.tone === "loading" ? (
                 <Spinner size="sm" className="shrink-0" />
               ) : displayedView.tone === "success" ? (
-                <CircleCheckIcon className="size-3.5 shrink-0" />
+                <CircleCheckIcon className="size-4 shrink-0" />
               ) : displayedView.tone === "error" ? (
-                <TriangleAlertIcon className="size-3.5 shrink-0" />
+                <TriangleAlertIcon className="size-4 shrink-0" />
               ) : (
-                <DownloadIcon className="size-3.5 shrink-0" />
+                <DownloadIcon className="size-4 shrink-0" />
               )}
               <span className="min-w-0 wrap-break-word">{displayedView.title}</span>
             </button>
@@ -192,14 +193,15 @@ export function SidebarProviderUpdatePill() {
         <Tooltip>
           <TooltipTrigger
             render={
-              <button
-                type="button"
+              <Button
+                size="icon-xs"
+                variant="ghost-muted"
                 aria-label="Dismiss provider update notice"
-                className="relative z-[1] mr-1 flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-md opacity-70 outline-none hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                className="z-1 mr-1"
                 onClick={() => startExit(displayedView.key, null, displayedView.key)}
               >
-                <XIcon className="size-3.5 shrink-0" />
-              </button>
+                <XIcon />
+              </Button>
             }
           />
           <TooltipPopup side="top">Dismiss until provider status changes</TooltipPopup>

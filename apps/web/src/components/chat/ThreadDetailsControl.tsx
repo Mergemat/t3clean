@@ -21,7 +21,7 @@ const parts = {
   row: THREAD_DETAILS_PANEL_ROW_CLASS,
   title: cn(
     THREAD_DETAILS_PANEL_ROW_CLASS,
-    "h-auto min-h-8 items-start pt-1.5 pb-0 disabled:opacity-100 sm:h-auto [&>svg]:mt-px",
+    "h-auto min-h-8 items-start pt-2 pb-0 disabled:opacity-100 sm:h-auto [&>svg]:mt-px",
   ),
   select: THREAD_DETAILS_PANEL_SELECT_ROW_CLASS,
   primary: THREAD_DETAILS_PANEL_SPLIT_PRIMARY_CLASS,
@@ -54,13 +54,13 @@ export function ThreadDetailsControl({
       {
         type: render ? undefined : "button",
         className: cn(
-          "relative inline-flex shrink-0 cursor-pointer items-center whitespace-nowrap border outline-none transition-[box-shadow,scale] [&:not([aria-haspopup]):not(:disabled):not([aria-disabled=true])]:will-change-[scale] [&:active:not([aria-haspopup])]:scale-[0.97] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 disabled:pointer-events-none disabled:opacity-64 aria-disabled:cursor-not-allowed aria-disabled:opacity-64 [&_svg]:shrink-0",
+          "relative inline-flex shrink-0 cursor-pointer items-center whitespace-nowrap border outline-none transition [&:not([aria-haspopup]):not(:disabled):not([aria-disabled=true])]:will-change-transform [&:active:not([aria-haspopup])]:scale-97 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-12 pointer-coarse:after:min-w-12 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 disabled:pointer-events-none disabled:opacity-64 aria-disabled:cursor-not-allowed aria-disabled:opacity-64 [&_svg]:shrink-0",
           parts[part],
-          multiline && "h-auto min-h-8 py-1.5 disabled:opacity-100 sm:h-auto",
-          tone === "muted" && "text-muted-foreground hover:text-foreground/80",
+          multiline && "h-auto min-h-8 py-2 disabled:opacity-100 sm:h-auto",
+          tone === "muted" && "text-ink-2 hover:text-ink-2",
           tone === "primary" &&
             // The row surface forces a faint hover fill with !important; the pill keeps its own.
-            "bg-black/[0.035] text-foreground/80 hover:text-foreground hover:!bg-black/[0.06] data-pressed:!bg-black/[0.06] dark:bg-white/[0.08] dark:hover:!bg-white/[0.12] dark:data-pressed:!bg-white/[0.12]",
+            "bg-black/4 text-ink-2 hover:text-ink-1 hover:!bg-black/6 data-pressed:!bg-black/6 dark:bg-white/8 dark:hover:!bg-white/12 dark:data-pressed:!bg-white/12",
           tone === "destructive" &&
             "text-destructive hover:text-destructive data-pressed:text-destructive",
           // Keep the inset focus ring clear of the 20px PR action label.
@@ -96,7 +96,7 @@ export function ThreadDetailsControl({
       <Button
         {...props}
         render={render}
-        size={multiline ? "sm-multiline" : size}
+        size={multiline ? "sm" : size}
         variant={variant}
         className={className}
       >

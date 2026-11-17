@@ -93,9 +93,9 @@ export function DeviceToolsPanel(props: {
 
   return (
     <div
-      className={cn("flex min-h-0 flex-col border-border bg-background text-sm", props.className)}
+      className={cn("flex min-h-0 flex-col border-border bg-background text-body", props.className)}
     >
-      <div className="flex h-9 shrink-0 items-center gap-2 border-b px-3">
+      <div className="flex h-8 shrink-0 items-center gap-2 border-b px-2">
         <span className="font-medium">Tools</span>
         {pending ? <Spinner size="sm" /> : null}
         <Button
@@ -110,28 +110,26 @@ export function DeviceToolsPanel(props: {
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto">
         {error ? (
-          <p className="border-b bg-destructive/10 px-3 py-2 text-xs text-destructive">{error}</p>
+          <p className="border-b bg-destructive/10 px-2 py-2 text-meta text-destructive">{error}</p>
         ) : null}
         {detail === null && !error ? (
-          <div className="flex items-center gap-2 px-3 py-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 px-2 py-2 text-meta text-ink-2">
             <Spinner size="sm" /> Reading device settings…
           </div>
         ) : null}
 
         {props.hostDiagnostics ? (
           <Section title="Host diagnostics">
-            <p className="whitespace-pre-line text-xs text-muted-foreground">
-              {props.hostDiagnostics}
-            </p>
+            <p className="whitespace-pre-line text-meta text-ink-2">{props.hostDiagnostics}</p>
           </Section>
         ) : null}
 
         <Section title="App">
           <Row label="Foreground">
-            <span className="truncate font-mono text-xs">{foregroundApp?.id ?? "-"}</span>
+            <span className="truncate font-mono text-meta">{foregroundApp?.id ?? "-"}</span>
           </Row>
           {foregroundApp ? (
-            <div className="flex gap-1.5">
+            <div className="flex gap-2">
               <Button
                 size="xs"
                 variant="outline"
@@ -315,9 +313,7 @@ export function DeviceToolsPanel(props: {
                   : Promise.resolve(false)
               }
             />
-            {!foregroundApp ? (
-              <p className="text-xs text-muted-foreground">Open an app first.</p>
-            ) : null}
+            {!foregroundApp ? <p className="text-meta text-ink-2">Open an app first.</p> : null}
           </Section>
         ) : null}
 
@@ -329,8 +325,8 @@ export function DeviceToolsPanel(props: {
 
 function Section(props: { readonly title: string; readonly children: React.ReactNode }) {
   return (
-    <section className="flex flex-col gap-2 border-b px-3 py-2.5 last:border-b-0">
-      <h3 className="text-xs font-medium text-muted-foreground">{props.title}</h3>
+    <section className="flex flex-col gap-2 px-2 pt-2 pb-4">
+      <h3 className="text-meta font-medium text-ink-2">{props.title}</h3>
       {props.children}
     </section>
   );
@@ -338,8 +334,8 @@ function Section(props: { readonly title: string; readonly children: React.React
 
 function Row(props: { readonly label: string; readonly children: React.ReactNode }) {
   return (
-    <div className="flex min-h-7 items-center justify-between gap-3">
-      <span className="shrink-0 text-xs text-muted-foreground">{props.label}</span>
+    <div className="flex min-h-6 items-center justify-between gap-2">
+      <span className="shrink-0 text-meta text-ink-2">{props.label}</span>
       <div className="flex min-w-0 items-center justify-end">{props.children}</div>
     </div>
   );
@@ -386,7 +382,7 @@ function ChoiceSelect<V extends string>(props: {
           {current ? (
             current.label
           ) : (
-            <span className="text-muted-foreground">{props.placeholder ?? "Unknown"}</span>
+            <span className="text-ink-2">{props.placeholder ?? "Unknown"}</span>
           )}
         </SelectValue>
       </SelectTrigger>
@@ -417,7 +413,7 @@ function SubmitRow(props: {
   };
   return (
     <form
-      className="flex gap-1.5"
+      className="flex gap-2"
       onSubmit={(event) => {
         event.preventDefault();
         submit();
@@ -460,7 +456,7 @@ function LocationSection(props: {
     Math.abs(parsed.longitude) <= 180;
   return (
     <Section title="Location">
-      <div className="flex gap-1.5">
+      <div className="flex gap-2">
         <Input
           size="compact"
           font="mono"
@@ -482,7 +478,7 @@ function LocationSection(props: {
           onChange={(event) => setLongitude(event.target.value)}
         />
       </div>
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-2">
         <Select<string | null>
           value={null}
           disabled={props.disabled}
@@ -496,7 +492,7 @@ function LocationSection(props: {
         >
           <SelectTrigger size="xs" className="w-32" aria-label="Location preset">
             <SelectValue>
-              <span className="text-muted-foreground">Preset…</span>
+              <span className="text-ink-2">Preset…</span>
             </SelectValue>
           </SelectTrigger>
           <SelectPopup align="start" alignItemWithTrigger={false}>
@@ -560,7 +556,7 @@ function PermissionsSection(props: {
         disabled={props.disabled}
         onChange={(event) => setAppId(event.target.value)}
       />
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-2">
         <ChoiceSelect
           ariaLabel="Permission"
           value={permission}
@@ -610,11 +606,9 @@ function EventLogSection(props: {
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex w-full items-center gap-1.5 border-b px-3 py-2.5 text-left text-xs font-medium text-muted-foreground">
+      <CollapsibleTrigger className="flex w-full items-center gap-2 px-2 py-2 text-left text-meta font-medium text-ink-2">
         Event log
-        <ChevronDown
-          className={cn("ml-auto size-3.5 transition-transform", open && "rotate-180")}
-        />
+        <ChevronDown className={cn("ml-auto size-4 transition-transform", open && "rotate-180")} />
       </CollapsibleTrigger>
       <CollapsiblePanel>
         <EventLogEntries access={props.access} device={props.device} />
@@ -636,13 +630,13 @@ function EventLogEntries(props: {
     }),
   );
   return (
-    <ol className="max-h-64 overflow-y-auto px-3 py-2 font-mono text-2xs leading-relaxed">
+    <ol className="max-h-64 overflow-y-auto px-2 py-2 font-mono text-meta leading-relaxed">
       {entries.length === 0 ? (
-        <li className="text-muted-foreground">No events yet.</li>
+        <li className="text-ink-2">No events yet.</li>
       ) : (
         entries.map((entry) => (
           <li key={entry.id} className="flex gap-2">
-            <span className="shrink-0 text-muted-foreground">{entry.timestamp.slice(11, 19)}</span>
+            <span className="shrink-0 text-ink-2">{entry.timestamp.slice(11, 19)}</span>
             <span className="truncate">{entry.summary}</span>
           </li>
         ))

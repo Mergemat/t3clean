@@ -107,19 +107,19 @@ export function GuideTour({
       aria-keyshortcuts="J K"
       className="@container/guide h-full overflow-y-auto scrollbar-gutter-both outline-none"
     >
-      <div className="mx-auto grid max-w-[100rem] gap-6 px-4 py-4 @min-[56rem]/guide:grid-cols-[16rem_minmax(0,1fr)] @min-[90rem]/guide:gap-8 @min-[90rem]/guide:px-6">
-        <aside ref={railRef} className="sticky top-4 self-start @max-[56rem]/guide:hidden">
+      <div className="mx-auto grid max-w-400 gap-6 px-4 py-4 @min-[56rem]/guide:grid-cols-(--grid-lead) @min-[90rem]/guide:gap-6 @min-[90rem]/guide:px-6">
+        <aside ref={railRef} className="sticky top-4 w-64 self-start @max-[56rem]/guide:hidden">
           <GuideRail stops={guide.stops} position={position} seen={tour.seen} onSelect={goTo} />
         </aside>
-        <main className="flex min-w-0 flex-col gap-4">
+        <main className="flex min-w-0 flex-col gap-2">
           {banner}
           {diff.error !== null ? (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               The diff could not be loaded, so excerpts are missing: {diff.error}
             </p>
           ) : null}
           {stop === null ? (
-            <p className="text-sm text-muted-foreground">This change has no files to tour.</p>
+            <p className="text-body text-ink-2">This change has no files to tour.</p>
           ) : (
             <GuideStop
               key={position}

@@ -7,25 +7,18 @@ import {
 import type { ProviderOptionDescriptor, RuntimeMode } from "@t3tools/contracts";
 import type { EffortDisplay } from "@t3tools/contracts/settings";
 import { getProviderOptionCurrentLabel } from "@t3tools/shared/model";
-import { CheckIcon, ChevronRightIcon, ChevronUpIcon, WorkflowIcon } from "lucide-react";
-import { type KeyboardEvent, type ReactNode, use, useRef, useState } from "react";
+import { ChevronRightIcon, ChevronUpIcon, WorkflowIcon } from "lucide-react";
+import { type KeyboardEvent, type ReactNode, useRef, useState } from "react";
 
 import { cn } from "~/lib/utils";
-import {
-  Menu,
-  MenuPopup,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuRadioItemIndicator,
-  MenuTrigger,
-} from "../ui/menu";
+import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../ui/menu";
 import { Switch } from "../ui/switch";
+import { Toggle, ToggleGroup } from "../ui/toggle-group";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import type { ComposerControlSize } from "./ComposerControl";
 import { ComposerPermissionsSection, type RuntimeModeOption } from "./ComposerFooterControls";
 import { composerFloatingLayerProps, focusCheckedPermission } from "./composerEventScope";
 import { EffortGlyph, FastBolt, resolveEffortGlyph } from "./EffortGlyph";
-import { DockedPickerContext } from "./ProviderModelPicker";
 import {
   getTraitsSectionVisibility,
   type TraitsSelectionInput,
@@ -145,9 +138,9 @@ export function describeComposerEffort(
     suffix: (
       <span
         className={cn(
-          "flex shrink-0 items-center gap-1.5 text-muted-foreground group-hover/model-trigger:text-foreground group-data-pressed/model-trigger:text-foreground group-data-popup-open/model-trigger:text-foreground",
+          "flex shrink-0 items-center gap-2 text-ink-2 group-hover/model-trigger:text-ink-1 group-data-pressed/model-trigger:text-ink-1 group-data-popup-open/model-trigger:text-ink-1",
           // A word space after the model name: the regular trigger's gap is wider than one.
-          size === "sm" && "-ms-0.5",
+          size === "sm" && "",
         )}
       >
         {word ? (
@@ -166,7 +159,7 @@ export function describeComposerEffort(
             // A label, so icon-only footers drop it; compacted rows drop it before the model.
             data-composer-control-label
             data-composer-secondary-trait
-            className="max-w-24 truncate text-xs"
+            className="max-w-24 truncate text-meta"
           >
             {contextWindow}
           </span>
@@ -177,8 +170,8 @@ export function describeComposerEffort(
 }
 
 const COLUMN_ROW =
-  "flex h-8 w-full shrink-0 cursor-pointer items-center gap-2 rounded-lg px-2 text-left text-sm text-foreground outline-none hover:bg-foreground/[0.09] focus-visible:bg-foreground/[0.09] disabled:cursor-not-allowed disabled:opacity-64";
-const COLUMN_LABEL = "px-2 pt-1.5 pb-1 font-medium text-muted-foreground text-xs";
+  "nest-row flex h-8 w-full shrink-0 cursor-pointer items-center text-left text-body text-ink-1 outline-none hover:bg-foreground/9 focus-visible:bg-foreground/9 disabled:cursor-not-allowed disabled:opacity-64";
+const COLUMN_LABEL = "nest-text pt-2 pb-1 font-medium text-ink-2 text-meta";
 
 function ColumnRow(props: {
   label: string;
@@ -201,19 +194,21 @@ function ColumnRow(props: {
     "data-effort-level": true,
     // Up and Down move between rows.
     tabIndex: props.tabStop ? 0 : -1,
-    className: COLUMN_ROW,
+    className: cn(COLUMN_ROW, "group/level aria-checked:bg-foreground/8"),
     onClick: props.onPick,
   } as const;
   const content = (
     <>
       <span className="min-w-0 flex-1 truncate">{props.label}</span>
       {props.selected ? (
-        <>
-          {props.isDefault ? <span className="sr-only">Default</span> : null}
-          <CheckIcon aria-hidden="true" className="size-3.5" />
-        </>
+        props.isDefault ? (
+          <span className="sr-only">Default</span>
+        ) : null
       ) : props.isDefault ? (
-        <span className="text-muted-foreground/70 text-xs">Default</span>
+        // Shown on the row you point at; the column stays as narrow as its levels.
+        <span className="text-ink-2 text-meta opacity-0 group-hover/level:opacity-100 group-focus-visible/level:opacity-100">
+          Default
+        </span>
       ) : null}
     </>
   );
@@ -256,7 +251,7 @@ function EffortLevels(props: { traits: TraitsSelectionInput }) {
           return value ? (
             <div key={descriptor.id}>
               <div className={COLUMN_LABEL}>{descriptor.label}</div>
-              <div className="px-2 pb-1.5 text-muted-foreground/80 text-xs">{value}</div>
+              <div className="nest-text pb-2 text-ink-2 text-meta">{value}</div>
             </div>
           ) : null;
         })}
@@ -271,9 +266,7 @@ function EffortLevels(props: { traits: TraitsSelectionInput }) {
     <>
       {effort ? <EffortRows control={effort} traits={traits} locked={locked} /> : null}
       {others.length > 0 ? (
-        <div
-          className={cn("flex flex-col gap-0.5", effort && "mt-1 border-t border-border/70 pt-1")}
-        >
+        <div className={cn("flex flex-col gap-1", effort && "pt-2")}>
           {others.map((control, index) =>
             control.kind === "boolean" ? (
               <OptionSwitchRow
@@ -304,7 +297,7 @@ function EffortRows(props: { control: ColumnControl; traits: TraitsSelection; lo
   const { descriptor } = control;
   if (control.kind === "boolean") {
     return (
-      <div role="radiogroup" aria-label={descriptor.label} className="flex flex-col gap-0.5">
+      <div role="radiogroup" aria-label={descriptor.label} className="flex flex-col gap-1">
         {([true, false] as const).map((value) => (
           <ColumnRow
             key={String(value)}
@@ -323,11 +316,9 @@ function EffortRows(props: { control: ColumnControl; traits: TraitsSelection; lo
   // An "Ultrathink:" prefix selects a level the column does not offer.
   const shown = choices.some((option) => option.id === value);
   return (
-    <div role="radiogroup" aria-label={descriptor.label} className="flex flex-col gap-0.5">
+    <div role="radiogroup" aria-label={descriptor.label} className="flex flex-col gap-1">
       {locked ? (
-        <div className="px-2 pb-1.5 text-muted-foreground/80 text-xs">
-          {ULTRATHINK_IN_BODY_NOTE}
-        </div>
+        <div className="nest-text pb-2 text-ink-2 text-meta">{ULTRATHINK_IN_BODY_NOTE}</div>
       ) : null}
       {choices.map((option, index) => (
         <ColumnRow
@@ -351,7 +342,7 @@ const OPTION_ROW = cn(COLUMN_ROW, "h-auto py-1");
 function OptionRowText(props: { label: string; value: string }) {
   return (
     <span className="flex min-w-0 flex-1 flex-col">
-      <span className="truncate text-muted-foreground text-xs">{props.label}</span>
+      <span className="truncate text-ink-2 text-meta">{props.label}</span>
       <span className="truncate">{props.value}</span>
     </span>
   );
@@ -396,7 +387,7 @@ function OptionMenuRow(props: {
             data-effort-row
             tabIndex={props.tabStop ? 0 : -1}
             aria-label={`${descriptor.label}: ${current}`}
-            className={cn(OPTION_ROW, "data-popup-open:bg-foreground/[0.09]")}
+            className={cn(OPTION_ROW, "data-popup-open:bg-foreground/9")}
             onKeyDown={(event) => {
               if (event.key !== "ArrowRight") return;
               event.preventDefault();
@@ -407,10 +398,7 @@ function OptionMenuRow(props: {
         }
       >
         <OptionRowText label={descriptor.label} value={current} />
-        <ChevronRightIcon
-          aria-hidden="true"
-          className="-me-1 size-3.5 shrink-0 text-muted-foreground"
-        />
+        <ChevronRightIcon aria-hidden="true" className="-me-1 size-4 shrink-0 text-ink-2" />
       </MenuTrigger>
       <MenuPopup
         ref={popupRef}
@@ -438,19 +426,14 @@ function OptionMenuRow(props: {
         >
           {choices.map((choice) => (
             <MenuRadioItem key={choice.id} value={choice.id} closeOnClick>
-              <span className="flex items-center gap-3">
+              <span className="flex items-center gap-2">
                 <span className="flex min-w-0 flex-1 flex-col">
                   <span className="truncate">{choice.label}</span>
                   {choice.description ? (
-                    <span className="line-clamp-2 text-muted-foreground text-xs">
-                      {choice.description}
-                    </span>
+                    <span className="line-clamp-2 text-ink-2 text-meta">{choice.description}</span>
                   ) : null}
                 </span>
-                {choice.isDefault ? (
-                  <span className="text-muted-foreground/70 text-xs">Default</span>
-                ) : null}
-                <MenuRadioItemIndicator />
+                {choice.isDefault ? <span className="text-ink-2 text-meta">Default</span> : null}
               </span>
             </MenuRadioItem>
           ))}
@@ -469,7 +452,7 @@ function OptionSwitchRow(props: {
   const { descriptor, traits } = props;
   const checked = descriptor.currentValue === true;
   return (
-    <label className={cn(OPTION_ROW, "has-focus-visible:bg-foreground/[0.09]")}>
+    <label className={cn(OPTION_ROW, "has-focus-visible:bg-foreground/9")}>
       <OptionRowText label={descriptor.label} value={checked ? "On" : "Off"} />
       <Switch
         size="sm"
@@ -485,13 +468,12 @@ function OptionSwitchRow(props: {
 
 function NoEffortRow() {
   return (
-    <div className="flex h-8 items-center px-2 text-muted-foreground text-sm">No effort levels</div>
+    <div className="nest-row flex h-8 items-center text-ink-2 text-body">No effort levels</div>
   );
 }
 
 /** The model picker's effort column: the selected model's levels and its other options. */
 export function ComposerEffortColumn(props: { traits: TraitsSelectionInput | null }) {
-  const picker = use(DockedPickerContext);
   const visibility = props.traits ? getTraitsSectionVisibility(props.traits) : null;
   const controls =
     props.traits && visibility
@@ -499,20 +481,15 @@ export function ComposerEffortColumn(props: { traits: TraitsSelectionInput | nul
       : null;
   return (
     <>
-      {/* Matches the search row's box, so one rule runs across the top of the popup. */}
-      <div className="shrink-0 px-3 pt-2.5">
-        <div className="flex h-8.25 -translate-y-px items-center gap-2 border-b border-border/70 pb-1.5 text-sm">
-          <span className="text-muted-foreground">
-            {controls?.effort?.descriptor.label ?? (controls?.others.length ? "Options" : "Effort")}
-          </span>
-          <span className="ms-auto min-w-0 truncate text-muted-foreground text-xs">
-            {picker.modelLabel}
-          </span>
+      {/* Sits in the search row's slot, so the first level lines up with the first model. */}
+      <div className="shrink-0 px-2 pt-2">
+        <div className="nest-text flex h-8 items-center font-medium text-ink-2 text-meta">
+          {controls?.effort?.descriptor.label ?? (controls?.others.length ? "Options" : "Effort")}
         </div>
       </div>
-      {/* pt-2.5 puts the first level on the same line as the first model. */}
+      {/* pt-item puts the first level on the same line as the first model. */}
       <div
-        className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto overscroll-contain px-2 pt-2.5 pb-1.5"
+        className="nest-box flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"
         // Capture, so Up and Down on an option row move rows instead of opening its menu.
         onKeyDownCapture={moveBetweenRows}
       >
@@ -522,40 +499,8 @@ export function ComposerEffortColumn(props: { traits: TraitsSelectionInput | nul
   );
 }
 
-const FOOTER_SEGMENT =
-  "flex h-6 cursor-pointer items-center justify-center gap-1 px-2 text-muted-foreground text-xs outline-none first:rounded-l-md last:rounded-r-md hover:text-foreground data-checked:bg-input/72 data-checked:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
-
-function SpeedSegment(props: {
-  checked: boolean;
-  label: string;
-  description?: string | undefined;
-  onPick: () => void;
-}) {
-  const buttonProps = {
-    type: "button",
-    role: "radio",
-    "aria-checked": props.checked,
-    "data-checked": props.checked || undefined,
-    className: FOOTER_SEGMENT,
-    onClick: props.onPick,
-  } as const;
-  const content = (
-    <>
-      {props.label === "Fast" || props.label === "Ultrafast" ? (
-        <FastBolt ultra={props.label === "Ultrafast"} />
-      ) : null}
-      {props.label}
-    </>
-  );
-  if (!props.description) return <button {...buttonProps}>{content}</button>;
-  return (
-    <Tooltip>
-      <TooltipTrigger render={<button {...buttonProps} />}>{content}</TooltipTrigger>
-      <TooltipPopup side="top">{props.description}</TooltipPopup>
-    </Tooltip>
-  );
-}
-
+// The footer's choices are the app's segmented toggle group: 32 tall with an 8 corner, so it is
+// concentric in the popup's corner, and one choice's options read as one shape.
 function SpeedControl(props: { traits: TraitsSelectionInput }) {
   const traits = useTraitsSelection(props.traits);
   const { speedSelect, fastToggle } = splitSpeed(
@@ -563,33 +508,53 @@ function SpeedControl(props: { traits: TraitsSelectionInput }) {
     traits.booleanDescriptors,
   );
   if (traits.modelIsUnavailable || (!speedSelect && !fastToggle)) return null;
+  const options: ReadonlyArray<{ id: string; label: string; description?: string | undefined }> =
+    speedSelect
+      ? selectableProviderOptionChoices(speedSelect)
+      : [
+          { id: "standard", label: "Standard" },
+          { id: "fast", label: "Fast" },
+        ];
+  const value = speedSelect
+    ? traits.selectValue(speedSelect)
+    : fastToggle?.currentValue === true
+      ? "fast"
+      : "standard";
   return (
-    <div
-      role="radiogroup"
+    <ToggleGroup
       aria-label={speedSelect?.label ?? fastToggle?.label}
-      className="flex rounded-lg bg-input/40 p-0.5"
+      value={value === undefined ? [] : [value]}
+      onValueChange={(next) => {
+        const id = next[0];
+        // A speed is always chosen, so pressing the current one again keeps it.
+        if (id === undefined) return;
+        if (speedSelect) traits.changeSelect(speedSelect, id);
+        else if (fastToggle) traits.changeBoolean(fastToggle.id, id === "fast");
+      }}
     >
-      {speedSelect
-        ? selectableProviderOptionChoices(speedSelect).map((option) => (
-            <SpeedSegment
-              key={option.id}
-              checked={option.id === traits.selectValue(speedSelect)}
-              label={option.label}
-              description={option.description}
-              onPick={() => traits.changeSelect(speedSelect, option.id)}
-            />
-          ))
-        : fastToggle
-          ? ([false, true] as const).map((value) => (
-              <SpeedSegment
-                key={String(value)}
-                checked={(fastToggle.currentValue === true) === value}
-                label={value ? "Fast" : "Standard"}
-                onPick={() => traits.changeBoolean(fastToggle.id, value)}
-              />
-            ))
-          : null}
-    </div>
+      {options.map((option) => {
+        const content = (
+          <>
+            {option.label === "Fast" || option.label === "Ultrafast" ? (
+              <FastBolt ultra={option.label === "Ultrafast"} />
+            ) : null}
+            {option.label}
+          </>
+        );
+        if (!option.description)
+          return (
+            <Toggle key={option.id} value={option.id}>
+              {content}
+            </Toggle>
+          );
+        return (
+          <Tooltip key={option.id}>
+            <TooltipTrigger render={<Toggle value={option.id} />}>{content}</TooltipTrigger>
+            <TooltipPopup side="top">{option.description}</TooltipPopup>
+          </Tooltip>
+        );
+      })}
+    </ToggleGroup>
   );
 }
 
@@ -597,20 +562,17 @@ function UltracodeControl(props: { traits: TraitsSelectionInput }) {
   const traits = useTraitsSelection(props.traits);
   const { ultracodeToggle } = splitSpeed(traits.selectDescriptors, traits.booleanDescriptors);
   if (traits.modelIsUnavailable || !ultracodeToggle) return null;
-  const on = ultracodeToggle.currentValue === true;
   return (
-    <div className="flex rounded-lg bg-input/40 p-0.5">
-      <button
-        type="button"
-        aria-pressed={on}
-        data-checked={on || undefined}
-        className={FOOTER_SEGMENT}
-        onClick={() => traits.changeBoolean(ultracodeToggle.id, !on)}
-      >
+    <ToggleGroup
+      aria-label={ultracodeToggle.label}
+      value={ultracodeToggle.currentValue === true ? ["on"] : []}
+      onValueChange={(next) => traits.changeBoolean(ultracodeToggle.id, next.includes("on"))}
+    >
+      <Toggle value="on">
         <WorkflowIcon aria-hidden="true" className="size-3" />
         {ultracodeToggle.label}
-      </button>
-    </div>
+      </Toggle>
+    </ToggleGroup>
   );
 }
 
@@ -637,13 +599,13 @@ function PermissionsMenu(props: {
             type="button"
             data-composer-permissions-trigger
             aria-label={`Permissions: ${current.label}`}
-            className="ms-auto flex h-7 cursor-pointer items-center gap-1.5 rounded-md px-2 text-muted-foreground text-xs outline-none hover:bg-foreground/[0.09] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-popup-open:bg-foreground/[0.09] data-popup-open:text-foreground"
+            className="ms-auto flex h-8 cursor-pointer items-center gap-2 rounded-row px-2 text-ink-2 text-body outline-none hover:bg-foreground/9 hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-popup-open:bg-foreground/9 data-popup-open:text-ink-1"
           />
         }
       >
-        <CurrentIcon aria-hidden="true" className="size-3.5" />
+        <CurrentIcon aria-hidden="true" className="size-4" />
         {current.label}
-        <ChevronUpIcon aria-hidden="true" className="size-3" />
+        <ChevronUpIcon aria-hidden="true" className="size-4" />
       </MenuTrigger>
       <MenuPopup side="top" align="end" {...composerFloatingLayerProps}>
         <ComposerPermissionsSection
@@ -664,7 +626,7 @@ export function ComposerPickerFooter(props: {
   onRuntimeModeChange: (mode: RuntimeMode) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 border-t border-border/70 bg-muted/40 px-3 py-2">
+    <div className="flex flex-wrap items-center gap-2 p-2">
       {props.traits ? <SpeedControl traits={props.traits} /> : null}
       {props.traits ? <UltracodeControl traits={props.traits} /> : null}
       <PermissionsMenu

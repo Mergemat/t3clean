@@ -114,12 +114,12 @@ export function V2LifecycleRow(props: {
       return (
         <div
           data-v2-item-type={item.type}
-          className="flex min-w-0 items-center gap-3 rounded-lg border border-border/60 p-3"
+          className="flex min-w-0 items-center gap-2 rounded-box border border-border/60 p-2"
         >
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted/60">
-            <MessageSquareIcon className="size-4 text-secondary-label" aria-hidden />
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-row bg-muted/60">
+            <MessageSquareIcon className="size-4 text-ink-2" aria-hidden />
           </span>
-          <span className="min-w-0 flex-1 truncate text-sm font-medium">
+          <span className="min-w-0 flex-1 truncate text-body font-medium">
             {item.title ?? "Created thread"}
           </span>
           <Button
@@ -136,7 +136,7 @@ export function V2LifecycleRow(props: {
     return (
       <WorkLogRow
         data-v2-item-type={item.type}
-        icon={<T3Wordmark className="size-4 text-icon-muted" aria-hidden />}
+        icon={<T3Wordmark className="size-4 text-ink-3" aria-hidden />}
         label={<>Created thread{item.title ? ` · ${item.title}` : ""}</>}
         trailing={
           <InlineButton
@@ -241,10 +241,10 @@ function SubagentAvatar({
           showBadge={showBadge}
           size="compact"
           className="z-auto"
-          iconClassName="size-3.5"
+          iconClassName="size-4"
         />
       ) : (
-        <BotIcon className="size-3.5 text-muted-foreground" />
+        <BotIcon className="size-4 text-ink-2" />
       )}
       {status ? (
         <span
@@ -459,17 +459,15 @@ function SubagentTimelineLink(props: {
       />
       <span className="min-w-0 flex-1">
         <span className="flex items-baseline gap-2">
-          <span className="min-w-0 truncate text-xs font-medium text-foreground">
-            {props.title}
-          </span>
+          <span className="min-w-0 truncate text-meta font-medium text-ink-1">{props.title}</span>
           {remote !== undefined ? (
-            <span className="shrink-0 text-xs text-muted-foreground">on {remote.label}</span>
+            <span className="shrink-0 text-meta text-ink-2">on {remote.label}</span>
           ) : null}
         </span>
         <span
           className={cn(
-            "block text-2xs leading-relaxed",
-            failed ? "text-destructive" : "text-muted-foreground",
+            "block text-meta leading-relaxed",
+            failed ? "text-destructive" : "text-ink-2",
           )}
         >
           {detail === null ? (
@@ -482,25 +480,23 @@ function SubagentTimelineLink(props: {
         </span>
       </span>
       {detail !== null && (props.event !== undefined || status !== "completed") ? (
-        <span
-          className={cn("shrink-0 text-xs", failed ? "text-destructive" : "text-muted-foreground")}
-        >
+        <span className={cn("shrink-0 text-meta", failed ? "text-destructive" : "text-ink-2")}>
           {statusLabel}
         </span>
       ) : null}
-      <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+      <span className="shrink-0 text-meta text-ink-2 tabular-nums">
         {props.event ? props.event.timestamp : <SubagentElapsed agent={timing} />}
       </span>
       {open !== null ? (
         <ChevronRightIcon
           aria-hidden
-          className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover/subagent:text-foreground"
+          className="size-4 shrink-0 text-ink-3 transition-colors group-hover/subagent:text-ink-1"
         />
       ) : null}
     </>
   );
   const className =
-    "group/subagent flex w-full min-w-0 items-center gap-2.5 rounded-md px-2 py-1.5 text-left";
+    "group/subagent flex w-full min-w-0 items-center gap-2 rounded-row px-2 py-2 text-left";
   return (
     <Tooltip>
       <TooltipTrigger
@@ -643,7 +639,7 @@ export function HandoffRow(props: {
       showDetailSeparator={false}
       tone={props.failed ? "danger" : "neutral"}
       detail={
-        <span className="inline-flex min-w-0 flex-wrap items-center justify-center gap-1.5">
+        <span className="inline-flex min-w-0 flex-wrap items-center justify-center gap-2">
           {fromEndpoints.map((endpoint, index) => (
             <span
               key={`${endpoint.instanceId}:${endpoint.model ?? ""}`}
@@ -655,7 +651,7 @@ export function HandoffRow(props: {
                 model={endpoint.model}
               />
               {index < fromEndpoints.length - 1 ? (
-                <span aria-hidden="true" className="ml-0.5">
+                <span aria-hidden="true" className="">
                   ,
                 </span>
               ) : null}
@@ -698,7 +694,7 @@ function HandoffEndpoint(props: {
         render={
           <span
             tabIndex={0}
-            className="inline-flex min-w-0 items-center gap-1.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+            className="inline-flex min-w-0 items-center gap-2 rounded-row focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
           >
             <ProviderInstanceIcon
               driverKind={entry?.driverKind ?? ProviderDriverKind.make(props.instanceId)}

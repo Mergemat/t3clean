@@ -1250,7 +1250,7 @@ export function resolveThreadStatusPill(input: {
   ) {
     return {
       label: "Waiting",
-      colorClass: "text-sidebar-muted-foreground",
+      colorClass: "text-ink-2",
       dotClass: "bg-sidebar-muted-foreground",
       pulse: false,
     };

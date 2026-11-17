@@ -102,7 +102,7 @@ export function HtmlRenderFrame(props: {
                   />
                 }
               >
-                <Maximize2Icon className="size-3.5" />
+                <Maximize2Icon className="size-4" />
               </TooltipTrigger>
               <TooltipPopup side="left">Open full screen</TooltipPopup>
             </Tooltip>
@@ -117,7 +117,7 @@ export function HtmlRenderFrame(props: {
           ) : null}
         </>
       ) : failed ? (
-        <p className="flex size-full items-center justify-center text-muted-foreground text-xs">
+        <p className="flex size-full items-center justify-center text-ink-2 text-meta">
           Unable to load {title}
         </p>
       ) : null}

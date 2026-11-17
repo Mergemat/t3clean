@@ -402,10 +402,10 @@ const TraitsMenuContent = memo(function TraitsMenuContentImpl(props: TraitsSelec
             <div key={descriptor.id}>
               {index > 0 ? <MenuDivider /> : null}
               <MenuGroup>
-                <div className="px-2 pt-1.5 pb-1 font-medium text-muted-foreground text-xs">
+                <div className="px-2 pt-2 pb-1 font-medium text-ink-2 text-meta">
                   {descriptor.label}
                 </div>
-                <div className="px-2 pb-1.5 text-muted-foreground/80 text-xs">{value}</div>
+                <div className="px-2 pb-2 text-ink-2 text-meta">{value}</div>
               </MenuGroup>
             </div>
           );
@@ -420,13 +420,11 @@ const TraitsMenuContent = memo(function TraitsMenuContentImpl(props: TraitsSelec
         <div key={descriptor.id}>
           {index > 0 ? <MenuDivider /> : null}
           <MenuGroup>
-            <div className="px-2 pt-1.5 pb-1 font-medium text-muted-foreground text-xs">
+            <div className="px-2 pt-2 pb-1 font-medium text-ink-2 text-meta">
               {descriptor.label}
             </div>
             {ultrathinkInBodyText && descriptor.id === primarySelectDescriptor?.id ? (
-              <div className="px-2 pb-1.5 text-muted-foreground/80 text-xs">
-                {ULTRATHINK_IN_BODY_NOTE}
-              </div>
+              <div className="px-2 pb-2 text-ink-2 text-meta">{ULTRATHINK_IN_BODY_NOTE}</div>
             ) : null}
             <MenuRadioGroup
               value={traits.selectValue(descriptor)}
@@ -446,7 +444,7 @@ const TraitsMenuContent = memo(function TraitsMenuContentImpl(props: TraitsSelec
                       {option.isDefault ? <DefaultBadge /> : null}
                     </span>
                     {option.description ? (
-                      <span className="max-w-56 text-pretty text-muted-foreground/80 text-xs">
+                      <span className="max-w-56 text-pretty text-ink-2 text-meta">
                         {option.description}
                       </span>
                     ) : null}
@@ -461,16 +459,14 @@ const TraitsMenuContent = memo(function TraitsMenuContentImpl(props: TraitsSelec
         <div key={descriptor.id}>
           {index > 0 || selectDescriptors.length > 0 ? <MenuDivider /> : null}
           <MenuGroup>
-            <div className="px-2 py-1.5 font-medium text-muted-foreground text-xs">
-              {descriptor.label}
-            </div>
+            <div className="px-2 py-2 font-medium text-ink-2 text-meta">{descriptor.label}</div>
             <MenuRadioGroup
               value={descriptor.currentValue === true ? "on" : "off"}
               onValueChange={(value) => traits.changeBoolean(descriptor.id, value === "on")}
             >
               {(["on", "off"] as const).map((value) => (
                 <MenuRadioItem key={value} value={value} hideIndicator closeOnClick>
-                  <span className="flex w-full min-w-0 items-center justify-between gap-3">
+                  <span className="flex w-full min-w-0 items-center justify-between gap-2">
                     <span>{value === "on" ? "On" : "Off"}</span>
                   </span>
                 </MenuRadioItem>
@@ -539,10 +535,7 @@ export const TraitsPicker = memo(function TraitsPicker({
         >
           {isCodexStyle ? (
             <span
-              className={cn(
-                "flex min-w-0 w-full items-center",
-                size === "xs" ? "gap-1" : "gap-1.5",
-              )}
+              className={cn("flex min-w-0 w-full items-center", size === "xs" ? "gap-1" : "gap-2")}
             >
               <ComposerControlIcon icon={GaugeIcon} size={size} />
               <span data-composer-control-label className="min-w-0 truncate">

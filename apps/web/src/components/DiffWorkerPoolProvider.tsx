@@ -113,7 +113,7 @@ function DiffWorkerReady({ children }: { children?: ReactNode }) {
   ) : (
     <div
       role="status"
-      className="flex min-h-0 flex-1 items-center justify-center p-4 text-xs text-muted-foreground"
+      className="flex min-h-0 flex-1 items-center justify-center p-4 text-meta text-ink-2"
     >
       Loading code...
     </div>

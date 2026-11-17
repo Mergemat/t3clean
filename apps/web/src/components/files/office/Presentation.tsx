@@ -100,9 +100,9 @@ export default function Presentation(props: {
           disabled={page === 0}
           onPress={() => select(page - 1)}
         >
-          <ChevronLeftIcon className="size-3.5" />
+          <ChevronLeftIcon className="size-4" />
         </FileSurfaceAction>
-        <span className="flex-1 text-center text-xs tabular-nums" aria-live="polite">
+        <span className="flex-1 text-center text-meta tabular-nums" aria-live="polite">
           Slide {page + 1} of {opened.slides.length}
         </span>
         <FileSurfaceAction
@@ -110,7 +110,7 @@ export default function Presentation(props: {
           disabled={page + 1 === opened.slides.length}
           onPress={() => select(page + 1)}
         >
-          <ChevronRightIcon className="size-3.5" />
+          <ChevronRightIcon className="size-4" />
         </FileSurfaceAction>
       </div>
       <OfficePages
@@ -128,7 +128,7 @@ export default function Presentation(props: {
             {failed[index] ? (
               <p
                 role="status"
-                className="absolute inset-0 flex items-center justify-center bg-background/80 p-4 text-xs text-foreground"
+                className="absolute inset-0 flex items-center justify-center bg-background/80 p-4 text-meta text-ink-1"
               >
                 This slide could not be drawn.
               </p>
@@ -138,7 +138,7 @@ export default function Presentation(props: {
         footer={(index) => {
           const slide = opened.slides[index];
           return slide?.notes || slide?.hidden ? (
-            <div className="space-y-1 text-xs text-muted-foreground">
+            <div className="space-y-1 text-meta text-ink-2">
               {slide.hidden ? <p>Hidden slide</p> : null}
               {slide.notes ? (
                 <p

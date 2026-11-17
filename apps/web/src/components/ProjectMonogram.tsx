@@ -23,13 +23,11 @@ export function ProjectMonogram({
       <svg
         viewBox="0 0 16 16"
         className={cn(
-          "size-full overflow-hidden rounded-[25%] font-mono select-none",
+          "size-full overflow-hidden font-mono select-none",
           projectIconColorClassName(color),
         )}
-        style={{
-          backgroundColor: "color-mix(in srgb, currentColor 14%, transparent)",
-        }}
       >
+        <rect width="16" height="16" rx="4" fill="currentColor" fillOpacity={0.14} />
         <text
           x="8"
           y="10.8"

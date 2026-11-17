@@ -28,7 +28,6 @@ import {
   MenuTrigger,
   MenuRadioGroup,
   MenuRadioItem,
-  MenuRadioItemIndicator,
 } from "~/components/ui/menu";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "~/components/ui/tooltip";
 import type { DeviceStreamHandle, DeviceViewControls } from "./DeviceStreamView";
@@ -58,9 +57,9 @@ export function DeviceControlsRail(props: {
     <aside
       aria-label="Device controls"
       data-layout="rail"
-      className="pointer-events-none absolute inset-y-0 right-0 z-10 flex w-14 flex-col items-center gap-2 overflow-y-auto [justify-content:safe_center] py-3 pr-2 [scrollbar-width:none]"
+      className="pointer-events-none absolute inset-y-0 right-0 z-10 flex w-14 flex-col items-center gap-2 justify-center-safe overflow-y-auto py-2 pr-2 scrollbar-none"
     >
-      <div className="pointer-events-auto flex shrink-0 flex-col items-center gap-1 overflow-y-auto rounded-full border border-border/50 bg-background/80 p-2 shadow-sm [scrollbar-width:none]">
+      <div className="pointer-events-auto flex shrink-0 flex-col items-center gap-1 overflow-y-auto rounded-box border border-border/50 bg-background/80 p-2 shadow-sm scrollbar-none">
         <RailButton
           tooltipSide={popupSide}
           label="Home"
@@ -130,7 +129,7 @@ export function DeviceControlsRail(props: {
         )}
         {runsHostCommands ? (
           <>
-            <RailDivider />
+            <RailGroupBreak />
             <RailButton
               tooltipSide={popupSide}
               label={`Switch device to ${nextAppearance} mode`}
@@ -177,7 +176,6 @@ export function DeviceControlsRail(props: {
                     <MenuRadioItem key={value} value={value}>
                       <span className="flex items-center gap-2">
                         <span className="flex-1">{label}</span>
-                        <MenuRadioItemIndicator />
                       </span>
                     </MenuRadioItem>
                   ))}
@@ -233,7 +231,7 @@ export function DeviceControlsRail(props: {
             </MenuItem>
           </MenuPopup>
         </Menu>
-        <RailDivider />
+        <RailGroupBreak />
         <RailButton
           tooltipSide={popupSide}
           label="3D view"
@@ -274,8 +272,9 @@ export function DeviceControlsRail(props: {
   );
 }
 
-function RailDivider() {
-  return <div aria-hidden className="my-1 h-px w-5 shrink-0 bg-border/70" />;
+// Groups part with space, not a line: the rail's two gaps around this empty slot make one step.
+function RailGroupBreak() {
+  return <div aria-hidden className="shrink-0" />;
 }
 
 function RailButton(props: {

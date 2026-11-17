@@ -79,7 +79,7 @@ function StructuredValue({
   const isJson = highlightJson && isJsonToolText(text);
   if (!text) return null;
   return (
-    <pre className={cn("max-h-80 overflow-auto text-muted-foreground", monoClassName)}>
+    <pre className={cn("max-h-80 overflow-auto text-ink-2", monoClassName)}>
       {language || isJson ? (
         <RenderErrorBoundary fallback={text}>
           <Suspense fallback={text}>
@@ -159,11 +159,11 @@ function ToolOutput(props: ToolOutputState) {
   return props.output ? (
     <StructuredValue value={props.output} highlightJson />
   ) : props.pending ? (
-    <div className="text-muted-foreground italic">Loading output…</div>
+    <div className="text-ink-2 italic">Loading output…</div>
   ) : props.error ? (
     <div className="text-destructive">Couldn&apos;t load output: {props.error}</div>
   ) : props.empty && props.images.length === 0 ? (
-    <div className="text-muted-foreground italic">No output.</div>
+    <div className="text-ink-2 italic">No output.</div>
   ) : null;
 }
 
@@ -177,7 +177,7 @@ export function FetchedToolOutput(props: {
   const { output } = useFetchedTurnItem(props.projectedItem, props.environmentId, props.source);
   useInitialOutputReady(output.pending, props.onInitialOutputReady);
   return (
-    <div className={cn("mt-1.5 space-y-1.5", monoClassName)}>
+    <div className={cn("mt-2 space-y-2", monoClassName)}>
       <ToolOutputImages {...output} onImageExpand={props.onImageExpand} />
       <ToolOutput {...output} onImageExpand={props.onImageExpand} />
     </div>
@@ -196,14 +196,14 @@ function ToolCallBody(
 ) {
   const call = toolCallLines({ command: props.command, args: props.args });
   return (
-    <div className={cn("space-y-1.5", monoClassName)}>
+    <div className={cn("space-y-2", monoClassName)}>
       <ToolOutputImages {...props} />
       {call.command ? <ShellCommandBlock command={call.command} /> : null}
       {call.args ? (
-        <div className="text-foreground/85">
+        <div className="text-ink-1">
           {call.args.map(([key, value]) => (
             <div key={key}>
-              <span className="text-muted-foreground">{key} </span>
+              <span className="text-ink-2">{key} </span>
               {key === "html" ? (
                 <StructuredValue value={value} language="html" />
               ) : key === "code" && isJavaScriptReplTool(props.toolName) ? (
@@ -242,9 +242,9 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
   const outputState = fetched.output;
   useInitialOutputReady(streamsOutput || outputState.pending, props.onInitialOutputReady);
   return (
-    <div className="space-y-2 text-xs" data-v2-item-inspector={item.type}>
+    <div className="space-y-2 text-meta" data-v2-item-inspector={item.type}>
       {item.type === "reasoning" && item.text ? (
-        <div className="rounded-md border border-border/45 bg-muted/15 p-2 italic text-muted-foreground">
+        <div className="rounded-row border border-border/45 bg-muted/15 p-2 italic text-ink-2">
           <ChatMarkdown
             text={item.text}
             cwd={props.cwd}
@@ -280,7 +280,7 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
       {item.type === "file_change" ? (
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-muted-foreground">
+            <span className="font-mono text-ink-2">
               {formatWorkspaceRelativePath(item.fileName, props.workspaceRoot)}
             </span>
             {item.additions !== undefined || item.deletions !== undefined ? (
@@ -309,7 +309,7 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
             <StructuredValue value={item.diffStr} />
           ) : null}
           {item.changes !== undefined && item.changes.length > 0 ? (
-            <ul className="space-y-1 font-mono text-muted-foreground">
+            <ul className="space-y-1 font-mono text-ink-2">
               {item.changes.map((change) => (
                 <li key={JSON.stringify([change.operation, change.oldPath, change.path])}>
                   {change.operation} {change.oldPath ? `${change.oldPath} → ` : ""}
@@ -325,24 +325,24 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
       ) : null}
 
       {item.type === "file_search" && item.pattern?.trim() ? (
-        <div className={cn("text-foreground/85", monoClassName)}>{item.pattern}</div>
+        <div className={cn("text-ink-1", monoClassName)}>{item.pattern}</div>
       ) : null}
 
       {item.type === "web_search" && item.patterns?.length ? (
-        <div className={cn("text-foreground/85", monoClassName)}>{item.patterns.join("\n")}</div>
+        <div className={cn("text-ink-1", monoClassName)}>{item.patterns.join("\n")}</div>
       ) : null}
 
       {item.type === "file_search" && item.results?.length ? (
         <ul className="space-y-1">
           {item.results.map((result) => (
             <li key={JSON.stringify(result)}>
-              <span className="font-mono text-foreground/80">
+              <span className="font-mono text-ink-2">
                 {formatWorkspaceRelativePath(result.fileName, props.workspaceRoot)}
                 {result.line === undefined ? "" : `:${result.line}`}
                 {result.column === undefined ? "" : `:${result.column}`}
               </span>
               {result.preview ? (
-                <p className="mt-0.5 whitespace-pre-wrap text-muted-foreground">{result.preview}</p>
+                <p className="whitespace-pre-wrap text-ink-2">{result.preview}</p>
               ) : null}
             </li>
           ))}
@@ -350,7 +350,7 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
       ) : null}
 
       {item.type === "web_search" && item.results?.length ? (
-        <ul className="space-y-1.5">
+        <ul className="space-y-2">
           {item.results.map((result) => {
             const safeHref = resolveExternalWebLinkHref(result.url);
             return (
@@ -360,17 +360,17 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
                     href={safeHref}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 font-medium text-foreground hover:underline"
+                    className="inline-flex items-center gap-1 font-medium text-ink-1 hover:underline"
                   >
                     {result.title ?? result.url}
                     <ExternalLinkIcon className="size-3" />
                   </a>
                 ) : (
-                  <p className="font-medium text-foreground">
+                  <p className="font-medium text-ink-1">
                     {result.title ?? result.url ?? "Search result"}
                   </p>
                 )}
-                {result.snippet ? <p className="text-muted-foreground">{result.snippet}</p> : null}
+                {result.snippet ? <p className="text-ink-2">{result.snippet}</p> : null}
               </li>
             );
           })}

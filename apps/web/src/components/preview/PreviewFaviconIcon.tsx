@@ -48,12 +48,12 @@ export function PreviewFaviconIcon(props: {
   className?: string | undefined;
 }) {
   const source = useFaviconForThreadUrl(props.threadRef, props.url);
-  const fallback = <BrowserMockup className={cn("size-7 shrink-0", props.className)} />;
+  const fallback = <BrowserMockup className={cn("size-6 shrink-0", props.className)} />;
   return (
     <FaviconImage
       sources={[source]}
       fallback={fallback}
-      className={cn("size-7 shrink-0 rounded object-contain", props.className)}
+      className={cn("size-6 shrink-0 rounded-chip object-contain", props.className)}
     />
   );
 }

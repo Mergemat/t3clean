@@ -221,7 +221,7 @@ export function DevicePanel(props: {
         <div
           className={cn(
             "shrink-0 bg-background",
-            loading && "absolute inset-x-0 top-0 z-10 max-h-[40%] overflow-y-auto",
+            loading && "absolute inset-x-0 top-0 z-10 max-h-2/5 overflow-y-auto",
           )}
         >
           <div hidden={!!activeDevice}>
@@ -237,7 +237,7 @@ export function DevicePanel(props: {
           </div>
           <DeviceHostUpdates state={state} environmentId={environmentId} />
           {bootingDevices.length > 0 ? (
-            <div role="status" className="border-b px-3 py-2 text-xs text-muted-foreground">
+            <div role="status" className="border-b px-2 py-2 text-meta text-ink-2">
               Starting {bootingDevices.map((device) => device.name).join(", ")}… This can take a
               minute.
             </div>
@@ -290,7 +290,7 @@ export function DevicePanel(props: {
               ) : null}
             </DeviceLoadingView>
           ) : (
-            <div className="scrollbar-gutter-both flex size-full flex-col overflow-y-auto px-5 py-8 text-sm text-muted-foreground">
+            <div className="scrollbar-gutter-both flex size-full flex-col overflow-y-auto px-4 py-6 text-body text-ink-2">
               <div
                 className={cn(
                   "mx-auto flex w-full max-w-xl flex-col gap-6",
@@ -313,8 +313,8 @@ export function DevicePanel(props: {
                 {hostReady && grouped.length > 0 ? (
                   <div className="w-full space-y-6 text-left">
                     {grouped.map((group) => (
-                      <section key={group.platform} className="space-y-3">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <section key={group.platform} className="space-y-2">
+                        <div className="flex items-center gap-2 text-body text-ink-2">
                           <Smartphone className="size-4 shrink-0" />
                           <h3 className="font-medium">{platformLabel(group.platform)}</h3>
                         </div>
@@ -322,16 +322,16 @@ export function DevicePanel(props: {
                           {group.devices.map((device) => (
                             <div
                               key={deviceKey(device)}
-                              className="flex items-center gap-3 px-3 py-3"
+                              className="flex items-center gap-2 px-2 py-2"
                             >
-                              <span className="grid size-8 shrink-0 place-items-center rounded-md border border-border/60">
+                              <span className="grid size-8 shrink-0 place-items-center rounded-row border border-border/60">
                                 <Smartphone className="size-4" />
                               </span>
                               <div className="flex min-w-0 flex-1 flex-col">
-                                <span className="truncate text-sm font-medium text-foreground">
+                                <span className="truncate text-body font-medium text-ink-1">
                                   {device.name}
                                 </span>
-                                <span className="truncate text-xs text-muted-foreground">
+                                <span className="truncate text-meta text-ink-2">
                                   {`${state.hosts.find((host) => host.id === device.hostId)?.label} · ${device.version} · ${device.booted ? "Running" : "Stopped"}`}
                                 </span>
                               </div>
@@ -362,7 +362,7 @@ export function DevicePanel(props: {
                 !isAndroidDiscoveryUncertain(state) &&
                 !state.devices.some((device) => device.platform === "android") &&
                 !unavailablePlatforms.some((platform) => platform.platform === "android") ? (
-                  <p className="max-w-sm text-xs">
+                  <p className="max-w-sm text-meta">
                     No Android virtual devices found. Create one in Android Studio's Device Manager,
                     then refresh.
                   </p>
@@ -390,9 +390,9 @@ function DeviceNotice(props: { readonly onDismiss: () => void; readonly children
   return (
     <div
       role="alert"
-      className="flex items-start gap-2 border-b bg-destructive/5 px-3 py-2 text-xs text-destructive"
+      className="flex items-start gap-2 border-b bg-destructive/5 px-2 py-2 text-meta text-destructive"
     >
-      <CircleAlert className="mt-1 size-3.5 shrink-0" />
+      <CircleAlert className="mt-1 size-4 shrink-0" />
       <div
         className="max-h-32 min-w-0 flex-1 overflow-y-auto whitespace-pre-wrap break-words"
         tabIndex={0}
@@ -430,20 +430,20 @@ function DeviceDiscoveryWarning(props: {
   return (
     <div
       role="status"
-      className="flex flex-wrap items-center gap-x-2 gap-y-0.5 border-b px-3 py-1 text-xs text-muted-foreground"
+      className="flex flex-wrap items-center gap-x-2 border-b px-2 py-1 text-meta text-ink-2"
     >
       <span className="flex min-w-0 flex-1 basis-56 items-start gap-2">
-        <CircleAlert className="mt-px size-3.5 shrink-0 text-warning-foreground" />
+        <CircleAlert className="mt-px size-4 shrink-0 text-warning-foreground" />
         <span className="min-w-0">
           {platforms.length > 0
             ? `${platforms.join(" and ")} ${platforms.length > 1 ? "lists" : "list"} on ${props.label} may be incomplete.`
             : `Device discovery on ${props.label} reported a warning.`}
         </span>
       </span>
-      <span className="ml-auto flex shrink-0 items-center gap-0.5">
+      <span className="ml-auto flex shrink-0 items-center">
         {platforms.length > 0 ? (
           <Button
-            size="micro"
+            size="xs"
             variant="ghost"
             disabled={retrying}
             aria-label={`Retry device discovery on ${props.label}`}
@@ -458,18 +458,18 @@ function DeviceDiscoveryWarning(props: {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger
             aria-label={`Details for ${props.label}`}
-            render={<Button size="micro" variant="ghost" />}
+            render={<Button size="xs" variant="ghost" />}
           >
             Details
           </PopoverTrigger>
           <PopoverPopup side="bottom" align="end" width="lg" padding="compact">
-            <p className="whitespace-pre-wrap break-words font-mono text-xs text-muted-foreground">
+            <p className="whitespace-pre-wrap break-words font-mono text-meta text-ink-2">
               {props.detail}
             </p>
           </PopoverPopup>
         </Popover>
         <Button
-          size="icon-micro"
+          size="icon-xs"
           variant="ghost"
           aria-label={`Dismiss device warning for ${props.label}`}
           onClick={() => {

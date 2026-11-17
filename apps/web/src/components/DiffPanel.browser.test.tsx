@@ -403,7 +403,7 @@ it("opens a file from a tool call's diff by the path its agent recorded", async 
   });
   await using screen = await render(
     <RegistryContext.Provider value={context.registry}>
-      <div className="flex h-[600px] flex-col">
+      <div className="flex h-150 flex-col">
         <DiffPanel composerDraftTarget={context.threadRef} workspaceMutationId={null} visible />
       </div>
     </RegistryContext.Provider>,

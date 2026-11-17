@@ -44,10 +44,10 @@ export function ComposerCodeBlockNodeView({
       }
     >
       <div className="chat-markdown-shiki">
-        <pre className="max-w-full overflow-x-auto px-3 pt-1 pb-2">
+        <pre className="max-w-full overflow-x-auto px-2 pt-1 pb-2">
           <NodeViewContent<"code">
             as="code"
-            className="block min-h-[1lh] font-mono whitespace-pre-wrap text-inherit [overflow-wrap:anywhere]"
+            className="block min-h-lh font-mono whitespace-pre-wrap text-inherit wrap-anywhere"
           />
         </pre>
       </div>

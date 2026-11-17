@@ -91,10 +91,10 @@ export function PullRequestGuideTab({
   const stale = guide !== null && currentHeadSha !== null && currentHeadSha !== guide.headSha;
   const failure =
     runState?._tag === "Failed" && runState.headSha === currentHeadSha ? runState.detail : null;
-  const writeButton = (label: string, size: "sm" | "xs") =>
+  const writeButton = (label: string) =>
     canWrite ? (
-      <Button size={size} variant="outline" disabled={running} onClick={() => void write()}>
-        {running ? <Spinner /> : <ScrollTextIcon aria-hidden className="size-3.5" />}
+      <Button size="sm" variant="outline" disabled={running} onClick={() => void write()}>
+        {running ? <Spinner /> : <ScrollTextIcon aria-hidden className="size-4" />}
         {running ? "Reading the change..." : label}
       </Button>
     ) : null;
@@ -108,15 +108,15 @@ export function PullRequestGuideTab({
       );
     }
     return (
-      <div className="scrollbar-gutter-both flex h-full flex-col items-center justify-center-safe gap-2 overflow-y-auto px-4 py-10 text-center">
-        <p className="text-sm font-medium text-foreground">
+      <div className="scrollbar-gutter-both flex h-full flex-col items-center justify-center-safe gap-2 overflow-y-auto px-4 py-6 text-center">
+        <p className="text-body font-medium text-ink-1">
           {running
             ? "Writing a review guide"
             : failure === null
               ? "No review guide yet"
               : "Could not write a review guide"}
         </p>
-        <p className="max-w-md text-xs text-muted-foreground">
+        <p className="max-w-md text-meta text-ink-2">
           {running
             ? "An agent is reading the change. A large one takes a few minutes. You can leave; you will be told when it is ready."
             : failure === null
@@ -124,7 +124,7 @@ export function PullRequestGuideTab({
                 "A guide is a tour of the change: stops through the code in reading order, with the calls only a maintainer can make.")
               : FAILURE_HINT}
         </p>
-        {writeButton(failure === null ? "Write guide" : "Try again", "sm")}
+        {writeButton(failure === null ? "Write guide" : "Try again")}
         {failure === null || running ? null : <FailureDetails detail={failure} />}
       </div>
     );
@@ -146,7 +146,7 @@ export function PullRequestGuideTab({
             </>
           )}
         </AlertDescription>
-        {!running && canWrite ? <AlertAction>{writeButton("Rewrite", "xs")}</AlertAction> : null}
+        {!running && canWrite ? <AlertAction>{writeButton("Rewrite")}</AlertAction> : null}
       </Alert>
     ) : null;
 
@@ -178,11 +178,11 @@ const FAILURE_HINT = "Check the review guide model in Settings → Source contro
 
 function FailureDetails({ detail }: { detail: string }) {
   return (
-    <details className="w-full max-w-lg text-xs text-muted-foreground">
-      <summary className="cursor-pointer rounded-sm -outline-offset-2 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
+    <details className="w-full max-w-lg text-meta text-ink-2">
+      <summary className="cursor-pointer rounded-row -outline-offset-2 hover:text-ink-1 focus-visible:outline-2 focus-visible:outline-ring">
         Technical details
       </summary>
-      <pre className="scrollbar-gutter-both mt-2 max-h-40 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-border bg-muted/40 p-3 text-left font-mono text-xs">
+      <pre className="scrollbar-gutter-both mt-2 max-h-40 overflow-auto whitespace-pre-wrap break-words rounded-row border border-border bg-muted/40 p-2 text-left font-mono text-meta">
         {detail}
       </pre>
     </details>

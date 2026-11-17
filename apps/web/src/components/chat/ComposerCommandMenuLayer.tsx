@@ -39,10 +39,11 @@ export function ComposerCommandMenuLayer(props: {
       const rect = (mainSurface ?? form ?? anchor).getBoundingClientRect();
       const rootFontSizePx =
         Number.parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
-      const drawerInsetRem = Number.parseFloat(
-        window.getComputedStyle(form ?? anchor).getPropertyValue("--chat-composer-drawer-inset"),
-      );
-      const drawerInset = drawerInsetRem * rootFontSizePx;
+      // Registered as a <length> in index.css, so the computed value is already in px.
+      const drawerInset =
+        Number.parseFloat(
+          window.getComputedStyle(form ?? anchor).getPropertyValue("--chat-composer-drawer-inset"),
+        ) || 0;
       const width = rect.width - drawerInset * 2;
       if (width <= 0) {
         setPosition(null);

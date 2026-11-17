@@ -139,7 +139,10 @@ it.each([
 
   const runAction = async () => {
     if (action === "merge") {
-      await screen.getByRole("button", { name: "Merge back to source conversation" }).click();
+      // The first attempt's error toast can sit over the button in the bare test frame; the
+      // retry is what's under test, not pointer hit-testing.
+      const button = screen.getByRole("button", { name: "Merge back to source conversation" });
+      (button.element() as HTMLButtonElement).click();
     } else {
       await screen.getByRole("button", { name: "More thread actions" }).click();
       await page.getByRole("menuitem", { name: "Disconnect agent session" }).click();

@@ -40,12 +40,12 @@ export function GuideRail({
   );
 
   return (
-    <nav aria-label="Review tour" className="flex min-h-0 flex-col gap-4">
-      <p className="text-xs text-muted-foreground tabular-nums @max-[56rem]/guide:hidden">
+    <nav aria-label="Review tour" className="flex min-h-0 flex-col gap-2">
+      <p className="text-meta text-ink-2 tabular-nums @max-[56rem]/guide:hidden">
         {reviewed} of {stops.length} read
       </p>
-      <div className="flex flex-col gap-4">
-        <ol className="flex flex-col gap-0.5">{stops.map(renderStop)}</ol>
+      <div className="flex flex-col gap-2">
+        <ol className="flex flex-col">{stops.map(renderStop)}</ol>
       </div>
     </nav>
   );
@@ -70,17 +70,15 @@ function RailRow({
       aria-current={active ? "step" : undefined}
       onClick={onClick}
       className={cn(
-        "flex w-full items-start gap-2 rounded-md px-2 py-1.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        "flex w-full items-start gap-2 rounded-row px-2 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
         active ? "bg-accent text-accent-foreground" : "hover:bg-accent/50",
       )}
     >
       {lead}
-      <span className="flex min-w-0 flex-col gap-0.5">
-        <span className="text-sm text-foreground">{title}</span>
+      <span className="flex min-w-0 flex-col">
+        <span className="text-body text-ink-1">{title}</span>
         {detail !== null ? (
-          <span className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-            {detail}
-          </span>
+          <span className="flex flex-wrap items-center gap-2 text-meta text-ink-2">{detail}</span>
         ) : null}
       </span>
     </button>
@@ -91,8 +89,8 @@ function StopBullet({ number, seen }: { number: number; seen: boolean }) {
   return (
     <span
       className={cn(
-        "flex size-5 shrink-0 items-center justify-center rounded-full border text-2xs tabular-nums",
-        seen ? "border-success/40 text-success-foreground" : "border-border text-muted-foreground",
+        "flex size-5 shrink-0 items-center justify-center rounded-full border text-meta tabular-nums",
+        seen ? "border-success/40 text-success-foreground" : "border-border text-ink-2",
       )}
     >
       {seen ? <CheckIcon aria-label={`Stop ${number}, read`} className="size-3" /> : number}

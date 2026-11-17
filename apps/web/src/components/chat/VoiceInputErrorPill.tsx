@@ -56,7 +56,7 @@ export function VoiceInputErrorPill(props: {
           render={
             <Button
               type="button"
-              size={compact ? "icon-xs" : "icon-sm-pill"}
+              size={compact ? "icon-xs" : "icon-sm"}
               variant="ghost"
               aria-label="Dismiss voice input error"
               onPointerDown={(event) => event.preventDefault()}
@@ -79,11 +79,11 @@ export function VoiceInputErrorPill(props: {
               tabIndex={0}
               role="status"
               aria-label={message}
-              className="flex min-w-0 items-center gap-1.5 rounded-sm text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+              className="flex min-w-0 items-center gap-2 rounded-row text-body font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
             />
           }
         >
-          <CircleAlertIcon aria-hidden className="size-3.5 shrink-0" />
+          <CircleAlertIcon aria-hidden className="size-4 shrink-0" />
           <span className="truncate">
             {(props.error && VOICE_ERROR_LABELS[props.error]) || "Voice input failed"}
           </span>
@@ -93,7 +93,7 @@ export function VoiceInputErrorPill(props: {
       {props.errorAction ? (
         <Button
           type="button"
-          size={compact ? "xs" : "sm-pill"}
+          size={compact ? "xs" : "sm"}
           variant="outline"
           aria-label={action.label}
           disabled={props.disabled}
@@ -111,7 +111,7 @@ export function VoiceInputErrorPill(props: {
           {action.text}
         </Button>
       ) : (
-        <span aria-hidden className="w-1.5 shrink-0" />
+        <span aria-hidden className="w-2 shrink-0" />
       )}
     </VoiceInputPill>
   );

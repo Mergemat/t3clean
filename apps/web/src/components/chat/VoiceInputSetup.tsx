@@ -103,23 +103,23 @@ export function VoiceInputSetup(props: {
         />
         <WizardPanel>
           {props.step === 0 ? (
-            <section className="space-y-3 text-sm">
+            <section className="space-y-2 text-body">
               {model ? (
-                <div className="space-y-3 rounded-lg border border-border/70 bg-card/60 p-3">
-                  <div className="flex items-baseline justify-between gap-3">
+                <div className="space-y-2 rounded-row border border-border/70 bg-card/60 p-2">
+                  <div className="flex items-baseline justify-between gap-2">
                     <h3 className="min-w-0 truncate font-medium">{model.name}</h3>
-                    <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                    <span className="shrink-0 text-meta text-ink-2 tabular-nums">
                       {Math.round(model.size / 1024 / 1024)} MB
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-meta text-ink-2">
                     {model.recommended && props.language
                       ? `Recommended for ${languageLabel(props.language)}. `
                       : ""}
                     Includes a 1.2 MB silence detector.
                   </p>
                   {props.downloading ? (
-                    <div role="status" className="space-y-1.5">
+                    <div role="status" className="space-y-2">
                       <div
                         role="progressbar"
                         aria-label="Speech model download progress"
@@ -129,11 +129,11 @@ export function VoiceInputSetup(props: {
                         className="h-1 overflow-hidden rounded-full bg-muted"
                       >
                         <div
-                          className="h-full bg-primary transition-[width] duration-200"
+                          className="h-full bg-primary transition duration-200"
                           style={{ width: `${progress ?? 0}%` }}
                         />
                       </div>
-                      <p className="text-xs text-muted-foreground tabular-nums">
+                      <p className="text-meta text-ink-2 tabular-nums">
                         {model.state === "verifying"
                           ? "Verifying…"
                           : progress === null
@@ -144,19 +144,19 @@ export function VoiceInputSetup(props: {
                   ) : null}
                 </div>
               ) : !props.error ? (
-                <p role="status" className="text-muted-foreground">
+                <p role="status" className="text-ink-2">
                   Loading transcription models…
                 </p>
               ) : null}
               {props.error ? (
-                <p role="alert" className="flex items-start gap-1.5 text-destructive">
-                  <CircleAlertIcon aria-hidden className="mt-0.5 size-3.5 shrink-0" />
+                <p role="alert" className="flex items-start gap-2 text-destructive">
+                  <CircleAlertIcon aria-hidden className="h-lh w-4 shrink-0" />
                   {props.error}
                 </p>
               ) : null}
             </section>
           ) : (
-            <section className="space-y-2 text-sm">
+            <section className="space-y-2 text-body">
               <label className="sr-only" htmlFor="voice-setup-microphone">
                 Microphone
               </label>
@@ -185,7 +185,7 @@ export function VoiceInputSetup(props: {
                     aria-label="Microphone"
                     className="min-w-0 flex-1"
                   >
-                    <MicIcon aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
+                    <MicIcon aria-hidden className="size-4 shrink-0 text-ink-2" />
                     <SelectValue>{selectedMicrophoneLabel}</SelectValue>
                   </SelectTrigger>
                   <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -210,16 +210,16 @@ export function VoiceInputSetup(props: {
                   aria-label="Refresh microphones"
                   onClick={() => void refreshMicrophones()}
                 >
-                  <RefreshCwIcon className="size-3.5" />
+                  <RefreshCwIcon className="size-4" />
                 </Button>
               </div>
               {selectedIsUnavailable ? (
-                <p className="text-xs text-destructive">
+                <p className="text-meta text-destructive">
                   That microphone is unplugged. Pick another one.
                 </p>
               ) : null}
               {microphoneError ? (
-                <p role="alert" className="text-xs text-muted-foreground">
+                <p role="alert" className="text-meta text-ink-2">
                   {microphoneError}
                 </p>
               ) : null}

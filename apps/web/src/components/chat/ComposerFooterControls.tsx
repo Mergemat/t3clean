@@ -1,9 +1,16 @@
 import type { ModelSelection, ProviderInstanceId, RuntimeMode } from "@t3tools/contracts";
 import { createModelSelection } from "@t3tools/shared/model";
-import { type ComponentProps, memo, useId, useRef, useState } from "react";
+import { type ComponentProps, memo, useId, useRef } from "react";
 
-import { Menu as MenuPrimitive } from "@base-ui/react/menu";
-import { Menu, MenuPopup, MenuTrigger } from "../ui/menu";
+import {
+  Menu,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuPopup,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+} from "../ui/menu";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { ComposerControl, ComposerControlIcon } from "./ComposerControl";
 import { focusRequestedPermission, useComposerMenuProps } from "./composerEventScope";
@@ -60,8 +67,8 @@ export const ComposerFooterModeControls = memo(function ComposerFooterModeContro
                   ref={permissionsChipRef}
                   data-composer-shortcut="composer.mode"
                   size={size}
-                  // Mirrors the model trigger's trailing pe-1 so the gaps on both sides of the chip match.
-                  className="ps-1.5"
+                  // Mirrors the model trigger's trailing pe-part so the gaps on both sides of the chip match.
+                  className="ps-2"
                   aria-label={`Permissions: ${runtimeModeOption.label}`}
                 />
               }
@@ -97,91 +104,67 @@ export const ComposerFooterModeControls = memo(function ComposerFooterModeContro
 });
 
 /**
- * Permission modes as one horizontal toggle, with the shown mode named below.
- * Each segment is a real menu radio item, so arrow keys reach it from the rest of the menu
- * and a pick closes the menu. Lives inside a Menu: the permissions chip, the model picker,
- * or the overflow menu.
+ * Permission modes as menu rows: each named, the current one checked, its description on hover.
+ * Lives inside a Menu: the permissions chip, the model picker, or the overflow menu.
  */
 export function ComposerPermissionsSection(props: {
   runtimeMode: RuntimeMode;
   runtimeModeOptions: ReadonlyArray<RuntimeModeOption>;
   onRuntimeModeChange: (mode: RuntimeMode) => void;
 }) {
-  // Hover or keyboard focus previews a mode's name and description before a pick.
-  const [previewMode, setPreviewMode] = useState<RuntimeMode | null>(null);
-  const shownMode = previewMode ?? props.runtimeMode;
-  const shown =
-    props.runtimeModeOptions.find((option) => option.mode === shownMode) ??
-    supervisedRuntimeModeOption;
   const descriptionId = useId();
   return (
-    <div data-composer-permissions className="grid w-72 gap-1.5 px-2 py-1.5">
-      <div className="font-medium text-muted-foreground text-xs">Permissions</div>
-      <MenuPrimitive.RadioGroup
+    <MenuGroup data-composer-permissions>
+      <MenuGroupLabel>Permissions</MenuGroupLabel>
+      <MenuRadioGroup
         aria-label="Permissions"
         value={props.runtimeMode}
         onValueChange={(value: RuntimeMode) => {
           if (value !== props.runtimeMode) props.onRuntimeModeChange(value);
         }}
-        className="flex rounded-lg bg-input/40 p-0.5"
-        // Menus navigate with Up/Down only; the row reads horizontally, so Left/Right move too.
-        onKeyDown={(event) => {
-          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-          const items = Array.from(
-            event.currentTarget.querySelectorAll<HTMLElement>('[role="menuitemradio"]'),
-          );
-          const index = items.findIndex((item) => item === document.activeElement);
-          const next = items[index + (event.key === "ArrowRight" ? 1 : -1)];
-          if (index < 0 || !next) return;
-          event.preventDefault();
-          event.stopPropagation();
-          next.focus();
-        }}
       >
         {props.runtimeModeOptions.map((option) => {
           const OptionIcon = option.icon;
+          const description = option.disabledReason ?? option.description;
           return (
-            <MenuPrimitive.RadioItem
+            <Tooltip
               key={option.mode}
-              value={option.mode}
-              disabled={option.disabledReason !== undefined}
-              label={option.label}
-              aria-label={option.label}
-              aria-describedby={`${descriptionId}-${option.mode}`}
-              closeOnClick
-              onPointerEnter={() => setPreviewMode(option.mode)}
-              onPointerLeave={() => setPreviewMode(null)}
-              onFocus={() => setPreviewMode(option.mode)}
-              onBlur={() => setPreviewMode(null)}
-              className="flex h-6 flex-1 cursor-pointer items-center justify-center text-muted-foreground outline-none first:rounded-l-md last:rounded-r-md data-disabled:cursor-not-allowed data-disabled:opacity-40 data-checked:bg-input/72 data-checked:text-foreground data-highlighted:text-foreground not-data-checked:data-highlighted:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+              // Pointer only: opening on keyboard focus would make Escape close the tooltip
+              // instead of the menu. The row's description reaches screen readers either way.
+              onOpenChange={(open, details) => {
+                if (open && details.reason === "trigger-focus") details.cancel();
+              }}
             >
-              <OptionIcon aria-hidden="true" className="size-3.5" />
-            </MenuPrimitive.RadioItem>
+              <TooltipTrigger
+                render={
+                  <MenuRadioItem
+                    value={option.mode}
+                    disabled={option.disabledReason !== undefined}
+                    label={option.label}
+                    aria-describedby={`${descriptionId}-${option.mode}`}
+                    closeOnClick
+                  />
+                }
+              >
+                <span className="flex min-w-0 items-center gap-2">
+                  <OptionIcon aria-hidden="true" className="size-4 text-ink-2" />
+                  <span className="min-w-0 flex-1 truncate">{option.label}</span>
+                </span>
+              </TooltipTrigger>
+              <TooltipPopup side="right" className="max-w-56">
+                {description}
+              </TooltipPopup>
+            </Tooltip>
           );
         })}
-      </MenuPrimitive.RadioGroup>
-      {/* Static per-mode descriptions for screen readers; the preview below is visual only. */}
+      </MenuRadioGroup>
+      {/* Descriptions for screen readers, outside the rows so they don't join the rows' names. */}
       {props.runtimeModeOptions.map((option) => (
         <span key={option.mode} id={`${descriptionId}-${option.mode}`} className="sr-only">
           {option.disabledReason ?? option.description}
         </span>
       ))}
-      <div className="grid gap-0.5" aria-hidden="true">
-        <span
-          className={
-            shownMode === props.runtimeMode
-              ? "text-foreground text-sm"
-              : "text-muted-foreground text-sm"
-          }
-        >
-          {shown.label}
-        </span>
-        {/* Two lines reserved so the menu does not shift while you preview modes. */}
-        <span className="min-h-8 text-muted-foreground text-xs leading-4">
-          {shown.disabledReason ?? shown.description}
-        </span>
-      </div>
-    </div>
+    </MenuGroup>
   );
 }
 
@@ -216,9 +199,7 @@ export const ComposerFooterPrimaryActions = memo(function ComposerFooterPrimaryA
   onPreviousPendingQuestion: () => void;
   onInterrupt: () => void;
   compactBeforeSendTokens: number | null;
-  hideCompactToggle: boolean;
   keepFullHistory: boolean;
-  onToggleKeepFullHistory: () => void;
 }) {
   return (
     <>
@@ -246,9 +227,7 @@ export const ComposerFooterPrimaryActions = memo(function ComposerFooterPrimaryA
         onPreviousPendingQuestion={props.onPreviousPendingQuestion}
         onInterrupt={props.onInterrupt}
         compactBeforeSendTokens={props.compactBeforeSendTokens}
-        hideCompactToggle={props.hideCompactToggle}
         keepFullHistory={props.keepFullHistory}
-        onToggleKeepFullHistory={props.onToggleKeepFullHistory}
       >
         {props.children}
       </ComposerPrimaryActions>

@@ -154,7 +154,7 @@ it("jumps to the first hit while still counting and keeps later manual navigatio
   );
   try {
     await using screen = await render(
-      <div className="flex h-[300px] w-[320px]">
+      <div className="flex h-75 w-80">
         <PdfViewer src={url} title="Searched PDF" />
       </div>,
     );
@@ -177,7 +177,7 @@ it("jumps to the first hit while still counting and keeps later manual navigatio
 it("restores page, within-page offset and zoom after a remount", async () => {
   const url = URL.createObjectURL(testPdf());
   const viewer = (mount: number, positionKey: string) => (
-    <div className="flex h-[300px] w-[320px]">
+    <div className="flex h-75 w-80">
       <PdfViewer key={mount} src={url} title="Restored PDF" positionKey={positionKey} />
     </div>
   );

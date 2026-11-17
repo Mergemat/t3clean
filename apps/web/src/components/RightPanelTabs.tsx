@@ -485,8 +485,8 @@ function RightPanelEmptyState(props: {
       )}
     >
       <div className="w-full max-w-xs py-6">
-        <h3 className="mb-3 text-center font-medium text-foreground text-sm">Open a surface</h3>
-        <div className="flex flex-col gap-0.5">
+        <h3 className="mb-2 text-center font-medium text-ink-1 text-body">Open a surface</h3>
+        <div className="flex flex-col">
           {actions.map((action) =>
             action.available ? (
               <div
@@ -503,7 +503,7 @@ function RightPanelEmptyState(props: {
                   type="button"
                   onClick={action.onClick}
                   className={cn(
-                    "flex h-8 w-full cursor-pointer items-center gap-2.5 rounded-(--control-radius) px-2.5 text-left text-sm transition-colors group-hover:bg-accent/60",
+                    "flex h-8 w-full cursor-pointer items-center gap-2 rounded-row px-2 text-left text-body transition-colors group-hover:bg-accent/60",
                     isHighlighted(action) && "bg-accent/60",
                   )}
                 >
@@ -511,7 +511,7 @@ function RightPanelEmptyState(props: {
                   <span
                     className={cn(
                       "min-w-0 flex-1 truncate",
-                      action.label === "Browser" && props.browserProfiles.length > 1 && "pr-7",
+                      action.label === "Browser" && props.browserProfiles.length > 1 && "pr-6",
                     )}
                   >
                     {action.label}
@@ -530,7 +530,7 @@ function RightPanelEmptyState(props: {
                         />
                       }
                     >
-                      <ChevronDown className="size-3.5" />
+                      <ChevronDown className="size-4" />
                     </MenuTrigger>
                     <MenuPopup align="end" side="bottom" sideOffset={6} className="max-w-56">
                       {props.browserProfiles.map((profile) => (
@@ -553,7 +553,7 @@ function RightPanelEmptyState(props: {
                   <div
                     tabIndex={0}
                     aria-disabled="true"
-                    className="flex h-8 w-full cursor-default items-center gap-2.5 rounded-(--control-radius) px-2.5 text-left text-sm opacity-50"
+                    className="flex h-8 w-full cursor-default items-center gap-2 rounded-row px-2 text-left text-body opacity-50"
                   >
                     {actionIcon(action, "size-4")}
                     <span className="min-w-0 flex-1 truncate">{action.label}</span>
@@ -615,7 +615,7 @@ function PreviewFavicon({ capturedUrl, url }: { capturedUrl: string | null; url:
     <FaviconImage
       sources={[capturedUrl, publicProviderUrl]}
       fallback={<Globe2 className="size-3 shrink-0" />}
-      className="size-3 shrink-0 rounded-sm object-contain"
+      className="size-3 shrink-0 rounded-row object-contain"
     />
   );
 }
@@ -722,7 +722,7 @@ function SideChatTabIcon(props: { environmentId: EnvironmentId | null; threadId:
       {state === null ? null : (
         <span
           className={cn(
-            "absolute -top-0.5 -right-0.5 size-1.5 rounded-full",
+            "absolute -top-1 -right-1 size-2 rounded-full",
             state === "running" ? "bg-muted-foreground" : "bg-info",
           )}
           aria-hidden
@@ -811,7 +811,7 @@ function PullRequestSurfaceIcon({
   const sharedSummary = useSharedPullRequestSummary(resolvedEnvironmentId, reference);
   const status = linkedSnapshot ?? newestPullRequestSummary(detail, sharedSummary) ?? seed ?? null;
   if (status === null) {
-    return <PullRequestGlyph.pullRequest className="size-3 shrink-0 text-muted-foreground" />;
+    return <PullRequestGlyph.pullRequest className="size-3 shrink-0 text-ink-2" />;
   }
   const presentation = resolvePullRequestState({
     state: status.state,
@@ -917,7 +917,7 @@ function RightPanelTab(
         />
         {props.pending ? (
           <span
-            className="absolute -right-0.5 -bottom-0.5 size-1.5 rounded-full bg-current"
+            className="absolute -right-1 -bottom-1 size-2 rounded-full bg-current"
             aria-hidden
           />
         ) : null}
@@ -928,7 +928,7 @@ function RightPanelTab(
             render={
               <button
                 type="button"
-                className="cursor-pointer flex size-4 shrink-0 items-center justify-center rounded-sm hover:bg-muted"
+                className="cursor-pointer flex size-4 shrink-0 items-center justify-center rounded-chip hover:bg-muted"
                 aria-label={audio === "muted" ? `Unmute ${title}` : `Mute ${title}`}
                 onClick={(event) => {
                   event.stopPropagation();
@@ -951,7 +951,7 @@ function RightPanelTab(
       {props.renaming ? (
         <input
           aria-label="Device tab name"
-          className="w-24 min-w-0 rounded-sm bg-background px-1 outline-none ring-1 ring-inset ring-ring"
+          className="w-24 min-w-0 rounded-row bg-background px-1 outline-none ring-1 ring-inset ring-ring"
           defaultValue={title}
           ref={(element) => {
             element?.focus();
@@ -1011,11 +1011,9 @@ function RightPanelTab(
       ref={setNodeRef}
       style={{ transform: CSS.Translate.toString(transform), transition }}
       className={cn(
-        "cursor-pointer group/tab flex h-6 max-w-36 shrink-0 items-center gap-0.5 rounded-md pr-2 pl-1.5 text-xs",
-        props.ownsDesktopTitleBar && "[-webkit-app-region:no-drag]",
-        props.active
-          ? "bg-accent text-foreground"
-          : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+        "cursor-pointer group/tab flex h-6 max-w-36 shrink-0 items-center rounded-row pr-2 pl-2 text-meta",
+        props.ownsDesktopTitleBar && "app-region-no-drag",
+        props.active ? "bg-accent text-ink-1" : "text-ink-2 hover:bg-accent/60 hover:text-ink-1",
         isDragging && "relative z-10",
       )}
     >
@@ -1343,8 +1341,9 @@ export function RightPanelTabs(props: RightPanelTabsProps) {
     >
       <div
         className={cn(
-          "flex h-[var(--workspace-topbar-height)] min-h-[var(--workspace-topbar-height)] shrink-0 items-center gap-1 pl-2",
-          props.mode === "inline" && !props.layoutControls ? "pr-28" : "pr-3",
+          // Flush with the panel's edge: a tab's or button's own inset puts its first glyph one step in.
+          "flex h-(--workspace-topbar-height) min-h-(--workspace-topbar-height) shrink-0 items-center gap-1",
+          props.mode === "inline" && !props.layoutControls ? "pr-6" : "pr-2",
           ownsDesktopTitleBar && "drag-region",
           ownsDesktopTitleBar && "wco:pr-(--workspace-native-controls-inset)",
           props.mode === "inline" && props.maximized && COLLAPSED_SIDEBAR_TITLEBAR_INSET_CLASS,
@@ -1358,7 +1357,7 @@ export function RightPanelTabs(props: RightPanelTabsProps) {
           scrollFade
           className={cn(
             "min-w-0 flex-1",
-            ownsDesktopTitleBar && tabScrollState.hasOverflow && "[-webkit-app-region:no-drag]",
+            ownsDesktopTitleBar && tabScrollState.hasOverflow && "app-region-no-drag",
           )}
           data-right-panel-tab-list
         >
@@ -1411,12 +1410,12 @@ export function RightPanelTabs(props: RightPanelTabsProps) {
                     <Button
                       aria-label="Add panel surface"
                       className="shrink-0"
-                      size="icon-xs"
+                      size="icon-sm"
                       variant="ghost-muted"
                     />
                   }
                 >
-                  <Plus className="size-3.5" />
+                  <Plus className="size-4" />
                 </MenuTrigger>
                 <MenuPopup
                   align="start"
@@ -1481,7 +1480,7 @@ export function RightPanelTabs(props: RightPanelTabsProps) {
         </ScrollArea>
         {tabScrollState.hasOverflow ? (
           <div
-            className="flex shrink-0 items-center gap-0.5 [-webkit-app-region:no-drag]"
+            className="flex shrink-0 items-center app-region-no-drag"
             role="group"
             aria-label="Scroll panel tabs"
           >
@@ -1530,7 +1529,7 @@ export function RightPanelTabs(props: RightPanelTabsProps) {
         {ownsDesktopTitleBar ? (
           <span
             aria-hidden
-            className="pointer-events-none fixed top-[var(--workspace-controls-top)] right-[var(--workspace-controls-right)] h-[var(--workspace-topbar-height)] w-28 [-webkit-app-region:no-drag]"
+            className="pointer-events-none fixed top-(--workspace-controls-top) right-(--workspace-controls-right) h-(--workspace-topbar-height) w-28 app-region-no-drag"
           />
         ) : null}
       </div>
@@ -1577,10 +1576,10 @@ function DeviceTabTooltip(props: {
     : undefined;
   const host = target ? state.hosts.find((entry) => entry.id === target.hostId) : undefined;
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex flex-col">
       <span>{props.title}</span>
       {target ? (
-        <span className="text-muted-foreground">
+        <span className="text-ink-2">
           {host?.label ?? "Device host"} ·{" "}
           {device?.version ?? (target.platform === "ios" ? "iOS" : "Android")}
         </span>

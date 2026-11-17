@@ -168,7 +168,7 @@ export function BrowserDeviceToolbar({
 
   return (
     <div
-      className="sticky left-0 top-0 z-50 flex items-center gap-0.5 overflow-x-auto border-b border-border/70 bg-background/95 px-1.5 shadow-xs backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="sticky left-0 top-0 z-50 flex items-center overflow-x-auto border-b border-border/70 bg-background/95 px-2 shadow-xs backdrop-blur-md scrollbar-none [&::-webkit-scrollbar]:hidden"
       style={{ width, height: BROWSER_DEVICE_TOOLBAR_HEIGHT }}
       role="toolbar"
       aria-label="Browser device toolbar"
@@ -189,9 +189,7 @@ export function BrowserDeviceToolbar({
       }}
     >
       {width >= 560 ? (
-        <span className="mr-0.5 shrink-0 text-2xs font-medium text-muted-foreground">
-          Dimensions
-        </span>
+        <span className="shrink-0 text-meta font-medium text-ink-2">Dimensions</span>
       ) : null}
       <Select
         modal={false}
@@ -214,11 +212,9 @@ export function BrowserDeviceToolbar({
             <SelectGroupLabel>Standard</SelectGroupLabel>
             {PREVIEW_VIEWPORT_PRESETS.map((preset) => (
               <SelectItem key={preset.id} value={preset.id}>
-                <span className="flex w-full items-center justify-between gap-5">
+                <span className="flex w-full items-center justify-between gap-2">
                   <span>{preset.label}</span>
-                  <span className="text-xs tabular-nums text-muted-foreground">
-                    {preset.detail}
-                  </span>
+                  <span className="text-meta tabular-nums text-ink-2">{preset.detail}</span>
                 </span>
               </SelectItem>
             ))}
@@ -227,7 +223,7 @@ export function BrowserDeviceToolbar({
       </Select>
 
       <form
-        className="m-0 flex min-w-0 shrink-0 items-center gap-0.5 border-0 p-0"
+        className="m-0 flex min-w-0 shrink-0 items-center border-0 p-0"
         aria-label="Viewport dimensions"
         onSubmit={(event) => {
           event.preventDefault();
@@ -256,9 +252,9 @@ export function BrowserDeviceToolbar({
           onChange={(event) => updateCustomDimension("width", event.target.value)}
           aria-label="Viewport width"
           aria-invalid={!customValid}
-          className={width >= 360 ? "w-14" : "w-13"}
+          className={width >= 360 ? "w-14" : "w-12"}
         />
-        <span className="text-xs text-muted-foreground">×</span>
+        <span className="text-meta text-ink-2">×</span>
         <Input
           nativeInput
           type="number"
@@ -281,7 +277,7 @@ export function BrowserDeviceToolbar({
           onChange={(event) => updateCustomDimension("height", event.target.value)}
           aria-label="Viewport height"
           aria-invalid={!customValid}
-          className={width >= 360 ? "w-14" : "w-13"}
+          className={width >= 360 ? "w-14" : "w-12"}
         />
       </form>
 
@@ -303,9 +299,9 @@ export function BrowserDeviceToolbar({
           }
         >
           {aspectRatio === null ? (
-            <Unlink2 className={cn(aspectRatio !== null && "text-foreground")} />
+            <Unlink2 className={cn(aspectRatio !== null && "text-ink-1")} />
           ) : (
-            <Link2 className={cn(aspectRatio !== null && "text-foreground")} />
+            <Link2 className={cn(aspectRatio !== null && "text-ink-1")} />
           )}
         </TooltipTrigger>
         <TooltipPopup side="top">

@@ -261,24 +261,24 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
             </DialogDescription>
           </DialogHeader>
           <DialogPanel>
-            <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
-              <div className="flex min-w-0 flex-col gap-1">
-                <span className="flex min-w-0 items-center gap-1.5 font-medium text-sm">
+            <div className="flex items-center gap-2">
+              <div className="flex min-w-0 flex-1 flex-col gap-1">
+                <span className="flex min-w-0 items-center gap-2 font-medium text-body">
                   <EnvironmentMachineIcon
                     kind={resolveEnvironmentMachineKind(source?.serverConfig ?? null)}
-                    className="size-3.5 shrink-0"
+                    className="size-4 shrink-0"
                   />
                   <span className="truncate">{source?.label ?? "This machine"}</span>
                 </span>
-                <span className="flex min-w-0 font-mono text-muted-foreground text-xs">
+                <span className="flex min-w-0 font-mono text-ink-2 text-meta">
                   <MiddleTruncate value={project?.workspaceRoot ?? ""} />
                 </span>
               </div>
-              <div className="flex w-28 flex-col items-center gap-0.5 text-muted-foreground text-xs">
+              <div className="flex w-28 shrink-0 flex-col items-center text-ink-2 text-meta">
                 <span>git clone</span>
                 <span className="flex w-full items-center">
                   <span className="h-px flex-1 bg-border" />
-                  <ArrowRightIcon className="-ms-1 size-3.5" aria-hidden />
+                  <ArrowRightIcon className="-ms-1 size-4" aria-hidden />
                 </span>
                 <span>
                   {selectedFiles.size === 0
@@ -297,14 +297,14 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                   >
                     <SelectTrigger size="sm" aria-label="Machine to add the project to">
                       {target ? (
-                        <EnvironmentMachineIcon kind={target.machine} className="size-3.5" />
+                        <EnvironmentMachineIcon kind={target.machine} className="size-4" />
                       ) : null}
                       <SelectValue />
                     </SelectTrigger>
                     <SelectPopup>
                       {targets.map((t) => (
                         <SelectItem key={t.environmentId} value={t.environmentId}>
-                          <span className="inline-flex items-center gap-1.5">
+                          <span className="inline-flex items-center gap-2">
                             <EnvironmentMachineIcon kind={t.machine} className="size-3" />
                             {t.label}
                           </span>
@@ -313,20 +313,20 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                     </SelectPopup>
                   </Select>
                 ) : (
-                  <span className="flex min-w-0 items-center gap-1.5 font-medium text-sm">
+                  <span className="flex min-w-0 items-center gap-2 font-medium text-body">
                     {target ? (
-                      <EnvironmentMachineIcon kind={target.machine} className="size-3.5 shrink-0" />
+                      <EnvironmentMachineIcon kind={target.machine} className="size-4 shrink-0" />
                     ) : null}
                     <span className="truncate">{target?.label ?? "No machine available"}</span>
                   </span>
                 )}
-                <span className="flex min-w-0 font-mono text-muted-foreground text-xs">
+                <span className="flex min-w-0 font-mono text-ink-2 text-meta">
                   <MiddleTruncate value={destinationPath} />
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-2">
               <Label>Clone over</Label>
               {sshUrl && httpsUrl ? (
                 <ToggleGroup
@@ -341,10 +341,10 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                   <Toggle value="https">HTTPS</Toggle>
                 </ToggleGroup>
               ) : null}
-              <span className="truncate font-mono text-muted-foreground text-xs">{remoteUrl}</span>
+              <span className="truncate font-mono text-ink-2 text-meta">{remoteUrl}</span>
             </div>
 
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-2">
               <Label htmlFor={`${id}-path`}>Folder on {target?.label ?? "the other machine"}</Label>
               <Input
                 id={`${id}-path`}
@@ -358,12 +358,12 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
             </div>
 
             {canListFiles ? (
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <Label className="flex-1">Copy ignored files</Label>
                   {copyable.length > 0 ? (
                     <>
-                      <span className="text-muted-foreground text-xs">
+                      <span className="text-ink-2 text-meta">
                         {selectedFiles.size} of {allIgnoredFiles.data?.files.length ?? 0}
                         {selectedBytes > 0 ? ` · ${formatBytes(selectedBytes)}` : ""}
                       </span>
@@ -391,9 +391,9 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                   />
                 ) : null}
                 {ignoredFiles.error ? (
-                  <p className="text-destructive-foreground text-xs">{ignoredFiles.error}</p>
+                  <p className="text-destructive-foreground text-meta">{ignoredFiles.error}</p>
                 ) : files.length === 0 ? (
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-ink-2 text-meta">
                     {!ignoredFiles.isSuccess
                       ? "Finding ignored files…"
                       : searching
@@ -401,7 +401,7 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                         : "No ignored files to copy."}
                   </p>
                 ) : (
-                  <div className="max-h-52 overflow-y-auto rounded-md border">
+                  <div className="max-h-52 overflow-y-auto rounded-row border">
                     {files.map((file) => (
                       <IgnoredFileRow
                         key={file.path}
@@ -414,19 +414,19 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                   </div>
                 )}
                 {ignoredFiles.data?.truncated ? (
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-ink-2 text-meta">
                     Showing the first {files.length} files.
                     {canSearchFiles ? " Search to find the rest." : ""}
                   </p>
                 ) : null}
-                <p className="text-muted-foreground text-xs">
+                <p className="text-ink-2 text-meta">
                   Files are copied after the clone finishes. Folders git ignores whole, like
                   node_modules, are left out.
                 </p>
               </div>
             ) : null}
 
-            {error ? <p className="text-destructive-foreground text-sm">{error}</p> : null}
+            {error ? <p className="text-destructive-foreground text-body">{error}</p> : null}
           </DialogPanel>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={close}>
@@ -480,14 +480,14 @@ function IgnoredFileRow({
 }) {
   const tooLarge = file.byteLength > COPYABLE_FILE_MAX_BYTES;
   return (
-    <label className="flex cursor-pointer items-center gap-2 px-2.5 py-1.5 text-sm not-last:border-b has-disabled:cursor-not-allowed has-disabled:opacity-64">
+    <label className="flex cursor-pointer items-center gap-2 px-2 py-2 text-body has-disabled:cursor-not-allowed has-disabled:opacity-64">
       <Checkbox
         checked={checked}
         disabled={tooLarge || disabled}
         onCheckedChange={onCheckedChange}
       />
-      <span className="min-w-0 flex-1 truncate font-mono text-xs">{file.path}</span>
-      <span className="shrink-0 text-muted-foreground text-xs tabular-nums">
+      <span className="min-w-0 flex-1 truncate font-mono text-meta">{file.path}</span>
+      <span className="shrink-0 text-ink-2 text-meta tabular-nums">
         {tooLarge ? "Over 1 MB" : formatBytes(file.byteLength)}
       </span>
     </label>

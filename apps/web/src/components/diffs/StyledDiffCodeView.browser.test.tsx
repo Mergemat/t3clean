@@ -57,7 +57,7 @@ function RepeatedDiffs({
     >
       <StyledDiffCodeView
         viewerRef={viewerRef}
-        className="h-[600px] w-[800px]"
+        className="h-150 w-200"
         items={entries.map(({ fileDiff, fileKey, fileVersion }) => ({
           type: "diff",
           id: fileKey,

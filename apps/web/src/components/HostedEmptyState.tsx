@@ -28,7 +28,7 @@ export function HostedEmptyState() {
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden bg-background">
         <WorkspacePageHeader electron={isElectron} className="border-b border-border">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-foreground md:text-muted-foreground/60">
+            <span className="text-body font-medium text-ink-1 md:text-ink-3">
               {APP_DISPLAY_NAME}
             </span>
           </div>
@@ -53,7 +53,7 @@ export function HostedEmptyState() {
                 Open Environments
               </Button>
             ) : (
-              <ol className="w-full space-y-4 text-left">
+              <ol className="w-full space-y-2 text-left">
                 {cloudEnabled ? <T3ConnectSteps /> : <PairingSteps />}
               </ol>
             )}
@@ -83,7 +83,7 @@ function T3ConnectSteps() {
             Retry sign-in
           </Button>
         ) : isSignedIn ? (
-          <p className="flex items-center gap-1.5 text-muted-foreground">
+          <p className="flex items-center gap-2 text-ink-2">
             <CheckIcon className="size-4" />
             Signed in
           </p>
@@ -96,7 +96,7 @@ function T3ConnectSteps() {
       <SetupStep number={2}>
         <RunOnComputer command="t3 connect" />
         {isSignedIn ? (
-          <div className="mt-4 space-y-1.5">
+          <div className="mt-2 space-y-2">
             <CloudEnvironmentConnectRows
               primaryEnvironmentId={null}
               savedEnvironments={[]}
@@ -112,7 +112,7 @@ function T3ConnectSteps() {
                     return next;
                   }),
               }}
-              empty={<p className="text-xs text-muted-foreground">Waiting for your computer…</p>}
+              empty={<p className="text-meta text-ink-2">Waiting for your computer…</p>}
             />
           </div>
         ) : null}
@@ -144,8 +144,8 @@ function SetupStep({
   readonly children: ReactNode;
 }) {
   return (
-    <li className="flex gap-3">
-      <span className="w-2 shrink-0 pt-1 text-muted-foreground">{number}</span>
+    <li className="flex gap-2">
+      <span className="w-2 shrink-0 pt-1 text-ink-2">{number}</span>
       <div className="min-w-0 flex-1">{children}</div>
     </li>
   );
@@ -157,7 +157,7 @@ function RunOnComputer({ command }: { readonly command: string }) {
       <p>Run on your computer:</p>
       <InstallT3Commands command={command} className="mt-2" />
       <a
-        className="mt-2 inline-block text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+        className="mt-2 inline-block text-meta text-ink-2 underline underline-offset-2 hover:text-ink-1"
         href={DESKTOP_DOWNLOAD_URL}
         target="_blank"
         rel="noreferrer noopener"

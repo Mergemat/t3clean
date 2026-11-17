@@ -1,11 +1,10 @@
 import { type ProviderDriverKind, type ProviderInstanceId } from "@t3tools/contracts";
 import { memo } from "react";
-import { CheckIcon, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import { getDisplayModelName } from "./providerIconUtils";
 import { ComboboxItem } from "../ui/combobox";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import { Kbd } from "../ui/kbd";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { cn } from "~/lib/utils";
 import { modelPickerModelKey } from "./modelPickerKeys";
@@ -43,7 +42,6 @@ export const ModelListRow = memo(function ModelListRow(props: {
   const row = (
     <ComboboxItem
       hideIndicator
-      selectedFill={false}
       index={props.index}
       value={modelPickerModelKey(props.instanceId, props.slug)}
       disabled={Boolean(props.disabledReason)}
@@ -64,11 +62,11 @@ export const ModelListRow = memo(function ModelListRow(props: {
         className="size-4"
         iconClassName="size-4"
         indicatorBackground="var(--popover)"
-        badgeClassName="right-[-0.125rem] bottom-[-0.125rem] h-3 min-w-3 px-0.5 text-5xs"
+        badgeClassName="-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta"
       />
       <div className="flex min-w-0 flex-1 items-center gap-2 text-left">
         <div
-          className="min-w-0 truncate text-sm font-normal leading-snug"
+          className="min-w-0 truncate text-body font-normal leading-snug"
           // Names the row in full on hover only when it is cut off.
           onPointerEnter={(event) => {
             const name = event.currentTarget;
@@ -79,15 +77,12 @@ export const ModelListRow = memo(function ModelListRow(props: {
           {/* The logo is decorative, so name the provider for screen readers. */}
           <span className="sr-only">, {props.providerDisplayName}</span>
         </div>
-        {props.isSelected ? <CheckIcon className="size-3.5 shrink-0" aria-hidden="true" /> : null}
         {props.subProvider ? (
-          <span className="min-w-0 shrink truncate text-xs text-muted-foreground/70">
-            {props.subProvider}
-          </span>
+          <span className="min-w-0 shrink truncate text-meta text-ink-2">{props.subProvider}</span>
         ) : null}
         {props.showNewBadge ? (
           <span
-            className="shrink-0 rounded border border-update/35 bg-update/15 px-0.5 py-px text-3xs font-bold uppercase leading-none tracking-wide text-update-foreground"
+            className="shrink-0 rounded-chip border border-update/35 bg-update/15 px-1 py-px text-meta font-bold uppercase leading-none tracking-wide text-update-foreground"
             aria-label="New model"
           >
             New
@@ -100,7 +95,7 @@ export const ModelListRow = memo(function ModelListRow(props: {
         ) : null}
       </div>
 
-      <div className="flex shrink-0 items-center gap-1.5">
+      <div className="flex shrink-0 items-center gap-2">
         <Tooltip>
           <TooltipTrigger
             render={
@@ -119,7 +114,7 @@ export const ModelListRow = memo(function ModelListRow(props: {
               >
                 <StarIcon
                   className={cn(
-                    "size-3.5 sm:size-3",
+                    "size-4 sm:size-3",
                     props.isFavorite && "fill-current text-warning",
                     (!props.isFavorite || props.favoriteStarOnHover) &&
                       "opacity-0 group-hover:opacity-100 group-data-highlighted:opacity-100 in-focus-visible:opacity-100 pointer-coarse:opacity-100",
@@ -132,7 +127,12 @@ export const ModelListRow = memo(function ModelListRow(props: {
             {props.isFavorite ? "Remove from favorites" : "Add to favorites"}
           </TooltipPopup>
         </Tooltip>
-        {props.jumpLabel ? <Kbd>{props.jumpLabel}</Kbd> : null}
+        {/* A hint, not a key chip: it shows on the row you are about to pick. */}
+        {props.jumpLabel ? (
+          <span className="text-meta text-ink-3 opacity-0 group-hover:opacity-100 group-data-highlighted:opacity-100">
+            {props.jumpLabel}
+          </span>
+        ) : null}
       </div>
     </ComboboxItem>
   );

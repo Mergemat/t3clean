@@ -152,7 +152,7 @@ function SpeedModeGroup({
   const speedMode = use(PullRequestSpeedModeContext);
   return (
     <div
-      className="shrink-0 items-center gap-1 pr-3"
+      className="shrink-0 items-center gap-1 pr-2"
       style={{ display: speedMode || busy ? "flex" : "none" }}
       role="group"
       aria-label={label}

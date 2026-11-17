@@ -153,7 +153,7 @@ export function NoticeText({
             aria-label="Notice details"
             tooltipStyle
             side="top"
-            className="max-w-[min(30rem,calc(100vw-2rem))] whitespace-normal wrap-anywhere [--inline-button-text-align:start] [--inline-button-white-space:normal] [&_[data-slot=inline-button]]:max-w-full"
+            className="max-w-(--viewport-inset) whitespace-normal wrap-anywhere min-[32rem]:max-w-120 [&_[data-slot=inline-button]]:max-w-full [&_[data-slot=inline-button]]:text-start [&_[data-slot=inline-button]]:whitespace-normal"
           >
             <ComposerBanner.Scroll>{children}</ComposerBanner.Scroll>
           </PopoverPopup>
@@ -189,7 +189,7 @@ function NoticeCard({
                 ? `Show full title: ${item.title}`
                 : "Show title details"
             }
-            className="min-w-0 truncate font-medium leading-7 sm:leading-6"
+            className="min-w-0 truncate font-medium leading-8 sm:leading-6"
           >
             {item.title}
           </NoticeText>
@@ -200,7 +200,7 @@ function NoticeCard({
                   ? `Show details: ${item.title}`
                   : "Show notice details"
               }
-              className="w-0 min-w-0 grow truncate text-muted-foreground @max-[400px]:sr-only"
+              className="w-0 min-w-0 grow truncate text-ink-2 @max-[400px]:sr-only"
             >
               {item.description}
             </NoticeText>

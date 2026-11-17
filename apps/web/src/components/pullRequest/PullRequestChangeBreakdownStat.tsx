@@ -102,7 +102,7 @@ function ChangeBreakdownGrid({
   total?: DiffTotals;
 }) {
   return (
-    <div className="grid grid-cols-[auto_auto_auto] justify-start gap-x-4 gap-y-1 py-0.5 font-mono tabular-nums">
+    <div className="grid w-fit grid-cols-(--grid-lead-trail) gap-x-2 gap-y-1 py-1 font-mono tabular-nums">
       {(Object.keys(KIND_LABELS) as Array<keyof typeof KIND_LABELS>).map((kind) => {
         const { additions, deletions } = breakdown[kind];
         return additions === 0 && deletions === 0 ? null : (

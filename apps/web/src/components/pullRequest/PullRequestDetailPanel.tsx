@@ -1416,7 +1416,7 @@ export function PullRequestDetailPanel({
       ) : null}
       <div
         className={cn(
-          "@container/pr-header grid min-w-0 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-x-2",
+          "@container/pr-header grid min-w-0 shrink-0 grid-cols-(--grid-trail) items-start gap-x-2",
           detail && "border-b border-border/60",
           !detail && !onClose && "hidden",
         )}
@@ -1429,7 +1429,7 @@ export function PullRequestDetailPanel({
           openOnHostText={openOnHostText}
           onBack={onBack}
         />
-        <div className="mr-4 flex h-7 shrink-0 select-none items-center justify-end gap-1">
+        <div className="mr-2 flex h-6 shrink-0 select-none items-center justify-end gap-1">
           {detail ? (
             <TooltipProvider delay={150} closeDelay={150} timeout={400}>
               {context === "page" ? (
@@ -1536,7 +1536,7 @@ export function PullRequestDetailPanel({
               aria-label={`Collapse ${terminology.singular} panel`}
               onClick={onClose}
             >
-              <PanelRightIcon className="size-3.5" />
+              <PanelRightIcon className="size-4" />
             </Button>
           ) : null}
         </div>
@@ -1545,14 +1545,14 @@ export function PullRequestDetailPanel({
           className={cn(
             "col-span-2 grid",
             condensed
-              ? "grid-rows-[1fr]"
-              : "grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none",
+              ? "grid-rows-(--grid-open)"
+              : "grid-rows-(--grid-closed) transition duration-200 ease-out motion-reduce:transition-none",
           )}
         >
           <div
             ref={condensedRowRef}
             className={cn(
-              "min-h-0 overflow-hidden transition-[opacity,transform] duration-150 ease-out motion-reduce:transform-none motion-reduce:transition-none",
+              "min-h-0 overflow-hidden transition duration-150 ease-out motion-reduce:transform-none motion-reduce:transition-none",
               condensed
                 ? "translate-y-0 opacity-100 delay-50"
                 : "translate-y-1 opacity-0 duration-100",
@@ -1561,8 +1561,8 @@ export function PullRequestDetailPanel({
           >
             {detail ? (
               <div className="col-span-2 min-w-0 px-4 pb-2 pt-1">
-                <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-                  <span className="flex min-w-0 shrink items-center gap-1.5 overflow-hidden text-xs text-muted-foreground">
+                <div className="flex min-w-0 items-center gap-6 text-meta text-ink-2">
+                  <span className="flex min-w-0 shrink items-center gap-2 overflow-hidden text-meta text-ink-2">
                     <PullRequestActorLabel
                       actor={detail.author}
                       profileUrl={authorProfileUrl}
@@ -1573,8 +1573,7 @@ export function PullRequestDetailPanel({
                       <RelativeTime timestamp={detail.updatedAt} />
                     </span>
                   </span>
-                  <span aria-hidden className="h-3 w-px shrink-0 bg-border/70" />
-                  <span className="flex min-w-0 flex-1 items-center gap-1.5 font-mono text-2xs text-muted-foreground/65">
+                  <span className="flex min-w-0 flex-1 items-center gap-2 font-mono text-meta text-ink-3">
                     <PullRequestBaseBranch
                       baseBranch={detail.baseBranch}
                       freshness={freshness}
@@ -1598,7 +1597,7 @@ export function PullRequestDetailPanel({
                       <TooltipPopup side="top">{detail.headBranch}</TooltipPopup>
                     </Tooltip>
                   </span>
-                  <span className="ml-auto inline-flex shrink-0 items-baseline justify-end gap-2 text-2xs">
+                  <span className="ml-auto inline-flex shrink-0 items-baseline justify-end gap-2 text-meta">
                     <span
                       className="inline-flex items-baseline gap-1 tabular-nums"
                       aria-label={`${detail.changedFiles.toLocaleString()} changed ${
@@ -1613,7 +1612,7 @@ export function PullRequestDetailPanel({
                       reference={reference}
                       additions={detail.additions}
                       deletions={detail.deletions}
-                      className="shrink-0 font-mono text-2xs"
+                      className="shrink-0 font-mono text-meta"
                       eager
                     />
                   </span>
@@ -1627,14 +1626,14 @@ export function PullRequestDetailPanel({
           className={cn(
             "col-span-2 grid",
             condensed
-              ? "grid-rows-[0fr]"
-              : "grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none",
+              ? "grid-rows-(--grid-closed)"
+              : "grid-rows-(--grid-open) transition duration-200 ease-out motion-reduce:transition-none",
           )}
         >
           <div
             ref={foldRef}
             className={cn(
-              "min-h-0 overflow-hidden transition-[opacity,transform] duration-150 ease-out motion-reduce:transform-none motion-reduce:transition-none",
+              "min-h-0 overflow-hidden transition duration-150 ease-out motion-reduce:transform-none motion-reduce:transition-none",
               condensed
                 ? "-translate-y-1 opacity-0 duration-100"
                 : "translate-y-0 opacity-100 delay-50",
@@ -1699,7 +1698,7 @@ export function PullRequestDetailPanel({
                     reference={reference}
                     additions={detail.additions}
                     deletions={detail.deletions}
-                    className="shrink-0 font-mono text-xs"
+                    className="shrink-0 font-mono text-meta"
                     eager
                   />
                 }
@@ -1726,7 +1725,7 @@ export function PullRequestDetailPanel({
                 />
               ) : (
                 <PullRequestChecksStatusLine
-                  className="text-muted-foreground"
+                  className="text-ink-2"
                   aria-label={checksSummary ? `Checks: ${checksSummary}` : "Checks"}
                   icon={
                     checksState !== null ? (
@@ -1737,17 +1736,17 @@ export function PullRequestDetailPanel({
                         threadRef={threadRef}
                       />
                     ) : (
-                      <CircleDotIcon aria-hidden className="size-3.5" />
+                      <CircleDotIcon aria-hidden className="size-4" />
                     )
                   }
                   label={checksSummary}
                 />
               )
             ) : tab === "timeline" ? (
-              <div className="ml-auto flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
+              <div className="ml-auto flex shrink-0 items-center gap-2 text-meta text-ink-2">
                 <PullRequestMetaLine
                   className={cn(
-                    "whitespace-nowrap text-2xs transition-opacity",
+                    "whitespace-nowrap text-meta transition-opacity",
                     (activityPending || activityError) && "opacity-35",
                   )}
                 >
@@ -1987,7 +1986,7 @@ export function PullRequestDetailPanel({
       </div>
 
       {detail ? (
-        <div className="absolute right-4 bottom-3 z-20">
+        <div className="absolute right-4 bottom-4 z-20">
           <PullRequestComposer
             key={JSON.stringify([
               environmentId,

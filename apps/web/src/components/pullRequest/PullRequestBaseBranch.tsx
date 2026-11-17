@@ -49,20 +49,20 @@ function PullRequestBaseFreshnessWarning({
             type="button"
             aria-label={summary}
             className={cn(
-              "inline-flex min-w-0 shrink-0 cursor-help items-center gap-1 rounded-sm text-warning-foreground outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+              "inline-flex min-w-0 shrink-0 cursor-help items-center gap-1 rounded-row text-warning-foreground outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
               className,
             )}
           />
         }
       >
         {children}
-        <TriangleAlertIcon aria-hidden className={cn("size-3.5 shrink-0", iconClassName)} />
+        <TriangleAlertIcon aria-hidden className={cn("size-4 shrink-0", iconClassName)} />
       </PopoverTrigger>
       <PopoverPopup align="start" side="bottom" className="max-w-80" padding="compact">
-        <p className="text-xs text-foreground">{summary}</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">Changes can be cleanly merged.</p>
+        <p className="text-meta text-ink-1">{summary}</p>
+        <p className="text-meta text-ink-2">Changes can be cleanly merged.</p>
         {freshness.methods.length > 0 ? (
-          <span className="mt-2 flex flex-wrap items-center gap-1.5">
+          <span className="mt-2 flex flex-wrap items-center gap-2">
             {freshness.methods.map((method) => (
               <Button
                 key={method}
@@ -116,7 +116,7 @@ export function PullRequestBaseBranch({
         pending={pending}
         onUpdate={onUpdate}
         iconClassName={iconClassName}
-        className="max-w-[40%]"
+        className="max-w-2/5"
       >
         {label}
       </PullRequestBaseFreshnessWarning>
@@ -126,9 +126,7 @@ export function PullRequestBaseBranch({
     <Tooltip>
       <TooltipTrigger
         render={
-          <span className="inline-flex min-w-0 max-w-[40%] shrink-0 items-center gap-1">
-            {label}
-          </span>
+          <span className="inline-flex min-w-0 max-w-2/5 shrink-0 items-center gap-1">{label}</span>
         }
       />
       <TooltipPopup side="top">{stacked ? `Stacked on ${baseBranch}` : baseBranch}</TooltipPopup>

@@ -9,6 +9,10 @@ const SPEED = 0.4;
 const skyClock = () => (performance.now() / 1000) * SPEED;
 let skySeen = false;
 
+const SKY = "var(--aurora-sky, var(--card))";
+const EDGE = "var(--aurora-edge, var(--primary))";
+const TIP = "var(--aurora-tip, color-mix(in oklab, var(--primary) 45%, var(--muted-foreground)))";
+
 // dithercn's "Northern lights" shape, coloured from the active theme: sky from the card surface, edges
 // from the accent. A theme can override them with --aurora-sky, --aurora-edge and --aurora-tip.
 export function ConversationBackdrop() {
@@ -23,11 +27,11 @@ export function ConversationBackdrop() {
   if (!enabled || navigator.webdriver) return null;
   // -z-10 sits under the content of the card that renders it; that card must isolate.
   return (
-    <div className="absolute inset-0 -z-10 bg-(--sky) [--edge:var(--aurora-edge,var(--primary))] [--sky:var(--aurora-sky,var(--card))] [--tip:var(--aurora-tip,color-mix(in_oklab,var(--primary)_45%,var(--muted-foreground)))]">
+    <div className="absolute inset-0 -z-10" style={{ backgroundColor: SKY }}>
       <Aurora
-        background="--sky"
-        color="--edge"
-        tipColor="--tip"
+        background={SKY}
+        color={EDGE}
+        tipColor={TIP}
         curtains={4}
         height={0.28}
         spread={0.08}

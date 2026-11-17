@@ -181,7 +181,7 @@ export function PullRequestsColumn({
               <h1 className="truncate">Pull requests</h1>
             </WorkspaceBreadcrumbItem>
             {searchExpanded ? null : <WorkspaceBreadcrumbSeparator />}
-            <WorkspaceBreadcrumbItem className="shrink gap-1.5">
+            <WorkspaceBreadcrumbItem className="shrink gap-2">
               <PullRequestCompactFilterMenu
                 label="Filter by state"
                 value={state}
@@ -214,7 +214,7 @@ export function PullRequestsColumn({
         )}
         <div className="min-w-0 flex-1" />
         {condensed ? (
-          <div ref={topbarSearchRef} className="flex shrink items-center gap-1.5">
+          <div ref={topbarSearchRef} className="flex shrink items-center gap-2">
             <ExpandableSearch
               searchInput={searchInput}
               searchValue={searchValue}
@@ -236,8 +236,8 @@ export function PullRequestsColumn({
           ref={scrollRef}
           className="topbar-scroll-fade scrollbar-gutter-both min-h-0 flex-1 overflow-y-auto"
         >
-          <WorkspacePageContainer width="expanded" className="min-h-full gap-4">
-            <div className="flex flex-col gap-3">
+          <WorkspacePageContainer width="expanded" className="min-h-full gap-2">
+            <div className="flex flex-col gap-2">
               <div ref={inFlowSearchRef} className="flex flex-wrap items-center gap-2">
                 <div className="min-w-0 basis-full @lg/pr-list:basis-0 @lg/pr-list:flex-1">
                   {searchInput}
@@ -258,7 +258,7 @@ export function PullRequestsColumn({
                   <PullRequestRefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 ) : null}
               </div>
-              <div ref={markerRef} aria-hidden className="-mt-3 h-px w-full" />
+              <div ref={markerRef} aria-hidden className="-mt-2 h-px w-full" />
             </div>
 
             {listBody}
@@ -280,7 +280,7 @@ function PullRequestRefreshControl({
 }) {
   return (
     <Button
-      size={compact ? "icon-sm" : "icon"}
+      size="icon-sm"
       variant={compact ? "ghost" : "outline"}
       aria-label="Refresh pull requests"
       onClick={onRefresh}

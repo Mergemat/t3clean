@@ -11,7 +11,7 @@ import {
   type ScopedThreadRef,
   type ThreadId,
 } from "@t3tools/contracts";
-import { Trash2Icon, XIcon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useComposerDraftStore } from "../../composerDraftStore";
@@ -32,12 +32,11 @@ import { toastManager } from "../ui/toast";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { BackgroundThreadContext } from "./backgroundThread";
 
-/** A side chat tab: its title, Bring back, Delete and Close, over the side chat's own chat. */
+/** A side chat tab: Bring back and Delete over the side chat's own chat. */
 export default function SideChatPane(props: {
   readonly parentRef: ScopedThreadRef;
   readonly threadId: ThreadId;
   readonly parentPanel: SideChatParentPanel;
-  readonly onClose: () => void;
 }) {
   const { parentRef, threadId } = props;
   const threadRef = scopeThreadRef(parentRef.environmentId, threadId);
@@ -128,16 +127,14 @@ export default function SideChatPane(props: {
 
   return (
     <div data-side-chat-pane={threadId} className="flex h-full min-h-0 flex-col">
-      <div className="flex h-9 shrink-0 items-center gap-1 border-b border-border pr-1 pl-3">
-        <span className="min-w-0 flex-1 truncate text-xs font-medium">
-          {shell?.title ?? "Side chat"}
-        </span>
+      {/* The tab above already names the side chat and closes it. */}
+      <div className="pane-bar justify-end">
         <Tooltip>
           <TooltipTrigger
             render={
               <Button
                 variant="ghost"
-                size="xs"
+                size="sm"
                 aria-disabled={bringBackBlockedReason !== null || bringingBack || undefined}
                 onClick={() => void bringBack()}
               >
@@ -151,20 +148,17 @@ export default function SideChatPane(props: {
         </Tooltip>
         <Button
           variant="ghost"
-          size="icon-xs"
+          size="icon-sm"
           aria-label="Delete side chat"
           disabled={!canOperate || shell === null || deleting}
           onClick={() => void deleteSideChat()}
         >
           <Trash2Icon />
         </Button>
-        <Button variant="ghost" size="icon-xs" aria-label="Close side chat" onClick={props.onClose}>
-          <XIcon />
-        </Button>
       </div>
       {shell === null ? (
         snapshotLoaded ? (
-          <p className="p-3 text-xs text-muted-foreground">This side chat was deleted.</p>
+          <p className="p-2 text-meta text-ink-2">This side chat was deleted.</p>
         ) : null
       ) : (
         <BackgroundThreadContext value>

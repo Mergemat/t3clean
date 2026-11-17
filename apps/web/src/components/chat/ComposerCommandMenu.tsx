@@ -139,7 +139,7 @@ export const ComposerCommandMenu = memo(function ComposerCommandMenu(props: {
     >
       <ComposerBanner.Surface
         ref={listRef}
-        className="flex min-h-0 w-full flex-col overflow-hidden pb-(--chat-composer-attachment-overlap) **:data-[slot=command-item]:rounded-lg **:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-4"
+        className="flex min-h-0 w-full flex-col overflow-hidden pb-(--chat-composer-attachment-overlap) **:data-[slot=command-item]:rounded-row **:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2"
         data-composer-command-drawer="true"
       >
         {props.items.length > 0 ? (
@@ -164,8 +164,8 @@ export const ComposerCommandMenu = memo(function ComposerCommandMenu(props: {
             </CommandGroup>
           </CommandList>
         ) : (
-          <div className="px-5 pt-3.5 pb-7">
-            <p className="text-secondary-label text-xs">
+          <div className="px-4 pt-4 pb-6">
+            <p className="text-ink-2 text-meta">
               {props.isLoading
                 ? props.triggerKind === "skill" || props.triggerKind === "slash-command"
                   ? "Searching workspace skills..."
@@ -236,13 +236,13 @@ const ComposerCommandMenuItem = memo(function ComposerCommandMenuItem(props: {
         />
       ) : null}
       {props.item.type === "thread" ? (
-        <MessagesSquareIcon aria-hidden="true" className="size-4 shrink-0 text-secondary-label" />
+        <MessagesSquareIcon aria-hidden="true" className="size-4 shrink-0 text-ink-2" />
       ) : null}
       {props.item.type === "environment" ? (
         <EnvironmentMachineIcon
           kind={props.item.machine}
           aria-hidden="true"
-          className="size-4 shrink-0 text-secondary-label"
+          className="size-4 shrink-0 text-ink-2"
         />
       ) : null}
       {props.item.type === "model" ? (
@@ -263,10 +263,10 @@ const ComposerCommandMenuItem = memo(function ComposerCommandMenuItem(props: {
         />
       ) : null}
       <span className="flex min-w-0 flex-1 items-center gap-2">
-        <span className="min-w-0 max-w-[45%] shrink-0 truncate font-sans text-xs font-medium">
+        <span className="min-w-0 max-w-9/20 shrink-0 truncate font-sans text-meta font-medium">
           {isSlashSkill ? (
             <>
-              <span className="text-secondary-label">/skill:</span>
+              <span className="text-ink-2">/skill:</span>
               {formatProviderSkillDisplayName(isSlashSkill)}
             </>
           ) : (
@@ -279,7 +279,7 @@ const ComposerCommandMenuItem = memo(function ComposerCommandMenuItem(props: {
             render={
               <span
                 ref={descriptionRef}
-                className="min-w-0 flex-1 truncate text-left text-secondary-label text-xs"
+                className="min-w-0 flex-1 truncate text-left text-ink-2 text-meta"
               />
             }
           >

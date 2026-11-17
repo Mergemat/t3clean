@@ -189,18 +189,18 @@ function FirstRunRecovery({
 }) {
   const settingsReadFailed = reason === "settings";
   return (
-    <main className="flex h-dvh min-h-0 items-center justify-center bg-background px-6 text-foreground">
+    <main className="flex h-dvh min-h-0 items-center justify-center bg-background px-6 text-ink-1">
       <div className="flex max-w-sm flex-col items-center text-center">
-        <h1 className="text-lg font-semibold">
+        <h1 className="text-title font-semibold">
           {settingsReadFailed ? "Could not read settings" : "Still connecting"}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-body text-ink-2">
           {settingsReadFailed
             ? "Your saved settings could not be loaded."
             : "T3 Code could not confirm this workspace."}
         </p>
         <Button
-          className="mt-5"
+          className="mt-2"
           size="sm"
           variant="outline"
           disabled={retrying}

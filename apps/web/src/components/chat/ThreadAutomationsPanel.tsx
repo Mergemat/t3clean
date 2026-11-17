@@ -148,7 +148,7 @@ export function ThreadAutomationsPanel(props: {
                   })
                 }
               >
-                <Settings2Icon className="size-3.5" />
+                <Settings2Icon className="size-4" />
               </ThreadDetailsControl>
             }
           />
@@ -156,12 +156,12 @@ export function ThreadAutomationsPanel(props: {
         </Tooltip>
       }
     >
-      <ul className="m-0 max-h-[13.5rem] list-none overflow-y-auto p-0">
+      <ul className="m-0 max-h-54 list-none overflow-y-auto p-0">
         {boundTasks.map((task) => (
           <li
             key={task.id}
             className={cn(
-              "group flex items-center rounded-lg py-1.5",
+              "group flex items-center rounded-row py-2",
               THREAD_DETAILS_PANEL_ROW_CONTENT_CLASS,
             )}
           >
@@ -169,7 +169,7 @@ export function ThreadAutomationsPanel(props: {
               <CalendarClockIcon className={THREAD_DETAILS_PANEL_ICON_CLASS} />
               <span
                 className={cn(
-                  "absolute -right-1 -top-1 size-1.5 rounded-full",
+                  "absolute -right-1 -top-1 size-2 rounded-full",
                   STATUS_DOT_CLASS[task.lastRunStatus],
                 )}
                 aria-hidden
@@ -177,18 +177,14 @@ export function ThreadAutomationsPanel(props: {
             </span>
             <Tooltip>
               <TooltipTrigger render={<div className="min-w-0 flex-1" />}>
-                <span className="block truncate text-sm font-medium text-foreground/80">
-                  {task.title}
-                </span>
-                <p className="truncate text-2xs text-muted-foreground">
+                <span className="block truncate text-body text-ink-2">{task.title}</span>
+                <p className="truncate text-meta text-ink-2">
                   {taskScheduleLine(task, tasksQuery.data?.timeZone)}
                 </p>
               </TooltipTrigger>
               <TooltipPopup side="left">
                 <p className="font-medium">{task.title}</p>
-                <p className="text-muted-foreground">
-                  {taskScheduleLine(task, tasksQuery.data?.timeZone)}
-                </p>
+                <p className="text-ink-2">{taskScheduleLine(task, tasksQuery.data?.timeZone)}</p>
               </TooltipPopup>
             </Tooltip>
             <Tooltip>
@@ -206,7 +202,7 @@ export function ThreadAutomationsPanel(props: {
                       })
                     }
                   >
-                    <PencilIcon className="size-3.5" />
+                    <PencilIcon className="size-4" />
                   </ThreadDetailsControl>
                 }
               />
@@ -227,7 +223,7 @@ export function ThreadAutomationsPanel(props: {
                       }
                       onClick={() => void runNow(task)}
                     >
-                      <PlayIcon className="size-3.5" />
+                      <PlayIcon className="size-4" />
                     </ThreadDetailsControl>
                   }
                 />
@@ -245,7 +241,7 @@ export function ThreadAutomationsPanel(props: {
       </ul>
       {/* Kept last: the details card treats a section whose last child is empty as empty. */}
       {tasksQuery.error !== null ? (
-        <p className="px-2.5 py-1.5 text-2xs text-destructive">
+        <p className="px-2 py-2 text-meta text-destructive">
           Could not load automations: {tasksQuery.error}
         </p>
       ) : null}

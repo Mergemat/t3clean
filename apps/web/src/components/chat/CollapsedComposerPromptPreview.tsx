@@ -78,7 +78,7 @@ export function CollapsedComposerPromptPreview(props: {
         return (
           <ContextChip key={key} kind="citation">
             <QuoteIcon aria-hidden="true" />
-            <ContextChipLabel className="max-w-[16em]">
+            <ContextChipLabel className="max-w-60">
               {assistantCitationLabel(segment.citation)}
             </ContextChipLabel>
           </ContextChip>

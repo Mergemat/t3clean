@@ -15,7 +15,7 @@ it("expands every folder without asking the tree about all folders for each one"
   ]).flat();
   using getItem = vi.spyOn(FileTree.prototype, "getItem");
   await using _screen = await render(
-    <div className="flex h-[600px] flex-col">
+    <div className="flex h-150 flex-col">
       <DiffFileTree entries={entries} onSelectFile={() => {}} ariaLabel="Changed files" />
     </div>,
   );

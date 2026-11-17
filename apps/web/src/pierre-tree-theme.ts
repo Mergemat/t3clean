@@ -12,6 +12,9 @@ export const PIERRE_TREE_UNSAFE_CSS = `
   [data-truncate-content='visible'] { overflow: hidden; text-overflow: ellipsis; }
   [data-truncate-marker] { display: none; }
   button[data-type='item'], button[data-type='item']::before { border-radius: var(--radius-md); }
+  /* Rows in a list sit half a step apart (DESIGN.md). The tree lays rows out at a fixed height,
+     so the gap is a transparent border the row's fill stops at, not space between rows. */
+  button[data-type='item'] { border-block: 2px solid transparent; background-clip: padding-box; }
   svg[data-icon-name='t3-tree-icon-loading'] { opacity: 0.6; }
   @media (prefers-reduced-motion: no-preference) {
     svg[data-icon-name='t3-tree-icon-loading'] { animation: t3-tree-spin 1s linear infinite; }

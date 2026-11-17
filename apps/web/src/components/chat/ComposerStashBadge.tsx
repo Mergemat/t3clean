@@ -18,9 +18,9 @@ export const ComposerStashBadge = memo(function ComposerStashBadge(props: {
       // Remounting the count per stash restarts its CSS pulse; no timer has to end it.
       key={props.pulseKey}
       className={cn(
-        "text-muted-foreground",
+        "text-ink-2",
         pulsed &&
-          "animate-stash-pulse-count transition-[opacity,translate] duration-180 ease-out starting:translate-y-0.5 starting:opacity-0 motion-reduce:transition-none",
+          "animate-stash-pulse-count transition duration-180 ease-out starting:translate-y-1 starting:opacity-0 motion-reduce:transition-none",
       )}
     >
       {props.count}
@@ -42,7 +42,7 @@ export const ComposerStashBadge = memo(function ComposerStashBadge(props: {
         className={cn(
           "transition-colors duration-200",
           props.menuOpen && "pointer-events-none",
-          props.menuOpen ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+          props.menuOpen ? "text-ink-1" : "text-ink-2 hover:text-ink-1",
           // The button keeps its identity (focus, hover) across stashes. Swapping between two
           // identical keyframes restarts the row's animation instead.
           pulsed &&

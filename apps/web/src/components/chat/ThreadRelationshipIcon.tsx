@@ -63,7 +63,7 @@ export function ThreadRelationshipIcon({
   status: string | null;
   fallbackIcon?: LucideIcon;
 }) {
-  const iconClassName = "size-4 shrink-0 text-muted-foreground";
+  const iconClassName = "size-4 shrink-0 text-ink-2";
   const entry = driver
     ? providerEntries.find((candidate) => candidate.instanceId === provider?.instanceId)
     : undefined;

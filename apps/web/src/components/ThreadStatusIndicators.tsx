@@ -232,7 +232,7 @@ function resolveThreadPullRequestBadgePresentation({
   }
   return {
     Icon: status?.Icon ?? PullRequestGlyph.pullRequest,
-    toneClassName: status?.colorClass ?? "text-muted-foreground",
+    toneClassName: status?.colorClass ?? "text-ink-2",
     label: tooltip,
     text: number,
   };
@@ -320,19 +320,19 @@ function PullRequestBadge({
     <Tooltip key={opensList ? "list" : "link"}>
       <TooltipTrigger render={control}>
         <span
-          className={cn("contents font-normal text-xs tabular-nums", presentation.toneClassName)}
+          className={cn("contents font-normal text-meta tabular-nums", presentation.toneClassName)}
         >
           <presentation.Icon aria-hidden className="size-3 shrink-0" />
-          <span className="text-secondary-label">{presentation.text}</span>
+          <span className="text-ink-2">{presentation.text}</span>
         </span>
       </TooltipTrigger>
       <TooltipPopup
         side="top"
         sideOffset={0}
         variant="glass"
-        className="pointer-events-auto w-80 max-w-[calc(100vw-2rem)] text-left whitespace-normal"
+        className="pointer-events-auto w-80 max-w-(--viewport-inset) text-left whitespace-normal"
       >
-        <div className="-mx-2 max-h-[calc(var(--available-height)-0.5rem-2px)] overflow-y-auto overscroll-contain">
+        <div className="-mx-2 max-h-(--available-height) overflow-y-auto overscroll-contain">
           {visibleThreadPullRequests(pullRequests).length > 0 ? (
             <ThreadPullRequestsMiniList
               pullRequests={pullRequests}
@@ -387,7 +387,7 @@ export function ThreadPullRequestsMiniList({
             onOpenPullRequest={onOpenPullRequest}
           >
             {line.stack ? (
-              <span className="ml-auto shrink-0 pl-1 text-3xs">
+              <span className="ml-auto shrink-0 pl-1 text-meta">
                 {line.stack.kind === "native" ? "stack" : "chain"} · {line.stack.size}
               </span>
             ) : null}
@@ -423,7 +423,7 @@ function ThreadPullRequestMiniListItem({
         className={cn("size-3 shrink-0", presentation?.toneClassName ?? "stroke-muted-foreground")}
       />
       <span className="shrink-0 font-mono tabular-nums">#{number}</span>
-      <span className="min-w-0 truncate text-foreground/75">{title}</span>
+      <span className="min-w-0 truncate text-ink-2">{title}</span>
       {children}
     </>
   );
@@ -434,14 +434,14 @@ function ThreadPullRequestMiniListItem({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-w-0 items-center gap-2 rounded-sm px-1 py-1 hover:bg-accent focus-visible:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+          className="flex min-w-0 items-center gap-2 rounded-row px-2 py-1 hover:bg-accent focus-visible:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
           onPointerDown={(event) => event.stopPropagation()}
           onClick={(event) => onOpenPullRequest(event, url)}
         >
           {content}
         </a>
       ) : (
-        <div className="flex min-w-0 items-center gap-2">{content}</div>
+        <div className="flex min-w-0 items-center gap-2 px-2 py-1">{content}</div>
       )}
     </li>
   );
@@ -481,7 +481,7 @@ export function ChangeRequestStatusIcon({
 
 function PrStatusTooltipContent({ status }: { status: PrStatusIndicator }) {
   return (
-    <span className="flex max-w-[min(34rem,calc(100vw-2rem))] items-stretch overflow-hidden whitespace-nowrap">
+    <span className="flex max-w-136 items-stretch overflow-hidden whitespace-nowrap">
       <span className="shrink-0 pr-2 font-medium">{status.tooltipLead}</span>
       <span className="min-h-4 shrink-0 border-border/70 border-l" aria-hidden="true" />
       <span className="min-w-0 truncate pl-2">{status.tooltipTitle}</span>
@@ -576,7 +576,7 @@ export function ThreadTerminalStatusButton({
             aria-label={label}
             data-testid={`sidebar-terminal-status-${threadRef.threadId}`}
             className={cn(
-              "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-sm outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+              "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-row outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
               status?.colorClass,
             )}
             onPointerDown={(event) => event.stopPropagation()}
@@ -591,7 +591,7 @@ export function ThreadTerminalStatusButton({
         }
       >
         <TerminalIcon
-          className="size-3.5 motion-safe:animate-status-pulse"
+          className="size-4 motion-safe:animate-status-pulse"
           onAnimationStart={synchronizeTerminalPulse}
         />
       </TooltipTrigger>
@@ -627,7 +627,7 @@ export function ThreadWorktreeIndicator({
           />
         }
       >
-        <FolderGit2Icon className="size-3.5 shrink-0 text-icon-muted" />
+        <FolderGit2Icon className="size-4 shrink-0 text-ink-3" />
       </TooltipTrigger>
       <TooltipPopup side="top">{tooltip}</TooltipPopup>
     </Tooltip>
@@ -649,12 +649,12 @@ function ThreadStatusLabel({
             <span
               role="img"
               aria-label={status.label}
-              className={`inline-flex size-3.5 shrink-0 items-center justify-center ${status.colorClass}`}
+              className={`inline-flex size-4 shrink-0 items-center justify-center ${status.colorClass}`}
             />
           }
         >
           <span
-            className={`size-[9px] rounded-full ${status.dotClass} ${
+            className={`size-3 rounded-full ${status.dotClass} ${
               status.pulse ? "motion-safe:animate-status-pulse" : ""
             }`}
           />
@@ -671,12 +671,12 @@ function ThreadStatusLabel({
           <span
             role="img"
             aria-label={status.label}
-            className={`inline-flex items-center gap-1 text-3xs ${status.colorClass}`}
+            className={`inline-flex items-center gap-1 text-meta ${status.colorClass}`}
           />
         }
       >
         <span
-          className={`h-1.5 w-1.5 rounded-full ${status.dotClass} ${
+          className={`h-2 w-2 rounded-full ${status.dotClass} ${
             status.pulse ? "motion-safe:animate-status-pulse" : ""
           }`}
         />
@@ -750,9 +750,7 @@ export function ThreadRowLeadingStatus({ thread }: { thread: SidebarThreadSummar
   return (
     <span
       ref={statusRef}
-      className={
-        prStatus || threadStatus ? "inline-flex shrink-0 items-center gap-1.5" : "contents"
-      }
+      className={prStatus || threadStatus ? "inline-flex shrink-0 items-center gap-2" : "contents"}
     >
       {prStatus && pr ? (
         <Tooltip>
@@ -773,7 +771,7 @@ export function ThreadRowLeadingStatus({ thread }: { thread: SidebarThreadSummar
       ) : null}
       {pendingLink ? (
         <PullRequestGlyph.pullRequest
-          className="size-3 text-muted-foreground"
+          className="size-3 text-ink-2"
           aria-label={`${changeRequestTerminologyForUrl(pendingLink.url).shortLabel} #${pendingLink.number}, status pending`}
         />
       ) : null}
@@ -800,7 +798,7 @@ export function ThreadRowTrailingStatus({ thread }: { thread: SidebarThreadSumma
   }
 
   return (
-    <span className="inline-flex shrink-0 items-center gap-1.5">
+    <span className="inline-flex shrink-0 items-center gap-2">
       {terminalStatus ? (
         <Tooltip>
           <TooltipTrigger
@@ -830,10 +828,7 @@ export function ThreadRowTrailingStatus({ thread }: { thread: SidebarThreadSumma
               />
             }
           >
-            <EnvironmentMachineIcon
-              kind={remoteMachine}
-              className="size-3 text-muted-foreground/60"
-            />
+            <EnvironmentMachineIcon kind={remoteMachine} className="size-3 text-ink-3" />
           </TooltipTrigger>
           <TooltipPopup side="top">{threadEnvironmentLabel}</TooltipPopup>
         </Tooltip>
@@ -910,9 +905,9 @@ export function ThreadSearchPullRequestNumber({
     <span
       aria-label={presentation.label}
       className={cn(
-        "inline-flex shrink-0 items-center gap-0.5 text-xs tabular-nums",
+        "inline-flex shrink-0 items-center text-meta tabular-nums",
         settled
-          ? cn("text-secondary-label transition-colors", state && settledPrHoverColorClass(state))
+          ? cn("text-ink-2 transition-colors", state && settledPrHoverColorClass(state))
           : presentation.toneClassName,
       )}
     >

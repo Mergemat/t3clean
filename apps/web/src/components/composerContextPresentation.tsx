@@ -287,16 +287,16 @@ function previewAnnotationTooltip(annotation: PreviewAnnotationPayload): string 
 
 function ComposerReviewCommentDetails({ comment }: { comment: ReviewCommentContext }) {
   return (
-    <div className="space-y-2 overflow-hidden rounded-lg border border-border/70 bg-background/70 p-3">
+    <div className="space-y-2 overflow-hidden rounded-row border border-border/70 bg-background/70 p-2">
       <div className="space-y-1">
-        <div className="truncate text-xs font-medium text-foreground">{comment.filePath}</div>
-        <div className="text-secondary-label text-2xs">
+        <div className="truncate text-meta font-medium text-ink-1">{comment.filePath}</div>
+        <div className="text-ink-2 text-meta">
           {comment.sectionTitle} · {comment.rangeLabel}
         </div>
       </div>
       {comment.text.trim() ? <ChatMarkdown text={comment.text.trim()} cwd={undefined} /> : null}
       {comment.diff.trim() ? (
-        <div className="flex h-64 min-h-0 flex-col overflow-hidden rounded-md border border-border">
+        <div className="flex h-64 min-h-0 flex-col overflow-hidden rounded-row border border-border">
           <ReadOnlySourcePreview name="review.diff" text={comment.diff} />
         </div>
       ) : null}
@@ -314,19 +314,17 @@ function ComposerPreviewAnnotationDetails({
   const summary = previewAnnotationTooltip(annotation);
   const screenshotUrl = annotation.screenshot?.dataUrl || screenshot?.previewUrl;
   return (
-    <div className="overflow-hidden rounded-lg border border-border/70 bg-background/70">
+    <div className="overflow-hidden rounded-row border border-border/70 bg-background/70">
       {screenshotUrl ? (
         <img
           src={screenshotUrl}
           alt="Annotated preview crop"
-          className="max-h-64 w-full border-border/70 border-b bg-muted object-contain"
+          className="max-h-64 w-full bg-muted object-contain"
         />
       ) : (
-        <div className="border-border/70 border-b bg-muted/40 px-3 py-2 text-secondary-label text-xs">
-          Screenshot unavailable
-        </div>
+        <div className="bg-muted/40 px-2 py-2 text-ink-2 text-meta">Screenshot unavailable</div>
       )}
-      <div className="whitespace-pre-wrap wrap-break-word px-3 py-2.5 text-sm text-foreground">
+      <div className="whitespace-pre-wrap wrap-break-word px-2 py-2 text-body text-ink-1">
         {summary}
       </div>
     </div>

@@ -58,7 +58,7 @@ export function TraitsSpeedIcon({
             ? "text-current"
             : provider === "claudeAgent"
               ? "text-[#d97757]"
-              : "text-foreground",
+              : "text-ink-1",
         )}
       />
       <span className="sr-only">

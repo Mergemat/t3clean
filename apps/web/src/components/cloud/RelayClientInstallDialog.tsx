@@ -62,8 +62,8 @@ export function RelayClientInstallDialog() {
     >
       <DialogPopup className="max-w-md" showCloseButton={isConfirming}>
         <DialogHeader>
-          <div className="flex size-9 items-center justify-center rounded-lg border border-border/70 bg-muted/60">
-            <DownloadIcon aria-hidden className="size-4.5 text-muted-foreground" />
+          <div className="flex size-8 items-center justify-center rounded-row border border-border/70 bg-muted/60">
+            <DownloadIcon aria-hidden className="size-4 text-ink-2" />
           </div>
           <DialogTitle>
             {isInstalling ? "Installing relay client" : "Install relay client?"}
@@ -76,12 +76,12 @@ export function RelayClientInstallDialog() {
         </DialogHeader>
         <DialogPanel scrollFade={false}>
           {isInstalling ? (
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between gap-3 text-sm">
-                <p aria-live="polite" className="font-medium text-foreground">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2 text-body">
+                <p aria-live="polite" className="font-medium text-ink-1">
                   {activeStep?.label}
                 </p>
-                <p className="shrink-0 tabular-nums text-muted-foreground">
+                <p className="shrink-0 tabular-nums text-ink-2">
                   {activeStepIndex + 1} of {installSteps.length}
                 </p>
               </div>
@@ -91,14 +91,14 @@ export function RelayClientInstallDialog() {
                 max={installSteps.length}
                 value={activeStepIndex + 1}
               />
-              <p className="text-xs leading-relaxed text-muted-foreground">
+              <p className="text-meta leading-relaxed text-ink-2">
                 Keep T3 Code open while the relay client is installed.
               </p>
             </div>
           ) : (
-            <div className="rounded-xl border border-border/70 bg-muted/35 p-3">
-              <p className="text-sm font-medium text-foreground">Managed relay client</p>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+            <div className="rounded-row border border-border/70 bg-muted/35 p-2">
+              <p className="text-body font-medium text-ink-1">Managed relay client</p>
+              <p className="mt-1 text-body leading-relaxed text-ink-2">
                 T3 Code will download and install version{" "}
                 {view.status === "confirming" ? view.version : ""} locally.
               </p>

@@ -77,7 +77,7 @@ export function DeviceWorkspace(props: {
     <>
       <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
         {screenshotError || (controls.error && !toolsOpen) ? (
-          <p role="alert" className="px-3 py-2 text-xs text-destructive">
+          <p role="alert" className="px-2 py-2 text-meta text-destructive">
             {screenshotError ?? controls.error}
           </p>
         ) : null}

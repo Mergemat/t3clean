@@ -55,7 +55,7 @@ export function SidebarSectionPlaceholder(props: {
     <SortableSidebarMarker
       marker={props.marker}
       data-testid={`sidebar-${props.marker}`}
-      className="relative mx-0.5 -mb-px h-0"
+      className="relative -mb-px h-0"
       // Revealing on every drag scrolls the list out from under the pointer.
       revealOverflow={
         props.marker === "settled-placeholder" && props.showHint && props.isDropTarget
@@ -64,7 +64,7 @@ export function SidebarSectionPlaceholder(props: {
       {props.showHint ? (
         <div
           className={cn(
-            "absolute inset-x-0 top-0 flex h-9 items-center justify-center rounded-md border border-dashed border-sidebar-foreground/25 text-xs text-sidebar-foreground/80",
+            "absolute inset-x-0 top-0 flex h-8 items-center justify-center rounded-row border border-dashed border-sidebar-foreground/25 text-meta text-sidebar-foreground/80",
             props.isDropTarget && "border-primary/40 bg-primary/5 text-primary",
           )}
         >
@@ -85,13 +85,13 @@ export function SidebarDragBoundary(props: {
     <SortableSidebarMarker
       marker={props.marker}
       data-testid={`sidebar-${props.marker}`}
-      className="pointer-events-none relative mx-0.5 -mb-px h-0"
+      className="pointer-events-none relative -mb-px h-0"
     >
       {props.visible ? (
         <div className="sidebar-drag-boundary-label absolute inset-x-2 top-1 flex h-4 items-center gap-2">
           <span
             className={cn(
-              "shrink-0 text-xs font-medium",
+              "shrink-0 text-meta font-medium",
               props.isDropTarget ? "text-primary" : "text-sidebar-foreground/80",
             )}
           >
@@ -130,7 +130,7 @@ export function SidebarSectionHeader(props: {
     <SortableSidebarMarker
       marker={props.marker}
       data-testid={`sidebar-${props.marker}`}
-      className={cn("relative mx-0.5 h-8", props.className)}
+      className={cn("relative h-8", props.className)}
     >
       <CollapsibleSectionHeader
         data-sidebar-row={`shelf:${shelf}`}

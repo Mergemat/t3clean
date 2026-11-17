@@ -134,12 +134,12 @@ export function MediaVideoPlayer({
         <span
           role="alert"
           className={cn(
-            "flex aspect-video max-h-full w-full flex-col items-center justify-center gap-3 rounded-lg border border-border/40 bg-muted/40 p-4 text-center text-sm text-muted-foreground",
+            "flex aspect-video max-h-full w-full flex-col items-center justify-center gap-2 rounded-row border border-border/40 bg-muted/40 p-4 text-center text-body text-ink-2",
             stateClassName,
           )}
         >
-          <span data-thread-find-ignore className="inline-flex items-center gap-1.5">
-            <TriangleAlertIcon aria-hidden className="size-3.5 shrink-0" />
+          <span data-thread-find-ignore className="inline-flex items-center gap-2">
+            <TriangleAlertIcon aria-hidden className="size-4 shrink-0" />
             {["Video unavailable", label, unavailableDetail].filter(Boolean).join(" · ")}
           </span>
           <span className="flex flex-wrap items-center justify-center gap-2">
@@ -195,7 +195,7 @@ export function MediaVideoPlayer({
         <span
           role="status"
           aria-label={failed ? "Video preview unavailable" : "Loading video"}
-          className={cn("block aspect-video w-full rounded-lg bg-muted/60", stateClassName)}
+          className={cn("block aspect-video w-full rounded-row bg-muted/60", stateClassName)}
           style={style}
         />
       )}
@@ -204,7 +204,7 @@ export function MediaVideoPlayer({
           type="button"
           aria-label={label ? `Play ${label}` : "Play video"}
           onClick={onOpen}
-          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-lg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-row focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           <span className="flex size-8 items-center justify-center rounded-full bg-black/50 text-white">
             <PlayIcon aria-hidden className="size-4 fill-current" />

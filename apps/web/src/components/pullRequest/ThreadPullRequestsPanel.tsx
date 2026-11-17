@@ -57,6 +57,7 @@ import {
 import { PullRequestGlyph } from "./pullRequestIcons";
 import { pullRequestQuickActions } from "./pullRequestList.logic";
 import { PullRequestSpeedActions, PullRequestSpeedModeContext } from "./PullRequestSpeedActions";
+import { ListRowGap } from "../ui/list-row-gap";
 
 const SOURCE_LABELS: Record<ThreadPullRequestLink["source"], string> = {
   manual: "Linked by you",
@@ -78,7 +79,7 @@ function ChecksGlyph({
         <presentation.Icon
           role="img"
           aria-label={presentation.label}
-          className={cn("size-3.5", presentation.toneClassName)}
+          className={cn("size-4", presentation.toneClassName)}
         />
       </TooltipTrigger>
       <TooltipPopup>{presentation.label}</TooltipPopup>
@@ -146,7 +147,7 @@ function LinkRowImpl({
       {snapshot === null ? (
         <PullRequestGlyph.pullRequest
           aria-label="Waiting for host state"
-          className="size-4 shrink-0 text-muted-foreground"
+          className="size-4 shrink-0 text-ink-2"
         />
       ) : (
         <PullRequestRowGlyph
@@ -197,7 +198,7 @@ function LinkRowImpl({
                 {watching ? (
                   <Tooltip>
                     <TooltipTrigger render={<span className="inline-flex shrink-0" />}>
-                      <EyeIcon role="img" aria-label="Watching" className="size-3.5" />
+                      <EyeIcon role="img" aria-label="Watching" className="size-4" />
                     </TooltipTrigger>
                     <TooltipPopup>
                       Watching: the agent wakes when checks finish, someone comments, or the branch
@@ -239,9 +240,7 @@ function LinkRowImpl({
               {stack ? (
                 <Tooltip>
                   <TooltipTrigger
-                    render={
-                      <span className="inline-flex shrink-0 items-center gap-0.5 text-foreground/70" />
-                    }
+                    render={<span className="inline-flex shrink-0 items-center text-ink-2" />}
                   >
                     <PullRequestGlyph.stack aria-hidden className="size-3" />
                     {stack.size}
@@ -289,8 +288,8 @@ function LinkRowImpl({
       ) : null}
       <span
         className={cn(
-          "absolute right-0 bottom-0.5 flex items-center rounded-r-md bg-background pr-1 pl-5",
-          "[mask-image:linear-gradient(to_right,transparent,black_1rem)]",
+          "absolute right-0 bottom-1 flex items-center rounded-r-row bg-background pr-1 pl-4",
+          "mask-r-from-transparent mask-r-to-black mask-r-to-4",
           // Hidden controls would intercept link taps on touch screens.
           "pointer-events-none opacity-0 group-hover/pr-row:pointer-events-auto group-hover/pr-row:opacity-100",
           "has-[[data-popup-open]]:pointer-events-auto has-[[data-popup-open]]:opacity-100",
@@ -311,11 +310,11 @@ function LinkRowImpl({
             render={
               <Button
                 variant="ghost"
-                size="icon-micro"
+                size="icon-xs"
                 aria-label={`Actions for #${link.number}`}
                 className="relative"
               >
-                <MoreHorizontalIcon className="size-3.5" />
+                <MoreHorizontalIcon className="size-4" />
               </Button>
             }
           />
@@ -326,21 +325,21 @@ function LinkRowImpl({
             sideOffset={menuPosition ? 0 : 4}
           >
             <MenuItem onClick={() => void writeTextToClipboard(link.url, "link")}>
-              <LinkIcon className="size-3.5" />
+              <LinkIcon className="size-4" />
               Copy link
             </MenuItem>
             <MenuItem onClick={(event) => openPrLink(event, link.url, threadRef)}>
-              <ArrowUpRightIcon className="size-3.5" />
+              <ArrowUpRightIcon className="size-4" />
               Open
             </MenuItem>
             {onSetWatching !== null && open && (watching || canStartWatch) ? (
               <MenuItem onClick={() => onSetWatching(link, !watching)}>
-                {watching ? <EyeOffIcon className="size-3.5" /> : <EyeIcon className="size-3.5" />}
+                {watching ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
                 {watching ? "Stop watching" : "Watch for changes"}
               </MenuItem>
             ) : null}
             <MenuItem onClick={() => onUnlink(link)}>
-              <PullRequestGlyph.unlink className="size-3.5" />
+              <PullRequestGlyph.unlink className="size-4" />
               {link.source === "stack" ? "Dismiss from thread" : "Unlink from thread"}
             </MenuItem>
           </MenuPopup>
@@ -432,14 +431,14 @@ function EnabledThreadPullRequestsPanel({ threadRef }: { threadRef: ScopedThread
   if (linkCount === 0) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 p-6 text-center">
-        <PullRequestGlyph.link aria-hidden className="size-6 text-muted-foreground/60" />
-        <p className="text-sm font-medium">No linked pull requests</p>
-        <p className="max-w-60 text-xs text-muted-foreground">
+        <PullRequestGlyph.link aria-hidden className="size-6 text-ink-3" />
+        <p className="text-body font-medium">No linked pull requests</p>
+        <p className="max-w-60 text-meta text-ink-2">
           Pull requests the agent opens from this thread land here. Link one yourself from a URL or
           a number.
         </p>
         <Button size="sm" variant="outline" onClick={openLinkDialog}>
-          <PlusIcon className="size-3.5" />
+          <PlusIcon className="size-4" />
           Link pull request
         </Button>
       </div>
@@ -454,6 +453,7 @@ function EnabledThreadPullRequestsPanel({ threadRef }: { threadRef: ScopedThread
         <LegendList<PullRequestListLine>
           data={lines}
           keyExtractor={lineKey}
+          ItemSeparatorComponent={ListRowGap}
           extraData={rowInputs}
           renderItem={({ item: line }) => (
             <LinkRow
@@ -474,9 +474,9 @@ function EnabledThreadPullRequestsPanel({ threadRef }: { threadRef: ScopedThread
           )}
           estimatedItemSize={44}
           drawDistance={440}
-          className="min-h-0 flex-1 overscroll-contain p-1.5"
+          className="min-h-0 flex-1 overscroll-contain p-2"
         />
-        <footer className="flex items-center justify-between border-t border-border/60 px-2 py-1.5 text-2xs text-muted-foreground">
+        <footer className="flex items-center justify-between border-t border-border/60 px-2 py-2 text-meta text-ink-2">
           <span>
             {openCount} open · {linkCount} linked
             {lastSynced ? (
@@ -487,7 +487,7 @@ function EnabledThreadPullRequestsPanel({ threadRef }: { threadRef: ScopedThread
             ) : null}
           </span>
           <Button size="xs" variant="ghost" onClick={openLinkDialog}>
-            <PlusIcon className="size-3.5" />
+            <PlusIcon className="size-4" />
             Link
           </Button>
         </footer>

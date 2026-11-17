@@ -107,7 +107,7 @@ function CustomSnoozeDialog() {
             <DialogDescription>Choose when snoozed threads return to your inbox.</DialogDescription>
           </DialogHeader>
           <DialogPanel>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <ToggleGroup
                 aria-label="Schedule type"
                 className="w-full *:flex-1"
@@ -121,9 +121,9 @@ function CustomSnoozeDialog() {
                 <Toggle value="date">Date and time</Toggle>
                 <Toggle value="duration">Duration</Toggle>
               </ToggleGroup>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
                 {mode === "date" ? (
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <div className="flex min-w-0 flex-col gap-2">
                       <Label htmlFor={`${id}-date`}>Date</Label>
                       <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
@@ -141,7 +141,7 @@ function CustomSnoozeDialog() {
                             day: "numeric",
                             year: "numeric",
                           })}
-                          <CalendarIcon className="size-4 text-muted-foreground" />
+                          <CalendarIcon className="size-4 text-ink-2" />
                         </PopoverTrigger>
                         <PopoverPopup align="start" aria-label="Choose snooze date">
                           <Calendar
@@ -165,7 +165,7 @@ function CustomSnoozeDialog() {
                       <Input
                         nativeInput
                         id={`${id}-time`}
-                        className="h-9 sm:h-8"
+                        className="h-8 sm:h-8"
                         type="time"
                         required
                         value={time}
@@ -177,7 +177,7 @@ function CustomSnoozeDialog() {
                     </Label>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <NumberField
                       id={`${id}-amount`}
                       min={0}

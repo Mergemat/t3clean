@@ -159,9 +159,7 @@ function timelineListStateFor(identity: string): {
 }
 
 const TIMELINE_LIST_HEADER = <div className="h-3 sm:h-4" />;
-const TIMELINE_LIST_FADE_HEADER = (
-  <div className="h-[var(--workspace-titlebar-scroll-fade-height)]" />
-);
+const TIMELINE_LIST_FADE_HEADER = <div className="h-(--workspace-titlebar-scroll-fade-height)" />;
 function TimelineListFooter({
   composerInset,
   onGrow,
@@ -1409,7 +1407,7 @@ const ConversationTimeline = memo(function ConversationTimeline({
           className="flex h-full items-center justify-center ps-(--chat-lane-inset-start) pe-(--chat-lane-inset-end)"
           style={{ paddingBottom: emptyPlaceholderInset }}
         >
-          <p className="text-sm text-muted-foreground">Send a message to start the conversation.</p>
+          <p className="text-body text-ink-2">Send a message to start the conversation.</p>
         </div>
       </>
     );
@@ -1475,7 +1473,7 @@ const ConversationTimeline = memo(function ConversationTimeline({
               tabIndex={-1}
               data-workspace-focus-default
               className={cn(
-                "messages-timeline-scroll scrollbar-gutter-both h-full min-h-0 overflow-x-hidden overscroll-y-contain [overflow-anchor:none]",
+                "messages-timeline-scroll scrollbar-gutter-both h-full min-h-0 overflow-x-hidden overscroll-y-contain overflow-anchor-none",
                 topFadeEnabled && "topbar-scroll-fade",
               )}
               ListHeaderComponent={listHeader}
@@ -1511,24 +1509,20 @@ function TimelineHistoryControl(props: MessagesTimelineHistoryControls) {
   }
   return (
     <div className="messages-timeline-row-frame">
-      <div className="chat-content-lane flex flex-col gap-1.5 pb-2">
+      <div className="chat-content-lane flex flex-col gap-2 pb-2">
         {props.hasMoreHistory ? (
           <button
             type="button"
             disabled={props.loading}
             aria-label="Load earlier turns"
             onClick={() => props.onLoadEarlier()}
-            className="flex w-full cursor-pointer items-center gap-3 py-1.5 text-muted-foreground text-xs hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-default"
+            className="flex w-full cursor-pointer items-center justify-center py-2 text-ink-2 text-meta hover:text-ink-1 focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-default"
           >
-            <span aria-hidden="true" className="h-px flex-1 bg-border/70" />
-            <span className="shrink-0">
-              {props.loading ? "Loading earlier turns…" : "Load earlier turns"}
-            </span>
-            <span aria-hidden="true" className="h-px flex-1 bg-border/70" />
+            {props.loading ? "Loading earlier turns…" : "Load earlier turns"}
           </button>
         ) : null}
         {props.error !== null ? (
-          <p role="status" className="text-center text-muted-foreground text-xs">
+          <p role="status" className="text-center text-ink-2 text-meta">
             {props.error}
           </p>
         ) : null}
@@ -1619,7 +1613,7 @@ const TimelineRowContent = memo(function TimelineRowContent({ row }: { row: Time
         isWorkLogRow || isSubagentGroup
           ? undefined
           : row.kind === "turn-fold" || row.kind === "working"
-            ? "pb-1.5"
+            ? "pb-2"
             : row.kind === "message" && row.groupedWithNext
               ? "pb-1"
               : (row.kind === "message" &&
@@ -1722,7 +1716,7 @@ function ContextCompactionTimelineRow({
       ? row.title + row.label.slice("Context compacted".length)
       : row.label;
   const content = (
-    <span className="flex min-w-0 items-center gap-1.5">
+    <span className="flex min-w-0 items-center gap-2">
       {row.failed ? (
         <CircleAlertIcon aria-hidden="true" className="size-3 shrink-0" />
       ) : (
@@ -1747,11 +1741,10 @@ function ContextCompactionTimelineRow({
       role="separator"
       aria-label={row.failure ? `${label}: ${row.failure}` : label}
       className={cn(
-        "mx-auto flex w-full max-w-(--chat-content-max-width) items-center gap-3 py-1 text-xs",
-        row.failed ? "text-destructive" : "text-muted-foreground",
+        "mx-auto flex w-full max-w-(--chat-content-max-width) items-center justify-center py-1 text-meta",
+        row.failed ? "text-destructive" : "text-ink-2",
       )}
     >
-      <span className={cn("h-px flex-1", row.failed ? "bg-destructive/30" : "bg-border/70")} />
       <span
         ref={row.active ? observeVisibleAnimation : undefined}
         className="relative min-w-0 overflow-hidden"
@@ -1759,7 +1752,6 @@ function ContextCompactionTimelineRow({
         {content}
         {row.active ? <ActivityShimmerOverlay>{content}</ActivityShimmerOverlay> : null}
       </span>
-      <span className={cn("h-px flex-1", row.failed ? "bg-destructive/30" : "bg-border/70")} />
     </div>
   );
 }
@@ -1805,13 +1797,13 @@ function useDeferredWorkLoading(
 
 function WorkHistorySkeleton() {
   return (
-    <div role="status" aria-label="Loading work history" className="space-y-2 px-1 pb-1 pt-3">
+    <div role="status" aria-label="Loading work history" className="space-y-2 px-1 pb-1 pt-2">
       {[0, 1, 2].map((index) => (
         <div key={index} className="flex items-center gap-2" aria-hidden="true">
           <Skeleton className="size-3 shrink-0" />
           <Skeleton
             shape="pill"
-            className={index === 0 ? "h-2.5 w-2/5" : index === 1 ? "h-2.5 w-3/5" : "h-2.5 w-1/3"}
+            className={index === 0 ? "h-3 w-2/5" : index === 1 ? "h-3 w-3/5" : "h-3 w-1/3"}
           />
         </div>
       ))}
@@ -1826,7 +1818,7 @@ function TurnFoldTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "turn-
   );
 
   return (
-    <div className="group/timeline-row border-b border-border/60 pb-2 pe-0.5 pt-1">
+    <div className="group/timeline-row px-2 pb-2 pt-1">
       <div className="relative flex items-center gap-1">
         <button
           type="button"
@@ -1834,16 +1826,16 @@ function TurnFoldTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "turn-
           data-scroll-anchor-ignore
           onClick={toggle}
           aria-busy={loading}
-          className="flex cursor-pointer select-none items-center gap-1 rounded-md px-1 text-sm leading-relaxed text-muted-foreground tabular-nums transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
+          className="flex cursor-pointer select-none items-center gap-1 rounded-row px-2 text-body leading-relaxed text-ink-2 tabular-nums transition-colors hover:text-ink-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
         >
           <span>
             {row.label}
             {error ? ` · ${error}` : ""}
           </span>
           {row.expanded ? (
-            <ChevronDownIcon className="size-3.5" />
+            <ChevronDownIcon className="size-4" />
           ) : (
-            <ChevronRightIcon className="size-3.5" />
+            <ChevronRightIcon className="size-4" />
           )}
         </button>
         <TimelineRowTimestamp
@@ -1872,18 +1864,18 @@ function AttemptFoldTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "at
         data-superseded-attempt-id={row.attemptId}
         onClick={toggle}
         aria-busy={loading}
-        className="flex w-full cursor-pointer select-none items-center gap-2 rounded-md border border-border/60 bg-muted/20 px-2.5 py-2 text-left transition-colors hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
+        className="flex w-full cursor-pointer select-none items-center gap-2 rounded-row border border-border/60 bg-muted/20 px-2 py-2 text-left transition-colors hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
       >
         {row.expanded ? (
-          <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <ChevronDownIcon className="size-4 shrink-0 text-ink-2" />
         ) : (
-          <ChevronRightIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <ChevronRightIcon className="size-4 shrink-0 text-ink-2" />
         )}
-        <span className="text-xs font-medium text-foreground/80">
+        <span className="text-meta font-medium text-ink-2">
           {row.label}
           {error ? ` · ${error}` : ""}
         </span>
-        <span className="text-2xs text-muted-foreground">Cut off by a steer</span>
+        <span className="text-meta text-ink-2">Cut off by a steer</span>
       </button>
       {loading ? <WorkHistorySkeleton /> : null}
     </div>

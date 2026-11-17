@@ -147,7 +147,7 @@ function EnabledPullRequestThreadLinks({
                   })
                 }
               >
-                <MessageSquareIcon aria-hidden className="size-3.5" />
+                <MessageSquareIcon aria-hidden className="size-4" />
                 <span aria-hidden>{linkedThreads.length || "?"}</span>
               </Button>
             }
@@ -167,9 +167,9 @@ function EnabledPullRequestThreadLinks({
           }}
         >
           {linkedHere ? (
-            <PullRequestGlyph.unlink aria-hidden className="size-3.5" />
+            <PullRequestGlyph.unlink aria-hidden className="size-4" />
           ) : (
-            <PullRequestGlyph.link aria-hidden className="size-3.5" />
+            <PullRequestGlyph.link aria-hidden className="size-4" />
           )}
           {linkedHere
             ? "Unlink from this thread"
@@ -233,9 +233,7 @@ function ThreadPicker({
       <CommandInput placeholder="Search threads or projects..." disabled={pending} />
       <CommandList className="max-h-80 overflow-y-auto">
         {candidates.length === 0 ? (
-          <div className="px-3 py-6 text-center text-sm text-muted-foreground">
-            No active threads found.
-          </div>
+          <div className="px-2 py-6 text-center text-body text-ink-2">No active threads found.</div>
         ) : (
           candidates.map((thread) => {
             const linked = linking.isLinked(thread, url);
@@ -249,14 +247,14 @@ function ThreadPicker({
                 <MessageSquareIcon aria-hidden className="size-4 shrink-0" />
                 <span className="flex min-w-0 flex-1 flex-col">
                   <span className="truncate">{thread.title || "Untitled thread"}</span>
-                  <span className="truncate text-xs text-muted-foreground">
+                  <span className="truncate text-meta text-ink-2">
                     {projectNames.get(thread.projectId)}
                   </span>
                 </span>
                 {linked ? (
                   <>
-                    <CheckIcon aria-hidden className="size-3.5" />
-                    <span className="text-xs text-muted-foreground">Linked</span>
+                    <CheckIcon aria-hidden className="size-4" />
+                    <span className="text-meta text-ink-2">Linked</span>
                   </>
                 ) : null}
               </CommandItem>

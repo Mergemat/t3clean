@@ -38,7 +38,7 @@ interface ExpandedImageDialogProps {
 }
 
 const EXPANDED_MEDIA_STATE_CLASS_NAME =
-  "flex aspect-auto h-48 min-h-0 w-[min(var(--media-width),32rem)] flex-col items-center justify-center gap-3 rounded-lg border border-border/70 bg-black p-6 text-center text-sm text-white shadow-2xl";
+  "flex aspect-auto h-48 min-h-0 w-128 max-w-(--media-width) flex-col items-center justify-center gap-2 rounded-row border border-border/70 bg-black p-6 text-center text-body text-white shadow-2xl";
 
 function ExpandedMediaFailure({ children }: { children: ReactNode }) {
   return (
@@ -75,8 +75,8 @@ function ExpandedVideo({ item }: { readonly item: ExpandedImageItem }) {
       originalUrl={item.originalUrl}
       preload="metadata"
       autoPlay={item.autoPlay ?? true}
-      className="block max-h-[var(--media-height)] max-w-[var(--media-width)] text-center"
-      videoClassName="aspect-auto max-h-[var(--media-height)] w-auto max-w-[var(--media-width)] rounded-lg border border-border/70 shadow-2xl"
+      className="block max-h-(--media-height) max-w-(--media-width) text-center"
+      videoClassName="aspect-auto max-h-(--media-height) w-auto max-w-(--media-width) rounded-row border border-border/70 shadow-2xl"
       stateClassName={EXPANDED_MEDIA_STATE_CLASS_NAME}
       onRetry={asset ? refreshAssetUrl : undefined}
     />
@@ -183,7 +183,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
         mediaControlsPlacement="inside"
         showCloseButton={false}
         bottomStickOnMobile={false}
-        className="row-start-1 h-full max-h-[92vh] w-[92vw] max-w-[92vw] items-center justify-center overflow-visible [--media-width:92vw] [--media-height:min(calc((100vh-var(--native-titlebar-height,0px))*0.86),calc(100vh-var(--native-titlebar-height,0px)-160px))] sm:[--media-width:calc(92vw-96px)]"
+        className="row-start-1 h-full w-full items-center justify-center overflow-visible"
         onKeyDown={onKeyDown}
         initialFocus={closeButtonRef}
         finalFocus={() => returnFocus.target}
@@ -207,24 +207,27 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
         {preview.images.length > 1 && (
           <Button
             type="button"
-            size="icon"
+            size="icon-sm"
             variant="media-navigation"
             className="left-0 top-auto bottom-0 translate-y-0 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2"
             aria-label="Previous media"
             onClick={() => navigateImage(-1)}
           >
-            <ChevronLeftIcon className="size-5" />
+            <ChevronLeftIcon />
           </Button>
         )}
         <MediaActions source={actionsSource} showTooltip={false}>
-          <div className="relative isolate z-10 flex max-h-full max-w-[var(--media-width)] flex-col items-center">
+          <div
+            className="relative isolate z-10 flex max-h-full max-w-(--media-width) flex-col items-center"
+            data-slot="expanded-media"
+          >
             {item.type === "video" ? (
               <ExpandedVideo key={index} item={item} />
             ) : showingAccessibilityDetails ? (
               accessibilityDetails ? (
                 <SnapShotAccessibilityData
                   details={accessibilityDetails}
-                  className="h-[min(var(--media-height),40rem)] w-[min(var(--media-width),42rem)] transition-opacity duration-140 ease-out starting:opacity-0 rounded-lg border border-border/70 bg-background p-4 text-xs leading-5 shadow-2xl motion-reduce:transition-none"
+                  className="h-160 max-h-(--media-height) w-168 max-w-(--media-width) transition-opacity duration-140 ease-out starting:opacity-0 rounded-row border border-border/70 bg-background p-4 text-meta leading-5 shadow-2xl motion-reduce:transition-none"
                 />
               ) : null
             ) : item.src === null || failedImageSrc === item.src ? (
@@ -246,7 +249,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
                 onError={() => setFailedImageSrc(item.src)}
               />
             )}
-            <div className="mt-2 flex max-w-[var(--media-width)] items-center justify-center gap-1.5 text-xs text-white/80 max-sm:px-10">
+            <div className="mt-2 flex max-w-(--media-width) items-center justify-center gap-2 text-meta text-white/80 max-sm:px-6">
               <span className="truncate" aria-live="polite" aria-atomic="true">
                 {item.name}
                 {preview.images.length > 1 ? ` (${index + 1}/${preview.images.length})` : ""}
@@ -261,7 +264,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
                         onClick={() =>
                           setAccessibilityDetailsSrc(showingAccessibilityDetails ? null : item.src)
                         }
-                        size="icon-micro"
+                        size="icon-xs"
                         variant="overlay"
                       />
                     }
@@ -283,13 +286,13 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
         {preview.images.length > 1 && (
           <Button
             type="button"
-            size="icon"
+            size="icon-sm"
             variant="media-navigation"
             className="right-0 top-auto bottom-0 translate-y-0 sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2"
             aria-label="Next media"
             onClick={() => navigateImage(1)}
           >
-            <ChevronRightIcon className="size-5" />
+            <ChevronRightIcon />
           </Button>
         )}
       </DialogPopup>

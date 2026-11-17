@@ -131,7 +131,7 @@ export function SkillChipPopover(props: {
       accessibleLabel={`Skill ${props.label}`}
       copyMarkdown={props.copyMarkdown}
     >
-      <div className="space-y-3 p-2 text-sm">
+      <div className="space-y-2 p-2 text-body">
         <p className="font-medium">{props.label}</p>
         <p>{props.description || "No description is available for this skill."}</p>
         {props.onViewInstructions ? (

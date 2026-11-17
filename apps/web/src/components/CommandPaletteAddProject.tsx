@@ -61,7 +61,7 @@ export function CommandPaletteSubmitButton(props: {
         }
       >
         <span>{props.label}</span>
-        <KbdGroup className="pointer-events-none -me-0.5">
+        <KbdGroup className="pointer-events-none">
           <Kbd>{props.shortcutLabel}</Kbd>
         </KbdGroup>
       </TooltipTrigger>
@@ -110,8 +110,8 @@ export function NewProjectPublishHostPicker(props: {
         <SelectPopup align="end" alignItemWithTrigger={false}>
           {props.targets.map((target) => (
             <SelectItem key={target.definition.kind} hideIndicator value={target.definition.kind}>
-              <span className="inline-flex items-center gap-1.5">
-                {sourceControlHostIcon(target.definition, "size-3.5")}
+              <span className="inline-flex items-center gap-2">
+                {sourceControlHostIcon(target.definition, "size-4")}
                 {target.definition.label}
               </span>
             </SelectItem>
@@ -130,15 +130,15 @@ export function NewProjectSummary(props: {
 }) {
   return (
     <div className="p-2 pb-0">
-      <div className="flex min-h-8 items-center gap-2 rounded-sm px-2 py-1.5">
+      <div className="flex min-h-8 items-center gap-2 rounded-row px-2 py-2">
         <CommandPaletteTitleIcon>
           <FolderGit2Icon className={ITEM_ICON_CLASS} />
         </CommandPaletteTitleIcon>
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-foreground text-sm">
+          <span className="truncate text-ink-1 text-body">
             {props.name.length > 0 ? props.name : "New project"}
           </span>
-          <span className="truncate text-muted-foreground/85 text-xs">
+          <span className="truncate text-ink-2 text-meta">
             {props.name.length > 0
               ? `Creates ${props.pathPreview}`
               : `Goes in ${props.projectsRoot}`}
@@ -157,14 +157,14 @@ export function RemoteRepositorySummary(props: {
 }) {
   return (
     <div className="shrink-0 p-2 pb-0">
-      <div className="px-2 py-1.5 font-medium text-muted-foreground text-xs">Repository</div>
-      <div className="flex min-h-8 items-center gap-2 rounded-sm px-2 py-1.5">
+      <div className="px-2 py-2 font-medium text-ink-2 text-meta">Repository</div>
+      <div className="flex min-h-8 items-center gap-2 rounded-row px-2 py-2">
         <CommandPaletteTitleIcon>
           {remoteProjectSourceIcon(props.source, ITEM_ICON_CLASS)}
         </CommandPaletteTitleIcon>
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-foreground text-sm">{props.title}</span>
-          <span className="truncate text-muted-foreground/85 text-xs">{props.description}</span>
+          <span className="truncate text-ink-1 text-body">{props.title}</span>
+          <span className="truncate text-ink-2 text-meta">{props.description}</span>
         </span>
       </div>
     </div>

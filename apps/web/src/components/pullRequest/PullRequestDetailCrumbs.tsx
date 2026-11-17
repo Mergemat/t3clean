@@ -27,7 +27,7 @@ const openNumberContextMenu = (event: ReactMouseEvent, detail: CrumbsPullRequest
 };
 
 const ROW_CLASS_NAME =
-  "col-start-1 row-start-1 flex min-w-0 items-center gap-1 text-sm text-muted-foreground transition-[opacity,transform] ease-out motion-reduce:transform-none motion-reduce:transition-none sm:text-xs";
+  "col-start-1 row-start-1 flex min-w-0 items-center gap-1 text-body text-ink-2 transition ease-out motion-reduce:transform-none motion-reduce:transition-none sm:text-meta";
 
 function BackButton({ onBack, focusable }: { onBack: () => void; focusable: boolean }) {
   return (
@@ -35,14 +35,14 @@ function BackButton({ onBack, focusable }: { onBack: () => void; focusable: bool
       <TooltipTrigger
         render={
           <Button
-            size="icon-micro"
+            size="icon-xs"
             variant="ghost-muted"
             {...(focusable ? {} : { tabIndex: -1 })}
             onClick={onBack}
-            className="-ml-1.5"
+            className="-ml-2"
             aria-label="Back to this thread's pull requests"
           >
-            <ArrowLeftIcon aria-hidden className="size-3.5" />
+            <ArrowLeftIcon aria-hidden className="size-4" />
           </Button>
         }
       />
@@ -75,13 +75,13 @@ function NumberLink({
             }}
             onContextMenu={(event) => openNumberContextMenu(event, detail)}
             className={cn(
-              "inline-flex shrink-0 cursor-pointer items-center gap-0.5 font-medium underline-offset-2 hover:underline",
+              "inline-flex shrink-0 cursor-pointer items-center font-medium underline-offset-2 hover:underline",
               toneClassName,
             )}
             aria-label={`Open ${sourceControlClients.get(detail.provider).changeRequest.singular} #${detail.number} on host`}
           >
             #{detail.number}
-            <ExternalLinkIcon aria-hidden className="size-2.5" />
+            <ExternalLinkIcon aria-hidden className="size-3" />
           </button>
         }
       />
@@ -111,7 +111,7 @@ export function PullRequestDetailCrumbs({
 }) {
   const ready = detail !== null && toneClassName !== null;
   return (
-    <div className="pl-4 grid h-7 min-w-0 items-center overflow-hidden">
+    <div className="pl-4 grid h-6 min-w-0 items-center overflow-hidden">
       <div
         aria-hidden={condensed}
         inert={condensed}
@@ -132,12 +132,12 @@ export function PullRequestDetailCrumbs({
                     <button
                       type="button"
                       onClick={() => void readLocalApi()?.shell.openExternal(repositoryUrl)}
-                      className="min-w-0 cursor-pointer truncate text-left font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                      className="min-w-0 cursor-pointer truncate text-left font-medium text-ink-2 underline-offset-2 hover:text-ink-1 hover:underline"
                     >
                       {detail.repository}
                     </button>
                   ) : (
-                    <span className="min-w-0 truncate font-medium text-muted-foreground">
+                    <span className="min-w-0 truncate font-medium text-ink-2">
                       {detail.repository}
                     </span>
                   )
@@ -178,9 +178,7 @@ export function PullRequestDetailCrumbs({
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <span className="min-w-0 truncate font-medium text-foreground">
-                    {detail.title}
-                  </span>
+                  <span className="min-w-0 truncate font-medium text-ink-1">{detail.title}</span>
                 }
               />
               <TooltipPopup side="top">{detail.title}</TooltipPopup>

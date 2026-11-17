@@ -62,9 +62,7 @@ interface ComposerPrimaryActionsProps {
   onPreviousPendingQuestion: () => void;
   onInterrupt: () => void;
   compactBeforeSendTokens?: number | null;
-  hideCompactToggle?: boolean;
   keepFullHistory?: boolean;
-  onToggleKeepFullHistory?: () => void;
 }
 
 const formatPendingPrimaryActionLabel = (input: {
@@ -90,7 +88,7 @@ const STOP_PENDING_MAX_MS = 10_000;
 const STOP_LANDED_CLICK_GUARD_MS = 500;
 
 const messageActionPillClassName =
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-message-action font-medium text-base text-message-action-foreground shadow-xs shadow-message-action/24 outline-none hover:bg-message-action-hover focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 disabled:shadow-none sm:text-sm";
+  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-message-action font-medium text-base text-message-action-foreground shadow-xs shadow-message-action/24 outline-none hover:bg-message-action-hover focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 disabled:shadow-none sm:text-body";
 
 const preventPointerFocus: PointerEventHandler<HTMLElement> = (event) => {
   event.preventDefault();
@@ -153,7 +151,7 @@ function StopGenerationButton({
             type="button"
             className={cn(
               "flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-destructive/90 text-white shadow-xs shadow-destructive/24 inset-shadow-control-highlight transition-colors duration-150 hover:bg-destructive active:inset-shadow-control-pressed active:shadow-none disabled:cursor-default disabled:opacity-64 disabled:hover:bg-destructive/90 [&_svg]:pointer-events-none",
-              insidePendingAction ? "size-8 sm:size-7" : "size-8 sm:h-8 sm:w-8",
+              insidePendingAction ? "size-8 sm:size-6" : "size-8 sm:h-8 sm:w-8",
             )}
             onPointerDown={preserveComposerFocusOnPointerDown ? preventPointerFocus : undefined}
             disabled={!canOperateThread || isStopDisabled}
@@ -244,9 +242,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
   onPreviousPendingQuestion,
   onInterrupt,
   compactBeforeSendTokens = null,
-  hideCompactToggle = false,
   keepFullHistory = false,
-  onToggleKeepFullHistory,
 }: ComposerPrimaryActionsProps) {
   const [stopPhase, setStopPhase] = useStopPhase({ runId, canInterrupt, canOperateThread });
   const pointerFocusProps = preserveComposerFocusOnPointerDown
@@ -290,7 +286,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
 
   if (pendingAction) {
     return (
-      <div className={cn("flex items-center justify-end", compact ? "gap-1.5" : "gap-2")}>
+      <div className={cn("flex items-center justify-end", compact ? "gap-2" : "gap-2")}>
         {pendingAction.questionIndex > 0 ? (
           compact ? (
             <Button
@@ -301,7 +297,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
               disabled={pendingAction.isResponding}
               aria-label="Previous question"
             >
-              <ChevronLeftIcon className="size-3.5" />
+              <ChevronLeftIcon className="size-4" />
             </Button>
           ) : (
             <Button
@@ -318,7 +314,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
         {children}
         <button
           type="submit"
-          className={cn(messageActionPillClassName, "h-8 sm:h-7", compact ? "px-3" : "px-4")}
+          className={cn(messageActionPillClassName, "h-8 sm:h-6", compact ? "px-2" : "px-4")}
           {...pointerFocusProps}
           onClick={(event) => {
             if (stopPhase === "landed") event.preventDefault();
@@ -402,10 +398,10 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
     <button
       type={showResume ? "button" : "submit"}
       className={cn(
-        "relative isolate flex h-9 w-9 items-center justify-center overflow-hidden rounded-full shadow-xs transition-all duration-150 enabled:cursor-pointer enabled:inset-shadow-control-highlight hover:scale-105 active:inset-shadow-control-pressed active:shadow-none disabled:pointer-events-none disabled:shadow-none disabled:hover:scale-100 sm:h-8 sm:w-8 [&_svg]:pointer-events-none",
+        "relative isolate flex h-8 w-8 items-center justify-center overflow-hidden rounded-full shadow-xs transition-all duration-150 enabled:cursor-pointer enabled:inset-shadow-control-highlight hover:scale-105 active:inset-shadow-control-pressed active:shadow-none disabled:pointer-events-none disabled:shadow-none disabled:hover:scale-100 sm:h-8 sm:w-8 [&_svg]:pointer-events-none",
         stageBackdropVariant
           ? "bg-transparent text-white enabled:shadow-black/24 enabled:hover:brightness-110 disabled:opacity-64"
-          : "bg-message-action text-message-action-foreground enabled:shadow-message-action/24 hover:bg-message-action-hover disabled:bg-foreground/12 disabled:text-muted-foreground",
+          : "bg-message-action text-message-action-foreground enabled:shadow-message-action/24 hover:bg-message-action-hover disabled:bg-foreground/12 disabled:text-ink-2",
       )}
       {...pointerFocusProps}
       onClick={(event) => {
@@ -459,48 +455,58 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
       <TooltipPopup>{submitTooltip}</TooltipPopup>
     </Tooltip>
   );
-  if (compactTokens === null || hideCompactToggle) {
-    return withStopButton(
-      <>
-        {children}
-        {submit}
-      </>,
-    );
-  }
-
   return withStopButton(
-    <div data-chat-composer-compact-send="true" className="flex items-center gap-2">
-      <Tooltip>
-        <TooltipTrigger
-          render={
-            <button
-              type="button"
-              className="flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-(--control-radius) px-2 font-medium text-base text-foreground/80 tabular-nums outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-64 sm:text-sm aria-pressed:bg-accent/60 aria-pressed:text-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:text-muted-foreground"
-              {...pointerFocusProps}
-              aria-pressed={!keepFullHistory}
-              aria-label={`Compact ${compactTokens} tokens of history before sending`}
-              disabled={!canOperateThread}
-              onClick={onToggleKeepFullHistory}
-            />
-          }
-        >
-          <Minimize2Icon aria-hidden="true" />
-          <span className="@max-[480px]/composer-surface:hidden">
-            {keepFullHistory ? "Keep" : "Compact"}
-          </span>
-          <span className="text-muted-foreground">{compactTokens}</span>
-        </TooltipTrigger>
-        <TooltipPopup>
-          <div>
-            {keepFullHistory
-              ? `Next send keeps all ${compactTokens} tokens.`
-              : `Next send compacts ${compactTokens} tokens first.`}
-          </div>
-          <div>{keepFullHistory ? "Click to compact first" : "Click to keep full history"}</div>
-        </TooltipPopup>
-      </Tooltip>
+    <>
       {children}
       {submit}
-    </div>,
+    </>,
   );
 });
+
+/**
+ * Compact or keep history before the next send. The composer places it left of the model
+ * trigger, never between the trigger and send, so its changing width can't move the trigger.
+ */
+export function ComposerCompactToggle(props: {
+  tokens: number;
+  keepFullHistory: boolean;
+  disabled: boolean;
+  preserveComposerFocusOnPointerDown: boolean;
+  onToggle: () => void;
+}) {
+  const compactTokens = formatContextWindowTokens(props.tokens);
+  const { keepFullHistory } = props;
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            className="flex h-6 shrink-0 cursor-pointer items-center gap-2 rounded-row px-2 font-medium text-base text-ink-2 tabular-nums outline-none hover:bg-accent hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-64 sm:text-body aria-pressed:bg-accent/60 aria-pressed:text-ink-1 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:text-ink-2"
+            {...(props.preserveComposerFocusOnPointerDown
+              ? { onPointerDown: preventPointerFocus }
+              : {})}
+            aria-pressed={!keepFullHistory}
+            aria-label={`Compact ${compactTokens} tokens of history before sending`}
+            disabled={props.disabled}
+            onClick={props.onToggle}
+          />
+        }
+      >
+        <Minimize2Icon aria-hidden="true" />
+        <span className="@max-[480px]/composer-surface:hidden">
+          {keepFullHistory ? "Keep" : "Compact"}
+        </span>
+        <span className="text-ink-2">{compactTokens}</span>
+      </TooltipTrigger>
+      <TooltipPopup>
+        <div>
+          {keepFullHistory
+            ? `Next send keeps all ${compactTokens} tokens.`
+            : `Next send compacts ${compactTokens} tokens first.`}
+        </div>
+        <div>{keepFullHistory ? "Click to compact first" : "Click to keep full history"}</div>
+      </TooltipPopup>
+    </Tooltip>
+  );
+}

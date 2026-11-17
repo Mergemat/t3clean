@@ -318,7 +318,7 @@ export function DeviceStreamView(props: {
           "relative flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden outline-none",
           // Overlay so the ring paints above the stream canvas.
           "after:pointer-events-none after:absolute after:inset-0 after:z-10 focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-ring",
-          controlsInset && "pr-14",
+          controlsInset && "pr-6",
         )}
         tabIndex={0}
         role="application"
@@ -397,7 +397,7 @@ export function DeviceStreamView(props: {
                   }}
                 >
                   {element.label ? (
-                    <span className="absolute -top-3.5 left-0 max-w-full truncate rounded-sm bg-info px-1 text-3xs leading-3.5 text-white">
+                    <span className="absolute -top-4 left-0 max-w-full truncate rounded-chip bg-info px-1 text-meta leading-4 text-white">
                       {element.label}
                     </span>
                   ) : null}
@@ -437,7 +437,7 @@ export function DeviceStreamView(props: {
           />
         ) : null}
         {props.allowPhoneView && !props.renderControls && status === "streaming" ? (
-          <div className="absolute top-3 left-3 flex gap-1 rounded-lg border border-border/50 bg-background/90 p-1 shadow-sm">
+          <div className="absolute top-2 left-2 flex gap-1 rounded-row border border-border/50 bg-background/90 p-1 shadow-sm">
             <Button
               variant={showPhone ? "secondary" : "ghost"}
               size="xs"
@@ -460,7 +460,7 @@ export function DeviceStreamView(props: {
         ) : null}
         {status === "streaming" && !inputState.connected ? (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-2">
-            <span className="rounded-md bg-background/85 px-2 py-1 text-xs text-muted-foreground">
+            <span className="rounded-row bg-background/85 px-2 py-1 text-meta text-ink-2">
               Input disconnected{inputState.detail ? ` (${inputState.detail})` : ""}, reconnecting…
             </span>
           </div>
@@ -468,7 +468,7 @@ export function DeviceStreamView(props: {
         {retainingFrame && showPhone ? (
           // Shown only once the device has been silent for two seconds.
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-2 transition-opacity delay-2000 duration-0 starting:opacity-0">
-            <span className="rounded-md bg-background/85 px-2 py-1 text-xs text-muted-foreground">
+            <span className="rounded-row bg-background/85 px-2 py-1 text-meta text-ink-2">
               Waiting for device video…
             </span>
           </div>

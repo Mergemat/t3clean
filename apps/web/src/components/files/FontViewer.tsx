@@ -69,8 +69,8 @@ export default function FontViewer(props: { readonly src: string; readonly name:
         role="alert"
         className="flex min-h-0 flex-1 flex-col items-center justify-center gap-1 px-6 text-center"
       >
-        <p className="text-sm font-medium">No preview for this file</p>
-        <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
+        <p className="text-body font-medium">No preview for this file</p>
+        <p className="max-w-sm text-meta leading-relaxed text-ink-2">
           {error} Save it to open in another app.
         </p>
       </div>

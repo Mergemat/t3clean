@@ -24,6 +24,7 @@ import { Fragment, useLayoutEffect, useState } from "react";
 
 import { usePrimarySettings } from "../../hooks/useSettings";
 import { observeResize } from "../../lib/observeResize";
+import { cn } from "../../lib/utils";
 import { environmentPresentations } from "../../state/presentation";
 import { useEnvironmentScope, readEnvironmentScope } from "../../state/session";
 import { serverEnvironment } from "../../state/server";
@@ -62,14 +63,10 @@ export function PaceIcon({ pace }: { readonly pace: LimitPace }) {
     <Tooltip>
       <TooltipTrigger
         render={
-          <span
-            role="img"
-            aria-label={PACE[pace].label}
-            className="inline-flex text-muted-foreground"
-          />
+          <span role="img" aria-label={PACE[pace].label} className="inline-flex text-ink-2" />
         }
       >
-        <Icon className="size-3.5" aria-hidden />
+        <Icon className="size-4" aria-hidden />
       </TooltipTrigger>
       <TooltipPopup side="top">{PACE[pace].label}</TooltipPopup>
     </Tooltip>
@@ -144,16 +141,16 @@ function WindowBar({
             role="img"
             aria-label={summary}
             tabIndex={0}
-            className="relative h-6 cursor-default rounded-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="relative h-6 min-w-12 cursor-default rounded-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           />
         }
       >
         {/* Clip both layers so the gap exposes even a translucent composer surface. */}
         <div className="absolute inset-0" style={paceMark?.gap}>
-          <div className="absolute inset-x-0 inset-y-1.5 rounded-full bg-muted" />
+          <div className="absolute inset-x-0 inset-y-2 rounded-full bg-muted" />
           {remaining > 0 ? (
             <div
-              className="absolute inset-y-1.5 left-0 rounded-full"
+              className="absolute inset-y-2 left-0 rounded-full"
               style={{ width: `${remaining}%`, backgroundColor: color }}
             />
           ) : null}
@@ -161,21 +158,21 @@ function WindowBar({
         {paceMark ? (
           <span
             aria-hidden
-            className="absolute inset-y-1 w-0.5 -translate-x-1/2 rounded-full bg-foreground"
+            className="absolute inset-y-1 w-1 -translate-x-1/2 rounded-full bg-foreground"
             style={paceMark.tick}
           />
         ) : null}
       </TooltipTrigger>
       <TooltipPopup side="top">
-        <div className="flex flex-col gap-0.5">
-          <span className="text-foreground">
+        <div className="flex flex-col">
+          <span className="text-ink-1">
             {remaining}% left{timeLeft !== null ? ` · ${timeLeft}% of the window left` : ""}
           </span>
           {timeLeft !== null ? (
-            <span className="text-muted-foreground">The line is where even spending would be.</span>
+            <span className="text-ink-2">The line is where even spending would be.</span>
           ) : null}
           {resetsAt ? (
-            <span className="text-muted-foreground">
+            <span className="text-ink-2">
               Resets {resetsAt}
               {resetsIn ? ` · ${resetsIn}` : ""}
             </span>
@@ -204,8 +201,8 @@ export function LimitWindows({
     <div
       className={
         compact
-          ? "grid grid-cols-[minmax(0,9rem)_minmax(3rem,1fr)_auto] gap-x-3 gap-y-0.5"
-          : "grid grid-cols-[11rem_minmax(0,1fr)_7rem] gap-x-4 gap-y-1"
+          ? "grid grid-cols-(--grid-lead-trail) gap-x-2"
+          : "grid grid-cols-(--grid-lead-trail) gap-x-2 gap-y-1"
       }
     >
       {windows.map((window) => {
@@ -213,14 +210,24 @@ export function LimitWindows({
         const resetsIn = formatResetsIn(window, now);
         return (
           <Fragment key={window.id}>
-            <span className="flex min-w-0 items-center gap-2 text-xs">
-              <span className="truncate text-muted-foreground">{window.label}</span>
-              <span className="ms-auto shrink-0 font-medium text-foreground tabular-nums">
+            <span
+              className={cn(
+                "flex min-w-0 items-center gap-2 text-meta",
+                compact ? "max-w-36" : "w-44",
+              )}
+            >
+              <span className="truncate text-ink-2">{window.label}</span>
+              <span className="ms-auto shrink-0 font-medium text-ink-1 tabular-nums">
                 {remainingPercent(window)}% left
               </span>
             </span>
             <WindowBar color={color} window={window} now={now} />
-            <span className="flex items-center gap-2 text-xs whitespace-nowrap text-muted-foreground tabular-nums">
+            <span
+              className={cn(
+                "flex items-center gap-2 text-meta whitespace-nowrap text-ink-2 tabular-nums",
+                !compact && "w-28",
+              )}
+            >
               {pace ? <PaceIcon pace={pace} /> : null}
               <span className="ms-auto shrink-0">{resetsIn ?? ""}</span>
             </span>
@@ -322,9 +329,9 @@ export function ResetCredits({
     useResetCredit(environmentId);
   if (credits.availableCount === 0 && status === null) return null;
   return (
-    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+    <div className="flex flex-col gap-1 text-meta text-ink-2">
       {resetCreditChoices(credits, input, now).map((choice) => (
-        <div key={choice.key} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <div key={choice.key} className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="tabular-nums">{choice.summary}</span>
           {choice.availableCount > 0 ? (
             <Button
@@ -338,7 +345,7 @@ export function ResetCredits({
           ) : null}
         </div>
       ))}
-      {status ? <span className="text-foreground">{status}</span> : null}
+      {status ? <span className="text-ink-1">{status}</span> : null}
       <ResetCreditDialog
         open={confirming}
         onOpenChange={setConfirming}

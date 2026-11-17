@@ -1652,7 +1652,7 @@ it("keeps a workspace PDF's page, offset and zoom when a new revision reloads it
       expiresAt: Date.now() + 3_600_000,
     });
     return (
-      <div className="flex h-[600px] w-[320px]">
+      <div className="flex h-150 w-80">
         <WorkspaceBrowserPreview
           environmentId={EnvironmentId.make("test")}
           threadRef={{

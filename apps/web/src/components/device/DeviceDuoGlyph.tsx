@@ -17,7 +17,7 @@ export function DeviceDuoGlyph({ pose, rotated = false }: { pose: DuoPose; rotat
       strokeWidth={stance ? 1.25 : 1.35}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("size-7 shrink-0", rotated && "rotate-90")}
+      className={cn("size-6 shrink-0", rotated && "rotate-90")}
       aria-hidden
     >
       {stance ? <path d={stancePaths[pose]} /> : null}

@@ -160,8 +160,8 @@ function ExtendedOfficeViewer(props: {
         role="alert"
         className="flex min-h-0 flex-1 flex-col items-center justify-center gap-1 px-6 text-center"
       >
-        <p className="text-sm font-medium">No preview for this file</p>
-        <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
+        <p className="text-body font-medium">No preview for this file</p>
+        <p className="max-w-sm text-meta leading-relaxed text-ink-2">
           {error} Save it or open it in another app.
         </p>
       </div>
@@ -183,13 +183,13 @@ function ExtendedOfficeViewer(props: {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {count > 0 ? (
-        <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border/60 px-3 text-xs">
+        <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border/60 px-2 text-meta">
           <FileSurfaceAction
             label={`Previous ${navigation}`}
             disabled={page === 0}
             onPress={() => selectPage(page - 1)}
           >
-            <ChevronLeftIcon className="size-3.5" />
+            <ChevronLeftIcon className="size-4" />
           </FileSurfaceAction>
           {workbook ? (
             <div className="min-w-0 flex-1">
@@ -241,13 +241,13 @@ function ExtendedOfficeViewer(props: {
             disabled={page + 1 === count}
             onPress={() => selectPage(page + 1)}
           >
-            <ChevronRightIcon className="size-3.5" />
+            <ChevronRightIcon className="size-4" />
           </FileSurfaceAction>
         </div>
       ) : null}
       {props.kind === "ods" && sheet ? (
         <div
-          className="flex min-h-10 shrink-0 flex-wrap items-center gap-x-1 border-b border-border/60 px-3 py-2 text-xs text-muted-foreground tabular-nums"
+          className="flex min-h-10 shrink-0 flex-wrap items-center gap-x-1 border-b border-border/60 px-2 py-2 text-meta text-ink-2 tabular-nums"
           role="status"
         >
           Sheet {page + 1} of {count} · {sheet.rowCount.toLocaleString()} row
@@ -284,7 +284,7 @@ function ExtendedOfficeViewer(props: {
               : ""}
           </FileSurfaceNotice>
           {sheet.rowCount === 0 ? (
-            <p className="p-6 text-xs text-muted-foreground">This sheet is empty.</p>
+            <p className="p-6 text-meta text-ink-2">This sheet is empty.</p>
           ) : (
             <VirtualTablePreview
               key={page}

@@ -76,10 +76,10 @@ export function TextFieldSpeechControls({
       {speech.preview ? (
         <p
           role="status"
-          className="order-first max-h-24 w-full overflow-y-auto rounded-lg border border-border/60 bg-muted/30 px-2.5 py-1.5 text-sm break-words whitespace-pre-wrap"
+          className="order-first max-h-24 w-full overflow-y-auto rounded-row border border-border/60 bg-muted/30 px-2 py-2 text-body break-words whitespace-pre-wrap"
         >
           {speech.preview.committed}
-          <span className="text-muted-foreground">{speech.preview.tentative}</span>
+          <span className="text-ink-2">{speech.preview.tentative}</span>
         </p>
       ) : null}
       <ComposerSpeechRecordingPill

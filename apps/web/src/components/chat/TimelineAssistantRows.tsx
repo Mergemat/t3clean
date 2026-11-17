@@ -51,7 +51,7 @@ export function AssistantTimelineRow({ row }: { row: Extract<TimelineRow, { kind
 
   return (
     <>
-      <div className="relative min-w-0 px-1 py-0.5">
+      <div className="relative min-w-0 px-4 py-1">
         <MessageAuthorHeading>T3 Code</MessageAuthorHeading>
         <div data-thread-find-text="true">
           <AssistantCitationSource
@@ -90,13 +90,13 @@ export function AssistantTimelineRow({ row }: { row: Extract<TimelineRow, { kind
           />
         ) : null}
         {!row.showAssistantMeta && row.projectedItem?.item.status === "interrupted" ? (
-          <div className="mt-1.5 flex">
+          <div className="mt-2 flex">
             <AssistantStatusBadge status="interrupted" />
           </div>
         ) : null}
         {row.showAssistantMeta ? (
           <AssistantMessageMeta
-            className="mt-1.5"
+            className="mt-2"
             projectedItem={row.projectedItem}
             message={row.message}
             showCopyButton={row.showAssistantCopyButton}
@@ -117,7 +117,7 @@ export function SentMessageTimelineRow({
   const ctx = use(TimelineRowCtx);
 
   return (
-    <div className="min-w-0 px-1 py-0.5">
+    <div className="min-w-0 px-1 py-1">
       <MessageAuthorHeading>T3 Code</MessageAuthorHeading>
       {/* Sent messages have no message id; citations name their turn item instead. */}
       <AssistantCitationSource
@@ -170,8 +170,8 @@ function AssistantForkButton({
         render={
           <Button
             type="button"
-            size="xs"
-            variant="ghost"
+            size="icon-xs"
+            variant="ghost-muted"
             disabled={busy}
             onClick={() => {
               setBusy(true);
@@ -198,7 +198,7 @@ export function AssistantMetaTimelineRow({
   return (
     <div className="px-1">
       <AssistantMessageMeta
-        className="mt-0.5"
+        className=""
         projectedItem={row.projectedItem}
         message={row.message}
         showCopyButton={row.showAssistantCopyButton}
@@ -229,7 +229,7 @@ function AssistantMessageMeta({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 text-xs tabular-nums transition-opacity duration-200",
+        "flex items-center gap-2 text-meta tabular-nums transition-opacity duration-200",
         alwaysVisible
           ? "opacity-100"
           : "opacity-0 pointer-coarse:opacity-100 focus-within:opacity-100 group-hover/assistant:opacity-100",
@@ -252,7 +252,7 @@ function AssistantMessageMeta({
       ) : null}
       {!message.streaming && (
         <Tooltip>
-          <TooltipTrigger render={<p className="text-muted-foreground text-xs tabular-nums" />}>
+          <TooltipTrigger render={<p className="text-ink-2 text-meta tabular-nums" />}>
             {formatDayAwareTimestamp(message.updatedAt, ctx.timestampFormat)}
           </TooltipTrigger>
           <TooltipPopup>
@@ -296,7 +296,7 @@ function AssistantReplyButton({ message, itemId }: { message: ChatMessage; itemI
         render={
           <Button
             type="button"
-            size="xs"
+            size="icon-xs"
             variant="ghost-muted"
             onClick={reply}
             aria-label="Reply to this response"
@@ -312,7 +312,7 @@ function AssistantReplyButton({ message, itemId }: { message: ChatMessage; itemI
 
 function AssistantStatusBadge({ status }: { status: string }) {
   return (
-    <span className="rounded-full border border-border/70 px-1.5 py-0.5 font-mono text-3xs text-muted-foreground">
+    <span className="rounded-row border border-border/70 px-2 py-1 font-mono text-meta text-ink-2">
       {status}
     </span>
   );
@@ -348,7 +348,7 @@ export function ProposedPlanTimelineRow({
   const ctx = use(TimelineRowCtx);
 
   return (
-    <div className="min-w-0 px-1 py-0.5">
+    <div className="min-w-0 px-1 py-1">
       <ProposedPlanCard
         planMarkdown={row.proposedPlan.planMarkdown}
         environmentId={ctx.activeThreadEnvironmentId}

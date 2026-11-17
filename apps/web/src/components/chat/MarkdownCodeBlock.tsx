@@ -63,19 +63,19 @@ export function MarkdownCodeBlockFrame({
   return (
     <Wrapper
       dir="ltr"
-      className="chat-markdown-codeblock my-[0.65rem] text-start overflow-hidden rounded-lg border border-border/70 bg-secondary leading-snug dark:border-transparent dark:bg-input/32"
+      className="chat-markdown-codeblock my-2 text-start overflow-hidden rounded-row border border-border/70 bg-secondary leading-snug dark:border-transparent dark:bg-input/32"
       data-language={language}
       data-wrap={wrapped ? "true" : "false"}
     >
       <div
         {...headerProps}
         className={cn(
-          "chat-markdown-codeblock-header flex items-center justify-between gap-2 pt-1.5 pr-1.5 pb-0 pl-3 select-none",
+          "chat-markdown-codeblock-header flex items-center justify-between gap-2 pt-2 pr-2 pb-0 pl-2 select-none",
           headerProps?.className,
         )}
       >
         {title ?? (
-          <span className="inline-flex min-w-0 items-center gap-1.5 font-mono text-2xs">
+          <span className="inline-flex min-w-0 items-center gap-2 font-mono text-meta">
             <MarkdownCodeBlockTitleContent
               fenceTitle={fenceTitle}
               language={language}
@@ -102,7 +102,7 @@ function MarkdownCodeBlockTitleContent({
   if (fenceTitle) {
     return (
       <>
-        <PierreEntryIcon pathValue={fenceTitle} kind="file" theme={theme} className="size-3.5" />
+        <PierreEntryIcon pathValue={fenceTitle} kind="file" theme={theme} className="size-4" />
         <span className="truncate">{fenceTitle}</span>
       </>
     );
@@ -116,10 +116,10 @@ function MarkdownCodeBlockTitleContent({
     <Tooltip>
       <TooltipTrigger
         render={
-          <span className="inline-flex shrink-0 rounded-sm" aria-label={`Language: ${language}`} />
+          <span className="inline-flex shrink-0 rounded-row" aria-label={`Language: ${language}`} />
         }
       >
-        <PierreEntryIcon pathValue={fileName} kind="file" theme={theme} className="size-3.5" />
+        <PierreEntryIcon pathValue={fileName} kind="file" theme={theme} className="size-4" />
       </TooltipTrigger>
       <TooltipPopup side="top">{language}</TooltipPopup>
     </Tooltip>
@@ -201,8 +201,8 @@ export function MarkdownCodeBlock({
 
   if (diagram) {
     return (
-      <div className="my-[0.65rem] border border-transparent" data-language={language}>
-        <div className="flex items-center justify-end gap-0.5 pt-1.5 pr-1.5 select-none">
+      <div className="my-2 border border-transparent" data-language={language}>
+        <div className="flex items-center justify-end pt-2 pr-2 select-none">
           {viewToggle}
           {copyButton}
         </div>
@@ -219,7 +219,7 @@ export function MarkdownCodeBlock({
       wrapped={wrapped}
       headerProps={THREAD_FIND_IGNORE_PROPS}
       actions={
-        <span className="flex items-center gap-0.5" role="toolbar" aria-label="Code block actions">
+        <span className="flex items-center" role="toolbar" aria-label="Code block actions">
           {canWrap ? (
             <Tooltip>
               <TooltipTrigger

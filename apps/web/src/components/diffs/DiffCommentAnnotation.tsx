@@ -80,13 +80,13 @@ export function DiffCommentAnnotation({
     return (
       <div
         data-diff-comment-annotation
-        className="group/comment flex min-w-0 items-start gap-2.5 border-s-2 border-primary/55 bg-primary/[0.045] px-3 py-2.5 font-sans text-foreground selection:bg-primary selection:text-primary-foreground"
+        className="group/comment flex min-w-0 items-start gap-2 border-s-2 border-primary/55 bg-primary/5 px-2 py-2 font-sans text-ink-1 selection:bg-primary selection:text-primary-foreground"
         contentEditable={false}
         onPointerDown={(event) => event.stopPropagation()}
       >
-        <MessageCircle className="size-3.5 h-5 shrink-0 text-primary/70" aria-hidden="true" />
+        <MessageCircle className="size-4 h-5 shrink-0 text-primary/70" aria-hidden="true" />
         <p
-          className="min-w-0 flex-1 whitespace-pre-wrap text-sm leading-5"
+          className="min-w-0 flex-1 whitespace-pre-wrap text-body leading-5"
           dir={textDirection(displayedText)}
         >
           {displayedText}
@@ -123,7 +123,7 @@ export function DiffCommentAnnotation({
   const renderDraft = (speech?: TextFieldSpeech) => (
     <div
       data-diff-comment-annotation
-      className="px-3 py-2 font-sans text-foreground caret-foreground selection:bg-primary selection:text-primary-foreground"
+      className="px-2 py-2 font-sans text-ink-1 caret-foreground selection:bg-primary selection:text-primary-foreground"
       contentEditable={false}
       onPointerDown={(event) => event.stopPropagation()}
     >
@@ -154,8 +154,8 @@ export function DiffCommentAnnotation({
           }
         }}
       />
-      <div className="mt-1.5 flex flex-wrap items-center gap-1">
-        <span className="mr-auto text-3xs text-muted-foreground/70">⌘/Ctrl Enter to send</span>
+      <div className="mt-2 flex flex-wrap items-center gap-1">
+        <span className="mr-auto text-meta text-ink-2">⌘/Ctrl Enter to send</span>
         {speech ? <TextFieldSpeechControls speech={speech} disabled={pending} /> : null}
         <Button variant="ghost-muted" size="xs" onClick={onCancel}>
           Cancel

@@ -28,7 +28,7 @@ export function PullRequestStackLayers({
           >
             <PullRequestStackLayerContent layer={layer} />
             {layer.number === reference.number ? (
-              <CheckIcon aria-hidden className="size-3.5" />
+              <CheckIcon aria-hidden className="size-4" />
             ) : null}
           </MenuItem>
         );

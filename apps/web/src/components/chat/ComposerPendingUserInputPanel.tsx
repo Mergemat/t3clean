@@ -207,11 +207,11 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
           isCollapsed ? "Show the question and its options" : "Hide the question and its options"
         }
         data-pending-user-input-toggle={isCollapsed ? "collapsed" : "expanded"}
-        className="px-4 py-1.5"
+        className="px-4 py-2"
       >
         <ComposerBanner.Content>
           <span
-            className={cn("min-w-0 truncate text-muted-foreground", isCollapsed && "max-w-1/2")}
+            className={cn("min-w-0 truncate text-ink-2", isCollapsed && "max-w-1/2")}
             dir={textDirection(activeQuestion.header)}
           >
             {activeQuestion.header}
@@ -220,7 +220,7 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
             <>
               <ComposerBanner.Separator />
               <span
-                className={cn("min-w-0 flex-1 truncate text-secondary-label", questionTextAlign)}
+                className={cn("min-w-0 flex-1 truncate text-ink-2", questionTextAlign)}
                 dir={markdownProseDirection(activeQuestion.question)}
               >
                 {activeQuestion.question}
@@ -259,16 +259,16 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
       </CollapsibleTrigger>
       <CollapsiblePanel>
         <ComposerBanner.Scroll>
-          <ComposerBanner.Body className="ps-6 pe-4 pb-1 wrap-anywhere sm:ps-5.5">
+          <ComposerBanner.Body className="ps-6 pe-4 pb-1 wrap-anywhere sm:ps-6">
             <ChatMarkdown
               text={activeQuestion.question}
               cwd={cwd}
               threadRef={threadRef}
               lineBreaks
-              className={cn("pt-0.5 text-foreground/85", questionTextAlign)}
+              className={cn("pt-1 text-ink-1", questionTextAlign)}
             />
             {/* Rows span the header row's width so the radios align with the question text and the shortcut column sits under the dismiss button. */}
-            <div className="-ms-2 mt-1.5 sm:-ms-1.5">
+            <div className="-ms-2 mt-2 sm:-ms-2">
               {activeQuestion.options.map((option, index) => {
                 const optionValue = option.value ?? option.label;
                 const isOptimisticallySelected =
@@ -278,8 +278,8 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
                   isOptimisticallySelected || draftSelectedOptions?.[index] === true;
                 const className = cn(
                   questionTextAlign,
-                  "group flex w-full items-start gap-2.5 rounded-md bg-transparent py-1.5 ps-2 sm:ps-1.5 outline-none transition-colors duration-150 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/25",
-                  isSelected ? "text-foreground" : "text-foreground/70 hover:bg-muted/30",
+                  "group flex w-full items-start gap-2 rounded-row bg-transparent py-2 ps-2 sm:ps-2 outline-none transition-colors duration-150 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary/25",
+                  isSelected ? "text-ink-1" : "text-ink-2 hover:bg-muted/30",
                   (disabled || isResponding) && "opacity-50 cursor-not-allowed",
                   !disabled && !isResponding && "cursor-pointer",
                 );
@@ -293,13 +293,13 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
                         <OptionRadio checked={isSelected} />
                       )}
                     </span>
-                    <div className="min-w-0 flex-1 flex flex-col gap-0.5">
-                      <span className="text-sm font-medium" dir={textDirection(option.label)}>
+                    <div className="min-w-0 flex-1 flex flex-col">
+                      <span className="text-body font-medium" dir={textDirection(option.label)}>
                         {option.label}
                       </span>
                       {option.description && option.description !== option.label ? (
                         <span
-                          className="text-secondary-label text-2xs"
+                          className="text-ink-2 text-meta"
                           dir={textDirection(option.description)}
                         >
                           {option.description}
@@ -307,7 +307,7 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
                       ) : null}
                     </div>
                     {index < 9 ? (
-                      <span className="flex h-5 w-7 shrink-0 items-center justify-center sm:w-6">
+                      <span className="flex h-5 w-8 shrink-0 items-center justify-center sm:w-6">
                         <Kbd>{index + 1}</Kbd>
                       </span>
                     ) : null}
@@ -333,7 +333,7 @@ const ComposerPendingUserInputCard = memo(function ComposerPendingUserInputCard(
                         cwd={cwd}
                         threadRef={threadRef}
                         lineBreaks
-                        className="ps-9 pe-2 pb-1.5 text-xs text-foreground/70 sm:ps-8"
+                        className="ps-8 pe-2 pb-2 text-meta text-ink-2 sm:ps-8"
                       />
                     ) : null}
                   </div>
@@ -354,12 +354,12 @@ function OptionRadio({ checked }: { checked: boolean }) {
     <span
       aria-hidden
       className={cn(
-        "relative inline-flex size-4.5 shrink-0 items-center justify-center rounded-full border border-foreground/55 bg-background not-dark:bg-clip-padding sm:size-4 dark:bg-input/32",
+        "relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-foreground/55 bg-background not-dark:bg-clip-padding sm:size-4 dark:bg-input/32",
         checked ? "shadow-none" : "shadow-xs/5",
       )}
     >
       {checked ? (
-        <span className="-inset-px absolute flex items-center justify-center rounded-full bg-primary before:size-2 before:rounded-full before:bg-primary-foreground sm:before:size-1.5" />
+        <span className="-inset-px absolute flex items-center justify-center rounded-full bg-primary before:size-2 before:rounded-full before:bg-primary-foreground sm:before:size-2" />
       ) : null}
     </span>
   );

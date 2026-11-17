@@ -39,9 +39,9 @@ export function TunnelUsageMeter({
   const full = used >= limit;
   const fill = full ? "bg-warning" : "bg-foreground/72";
   return (
-    <div className={cn("flex max-w-sm flex-col gap-1.5", className)}>
-      <div className="flex items-baseline justify-between gap-3 text-xs">
-        <span className={cn("tabular-nums", full ? "text-warning-foreground" : "text-foreground")}>
+    <div className={cn("flex max-w-sm flex-col gap-2", className)}>
+      <div className="flex items-baseline justify-between gap-2 text-meta">
+        <span className={cn("tabular-nums", full ? "text-warning-foreground" : "text-ink-1")}>
           {used} of {limit} tunnels in use
         </span>
         {action}
@@ -52,7 +52,7 @@ export function TunnelUsageMeter({
         aria-valuemin={0}
         aria-valuemax={limit}
         aria-valuenow={used}
-        className="flex h-1.5 gap-1"
+        className="flex h-2 gap-1"
       >
         {limit <= MAX_SEGMENTS ? (
           Array.from({ length: limit }, (_, index) => (

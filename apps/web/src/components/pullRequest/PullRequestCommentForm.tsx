@@ -148,9 +148,9 @@ export function PullRequestCommentForm({
               : { onClick: () => submitAfterDictation("reopen") })}
           >
             {followUpAction === "close" ? (
-              <PullRequestGlyph.closed className="size-3.5" />
+              <PullRequestGlyph.closed className="size-4" />
             ) : (
-              <PullRequestGlyph.reopen className="size-3.5" />
+              <PullRequestGlyph.reopen className="size-4" />
             )}
             {followUpAction === "close" ? (
               // The longest label holds the width, so the confirming click lands on the button.
@@ -179,7 +179,7 @@ export function PullRequestCommentForm({
           disabled={submitDisabled}
           onClick={() => submitAfterDictation("comment")}
         >
-          <SendIcon className="size-3.5" />
+          <SendIcon className="size-4" />
           {submitting === "comment" ? "Posting..." : "Comment"}
         </Button>
       </div>

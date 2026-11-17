@@ -67,7 +67,7 @@ export function PullRequestLabelPicker({
 
   return (
     <PullRequestCandidatePicker
-      icon={<TagIcon className="size-3.5" />}
+      icon={<TagIcon className="size-4" />}
       label="Change labels"
       allowed={allowed}
       disabledReason="Changing labels needs triage access on this repository"
@@ -100,11 +100,11 @@ export function PullRequestLabelPicker({
             <span className="min-w-0 flex-1 truncate">
               {candidate.name}
               {candidate.description ? (
-                <span className="text-muted-foreground"> · {candidate.description}</span>
+                <span className="text-ink-2"> · {candidate.description}</span>
               ) : null}
             </span>
             {candidate.isApplied ? (
-              <CheckIcon aria-label="Applied" className="size-3.5 shrink-0" />
+              <CheckIcon aria-label="Applied" className="size-4 shrink-0" />
             ) : null}
           </>
         );

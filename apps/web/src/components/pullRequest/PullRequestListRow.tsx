@@ -17,10 +17,9 @@ import {
 } from "./pullRequestPresentation";
 
 export const PULL_REQUEST_ROW_CLASS =
-  "group/pr-row flex w-full items-center gap-2 rounded-md py-1 pr-1 text-left";
+  "group/pr-row flex w-full items-center gap-2 rounded-row py-1 pr-1 text-left";
 
-export const PULL_REQUEST_ROW_NUMBER_CLASS =
-  "shrink-0 font-mono text-xs tabular-nums text-muted-foreground";
+export const PULL_REQUEST_ROW_NUMBER_CLASS = "shrink-0 font-mono text-meta tabular-nums text-ink-2";
 
 export function PullRequestRowGlyph({
   state,
@@ -38,7 +37,7 @@ export function PullRequestRowGlyph({
   className?: string;
 }) {
   return (
-    <span className={cn("flex w-4 shrink-0 flex-col items-center gap-0.5", className)}>
+    <span className={cn("flex w-4 shrink-0 flex-col items-center", className)}>
       <span className="relative inline-flex">
         <PullRequestStateGlyph state={state} isDraft={isDraft} />
         {/* Offset the wrapper to keep the badge-sized tooltip trigger anchored. */}
@@ -48,11 +47,11 @@ export function PullRequestRowGlyph({
             isDraft={isDraft}
             {...(mergeability === undefined ? {} : { mergeability })}
             {...(baseBranch === undefined ? {} : { baseBranch })}
-            className="size-3 fill-background [stroke-width:2.5]"
+            className="size-3 fill-background stroke-3"
           />
         </span>
       </span>
-      {below ? <span className="inline-flex text-2xs">{below}</span> : null}
+      {below ? <span className="inline-flex text-meta">{below}</span> : null}
     </span>
   );
 }
@@ -76,19 +75,19 @@ export function PullRequestRowLines({
 }) {
   return (
     <span className="min-w-0 flex-1">
-      <span className="flex min-w-0 items-center gap-1.5">
+      <span className="flex min-w-0 items-center gap-2">
         {number}
-        <span className="min-w-0 truncate text-sm">{title}</span>
+        <span className="min-w-0 truncate text-body">{title}</span>
         {signals ? (
-          <span className="flex shrink-0 items-center gap-1 text-2xs">{signals}</span>
+          <span className="flex shrink-0 items-center gap-1 text-meta">{signals}</span>
         ) : null}
         {status ? (
-          <span className="ml-auto flex shrink-0 items-center gap-1.5 text-2xs">{status}</span>
+          <span className="ml-auto flex shrink-0 items-center gap-2 text-meta">{status}</span>
         ) : null}
       </span>
       <span
         className={cn(
-          "flex min-w-0 items-center gap-1.5 overflow-hidden text-2xs text-muted-foreground",
+          "flex min-w-0 items-center gap-2 overflow-hidden text-meta text-ink-2",
           metaClassName,
         )}
       >
@@ -118,7 +117,7 @@ export function PullRequestRowAuthor({
       <TooltipTrigger
         render={<span className={cn("inline-flex min-w-0 items-center gap-1", className)} />}
       >
-        <PullRequestActorAvatar actor={actor} className="size-3.5" />
+        <PullRequestActorAvatar actor={actor} className="size-4" />
         <span className={cn("truncate", labelClassName)}>{login}</span>
       </TooltipTrigger>
       <TooltipPopup side="top">
@@ -133,7 +132,7 @@ export function PullRequestRowBranches({ head, base }: { head: string; base: str
     <span className="flex min-w-0 items-center gap-1 font-mono">
       <MiddleTruncate value={head} />
       <span className="shrink-0">→</span>
-      <MiddleTruncate value={base} className="max-w-[45%] shrink-0" />
+      <MiddleTruncate value={base} className="max-w-9/20 shrink-0" />
     </span>
   );
 }

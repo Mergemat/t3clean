@@ -57,14 +57,14 @@ export const ChangedFilesCard = memo(function ChangedFilesCard(props: {
 
   return (
     <div
-      className="@container/changed-files mt-4 rounded-lg bg-secondary dark:bg-input/20"
+      className="@container/changed-files mt-2 rounded-row bg-secondary dark:bg-input/20"
       data-changed-files-state="tree"
     >
       <div
         data-changed-files-header=""
-        className="sticky top-2 z-10 flex items-center justify-between gap-2 rounded-t-lg bg-secondary px-3 py-2 dark:bg-background dark:bg-linear-to-b dark:from-input/20 dark:to-input/20"
+        className="sticky top-2 z-10 flex items-center justify-between gap-2 rounded-t-row bg-secondary py-2 pr-2 pl-4 dark:bg-background dark:bg-linear-to-b dark:from-input/20 dark:to-input/20"
       >
-        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-foreground">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-meta font-medium text-ink-1">
           <span>
             {totals.count.toLocaleString()} changed file{totals.count === 1 ? "" : "s"}
           </span>
@@ -73,7 +73,7 @@ export const ChangedFilesCard = memo(function ChangedFilesCard(props: {
               additions={totals.additions}
               deletions={totals.deletions}
               layout="inline"
-              className="text-xs leading-4"
+              className="text-meta leading-4"
             />
           )}
         </div>
@@ -137,7 +137,7 @@ export const ChangedFilesCard = memo(function ChangedFilesCard(props: {
         onFileContextMenu={onFileContextMenu}
       />
       {hiddenFileCount > 0 && (
-        <div className="px-3 pb-2">
+        <div className="px-2 pb-2">
           <Button
             type="button"
             size="xs"
@@ -206,27 +206,27 @@ const ChangedFilesTree = memo(function ChangedFilesTree(props: {
           type="button"
           data-scroll-anchor-ignore
           aria-expanded={isExpanded}
-          className="group flex h-7 w-full cursor-pointer items-center gap-2 rounded-md py-1.5 pr-2 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
+          className="group flex h-6 w-full cursor-pointer items-center gap-2 rounded-row py-2 pr-2 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
           style={{ paddingLeft: `${leftPadding}px` }}
           onClick={() => toggleDirectory(node.path)}
         >
           <ChevronRightIcon
             aria-hidden="true"
             className={cn(
-              "size-3.5 shrink-0 text-muted-foreground/70 transition-transform group-hover:text-foreground/80",
+              "size-4 shrink-0 text-ink-2 transition-transform group-hover:text-ink-2",
               isExpanded && "rotate-90",
             )}
           />
           {isExpanded ? (
-            <FolderIcon className="size-3.5 shrink-0 text-muted-foreground/75" />
+            <FolderIcon className="size-4 shrink-0 text-ink-2" />
           ) : (
-            <FolderClosedIcon className="size-3.5 shrink-0 text-muted-foreground/75" />
+            <FolderClosedIcon className="size-4 shrink-0 text-ink-2" />
           )}
-          <span className="truncate font-mono text-2xs text-muted-foreground/90 group-hover:text-foreground/90">
+          <span className="truncate font-mono text-meta text-ink-2 group-hover:text-ink-1">
             {node.name}
           </span>
           {hasNonZeroStat(node.stat) && (
-            <span className="ml-auto shrink-0 font-mono text-3xs tabular-nums">
+            <span className="ml-auto shrink-0 font-mono text-meta tabular-nums">
               <DiffStatLabel additions={node.stat.additions} deletions={node.stat.deletions} />
             </span>
           )}
@@ -238,7 +238,7 @@ const ChangedFilesTree = memo(function ChangedFilesTree(props: {
       <button
         key={`file:${node.path}`}
         type="button"
-        className="group flex h-7 w-full cursor-pointer items-center gap-2 rounded-md py-1.5 pr-2 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
+        className="group flex h-6 w-full cursor-pointer items-center gap-2 rounded-row py-2 pr-2 text-left transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background"
         style={{ paddingLeft: `${leftPadding}px` }}
         onClick={() => onOpenTurnDiff(runId, node.path)}
         onContextMenu={
@@ -251,19 +251,19 @@ const ChangedFilesTree = memo(function ChangedFilesTree(props: {
         }
       >
         {hasDirectoryNodes || depth > 0 ? (
-          <span aria-hidden="true" className="size-3.5 shrink-0" />
+          <span aria-hidden="true" className="size-4 shrink-0" />
         ) : null}
         <PierreEntryIcon
           pathValue={node.path}
           kind="file"
           theme={resolvedTheme}
-          className="size-3.5 text-muted-foreground/70"
+          className="size-4 text-ink-2"
         />
-        <span className="flex min-w-0 font-mono text-xs text-foreground/85 group-hover:text-foreground">
+        <span className="flex min-w-0 font-mono text-meta text-ink-1 group-hover:text-ink-1">
           <MiddleTruncate value={node.name} />
         </span>
         {node.stat && (
-          <span className="ml-auto shrink-0 font-mono text-3xs tabular-nums">
+          <span className="ml-auto shrink-0 font-mono text-meta tabular-nums">
             <DiffStatLabel additions={node.stat.additions} deletions={node.stat.deletions} />
           </span>
         )}
@@ -285,7 +285,7 @@ function ChangedFilesRows({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rowSizeRef = useRef<HTMLDivElement>(null);
-  const [range, setRange] = useState({ start: 0, end: 40, rowHeight: 28 });
+  const [range, setRange] = useState({ start: 0, end: 40, rowHeight: 24 });
   const [focusedPath, setFocusedPath] = useState<string | null>(null);
 
   // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- observes scroll, window resize and ancestor resizes to compute the virtualized row range
@@ -378,7 +378,7 @@ function ChangedFilesRows({
           <div
             ref={rowSizeRef}
             aria-hidden="true"
-            className="pointer-events-none invisible absolute h-7"
+            className="pointer-events-none invisible absolute h-6"
           />
         )}
         {indices.map((index) => {

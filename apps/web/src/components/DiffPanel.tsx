@@ -141,9 +141,9 @@ function DiffFileCollapseToggle({
       <TooltipTrigger
         render={
           <Button
-            size="icon-micro"
+            size="icon-xs"
             variant="ghost"
-            className="-ms-0.5"
+            className=""
             aria-label={collapsed ? `Expand ${filePath}` : `Collapse ${filePath}`}
             aria-expanded={!collapsed}
             ref={(node) => {
@@ -165,9 +165,9 @@ function DiffFileCollapseToggle({
         }
       >
         {collapsed ? (
-          <ChevronRightIcon className="size-4 text-muted-foreground/80" />
+          <ChevronRightIcon className="size-4 text-ink-2" />
         ) : (
-          <ChevronDownIcon className="size-4 text-muted-foreground/80" />
+          <ChevronDownIcon className="size-4 text-ink-2" />
         )}
       </TooltipTrigger>
       <TooltipPopup side="top">{collapsed ? "Expand diff" : "Collapse diff"}</TooltipPopup>
@@ -835,7 +835,7 @@ export default function DiffPanel({
 
   const headerRow = (
     <>
-      <div className="@container/diff-refs flex min-w-0 flex-1 items-center gap-3 [-webkit-app-region:no-drag]">
+      <div className="@container/diff-refs flex min-w-0 flex-1 items-center gap-2 app-region-no-drag">
         <DropdownMenu>
           <DropdownMenuTrigger
             render={<Button size="xs" variant="secondary" />}
@@ -844,7 +844,7 @@ export default function DiffPanel({
             data-workspace-focus-default
           >
             <span className="truncate">{selectedScopeLabel}</span>
-            <ChevronDownIcon className="size-3.5 shrink-0 opacity-70" />
+            <ChevronDownIcon className="size-4 shrink-0 opacity-70" />
           </DropdownMenuTrigger>
           {headerCommitSha !== null ? (
             selectedCommitUrl ? (
@@ -855,7 +855,7 @@ export default function DiffPanel({
                       href={selectedCommitUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="shrink-0 font-mono text-xs text-muted-foreground underline underline-offset-4"
+                      className="shrink-0 font-mono text-meta text-ink-2 underline underline-offset-4"
                       onClick={(event) => openCommitUrl(event, selectedCommitUrl)}
                     />
                   }
@@ -865,7 +865,7 @@ export default function DiffPanel({
                 <TooltipPopup side="top">{selectedCommitUrl}</TooltipPopup>
               </Tooltip>
             ) : (
-              <span className="shrink-0 font-mono text-xs text-muted-foreground">
+              <span className="shrink-0 font-mono text-meta text-ink-2">
                 {headerCommitSha.slice(0, 7)}
               </span>
             )
@@ -896,7 +896,7 @@ export default function DiffPanel({
                       >
                         <span className="flex items-center gap-2">
                           <span>Turn {turnCount}</span>
-                          <span className="ml-auto text-xs tabular-nums text-muted-foreground">
+                          <span className="ml-auto text-meta tabular-nums text-ink-2">
                             {formatShortTimestamp(summary.completedAt, settings.timestampFormat)}
                           </span>
                         </span>
@@ -929,8 +929,8 @@ export default function DiffPanel({
                       <div
                         key={commit.sha}
                         className={cn(
-                          "flex items-center rounded-sm hover:bg-accent has-data-highlighted:bg-accent has-focus-visible:bg-accent [&_[data-checked]]:bg-transparent [&_[data-highlighted]]:bg-transparent",
-                          selectedCommitSha === commit.sha && "bg-foreground/[0.08]",
+                          "flex items-center rounded-row hover:bg-accent has-data-highlighted:bg-accent has-focus-visible:bg-accent [&_[data-checked]]:bg-transparent [&_[data-highlighted]]:bg-transparent",
+                          selectedCommitSha === commit.sha && "bg-foreground/8",
                         )}
                       >
                         <Tooltip>
@@ -943,9 +943,9 @@ export default function DiffPanel({
                               />
                             }
                           >
-                            <span className="flex items-center gap-3">
+                            <span className="flex items-center gap-2">
                               <span className="min-w-0 flex-1 truncate">{commit.subject}</span>
-                              <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                              <span className="shrink-0 text-meta tabular-nums text-ink-2">
                                 {formatRelativeTimeLabel(commit.committedAt)}
                               </span>
                             </span>
@@ -967,12 +967,12 @@ export default function DiffPanel({
                             }
                             onClick={(event) => openCommitUrl(event, commitUrl)}
                           >
-                            <span className="font-mono text-xs text-muted-foreground underline underline-offset-4">
+                            <span className="font-mono text-meta text-ink-2 underline underline-offset-4">
                               {commit.sha.slice(0, 7)}
                             </span>
                           </DropdownMenuItem>
                         ) : (
-                          <span className="shrink-0 px-2 font-mono text-xs text-muted-foreground">
+                          <span className="shrink-0 px-2 font-mono text-meta text-ink-2">
                             {commit.sha.slice(0, 7)}
                           </span>
                         )}
@@ -1003,7 +1003,7 @@ export default function DiffPanel({
         </DropdownMenu>
         {canSelectBranchBase && (
           <div
-            className="flex min-w-0 max-w-full items-center gap-2 overflow-hidden text-xs text-muted-foreground"
+            className="flex min-w-0 max-w-full items-center gap-2 overflow-hidden text-meta text-ink-2"
             aria-label={`Comparing ${comparisonHeadRef} against ${comparisonBaseRef}`}
           >
             <Tooltip>
@@ -1011,11 +1011,11 @@ export default function DiffPanel({
                 render={
                   // Too narrow for both refs, keep the target readable and drop the head, which
                   // is the thread's own branch.
-                  <span className="flex min-w-[min(3rem,calc(100%-2.75rem))] items-center gap-2 overflow-hidden @max-[20rem]/diff-refs:hidden" />
+                  <span className="flex min-w-12 items-center gap-2 overflow-hidden @max-[20rem]/diff-refs:hidden" />
                 }
               >
                 <span className="min-w-0 max-w-48 truncate">{comparisonHeadRef}</span>
-                <ArrowRightIcon className="size-3.5 shrink-0 opacity-70" />
+                <ArrowRightIcon className="size-4 shrink-0 opacity-70" />
               </TooltipTrigger>
               <TooltipPopup side="top">
                 {`${comparisonHeadRef} → ${comparisonBaseRef}`}
@@ -1045,32 +1045,32 @@ export default function DiffPanel({
             >
               <ComboboxTrigger
                 render={<Button variant="ghost-muted" size="xs" />}
-                className="min-w-9 max-w-48 shrink-0"
+                className="min-w-8 max-w-48 shrink-0"
                 aria-label={`Change comparison target. Currently ${comparisonBaseRef}`}
               >
                 <span className="min-w-0 truncate">{comparisonBaseRef}</span>
-                <ChevronDownIcon className="size-3.5 shrink-0 opacity-70" />
+                <ChevronDownIcon className="size-4 shrink-0 opacity-70" />
               </ComboboxTrigger>
               <ComboboxPopup
                 align="start"
-                className="w-72 min-w-0 max-w-[calc(100vw-1rem)] overflow-hidden"
+                className="w-72 min-w-0 max-w-(--viewport-inset) overflow-hidden"
               >
                 <ComboboxSearchInput
                   placeholder="Search refs..."
                   value={baseRefQuery}
                   onChange={(event) => setBaseRefQuery(event.target.value)}
                 />
-                <div className="grid shrink-0 grid-cols-[1rem_minmax(0,1fr)] items-center gap-2 border-b border-border/70 ps-3 pe-6.5 pt-2 pb-1.5 font-medium text-3xs text-muted-foreground uppercase tracking-wide">
+                <div className="grid shrink-0 grid-cols-(--grid-lead) items-center gap-2 border-b border-border/70 ps-2 pe-6 pt-2 pb-2 font-medium text-meta text-ink-2 uppercase tracking-wide">
                   <span aria-hidden="true" />
-                  <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_2rem] items-center">
+                  <div className="grid min-w-0 grid-cols-(--grid-trail) items-center">
                     <span>Branch</span>
-                    <span className="text-right">Remote</span>
+                    <span className="w-8 text-right">Remote</span>
                   </div>
                 </div>
                 <ComboboxEmpty>No matching refs.</ComboboxEmpty>
                 <ComboboxList className="max-h-64 min-w-0 overflow-x-hidden">
                   <ComboboxItem
-                    className="w-full min-w-0 grid-cols-[1rem_minmax(0,1fr)]"
+                    className="w-full min-w-0 grid-cols-(--grid-lead)"
                     value={AUTOMATIC_BASE_REF}
                   >
                     <span className="block min-w-0 truncate">Automatic</span>
@@ -1082,21 +1082,21 @@ export default function DiffPanel({
                     return (
                       <ComboboxItem
                         key={choice.id}
-                        className="w-full min-w-0 grid-cols-[1rem_minmax(0,1fr)]"
+                        className="w-full min-w-0 grid-cols-(--grid-lead)"
                         value={item}
                       >
-                        <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)_2rem] items-center overflow-hidden">
+                        <div className="grid w-full min-w-0 grid-cols-(--grid-trail) items-center overflow-hidden">
                           <span className="block min-w-0 truncate pe-2">{choice.label}</span>
                           {hasBoth ? (
                             <div
-                              className="flex justify-end"
+                              className="flex w-8 justify-end"
                               onClick={(event) => event.stopPropagation()}
                               onPointerDown={(event) => event.stopPropagation()}
                             >
                               <Switch
                                 aria-label={`Use remote version of ${choice.label}`}
                                 checked={useRemote}
-                                className="[--thumb-size:--spacing(3)]"
+                                size="sm"
                                 onCheckedChange={(checked) => {
                                   const nextRef = checked
                                     ? choice.remote?.name
@@ -1109,7 +1109,7 @@ export default function DiffPanel({
                             <Tooltip>
                               <TooltipTrigger
                                 render={
-                                  <span className="flex justify-end text-muted-foreground">
+                                  <span className="flex w-8 justify-end text-ink-2">
                                     <CheckIcon
                                       role="img"
                                       aria-label="Remote only"
@@ -1120,7 +1120,9 @@ export default function DiffPanel({
                               />
                               <TooltipPopup side="top">Remote only</TooltipPopup>
                             </Tooltip>
-                          ) : null}
+                          ) : (
+                            <span className="w-8" />
+                          )}
                         </div>
                       </ComboboxItem>
                     );
@@ -1133,7 +1135,7 @@ export default function DiffPanel({
       </div>
       <div
         className={cn(
-          "flex shrink-0 items-center gap-1 [-webkit-app-region:no-drag]",
+          "flex shrink-0 items-center gap-1 app-region-no-drag",
           headerCommitSha !== null && "gap-0",
         )}
       >
@@ -1141,7 +1143,7 @@ export default function DiffPanel({
           <DiffStatLabel
             additions={diffLineStat.additions}
             deletions={diffLineStat.deletions}
-            className="mr-1 text-2xs"
+            className="mr-1 text-meta"
             layout="inline"
           />
         ) : null}
@@ -1179,9 +1181,9 @@ export default function DiffPanel({
               }
             >
               {allDiffFilesCollapsed ? (
-                <ChevronsUpDownIcon className="size-3.5" />
+                <ChevronsUpDownIcon className="size-4" />
               ) : (
-                <ChevronsDownUpIcon className="size-3.5" />
+                <ChevronsDownUpIcon className="size-4" />
               )}
             </TooltipTrigger>
             <TooltipPopup side="top">
@@ -1201,11 +1203,11 @@ export default function DiffPanel({
             }
           }}
         >
-          <Toggle aria-label="Stacked diff view" value="stacked">
-            <Rows3Icon className="size-3.5" />
+          <Toggle size="icon-sm" aria-label="Stacked diff view" value="stacked">
+            <Rows3Icon className="size-4" />
           </Toggle>
-          <Toggle aria-label="Split diff view" value="split">
-            <Columns2Icon className="size-3.5" />
+          <Toggle size="icon-sm" aria-label="Split diff view" value="split">
+            <Columns2Icon className="size-4" />
           </Toggle>
         </ToggleGroup>
         <Tooltip>
@@ -1214,7 +1216,7 @@ export default function DiffPanel({
               <Toggle
                 aria-label={wordWrap ? "Disable diff line wrapping" : "Enable diff line wrapping"}
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 pressed={wordWrap}
                 onPressedChange={(pressed) => {
                   setWordWrapOverride(Boolean(pressed));
@@ -1222,7 +1224,7 @@ export default function DiffPanel({
               />
             }
           >
-            <TextWrapIcon className="size-3.5" />
+            <TextWrapIcon className="size-4" />
           </TooltipTrigger>
           <TooltipPopup side="top">
             {wordWrap ? "Disable line wrapping" : "Enable line wrapping"}
@@ -1236,7 +1238,7 @@ export default function DiffPanel({
                   diffIgnoreWhitespace ? "Show whitespace changes" : "Hide whitespace changes"
                 }
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 pressed={diffIgnoreWhitespace}
                 onPressedChange={(pressed) => {
                   useDiffPanelSessionStore.getState().setIgnoreWhitespace(Boolean(pressed));
@@ -1244,7 +1246,7 @@ export default function DiffPanel({
               />
             }
           >
-            <PilcrowIcon className="size-3.5" />
+            <PilcrowIcon className="size-4" />
           </TooltipTrigger>
           <TooltipPopup side="top">
             {diffIgnoreWhitespace ? "Show whitespace changes" : "Hide whitespace changes"}
@@ -1257,13 +1259,13 @@ export default function DiffPanel({
                 <Toggle
                   aria-label="Hide test files"
                   variant="ghost"
-                  size="sm"
+                  size="icon-sm"
                   pressed={hideTestFiles}
                   onPressedChange={(pressed) => setHideTestFiles(Boolean(pressed))}
                 />
               }
             >
-              <FlaskConicalOffIcon className="size-3.5" />
+              <FlaskConicalOffIcon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">
               {hideTestFiles
@@ -1279,13 +1281,13 @@ export default function DiffPanel({
                 <Toggle
                   aria-label={fileTreeOpen ? "Hide file tree" : "Show file tree"}
                   variant="ghost"
-                  size="sm"
+                  size="icon-sm"
                   pressed={fileTreeOpen}
                   onPressedChange={(pressed) => setFileTreeOpen(Boolean(pressed))}
                 />
               }
             >
-              <FolderTreeIcon className="size-3.5" />
+              <FolderTreeIcon className="size-4" />
             </TooltipTrigger>
             <TooltipPopup side="top">
               {fileTreeOpen ? "Hide file tree" : "Show file tree"}
@@ -1299,22 +1301,22 @@ export default function DiffPanel({
   return (
     <DiffPanelShell mode={mode} header={headerRow}>
       {!activeThread ? (
-        <div className="flex flex-1 items-center justify-center px-5 text-center text-xs text-muted-foreground/70">
+        <div className="flex flex-1 items-center justify-center px-4 text-center text-meta text-ink-2">
           Select a thread to inspect turn diffs.
         </div>
       ) : !isGitRepo && !toolCallSelection ? (
-        <div className="flex flex-1 items-center justify-center px-5 text-center text-xs text-muted-foreground/70">
+        <div className="flex flex-1 items-center justify-center px-4 text-center text-meta text-ink-2">
           Turn diffs are unavailable because this project is not a git repository.
         </div>
       ) : selectedRunId !== null && orderedTurnDiffSummaries.length === 0 ? (
-        <div className="flex flex-1 items-center justify-center px-5 text-center text-xs text-muted-foreground/70">
+        <div className="flex flex-1 items-center justify-center px-4 text-center text-meta text-ink-2">
           No completed turns yet.
         </div>
       ) : isGitSelection && !canReadFiles ? (
         fileAccess.isPending ? (
           <DiffPanelLoadingState label="Checking file access..." />
         ) : (
-          <div className="flex flex-1 items-center justify-center px-5 text-center text-xs text-muted-foreground/70">
+          <div className="flex flex-1 items-center justify-center px-4 text-center text-meta text-ink-2">
             {fileAccess.error ?? "This connection cannot read local diffs."}
           </div>
         )
@@ -1322,14 +1324,14 @@ export default function DiffPanel({
         <>
           <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background">
             {preview?.incomplete && (
-              <p className="shrink-0 border-b border-border/70 bg-muted/40 px-3 py-1.5 text-2xs text-muted-foreground">
+              <p className="shrink-0 border-b border-border/70 bg-muted/40 px-2 py-2 text-meta text-ink-2">
                 {selectedPatchError
                   ? "Showing tracked changes. Untracked changes could not be loaded. Refresh to retry."
                   : "Showing tracked changes. Checking untracked files..."}
               </p>
             )}
             {isSelectedPatchTruncated && !lazySource && (
-              <p className="shrink-0 border-b border-border/70 bg-muted/40 px-3 py-1.5 text-2xs text-muted-foreground">
+              <p className="shrink-0 border-b border-border/70 bg-muted/40 px-2 py-2 text-meta text-ink-2">
                 This preview exceeds the size limit. Changes shown are incomplete.
                 {isGitSelection && selectedGitSource?.files && !preview?.incomplete
                   ? " Totals include all changes."
@@ -1337,27 +1339,25 @@ export default function DiffPanel({
               </p>
             )}
             {omittedToolCallFiles > 0 && (
-              <p className="shrink-0 border-b border-border/70 bg-muted/40 px-3 py-1.5 text-2xs text-muted-foreground">
+              <p className="shrink-0 border-b border-border/70 bg-muted/40 px-2 py-2 text-meta text-ink-2">
                 This tool call changed {recordedToolCallFileCount} files. The recorded patch omits{" "}
                 {omittedToolCallFiles} of them.
               </p>
             )}
             {selectedPatchError && !renderablePatch && (
-              <div className="px-3">
-                <p className="mb-2 text-2xs text-error/80">{selectedPatchError}</p>
+              <div className="px-2">
+                <p className="mb-2 text-meta text-error/80">{selectedPatchError}</p>
               </div>
             )}
             {!renderablePatch && toolCallPreview && toolCallPreview.content.length > 0 ? (
-              <div className="min-h-0 flex-1 space-y-3 overflow-auto p-3 text-xs">
-                <p className="text-muted-foreground">
-                  The provider recorded file content without a diff.
-                </p>
+              <div className="min-h-0 flex-1 space-y-2 overflow-auto p-2 text-meta">
+                <p className="text-ink-2">The provider recorded file content without a diff.</p>
                 {toolCallPreview.content.map(({ label, text }) => (
                   <div key={label} className="space-y-1">
-                    <p className="text-muted-foreground">{label}</p>
+                    <p className="text-ink-2">{label}</p>
                     <pre
                       className={cn(
-                        "overflow-auto font-mono text-2xs",
+                        "overflow-auto font-mono text-meta",
                         wordWrap && "whitespace-pre-wrap wrap-break-word",
                       )}
                     >
@@ -1382,7 +1382,7 @@ export default function DiffPanel({
                   }
                 />
               ) : (
-                <div className="flex h-full items-center justify-center px-3 py-2 text-xs text-muted-foreground/70">
+                <div className="flex h-full items-center justify-center px-2 py-2 text-meta text-ink-2">
                   <p>
                     {hasNoNetChanges
                       ? "No net changes in this selection."
@@ -1512,12 +1512,12 @@ export default function DiffPanel({
             ) : (
               <div className="min-h-0 flex-1 overflow-auto p-2">
                 <div className="space-y-2">
-                  <p className="text-2xs text-muted-foreground/75">
+                  <p className="text-meta text-ink-2">
                     {renderablePatch?.kind === "raw" ? renderablePatch.reason : null}
                   </p>
                   <pre
                     className={cn(
-                      "max-h-[72vh] rounded-md border border-border/70 bg-background/70 p-3 font-mono text-2xs leading-relaxed text-muted-foreground/90",
+                      "max-h-160 rounded-row border border-border/70 bg-background/70 p-2 font-mono text-meta leading-relaxed text-ink-2",
                       wordWrap
                         ? "overflow-auto whitespace-pre-wrap wrap-break-word"
                         : "overflow-auto",

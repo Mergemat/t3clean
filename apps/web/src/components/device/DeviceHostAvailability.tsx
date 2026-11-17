@@ -8,7 +8,7 @@ export function DeviceHostAvailability({
   platforms: ReadonlyArray<DevicePlatformAvailability>;
 }) {
   return (
-    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+    <div className="flex flex-wrap gap-x-2 gap-y-1 text-meta text-ink-2">
       {platforms.map((platform) => (
         <Tooltip key={platform.platform}>
           <TooltipTrigger render={<span tabIndex={0} className="inline-flex items-center gap-1" />}>

@@ -106,7 +106,7 @@ export function goalNowItem(input: {
           {presentation.usage === null ? null : ` · ${presentation.usage}`}
         </PopoverTrigger>
         <PopoverPopup side="top" width="md" padding="compact" aria-label="Goal objective">
-          <p className="whitespace-pre-wrap wrap-anywhere text-sm">{presentation.objective}</p>
+          <p className="whitespace-pre-wrap wrap-anywhere text-body">{presentation.objective}</p>
         </PopoverPopup>
       </Popover>
     ),
@@ -286,12 +286,12 @@ export function branchMismatchBannerItem(input: {
     variant: "info",
     icon: <GitBranchIcon />,
     title: (
-      <span className="flex min-w-0 items-baseline gap-1.5">
-        <span className="shrink-0 font-normal text-muted-foreground">Branch changed from</span>
+      <span className="flex min-w-0 items-baseline gap-2">
+        <span className="shrink-0 font-normal text-ink-2">Branch changed from</span>
         <Tooltip>
           <TooltipTrigger
             render={
-              <code className="min-w-0 truncate font-medium text-foreground">
+              <code className="min-w-0 truncate font-medium text-ink-1">
                 {mismatch.threadBranch}
               </code>
             }

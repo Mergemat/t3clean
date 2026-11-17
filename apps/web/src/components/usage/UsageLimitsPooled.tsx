@@ -62,7 +62,7 @@ function AccountChip({ email }: { readonly email: string }) {
     <span
       role="img"
       aria-label={`Account ${accountInitials(email)}`}
-      className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-3xs leading-none font-semibold"
+      className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-meta leading-none font-semibold"
       style={{ backgroundColor: `oklch(0.85 0.08 ${hue})`, color: `oklch(0.35 0.1 ${hue})` }}
     >
       {accountInitials(email)}
@@ -90,7 +90,7 @@ function AccountAvatar({
         showBadge={Boolean(account.displayName)}
         indicatorBackground="var(--popover)"
         className={cn("size-5", className)}
-        iconClassName="size-4 text-foreground/80"
+        iconClassName="size-4 text-ink-2"
       />
     );
   }
@@ -121,9 +121,9 @@ function AccountName({
 
 function Row({ label, children }: { readonly label: string; readonly children: ReactNode }) {
   return (
-    <div className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-3">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="min-w-0 text-foreground tabular-nums">{children}</span>
+    <div className="grid grid-cols-(--grid-lead) gap-x-2">
+      <span className="w-18 text-ink-2">{label}</span>
+      <span className="min-w-0 text-ink-1 tabular-nums">{children}</span>
     </div>
   );
 }
@@ -156,9 +156,9 @@ function SegmentPopover({
       ? resetCreditChoices(account.limits.resetCredits, account.redeem.input, now, true)
       : [];
   return (
-    <div className="flex w-72 max-w-[calc(100vw-3rem)] flex-col gap-2.5 text-xs">
-      <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+    <div className="flex w-72 max-w-(--viewport-inset) flex-col gap-2 text-meta">
+      <div className="flex min-w-0 flex-col">
+        <span className="flex items-center gap-2 text-body font-medium text-ink-1">
           <AccountAvatar account={account} />
           <span className="truncate">
             {account.displayName ?? providerClients.get(account.driver)?.label ?? account.driver}
@@ -174,13 +174,13 @@ function SegmentPopover({
           />
         ) : null}
       </div>
-      <div className="flex flex-col gap-1 border-t border-border/60 pt-2.5">
+      <div className="flex flex-col gap-1">
         {account.plan ? <Row label="Plan">{account.plan}</Row> : null}
         {where ? (
           <Row label={account.environments.length > 0 ? "Signed in" : "Via"}>{where}</Row>
         ) : null}
       </div>
-      <div className="flex flex-col gap-1 border-t border-border/60 pt-2.5">
+      <div className="flex flex-col gap-1">
         <Row label="Left">{remaining}%</Row>
         {window.resetsAt ? (
           <Row label="Resets">
@@ -194,9 +194,9 @@ function SegmentPopover({
         ) : null}
       </div>
       {choices.length > 0 && redeem ? (
-        <div className="flex flex-col gap-1.5 border-t border-border/60 pt-2.5 text-muted-foreground">
+        <div className="flex flex-col gap-2 text-ink-2">
           {choices.map((choice) => (
-            <span key={choice.key} className="flex items-center gap-3">
+            <span key={choice.key} className="flex items-center gap-2">
               <span className="tabular-nums">{choice.summary}</span>
               {choice.availableCount > 0 ? (
                 <Button
@@ -317,8 +317,8 @@ function RedeemableSegment({
       />
       {/* The popover closed before the confirm, so progress and the outcome need a home outside it. */}
       {redeem.busy || redeem.status ? (
-        <span role="status" className="col-span-full text-xs text-muted-foreground">
-          <AccountName account={props.account} className="font-medium text-foreground" />{" "}
+        <span role="status" className="col-span-full text-meta text-ink-2">
+          <AccountName account={props.account} className="font-medium text-ink-1" />{" "}
           {redeem.busy ? "Using reset credit…" : redeem.status}
         </span>
       ) : null}
@@ -362,16 +362,16 @@ function SegmentTriggers({
             type="button"
             style={{ gridColumn: index, gridRow: 1, ...paceMark?.gappedTrack }}
             aria-label={`${account.displayName ?? (account.email ? accountInitials(account.email) : account.driver)}: ${remaining}% left${resetsIn ? `, ${resetsIn}` : ""}${timeLeft === null ? "" : `, ${timeLeft}% of the window left`}${credits ? `, ${credits} reset ${credits === 1 ? "credit" : "credits"} banked` : ""}`}
-            className="relative h-5 min-w-0 cursor-pointer rounded-md bg-muted text-start outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-[popup-open]:ring-1 data-[popup-open]:ring-inset data-[popup-open]:ring-border @2xl/pool:h-8"
+            className="relative h-5 min-w-0 cursor-pointer rounded-row bg-muted text-start outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-[popup-open]:ring-1 data-[popup-open]:ring-inset data-[popup-open]:ring-border @2xl/pool:h-8"
           />
         }
       >
-        <div aria-hidden className="absolute inset-0 overflow-hidden rounded-md">
+        <div aria-hidden className="absolute inset-0 overflow-hidden rounded-row">
           {/* Clipped inside the rounded clip so the bar's own corners keep their antialiasing. */}
           <div className="absolute inset-0" style={paceMark?.gap}>
             <div
               aria-hidden
-              className="absolute inset-y-0 left-0 rounded-md opacity-35"
+              className="absolute inset-y-0 left-0 rounded-row opacity-35"
               style={{ width: `${remaining}%`, backgroundColor: color }}
             />
             {remaining < 100 && reset && refillPercent > 0 ? (
@@ -389,40 +389,35 @@ function SegmentTriggers({
         {paceMark ? (
           <span
             aria-hidden
-            className="absolute inset-y-0.5 w-0.5 -translate-x-1/2 rounded-full bg-foreground"
+            className="absolute inset-y-1 w-1 -translate-x-1/2 rounded-full bg-foreground"
             style={paceMark.tick}
           />
         ) : null}
         <span
           aria-hidden
-          className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-md text-3xs leading-none font-semibold text-foreground/80 tabular-nums @2xl/pool:hidden"
+          className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-row text-meta leading-none font-semibold text-ink-2 tabular-nums @2xl/pool:hidden"
         >
           {index}
         </span>
-        <div className="relative hidden h-full min-w-0 items-center gap-1.5 overflow-hidden rounded-md px-2 text-xs @2xl/pool:flex">
+        <div className="relative hidden h-full min-w-0 items-center gap-2 overflow-hidden rounded-row px-2 text-meta @2xl/pool:flex">
           {showAccountName ? (
-            <AccountName
-              account={account}
-              className="min-w-0 truncate font-medium text-foreground"
-            />
+            <AccountName account={account} className="min-w-0 truncate font-medium text-ink-1" />
           ) : null}
           {/* A single-account bar repeats the headline percentage. */}
           {showAccountName ? (
-            <span className="shrink-0 font-semibold text-foreground tabular-nums">
-              {remaining}%
-            </span>
+            <span className="shrink-0 font-semibold text-ink-1 tabular-nums">{remaining}%</span>
           ) : null}
           {resetsIn || credits ? (
-            <span className="ms-auto flex min-w-0 items-center gap-1.5 overflow-hidden rounded-sm bg-background/85 px-1.5 py-0.5 text-2xs whitespace-nowrap text-foreground tabular-nums">
+            <span className="ms-auto flex min-w-0 items-center gap-2 overflow-hidden rounded-row bg-background/85 px-2 py-1 text-meta whitespace-nowrap text-ink-1 tabular-nums">
               {resetsIn?.replace("resets in ", "↻ ") ?? ""}
               {credits ? (
                 <>
                   {resetsIn ? (
-                    <span aria-hidden className="text-muted-foreground">
+                    <span aria-hidden className="text-ink-2">
                       ·
                     </span>
                   ) : null}
-                  <span aria-hidden className="inline-flex items-center gap-0.5 font-semibold">
+                  <span aria-hidden className="inline-flex items-center font-semibold">
                     <TicketIcon className="size-3" aria-hidden />
                     {credits}
                   </span>
@@ -458,29 +453,26 @@ function LegendRow({
       handle={popover}
       payload={payload}
       style={{ gridColumn: "1 / -1", gridRow: index + 1 }}
-      render={<Button variant="ghost" size="compact" />}
+      render={<Button variant="ghost" size="sm" />}
       className="min-w-0 @2xl/pool:hidden"
     >
-      <span className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-sm text-3xs leading-none font-semibold text-foreground/80 tabular-nums">
+      <span className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-chip text-meta leading-none font-semibold text-ink-2 tabular-nums">
         <span
           aria-hidden
-          className="absolute inset-0 rounded-sm opacity-35"
+          className="absolute inset-0 rounded-row opacity-35"
           style={{ backgroundColor: color }}
         />
         <span className="sr-only">Segment </span>
         <span className="relative">{index}</span>
       </span>
-      <AccountName account={account} className="min-w-0 truncate font-medium text-foreground" />
-      <span className="shrink-0 font-semibold text-foreground tabular-nums">{remaining}%</span>
-      <span className="ms-auto flex shrink-0 items-center gap-1.5 text-2xs text-muted-foreground tabular-nums">
+      <AccountName account={account} className="min-w-0 truncate font-medium text-ink-1" />
+      <span className="shrink-0 font-semibold text-ink-1 tabular-nums">{remaining}%</span>
+      <span className="ms-auto flex shrink-0 items-center gap-2 text-meta text-ink-2 tabular-nums">
         {resetsIn?.replace("resets in ", "↻ ") ?? ""}
         {credits ? (
           <>
             {resetsIn ? <span aria-hidden>·</span> : null}
-            <span
-              aria-hidden
-              className="inline-flex items-center gap-0.5 font-semibold text-foreground"
-            >
+            <span aria-hidden className="inline-flex items-center font-semibold text-ink-1">
               <TicketIcon className="size-3" aria-hidden />
               {credits}
             </span>
@@ -527,7 +519,7 @@ function PoolBar({
             <div
               key={member.account.key}
               style={{ gridColumn: position + 1, gridRow: 1 }}
-              className="flex h-5 min-w-0 items-center justify-center gap-1.5 overflow-hidden rounded-md border border-dashed border-border text-3xs whitespace-nowrap text-muted-foreground @2xl/pool:h-8 @2xl/pool:justify-start @2xl/pool:px-2 @2xl/pool:text-xs"
+              className="flex h-5 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-row border border-dashed border-border text-meta whitespace-nowrap text-ink-2 @2xl/pool:h-8 @2xl/pool:justify-start @2xl/pool:px-2 @2xl/pool:text-meta"
             >
               <AccountName
                 account={member.account}
@@ -557,30 +549,28 @@ function PoolWindowCard({
 }) {
   const nextRefill = pool.resets.find((reset) => reset.restoresPercent > 0);
   return (
-    <div className="grid items-center gap-x-6 gap-y-3 rounded-lg border border-border/60 p-4 md:grid-cols-[11rem_minmax(0,1fr)]">
-      <div className="flex flex-col gap-1">
+    <div className="grid items-center gap-x-6 gap-y-2 rounded-box border border-border/60 p-4 md:grid-cols-(--grid-lead)">
+      <div className="flex flex-col gap-1 md:w-44">
         {label !== null ? (
-          <span className="text-sm font-medium text-foreground">{label ?? pool.label}</span>
+          <span className="text-body font-medium text-ink-1">{label ?? pool.label}</span>
         ) : null}
         <span className="flex items-baseline gap-2">
-          <span className="text-3xl font-semibold text-foreground tabular-nums">
+          <span className="text-3xl font-semibold text-ink-1 tabular-nums">
             {pool.remainingPercent}%
           </span>
-          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-2 text-body text-ink-2">
             <span>left</span>
             {pool.pace ? <PaceIcon pace={pool.pace} /> : null}
           </span>
         </span>
         {nextRefill && pool.columns.length > 1 ? (
-          <span className="text-xs font-medium text-foreground tabular-nums">
+          <span className="text-meta font-medium text-ink-1 tabular-nums">
             ↻ +{nextRefill.restoresPercent}%
           </span>
         ) : null}
       </div>
       <PoolBar pool={pool} color={color} now={now} />
-      {description ? (
-        <p className="text-xs text-muted-foreground md:col-span-2">{description}</p>
-      ) : null}
+      {description ? <p className="text-meta text-ink-2 md:col-span-2">{description}</p> : null}
     </div>
   );
 }
@@ -590,14 +580,14 @@ function PoolSection({ pool, now }: { readonly pool: LimitPool; readonly now: nu
   const label = providerClients.get(pool.driver)?.label ?? String(pool.driver);
   const windows = displayLimitWindows(pool);
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="flex items-center gap-2 text-sm font-medium text-foreground">
+    <section className="flex flex-col gap-2">
+      <h2 className="flex items-center gap-2 text-body font-medium text-ink-1">
         <ProviderInstanceIcon
           driverKind={pool.driver}
           displayName={label}
           indicatorBackground="var(--background)"
           className="size-5"
-          iconClassName="size-4 text-foreground/80"
+          iconClassName="size-4 text-ink-2"
         />
         {label}
       </h2>
@@ -632,9 +622,9 @@ export function UsageLimitsPooled({
   const notices = collectLimitNotices(presentations);
   const externalLinks = collectExternalUsageLinks(presentations);
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       {pools.length === 0 && notices.length === 0 && externalLinks.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body text-ink-2">
           No provider on the selected environments reports subscription limits.
         </p>
       ) : null}
@@ -661,23 +651,21 @@ export function UsageLimitsPooled({
       {externalLinks.map((link) => (
         <section
           key={link.url}
-          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"
+          className="flex flex-wrap items-center justify-between gap-2 rounded-box border p-4"
         >
-          <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
             {link.url === CHATGPT_USAGE_URL ? (
               <OpenAI className="size-5 shrink-0" aria-hidden="true" />
             ) : null}
             <div className="min-w-0 space-y-1">
-              <h2 className="text-sm font-medium">{link.label}</h2>
-              <p className="text-xs break-words text-muted-foreground">
-                {link.accounts.join(", ")}
-              </p>
+              <h2 className="text-body font-medium">{link.label}</h2>
+              <p className="text-meta break-words text-ink-2">{link.accounts.join(", ")}</p>
               {link.url === CHATGPT_USAGE_URL ? (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-meta text-ink-2">
                   View usage in ChatGPT with your connected account.
                 </p>
               ) : link.message ? (
-                <p className="max-w-xl text-xs text-muted-foreground">{link.message}</p>
+                <p className="max-w-xl text-meta text-ink-2">{link.message}</p>
               ) : null}
             </div>
           </div>
@@ -687,7 +675,7 @@ export function UsageLimitsPooled({
             onClick={() => void ensureLocalApi().shell.openExternal(link.url)}
           >
             Manage usage
-            <ExternalLinkIcon className="size-3.5" aria-hidden="true" />
+            <ExternalLinkIcon className="size-4" aria-hidden="true" />
           </Button>
         </section>
       ))}

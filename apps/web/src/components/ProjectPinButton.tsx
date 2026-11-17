@@ -55,11 +55,11 @@ export function ProjectPinButton(props: {
       >
         {props.pinned ? (
           <>
-            <PinIcon className="size-3.5 group-hover/pin:hidden" />
-            <PinOffIcon className="hidden size-3.5 group-hover/pin:block" />
+            <PinIcon className="size-4 group-hover/pin:hidden" />
+            <PinOffIcon className="hidden size-4 group-hover/pin:block" />
           </>
         ) : (
-          <PinIcon className="size-3.5" />
+          <PinIcon className="size-4" />
         )}
       </Button>
     </span>

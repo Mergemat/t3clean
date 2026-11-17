@@ -114,11 +114,11 @@ export function PullRequestCandidatePicker<T>({
           {isPending ? (
             <PullRequestPeopleGhost rows={4} />
           ) : error !== null ? (
-            <p className="p-2 text-xs text-muted-foreground">
+            <p className="p-2 text-meta text-ink-2">
               {errorLabel} {error}
             </p>
           ) : candidates.length === 0 ? (
-            <p className="p-2 text-xs text-muted-foreground">
+            <p className="p-2 text-meta text-ink-2">
               {query.length > 0 ? noMatchLabel : emptyLabel}
             </p>
           ) : (
@@ -134,9 +134,7 @@ export function PullRequestCandidatePicker<T>({
               </ComboboxItem>
             ))
           )}
-          {truncated ? (
-            <p className="px-2 py-1.5 text-xs text-muted-foreground">{truncatedLabel}</p>
-          ) : null}
+          {truncated ? <p className="px-2 py-2 text-meta text-ink-2">{truncatedLabel}</p> : null}
         </ComboboxList>
       </ComboboxPopup>
     </Combobox>

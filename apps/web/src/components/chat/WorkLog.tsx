@@ -54,21 +54,21 @@ function WorkLogLine({ icon, label, trailing, wrapLabel }: RowContent) {
   return (
     <div
       className={cn(
-        "flex min-h-6 min-w-0 gap-1.5 text-sm leading-relaxed select-none [&_*]:select-none",
+        "flex min-h-6 min-w-0 gap-2 text-body leading-relaxed select-none [&_*]:select-none",
         wrapLabel ? "items-start" : "items-center",
       )}
     >
-      <div className="flex min-w-0 flex-1 items-baseline gap-1.5">
+      <div className="flex min-w-0 flex-1 items-baseline gap-2">
         {icon ? (
           <span className="relative w-6 shrink-0 leading-0">
-            <span className="inline-block size-6 overflow-hidden align-[calc(0.5cap_-_0.75rem)]">
+            <span className="inline-block size-6 overflow-hidden align-middle">
               <span className="flex size-full items-center justify-center">{icon}</span>
             </span>
           </span>
         ) : null}
         <div
           className={cn(
-            "min-w-0 flex-1 text-secondary-label",
+            "min-w-0 flex-1 text-ink-2",
             !wrapLabel && "truncate [&_*]:whitespace-nowrap",
           )}
         >
@@ -86,8 +86,8 @@ const interactionClassName =
 function useRowClassName(interactive: boolean) {
   const grouped = use(GroupedRows);
   return cn(
-    "group/timeline-row relative w-full min-w-0 rounded-md px-0.5 text-left transition-colors",
-    grouped ? "py-0" : "py-0.5",
+    "group/timeline-row relative w-full min-w-0 rounded-row px-1 text-left transition-colors",
+    grouped ? "py-0" : "py-1",
     interactive && interactionClassName,
   );
 }
@@ -156,9 +156,9 @@ export function WorkLogDetails({
       className={cn(
         "cursor-auto",
         kind === "text"
-          ? "ms-7 flex max-h-96 flex-col gap-3 overflow-auto px-0.5 py-1 select-text"
+          ? "ms-6 flex max-h-96 flex-col gap-2 overflow-auto px-1 py-1 select-text"
           : kind === "panel"
-            ? "mt-0.5 mb-1.5 pb-2"
+            ? "mb-2 pb-2"
             : "mt-1",
       )}
       onClick={(event) => event.stopPropagation()}

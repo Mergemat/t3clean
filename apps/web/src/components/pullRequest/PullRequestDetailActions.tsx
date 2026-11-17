@@ -61,7 +61,7 @@ export function ActOnEnvironmentPicker({
             <span className="flex min-w-0 items-center gap-2">
               <EnvironmentMachineIcon
                 kind={environment.machine ?? "server"}
-                className="size-3.5 shrink-0"
+                className="size-4 shrink-0"
               />
               <span className="truncate">{environment.label}</span>
             </span>
@@ -107,11 +107,11 @@ export function PullRequestCheckoutMenu({
                   variant="outline"
                   aria-label={handoff?.startsWith("checkout") ? "Checking out..." : "Check out"}
                 >
-                  <GitBranchIcon aria-hidden className="size-3.5" />
+                  <GitBranchIcon aria-hidden className="size-4" />
                   <span className="@max-[35rem]/pr-header:hidden">
                     {handoff?.startsWith("checkout") ? "Checking out..." : "Check out"}
                   </span>
-                  <ChevronDownIcon aria-hidden className="size-3.5 text-muted-foreground" />
+                  <ChevronDownIcon aria-hidden className="size-4 text-ink-2" />
                 </Button>
               }
             />
@@ -121,21 +121,19 @@ export function PullRequestCheckoutMenu({
       </Tooltip>
       <MenuPopup align="end" side="bottom">
         <MenuItem disabled={!canPrepareWorktree} onClick={() => onCheckout("worktree")}>
-          <GitBranchIcon className="mt-1 size-3.5 shrink-0 self-start" />
+          <GitBranchIcon className="mt-1 size-4 shrink-0 self-start" />
           <span className="flex min-w-0 flex-col">
             <span>In a separate worktree</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-meta text-ink-2">
               Its own folder and thread. Nothing you have open moves.
             </span>
           </span>
         </MenuItem>
         <MenuItem disabled={!canCheckoutHere} onClick={() => onCheckout("local")}>
-          <FolderGit2Icon className="mt-1 size-3.5 shrink-0 self-start" />
+          <FolderGit2Icon className="mt-1 size-4 shrink-0 self-start" />
           <span className="flex min-w-0 flex-col">
             <span>In this repository</span>
-            <span className="text-xs text-muted-foreground">
-              Switches the branch you are working in.
-            </span>
+            <span className="text-meta text-ink-2">Switches the branch you are working in.</span>
           </span>
         </MenuItem>
         {pickableEnvironments.length > 0 ? (
@@ -172,7 +170,7 @@ export function PullRequestResolveConflictsButton({
               onClick={onResolve}
               aria-label={handoff === "conflicts" ? "Preparing..." : "Resolve conflicts"}
             >
-              <PullRequestGlyph.conflicting aria-hidden className="size-3.5" />
+              <PullRequestGlyph.conflicting aria-hidden className="size-4" />
               <span className="@max-[30rem]/pr-header:hidden">
                 {handoff === "conflicts" ? "Preparing..." : "Resolve conflicts"}
               </span>
@@ -224,7 +222,7 @@ export function PullRequestPrimaryAction({
           <TooltipTrigger
             render={
               <Badge size="control" variant="info" role="img" aria-label={armedAutoMergeLabel}>
-                <PullRequestGlyph.merged aria-hidden className="size-3.5" />
+                <PullRequestGlyph.merged aria-hidden className="size-4" />
                 <span className="@max-[30rem]/pr-header:hidden">{armedAutoMergeLabel}</span>
               </Badge>
             }
@@ -248,7 +246,7 @@ export function PullRequestPrimaryAction({
                   onClick={() => void perform("ready")}
                   aria-label="Ready for review"
                 >
-                  <PullRequestGlyph.pullRequest aria-hidden className="size-3.5" />
+                  <PullRequestGlyph.pullRequest aria-hidden className="size-4" />
                   <span className="@max-[30rem]/pr-header:hidden">Ready for review</span>
                 </Button>
               </span>
@@ -282,9 +280,9 @@ export function PullRequestPrimaryAction({
                   }
                 >
                   {inlineConfirm.isArmed("enable-auto-merge") ? (
-                    <CheckIcon aria-hidden className="size-3.5" />
+                    <CheckIcon aria-hidden className="size-4" />
                   ) : (
-                    <PullRequestGlyph.merged aria-hidden className="size-3.5" />
+                    <PullRequestGlyph.merged aria-hidden className="size-4" />
                   )}
                   <AnimatedWidth className="@max-[30rem]/pr-header:hidden">
                     <span className="grid">
@@ -318,7 +316,7 @@ export function PullRequestPrimaryAction({
           <TooltipTrigger
             render={
               <Badge size="control" variant="info" role="img" aria-label={armedAutoMergeLabel}>
-                <PullRequestGlyph.merged aria-hidden className="size-3.5" />
+                <PullRequestGlyph.merged aria-hidden className="size-4" />
                 <span className="@max-[30rem]/pr-header:hidden">{armedAutoMergeLabel}</span>
               </Badge>
             }
@@ -350,9 +348,9 @@ export function PullRequestPrimaryAction({
                   }
                 >
                   {inlineConfirm.isArmed("merge") ? (
-                    <CheckIcon aria-hidden className="size-3.5" />
+                    <CheckIcon aria-hidden className="size-4" />
                   ) : (
-                    <PullRequestGlyph.merged aria-hidden className="size-3.5" />
+                    <PullRequestGlyph.merged aria-hidden className="size-4" />
                   )}
                   <AnimatedWidth className="@max-[30rem]/pr-header:hidden">
                     <span className="grid">
@@ -385,7 +383,7 @@ export function PullRequestPrimaryAction({
         statePresentation !== null ? (
         <Badge size="control" variant="outline">
           <span className={cn("flex items-center gap-1", statePresentation.toneClassName)}>
-            <statePresentation.Icon className="size-3.5" />
+            <statePresentation.Icon className="size-4" />
             {statePresentation.label}
           </span>
         </Badge>
@@ -423,7 +421,7 @@ export function PullRequestApproveWorkflowsButton({
                     : "Approve workflows to run"
               }
             >
-              <PlayIcon aria-hidden className="size-3.5" />
+              <PlayIcon aria-hidden className="size-4" />
               <span className="inline-grid">
                 <span aria-hidden className="invisible col-start-1 row-start-1">
                   Approve workflows to run

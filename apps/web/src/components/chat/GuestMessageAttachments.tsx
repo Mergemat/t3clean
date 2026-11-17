@@ -8,8 +8,8 @@ import { AttachmentImage } from "../media/AttachmentImage";
 import { PierreEntryIcon } from "./PierreEntryIcon";
 
 const IMAGE_FRAME =
-  "aspect-[4/3] overflow-hidden rounded-lg border border-border/80 bg-background/70";
-const FILE_ROW = "flex min-w-0 items-center gap-2 py-1 text-sm";
+  "aspect-4/3 overflow-hidden rounded-row border border-border/80 bg-background/70";
+const FILE_ROW = "flex min-w-0 items-center gap-2 py-1 text-body";
 
 /**
  * A guest message's files, drawn like a sent message's: image thumbnails, then file rows. The
@@ -31,7 +31,7 @@ export function GuestMessageAttachments(props: {
   return (
     <div className="flex flex-col items-end gap-2">
       {images.length > 0 ? (
-        <div className="grid w-[210px] grid-cols-2 gap-2">
+        <div className="grid w-52 grid-cols-2 gap-2">
           {images.map((image) => {
             const src = props.imageUrl(image);
             return (
@@ -54,7 +54,7 @@ export function GuestMessageAttachments(props: {
                     />
                   </button>
                 ) : (
-                  <div className="flex size-full items-center justify-center px-2 text-center text-2xs text-muted-foreground/70">
+                  <div className="flex size-full items-center justify-center px-2 text-center text-meta text-ink-2">
                     {image.name}
                   </div>
                 )}
@@ -68,7 +68,7 @@ export function GuestMessageAttachments(props: {
           <>
             <PierreEntryIcon pathValue={file.name} kind="file" theme={resolvedTheme} />
             <span className="min-w-0 truncate">{file.name}</span>
-            <span className="shrink-0 text-xs text-muted-foreground">
+            <span className="shrink-0 text-meta text-ink-2">
               {formatAttachmentSize(file.sizeBytes)}
             </span>
           </>

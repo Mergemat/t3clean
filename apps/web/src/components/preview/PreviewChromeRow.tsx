@@ -93,10 +93,10 @@ export function PreviewChromeRow({
     <div className="relative">
       <form
         onSubmit={submit}
-        className="flex h-10 min-h-10 shrink-0 items-center gap-1 border-b border-border/60 bg-background px-2 in-data-[preview-panel-mode=inline]:mb-3 in-data-[preview-panel-mode=inline]:h-7 in-data-[preview-panel-mode=inline]:min-h-7 in-data-[preview-panel-mode=inline]:border-b-transparent"
+        className="flex h-10 min-h-10 shrink-0 items-center gap-1 border-b border-border/60 bg-background px-2 in-data-[preview-panel-mode=inline]:mb-2 in-data-[preview-panel-mode=inline]:h-6 in-data-[preview-panel-mode=inline]:min-h-6 in-data-[preview-panel-mode=inline]:border-b-transparent"
         data-surface-subheader
       >
-        <div className="flex items-center gap-0.5" role="group" aria-label="Navigation">
+        <div className="flex items-center" role="group" aria-label="Navigation">
           <Tooltip>
             <TooltipTrigger
               render={
@@ -152,7 +152,7 @@ export function PreviewChromeRow({
 
         {leadingActions}
 
-        <InputGroup variant="ghost" className="group/address h-7 flex-1">
+        <InputGroup variant="ghost" className="group/address h-6 flex-1">
           <Tooltip>
             <TooltipTrigger
               render={
@@ -260,7 +260,7 @@ export function PreviewChromeRow({
             >
               <Camera className={cn(recording && "text-destructive")} />
               {recording ? (
-                <span className="absolute right-0.5 top-0.5 size-1.5 motion-safe:animate-status-pulse rounded-full bg-destructive" />
+                <span className="absolute right-1 top-1 size-2 motion-safe:animate-status-pulse rounded-full bg-destructive" />
               ) : null}
             </TooltipTrigger>
             <TooltipPopup>
@@ -297,7 +297,7 @@ export function PreviewChromeRow({
       <div
         aria-hidden
         data-loading={loading}
-        className="preview-loading-progress pointer-events-none absolute bottom-0 left-0 z-10 h-0.5 w-full origin-left rounded-r-full bg-primary"
+        className="preview-loading-progress pointer-events-none absolute bottom-0 left-0 z-10 h-1 w-full origin-left rounded-r-full bg-primary"
         style={{ boxShadow: "0 0 6px 1px var(--color-ring)" }}
       />
     </div>

@@ -59,12 +59,12 @@ export const PanelLayoutControls = memo(function PanelLayoutControls({
 }: PanelLayoutControlsProps) {
   const threadPanelToggle = (
     <Toggle
-      className="relative shrink-0 [-webkit-app-region:no-drag]"
+      className="relative shrink-0 app-region-no-drag"
       pressed={threadPanelOpen}
       onPressedChange={threadPanelPresentation === "popover" ? undefined : onToggleThreadPanel}
       aria-label="Toggle thread details panel"
       variant="ghost"
-      size="sm"
+      size="icon-sm"
     >
       <SquareMenuIcon className="size-4" />
     </Toggle>
@@ -87,7 +87,7 @@ export const PanelLayoutControls = memo(function PanelLayoutControls({
 
   return (
     <div
-      className="flex h-full shrink-0 items-center gap-1 [-webkit-app-region:no-drag]"
+      className="flex h-full shrink-0 items-center gap-1 app-region-no-drag"
       data-panel-layout-controls
     >
       {showThreadPanelControl ? threadPanelControl : null}
@@ -95,12 +95,12 @@ export const PanelLayoutControls = memo(function PanelLayoutControls({
         <Tooltip>
           <TooltipTrigger render={<span className="flex shrink-0" />}>
             <Toggle
-              className="shrink-0 [-webkit-app-region:no-drag]"
+              className="shrink-0 app-region-no-drag"
               pressed={terminalOpen}
               onPressedChange={onToggleTerminal}
               aria-label="Toggle terminal drawer"
               variant="ghost"
-              size="sm"
+              size="icon-sm"
               disabled={!terminalAvailable}
             >
               <PanelBottomIcon className="size-4" />
@@ -117,13 +117,13 @@ export const PanelLayoutControls = memo(function PanelLayoutControls({
         <Tooltip>
           <TooltipTrigger render={<span className="flex shrink-0" />}>
             <Toggle
-              className="shrink-0 [-webkit-app-region:no-drag]"
+              className="shrink-0 app-region-no-drag"
               pressed={rightPanelOpen}
               onPressedChange={onToggleRightPanel}
               aria-label="Toggle right panel"
               data-right-panel-toggle
               variant="ghost"
-              size="sm"
+              size="icon-sm"
               disabled={!rightPanelAvailable}
             >
               <PanelRightIcon className="size-4" />
@@ -153,12 +153,12 @@ export const RightPanelMaximizeControl = memo(function RightPanelMaximizeControl
       <TooltipTrigger
         render={
           <Toggle
-            className="shrink-0 [-webkit-app-region:no-drag]"
+            className="shrink-0 app-region-no-drag"
             pressed={maximized}
             onPressedChange={onToggle}
             aria-label={label}
             variant="ghost"
-            size="sm"
+            size="icon-sm"
           >
             {maximized ? (
               <Minimize2Icon className="size-4" />
@@ -179,7 +179,7 @@ export function ThreadPanelHeaderControl(props: PanelLayoutControlsProps) {
   return (
     <div
       className={cn(
-        "absolute top-[var(--workspace-controls-top)] right-[calc(env(safe-area-inset-right)+0.75rem)] z-50 flex h-[var(--workspace-topbar-height)] items-center [-webkit-app-region:no-drag]",
+        "absolute top-(--workspace-controls-top) right-(--window-gap) z-50 pr-safe flex h-(--workspace-topbar-height) items-center app-region-no-drag",
         mobileSidebarSheetMounted && "hidden",
       )}
       data-workspace-titlebar-controls
@@ -225,7 +225,7 @@ export function WorkspaceTitlebarControls(props: {
     <div
       ref={controlsRef}
       className={cn(
-        "pointer-events-none fixed top-[var(--workspace-controls-top)] right-[var(--workspace-controls-right)] z-50 mr-px flex h-[var(--workspace-topbar-height)] items-center gap-1 [-webkit-app-region:no-drag]",
+        "pointer-events-none fixed top-(--workspace-controls-top) right-(--workspace-controls-right) z-50 flex h-(--workspace-topbar-height) items-center gap-1 app-region-no-drag",
         mobileSidebarSheetMounted && "hidden",
       )}
       data-workspace-titlebar-controls

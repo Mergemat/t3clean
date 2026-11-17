@@ -84,14 +84,14 @@ export function CommandPaletteContent({
             panelSize === "fill"
               ? "flex min-h-0 flex-1 flex-col"
               : panelSize === "tall-list"
-                ? "max-h-[min(34rem,76vh)]"
-                : "flex max-h-[min(28rem,70vh)] min-h-0 flex-col"
+                ? "max-h-136"
+                : "flex max-h-112 min-h-0 flex-col"
           }
         >
           {children}
         </CommandPanel>
         <CommandFooter className="max-sm:flex-col max-sm:items-start">
-          <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-2">
             <KbdGroup>
               <Kbd>
                 <ArrowUpIcon />

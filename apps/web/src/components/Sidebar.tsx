@@ -64,14 +64,7 @@ import {
   type OlderSettledScope,
 } from "@t3tools/client-runtime/state/threads";
 
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  FolderIcon,
-  ListFilterIcon,
-  PlusIcon,
-  SettingsIcon,
-} from "lucide-react";
+import { ChevronDownIcon, FolderIcon, ListFilterIcon, PlusIcon, SettingsIcon } from "lucide-react";
 import {
   useEffect,
   useLayoutEffect,
@@ -846,19 +839,6 @@ function useSidebarLookups() {
     projectGroupByScopeKey,
     projectScopeItems,
   };
-}
-
-function ProjectScopeRowIcon(props: { isSelected: boolean; children: ReactNode }) {
-  return (
-    <span className="relative flex shrink-0">
-      {props.children}
-      {props.isSelected ? (
-        <span className="pointer-events-none absolute -right-1 -bottom-1 grid size-3 place-items-center rounded-full bg-primary ring-2 ring-popover">
-          <CheckIcon className="size-2 text-primary-foreground" strokeWidth={4} aria-hidden />
-        </span>
-      ) : null}
-    </span>
-  );
 }
 
 function canOperateThreads(
@@ -2959,7 +2939,7 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
         ref={sidebarContentRef}
         className="min-h-full"
         fixedHeader={
-          <SidebarGroup className="z-[1]">
+          <SidebarGroup className="z-1">
             <SidebarThreadHeader
               hasProjects={projectGroups.length > 0}
               projectScope={
@@ -3018,10 +2998,10 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                             className={
                               index === 0
                                 ? "flex"
-                                : "-ml-1 flex rounded-[25%] bg-sidebar ring-2 ring-sidebar"
+                                : "-ml-1 flex rounded-chip bg-sidebar ring-2 ring-sidebar"
                             }
                           >
-                            <ProjectFavicon project={project} className="size-3.5" />
+                            <ProjectFavicon project={project} className="size-4" />
                           </span>
                         ))}
                       </span>
@@ -3037,7 +3017,7 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                   <ComboboxPopup
                     align="start"
                     collisionAvoidance={{ side: "flip", align: "shift" }}
-                    className="w-[min(18rem,var(--available-width))] overflow-hidden"
+                    className="w-72 max-w-(--available-width) overflow-hidden"
                     finalFocus={(closeType) => closeType === "keyboard"}
                   >
                     <ComboboxSearchInput
@@ -3100,20 +3080,18 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                             hideIndicator
                             value={item}
                             aria-selected={isSelected}
-                            // The icon badge marks selection; Base UI's single value would shade one row.
-                            data-selected={undefined}
+                            // Several projects can be chosen; Base UI's single value would fill one row.
+                            data-selected={isSelected || undefined}
                             onContextMenu={(event) => {
                               if (project) handleProjectSettings(event, project);
                             }}
                           >
-                            <ProjectScopeRowIcon isSelected={isSelected}>
-                              {project ? (
-                                <ProjectFavicon project={project} className="size-4 shrink-0" />
-                              ) : (
-                                <FolderIcon className="size-4 shrink-0" />
-                              )}
-                            </ProjectScopeRowIcon>
-                            <span className="min-w-0 truncate text-sm">{item.label}</span>
+                            {project ? (
+                              <ProjectFavicon project={project} className="size-4 shrink-0" />
+                            ) : (
+                              <FolderIcon className="size-4 shrink-0" />
+                            )}
+                            <span className="min-w-0 truncate text-body">{item.label}</span>
                             {project && showProjectEnvironments ? (
                               <ProjectEnvironmentBadge
                                 group={project}
@@ -3148,13 +3126,13 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                                       void handleProjectSettings(event, project);
                                     }}
                                   >
-                                    <SettingsIcon className="size-3.5" />
+                                    <SettingsIcon className="size-4" />
                                   </Button>
                                 }
                               />
                             ) : (
                               // Keeps "All projects" as tall as the project rows.
-                              <span className="ml-auto size-7 shrink-0 sm:size-6" />
+                              <span className="ml-auto size-6 shrink-0 sm:size-6" />
                             )}
                           </ComboboxItem>
                         );
@@ -3261,10 +3239,7 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                 </DndContext>
               </TooltipProvider>
             ) : (
-              <p
-                role="status"
-                className="px-2 py-6 text-center text-xs text-sidebar-muted-foreground"
-              >
+              <p role="status" className="px-2 py-6 text-center text-meta text-ink-2">
                 {threadSearch.isPending ? "Searching thread messages…" : "No threads found"}
               </p>
             )
@@ -3279,16 +3254,16 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
             snoozedThreads.length ===
             0 &&
           (settledCount === 0 || scopedProjectGroups.length > 0) ? (
-            <div className="flex flex-col items-center gap-2 px-2 py-6 text-center text-xs text-muted-foreground/60">
+            <div className="flex flex-col items-center gap-2 px-2 py-6 text-center text-meta text-ink-3">
               {projects.length === 0 ? (
                 <>
                   <span>No projects yet</span>
                   <button
                     type="button"
                     onClick={openAddProjectCommandPalette}
-                    className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-sidebar-border px-2.5 py-1 text-2xs font-medium text-sidebar-muted-foreground transition-colors hover:bg-sidebar-row-hover hover:text-sidebar-foreground"
+                    className="inline-flex cursor-pointer items-center gap-2 rounded-row border border-sidebar-border px-2 py-1 text-meta font-medium text-ink-2 transition-colors hover:bg-sidebar-row-hover hover:text-sidebar-foreground"
                   >
-                    <PlusIcon className="-mx-0.5 size-3" />
+                    <PlusIcon className="size-3" />
                     Add project
                   </button>
                 </>
@@ -3304,7 +3279,7 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                   <button
                     type="button"
                     onClick={() => setProjectScopeKeys([])}
-                    className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-sidebar-border px-2.5 py-1 text-2xs font-medium text-sidebar-muted-foreground transition-colors hover:bg-sidebar-row-hover hover:text-sidebar-foreground"
+                    className="inline-flex cursor-pointer items-center gap-2 rounded-row border border-sidebar-border px-2 py-1 text-meta font-medium text-ink-2 transition-colors hover:bg-sidebar-row-hover hover:text-sidebar-foreground"
                   >
                     Show all projects
                   </button>
@@ -3343,7 +3318,7 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                       // Projected rows (two boundary labels, two hints) extend the scroll range; a range that
                       // shrinks as the target changes clamps scrollTop and flips the target under a still pointer.
                       dragState !== null &&
-                        "after:pointer-events-none after:absolute after:inset-x-0 after:-bottom-30 after:h-px after:content-['']",
+                        "after:pointer-events-none after:absolute after:inset-x-0 after:-bottom-30 after:h-px",
                     )}
                   >
                     {(() => {
@@ -3634,7 +3609,7 @@ export default function Sidebar({ routeReveal }: { routeReveal: SidebarRouteReve
                             olderSettledShelf.retry();
                             showMoreSettled();
                           }}
-                          className="flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-left text-sm text-sidebar-muted-foreground hover:bg-sidebar-row-hover hover:text-sidebar-foreground aria-disabled:cursor-default"
+                          className="flex h-8 w-full cursor-pointer items-center gap-2 rounded-row px-2 text-left text-body text-ink-2 hover:bg-sidebar-row-hover hover:text-sidebar-foreground aria-disabled:cursor-default"
                         >
                           {/* Plus means "add", so revealing more uses a chevron. */}
                           <ChevronDownIcon aria-hidden className="size-4 shrink-0" />

@@ -110,7 +110,7 @@ export function PullRequestReviewerPicker({
 
   return (
     <PullRequestCandidatePicker
-      icon={<UserPlusIcon className="size-3.5" />}
+      icon={<UserPlusIcon className="size-4" />}
       label="Request a review"
       allowed={allowed}
       disabledReason="Asking someone to review needs write access on this repository"
@@ -140,11 +140,9 @@ export function PullRequestReviewerPicker({
       {(candidate) => (
         <>
           <PullRequestActorLabel actor={candidate} className="flex-1" />
-          {candidate.kind === "team" ? (
-            <span className="shrink-0 text-muted-foreground">team</span>
-          ) : null}
+          {candidate.kind === "team" ? <span className="shrink-0 text-ink-2">team</span> : null}
           {candidate.isRequested ? (
-            <CheckIcon aria-label="Already asked" className="size-3.5 shrink-0" />
+            <CheckIcon aria-label="Already asked" className="size-4 shrink-0" />
           ) : null}
         </>
       )}

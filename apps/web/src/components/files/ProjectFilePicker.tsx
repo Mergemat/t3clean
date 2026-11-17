@@ -32,7 +32,7 @@ function HighlightedFuzzyText(props: {
   for (const index of props.indices) {
     if (start < index) parts.push(props.value.slice(start, index));
     parts.push(
-      <strong className="font-semibold text-foreground" key={index}>
+      <strong className="font-semibold text-ink-1" key={index}>
         {props.value[index]}
       </strong>,
     );
@@ -40,7 +40,7 @@ function HighlightedFuzzyText(props: {
   }
   if (start < props.value.length) parts.push(props.value.slice(start));
 
-  return <span className="text-muted-foreground">{parts}</span>;
+  return <span className="text-ink-2">{parts}</span>;
 }
 
 function getEmptyStateMessage(query: string, error: string | null, isPending: boolean): string {
@@ -61,7 +61,7 @@ function EmptyProjectFilePicker() {
       testId="project-file-picker"
       value=""
     >
-      <div className="py-10 text-center text-sm text-muted-foreground">
+      <div className="py-6 text-center text-body text-ink-2">
         Open a project to search its files.
       </div>
     </CommandPaletteContent>

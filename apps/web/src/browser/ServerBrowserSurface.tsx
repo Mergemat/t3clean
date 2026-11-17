@@ -754,7 +754,7 @@ export function ServerBrowserSurface(props: {
           controlPosition === "bottom" ? "order-last border-t" : "border-b",
         )}
       >
-        <span role="status" className="text-xs text-muted-foreground">
+        <span role="status" className="text-meta text-ink-2">
           {previewStreamControlLabel(control)}
         </span>
         {control?.canOperate ? (
@@ -826,11 +826,11 @@ export function ServerBrowserSurface(props: {
         />
         {fileChooser && control?.controller === "you" ? (
           <div
-            className="absolute inset-x-2 top-2 z-10 flex flex-col gap-2 rounded-lg border border-border bg-background p-3 shadow-lg"
+            className="absolute inset-x-2 top-2 z-10 flex flex-col gap-2 rounded-row border border-border bg-background p-2 shadow-lg"
             role="dialog"
             aria-label="Choose files for the page"
           >
-            <p className="text-sm">
+            <p className="text-body">
               The page asks for {fileChooser.multiple ? "files" : "a file"}.
             </p>
             <input
@@ -857,11 +857,11 @@ export function ServerBrowserSurface(props: {
         ) : null}
         {control?.dialog ? (
           <div
-            className="absolute inset-x-2 top-2 z-10 flex flex-col gap-2 rounded-lg border border-border bg-background p-3 shadow-lg"
+            className="absolute inset-x-2 top-2 z-10 flex flex-col gap-2 rounded-row border border-border bg-background p-2 shadow-lg"
             role="dialog"
             aria-label="Browser dialog"
           >
-            <p className="break-words text-sm">{control.dialog.message}</p>
+            <p className="break-words text-body">{control.dialog.message}</p>
             {control.controller === "you" ? (
               <>
                 {control.dialog.type === "prompt" ? (
@@ -894,14 +894,14 @@ export function ServerBrowserSurface(props: {
                 </div>
               </>
             ) : (
-              <p className="text-xs text-muted-foreground">Take control to respond.</p>
+              <p className="text-meta text-ink-2">Take control to respond.</p>
             )}
           </div>
         ) : null}
       </div>
       {visible && hostSetup ? (
-        <div className="visible absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-background p-4 text-center">
-          <p role="alert" className="max-w-sm text-sm text-muted-foreground">
+        <div className="visible absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 bg-background p-4 text-center">
+          <p role="alert" className="max-w-sm text-body text-ink-2">
             {previewStreamHostSetupMessage(hostSetup)}
           </p>
           <CommandBlock command={hostSetup.command} className="w-full max-w-md text-left" />
@@ -912,8 +912,8 @@ export function ServerBrowserSurface(props: {
       ) : null}
       {visible && accessDenied ? (
         // The page can be invisible beneath an empty or unreachable state; reconnect must remain reachable.
-        <div className="visible absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 bg-background p-3 text-center">
-          <p role="alert" className="text-xs text-muted-foreground">
+        <div className="visible absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 bg-background p-2 text-center">
+          <p role="alert" className="text-meta text-ink-2">
             Browser connection was refused.
           </p>
           <Button

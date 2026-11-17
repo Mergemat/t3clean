@@ -61,7 +61,6 @@ import {
   MenuSubTrigger,
   MenuTrigger,
 } from "./ui/menu";
-import { Separator } from "./ui/separator";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
 import { MiddleTruncate } from "./ui/middle-truncate";
 import { ComposerSurface } from "./chat/ComposerSurface";
@@ -230,7 +229,7 @@ const RunContextSelector = memo(function RunContextSelector({
             kind={activeEnvironment?.machine ?? "server"}
             // Wide machine glyphs need a little more box to match the square row icons.
             className={
-              isPanel ? cn(THREAD_DETAILS_PANEL_ICON_CLASS, "-mx-px size-4.5") : "size-3 shrink-0"
+              isPanel ? cn(THREAD_DETAILS_PANEL_ICON_CLASS, "-mx-px size-4") : "size-3 shrink-0"
             }
           />
         )}
@@ -246,8 +245,11 @@ const RunContextSelector = memo(function RunContextSelector({
         {autoEnvironmentLabel ??
           (showEnvironmentIndicator ? (activeEnvironment?.label ?? "Run on") : workspaceLabel)}
       </ComposerContextLabel>
-      {/* Trailing in the panel, so every row label starts on the same edge. */}
-      {isPanel && showEnvironmentIndicator ? workspaceIcon : null}
+      {/* Trailing in the panel, so every row label starts on the same edge. It takes the same
+          32px slot as the chevrons in the rows below, so their icons share a column. */}
+      {isPanel && showEnvironmentIndicator ? (
+        <span className="-me-px flex w-8 shrink-0 justify-center">{workspaceIcon}</span>
+      ) : null}
     </>
   );
 
@@ -255,9 +257,10 @@ const RunContextSelector = memo(function RunContextSelector({
     return (
       <span
         className={cn(
-          "inline-flex h-7 min-w-0 max-w-[48%] flex-initial items-center justify-start gap-1 rounded-md border border-transparent px-1.75 font-normal text-foreground/70 text-sm sm:h-6 sm:text-xs dark:text-muted-foreground",
+          "inline-flex h-6 min-w-0 max-w-1/2 flex-initial items-center justify-start gap-1 rounded-row border border-transparent px-2 font-normal text-ink-2 text-body sm:h-6 sm:text-meta dark:text-ink-2",
           isPanel && "max-w-full",
           isPanel && THREAD_DETAILS_PANEL_LOCKED_ROW_CLASS,
+          isPanel && showEnvironmentIndicator && "pe-0",
         )}
         onContextMenu={handleContextMenu}
         aria-label={
@@ -276,7 +279,7 @@ const RunContextSelector = memo(function RunContextSelector({
     <Menu>
       <MenuTrigger
         render={isPanel ? <ThreadDetailsControl part="select" /> : <ComposerControl size="xs" />}
-        className={isPanel ? undefined : "min-w-0 max-w-[48%] flex-initial justify-start"}
+        className={isPanel ? undefined : "min-w-0 max-w-1/2 flex-initial justify-start"}
         onContextMenu={handleContextMenu}
         onMouseDownCapture={
           isPanel
@@ -305,7 +308,7 @@ const RunContextSelector = memo(function RunContextSelector({
           isPanel
             ? "w-(--anchor-width)"
             : previousWorktreeLabel
-              ? "w-[min(21rem,calc(100vw-2rem))]"
+              ? "w-84 max-w-(--viewport-inset)"
               : undefined
         }
         {...(!isPanel ? composerFloatingLayerProps : {})}
@@ -332,7 +335,7 @@ const RunContextSelector = memo(function RunContextSelector({
                       if (autoEnvironmentLabel) onAutoEnvironment?.();
                     }}
                   >
-                    <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="flex min-w-0 items-center gap-2">
                       <ScaleIcon className="size-3" aria-hidden="true" />
                       <span className="min-w-0 truncate">
                         {autoEnvironmentLabel ?? "Auto balance"}
@@ -349,7 +352,7 @@ const RunContextSelector = memo(function RunContextSelector({
                     value={env.environmentId}
                     closeOnClick
                   >
-                    <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="flex min-w-0 items-center gap-2">
                       <EnvironmentMachineIcon kind={env.machine} className="size-3" />
                       <span className="min-w-0 truncate">{env.label}</span>
                     </span>
@@ -370,7 +373,7 @@ const RunContextSelector = memo(function RunContextSelector({
                         key={target.environmentId}
                         onClick={() => onAddToMachine(target.environmentId)}
                       >
-                        <span className="flex min-w-0 items-center gap-1.5">
+                        <span className="flex min-w-0 items-center gap-2">
                           <EnvironmentMachineIcon kind={target.machine} className="size-3" />
                           <span className="min-w-0 truncate">{target.label}</span>
                         </span>
@@ -396,7 +399,7 @@ const RunContextSelector = memo(function RunContextSelector({
             }}
           >
             <MenuRadioItem disabled={envModeLocked || forceNewWorktree} value="local" closeOnClick>
-              <span className="flex min-w-0 items-center gap-1.5">
+              <span className="flex min-w-0 items-center gap-2">
                 {activeWorktreePath ? (
                   <FolderGitIcon className="size-3" />
                 ) : (
@@ -406,7 +409,7 @@ const RunContextSelector = memo(function RunContextSelector({
               </span>
             </MenuRadioItem>
             <MenuRadioItem disabled={envModeLocked} value="worktree" closeOnClick>
-              <span className="flex min-w-0 items-center gap-1.5">
+              <span className="flex min-w-0 items-center gap-2">
                 <FolderGit2Icon className="size-3" />
                 <span className="min-w-0 truncate">{resolveEnvModeLabel("worktree")}</span>
               </span>
@@ -732,7 +735,7 @@ export const BranchToolbar = memo(function BranchToolbar({
     <ComposerSurface.ContextStrip
       ref={attachStrip}
       data-compact={labelsOverflow ? "" : undefined}
-      className={cn("gap-1 text-xs font-normal text-foreground/70 dark:text-muted-foreground")}
+      className={cn("gap-1 text-meta font-normal text-ink-2 dark:text-ink-2")}
     >
       {showGitControls ? (
         <div className="contents @xl/composer-surface:hidden">
@@ -761,30 +764,21 @@ export const BranchToolbar = memo(function BranchToolbar({
       {showGitControls || showEnvironmentIndicator ? (
         <div
           className={cn(
-            "min-h-7 min-w-10 items-center gap-1 sm:min-h-6",
+            "min-h-6 min-w-10 items-center gap-2 sm:min-h-6",
             showGitControls ? "hidden @xl/composer-surface:flex" : "flex",
             "flex-1",
           )}
         >
           {showEnvironmentIndicator && availableEnvironments && (
-            <>
-              <BranchToolbarEnvironmentSelector
-                autoEnvironmentLabel={autoEnvironmentLabel}
-                onAutoEnvironment={onAutoEnvironment}
-                envLocked={envLocked}
-                environmentId={environmentId}
-                availableEnvironments={availableEnvironments}
-                {...(showEnvironmentPicker ? { onEnvironmentChange } : {})}
-                {...(addTargets.length > 0 ? { onAddToMachine: () => onAddToMachine(null) } : {})}
-              />
-              {showGitControls ? (
-                <Separator
-                  orientation="vertical"
-                  className="mx-0.5 h-3.5!"
-                  data-composer-context-control
-                />
-              ) : null}
-            </>
+            <BranchToolbarEnvironmentSelector
+              autoEnvironmentLabel={autoEnvironmentLabel}
+              onAutoEnvironment={onAutoEnvironment}
+              envLocked={envLocked}
+              environmentId={environmentId}
+              availableEnvironments={availableEnvironments}
+              {...(showEnvironmentPicker ? { onEnvironmentChange } : {})}
+              {...(addTargets.length > 0 ? { onAddToMachine: () => onAddToMachine(null) } : {})}
+            />
           )}
           {showGitControls ? (
             <BranchToolbarEnvModeSelector

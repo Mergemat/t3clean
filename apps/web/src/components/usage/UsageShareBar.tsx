@@ -25,19 +25,19 @@ export function UsageShareBar({
   if (total <= 0) return null;
 
   return (
-    <div className="flex min-w-0 flex-col gap-2.5">
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-sm font-medium text-foreground">{label}</h3>
+    <div className="flex min-w-0 flex-col gap-2">
+      <div className="flex items-baseline justify-between gap-2">
+        <h3 className="text-body font-medium text-ink-1">{label}</h3>
         {aside}
       </div>
       {/* The legend below carries every figure; the bar's tooltips are pointer-only. */}
-      <div aria-hidden className="flex h-2 gap-0.5">
+      <div aria-hidden className="flex h-2">
         {visible.map((segment) => (
           <Tooltip key={segment.label}>
             <TooltipTrigger
               render={
                 <div
-                  className="h-full min-w-1 rounded-xs first:rounded-l-full last:rounded-r-full"
+                  className="h-full min-w-1 rounded-chip first:rounded-l-full last:rounded-r-full"
                   style={{ flex: `${segment.value} 1 0`, backgroundColor: segment.color }}
                 />
               }
@@ -48,16 +48,16 @@ export function UsageShareBar({
           </Tooltip>
         ))}
       </div>
-      <ul aria-label={label} className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+      <ul aria-label={label} className="flex flex-wrap gap-x-2 gap-y-1 text-meta">
         {visible.map((segment) => (
-          <li key={segment.label} className="flex items-center gap-1.5">
+          <li key={segment.label} className="flex items-center gap-2">
             <span
               aria-hidden
-              className="size-2 rounded-xs"
+              className="size-2 rounded-chip"
               style={{ backgroundColor: segment.color }}
             />
-            <span className="text-muted-foreground">{segment.label}</span>{" "}
-            <span className="text-foreground tabular-nums">{format(segment.value)}</span>
+            <span className="text-ink-2">{segment.label}</span>{" "}
+            <span className="text-ink-1 tabular-nums">{format(segment.value)}</span>
             <span className="sr-only">, {formatPercent(segment.value / total)}</span>
           </li>
         ))}

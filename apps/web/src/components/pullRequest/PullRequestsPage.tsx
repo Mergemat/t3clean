@@ -1216,7 +1216,7 @@ export function PullRequestsPage() {
   const openPanelControls = (
     <div
       className={cn(
-        "absolute top-[var(--workspace-controls-top)] right-[var(--workspace-controls-right)] z-50 mr-px flex h-[var(--workspace-topbar-height)] items-center gap-1 [-webkit-app-region:no-drag]",
+        "absolute top-(--workspace-controls-top) right-(--workspace-controls-right) z-50 flex h-(--workspace-topbar-height) items-center gap-1 app-region-no-drag",
         mobileSidebarSheetMounted && "hidden",
       )}
       data-workspace-titlebar-controls
@@ -1294,7 +1294,7 @@ export function PullRequestsPage() {
       )}
 
       {listError && shownCount > 0 ? (
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-warning/30 bg-warning-surface px-3 py-2 text-xs">
+        <div className="flex items-center justify-between gap-2 rounded-row border border-warning/30 bg-warning-surface px-2 py-2 text-meta">
           <span>{listError} Showing the last pull requests loaded.</span>
           <Button size="xs" variant="outline" onClick={() => listQuery.refresh()}>
             Retry
@@ -1302,7 +1302,7 @@ export function PullRequestsPage() {
         </div>
       ) : null}
       {listData?.truncated && entries.length > 0 ? (
-        <div className="flex justify-center py-3 text-xs text-muted-foreground">
+        <div className="flex justify-center py-2 text-meta text-ink-2">
           {loadingMore ? (
             <span className="flex items-center gap-2">
               <Spinner aria-hidden size="sm" />
@@ -1424,8 +1424,8 @@ export function PullRequestsPage() {
         aria-hidden
         className={cn(
           "shrink-0",
-          rightPanelState.isOpen ? "-ml-3 w-0" : "w-7 sm:w-5",
-          panelAnimationsActive && "transition-[width,margin] ease-out",
+          rightPanelState.isOpen ? "-ml-2 w-0" : "w-8 sm:w-5",
+          panelAnimationsActive && "transition ease-out",
         )}
         style={
           panelAnimationsActive
@@ -1442,7 +1442,7 @@ export function PullRequestsPage() {
         rightPanelPresent ? (
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-y-0 left-full w-7 [-webkit-app-region:no-drag]"
+            className="pointer-events-none absolute inset-y-0 left-full w-8 app-region-no-drag"
           />
         ) : (
           openPanelControls

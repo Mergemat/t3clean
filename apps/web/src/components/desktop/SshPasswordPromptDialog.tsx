@@ -172,7 +172,7 @@ function ActiveSshPasswordPrompt({
         </DialogHeader>
         <DialogPanel scrollFade={false}>
           <form
-            className="space-y-3"
+            className="space-y-2"
             id={formId}
             onSubmit={(event) => {
               event.preventDefault();
@@ -180,14 +180,14 @@ function ActiveSshPasswordPrompt({
             }}
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-medium text-foreground">{request.prompt}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-body font-medium text-ink-1">{request.prompt}</p>
                 {remainingLabel ? (
                   <span
                     className={
                       isExpired
-                        ? "shrink-0 text-xs font-medium text-destructive"
-                        : "shrink-0 text-xs text-muted-foreground"
+                        ? "shrink-0 text-meta font-medium text-destructive"
+                        : "shrink-0 text-meta text-ink-2"
                     }
                   >
                     {isExpired ? "Expired" : remainingLabel}
@@ -205,9 +205,9 @@ function ActiveSshPasswordPrompt({
               />
             </div>
             {visibleResponseError ? (
-              <p className="text-sm text-destructive">{visibleResponseError}</p>
+              <p className="text-body text-destructive">{visibleResponseError}</p>
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body text-ink-2">
                 SSH keys may replace a password, but your server can still require a verification
                 code.
               </p>

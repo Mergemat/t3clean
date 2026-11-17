@@ -7,7 +7,6 @@ import {
 } from "@t3tools/contracts";
 import { RegistryContext } from "@effect/atom-react";
 import {
-  createContext,
   memo,
   type ReactNode,
   useContext,
@@ -85,7 +84,6 @@ function lockBackgroundScroll(popup: HTMLElement | null) {
 }
 
 /** What a docked effort column needs from its picker: the model it serves. */
-export const DockedPickerContext = createContext<{ modelLabel: string }>({ modelLabel: "" });
 
 export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
   environmentId: EnvironmentId | null;
@@ -371,9 +369,7 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
           />
         }
       >
-        <span
-          className={cn("flex min-w-0 flex-1 items-center", size === "xs" ? "gap-1" : "gap-1.5")}
-        >
+        <span className={cn("flex min-w-0 flex-1 items-center", size === "xs" ? "gap-1" : "gap-2")}>
           {selectedEntries && props.triggerLabel === undefined ? (
             <span
               data-chat-provider-model-picker-icon
@@ -397,7 +393,7 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
                   ) : null,
                 )}
               {selectedEntries.length > 3 ? (
-                <span className="relative z-30 flex size-4 items-center justify-center rounded-full bg-(--chat-composer-glass-surface,var(--background)) text-3xs ring-2 ring-(--chat-composer-glass-surface,var(--background))">
+                <span className="relative z-30 flex size-4 items-center justify-center rounded-full bg-(--chat-composer-glass-surface,var(--background)) text-meta ring-2 ring-(--chat-composer-glass-surface,var(--background))">
                   +{selectedEntries.length - 3}
                 </span>
               ) : null}
@@ -416,7 +412,7 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
                 iconClassName={cn("size-4", props.activeProviderIconClassName)}
                 indicatorBackground={props.instanceIndicatorBackground ?? "var(--contrast-input)"}
                 badgeClassName={cn(
-                  "right-[-0.125rem] bottom-[-0.125rem] h-3 min-w-3 px-0.5 text-5xs",
+                  "-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta",
                   size === "xs" && "shadow-none",
                 )}
               />
@@ -460,15 +456,15 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
         touchBackdrop
       >
         {props.effortColumn ? (
-          <DockedPickerContext value={{ modelLabel: triggerTitle }}>
+          <>
             <div className="flex max-h-(--available-height) flex-col">
-              {/* One fixed height, so a model with more options never resizes the popup. Short
-                  windows shrink it and keep the footer. */}
-              <div className="flex h-86.5 min-h-0 max-sm:h-auto max-sm:flex-col">
+              {/* As tall as its content: the list sizes itself to its rows up to a cap, and the
+                  columns end together. Short windows shrink it and keep the footer. */}
+              <div className="flex min-h-0 max-sm:flex-col">
                 {picker}
                 <div
                   data-model-picker-effort
-                  className="flex min-h-0 w-48 flex-col sm:shrink-0 border-l border-border max-sm:h-64 max-sm:w-full max-sm:border-t max-sm:border-l-0"
+                  className="flex min-h-0 w-40 flex-col sm:shrink-0 max-sm:h-64 max-sm:w-full"
                   onKeyDown={(event) => {
                     if (event.key !== "ArrowLeft" || event.altKey || event.ctrlKey || event.metaKey)
                       return;
@@ -482,7 +478,7 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
               </div>
               {props.footer}
             </div>
-          </DockedPickerContext>
+          </>
         ) : (
           picker
         )}

@@ -19,12 +19,12 @@ export function ClerkUserProfilePage({
   readonly title: ReactNode;
 }) {
   return (
-    <div className={cn("w-full min-w-0 text-foreground", className)}>
-      <header className="flex flex-col gap-3 pb-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pr-8">
+    <div className={cn("w-full min-w-0 text-ink-1", className)}>
+      <header className="flex flex-col gap-2 pb-4 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:pr-6">
         <div className="min-w-0">
           <h2 className="text-base leading-6 font-semibold">{title}</h2>
           {description ? (
-            <p className="mt-1 max-w-[34rem] text-xs leading-4.5 text-muted-foreground sm:min-h-9">
+            <p className="mt-1 max-w-136 text-meta leading-4 text-ink-2 sm:min-h-8">
               {description}
             </p>
           ) : null}
@@ -73,10 +73,10 @@ export function ClerkUserProfileRow({
 }) {
   return (
     <li className={cn("border-t py-4 first:border-t-0", className)}>
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2">
         <div
           aria-hidden="true"
-          className="flex size-8 shrink-0 items-center justify-center rounded-lg border bg-muted/32 text-muted-foreground"
+          className="flex size-8 shrink-0 items-center justify-center rounded-row border bg-muted/32 text-ink-2"
         >
           {icon}
         </div>

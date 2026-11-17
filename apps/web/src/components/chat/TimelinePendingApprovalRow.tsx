@@ -49,14 +49,14 @@ export const TimelinePendingApprovalRow = memo(function TimelinePendingApprovalR
         <ToolActivityIconView
           icon={undefined}
           fallbackName={presentation.icon}
-          className="block size-4 shrink-0 stroke-2 text-icon-muted"
+          className="block size-4 shrink-0 stroke-2 text-ink-3"
           muted
         />
       }
       label={
         <code
           aria-label={presentation.detailLabel}
-          className="block max-h-40 min-w-0 overflow-auto whitespace-pre-wrap font-mono text-xs leading-5 text-foreground select-text! wrap-anywhere [scrollbar-width:thin] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
+          className="block max-h-40 min-w-0 overflow-auto whitespace-pre-wrap font-mono text-meta leading-5 text-ink-1 select-text! wrap-anywhere scrollbar-thin focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
           data-approval-detail="complete"
           tabIndex={0}
         >
@@ -64,12 +64,12 @@ export const TimelinePendingApprovalRow = memo(function TimelinePendingApprovalR
         </code>
       }
     >
-      <div className="ms-7.5 flex min-w-0 flex-col gap-1 pb-1 text-xs">
+      <div className="ms-6 flex min-w-0 flex-col gap-1 pb-1 text-meta">
         {approval.appName ? (
-          <span className="text-muted-foreground wrap-anywhere">{approval.appName}</span>
+          <span className="text-ink-2 wrap-anywhere">{approval.appName}</span>
         ) : null}
         {approval.reason ? (
-          <span className="text-muted-foreground select-text wrap-anywhere">{approval.reason}</span>
+          <span className="text-ink-2 select-text wrap-anywhere">{approval.reason}</span>
         ) : null}
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           {canRespond ? (
@@ -80,7 +80,7 @@ export const TimelinePendingApprovalRow = memo(function TimelinePendingApprovalR
               </span>
               {onRespondToApproval ? (
                 <>
-                  <span aria-hidden className="text-muted-foreground">
+                  <span aria-hidden className="text-ink-2">
                     ·
                   </span>
                   <ComposerPendingApprovalActions
@@ -109,7 +109,7 @@ export const TimelinePendingApprovalRow = memo(function TimelinePendingApprovalR
                 aria-label={FULL_ACCESS_OVERRIDE_QUESTION}
                 tooltipStyle
                 side="top"
-                className="max-w-[min(22rem,calc(100vw-2rem))] whitespace-normal"
+                className="max-w-(--viewport-inset) whitespace-normal min-[24rem]:max-w-88"
               >
                 {fullAccessOverrideExplanation(approval.fullAccessOverride)}
               </PopoverPopup>

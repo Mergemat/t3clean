@@ -9,30 +9,6 @@ import { ScrollArea } from "../ui/scroll-area";
 
 export type ComposerBannerVariant = "default" | "error" | "info" | "success" | "warning";
 
-const surfaceColors = cn(
-  "[--chat-composer-attached-surface:var(--chat-composer-glass-surface,var(--card))]",
-  "dark:[--chat-composer-attached-surface:var(--chat-composer-glass-surface,var(--surface-raised))]",
-  "[html[data-theme-id]_&]:[--chat-composer-attached-surface:var(--app-theme-surface-raised)]",
-);
-
-const neutralOutline = cn(
-  "[--chat-composer-attached-outline:var(--chat-composer-outline,color-mix(in_srgb,var(--contrast-foreground)_8%,transparent))]",
-  "dark:[--chat-composer-attached-outline:var(--chat-composer-outline,color-mix(in_srgb,var(--color-white)_5%,transparent))]",
-  "[html[data-theme-id]_&]:[--chat-composer-attached-outline:var(--chat-composer-outline,var(--app-theme-toolbar-border))]",
-  "dark:[html[data-theme-id]:not([data-theme-id=t3-chat])_&]:[--chat-composer-attached-outline:var(--chat-composer-outline,color-mix(in_srgb,var(--app-theme-input)_30%,var(--background)))]",
-  "dark:[html[data-theme-id=t3-chat]_&]:[--chat-composer-attached-outline:#241e28]",
-);
-
-const variantColors: Record<ComposerBannerVariant, string> = {
-  default: neutralOutline,
-  error:
-    "[--chat-composer-attached-outline:color-mix(in_srgb,var(--error)_32%,transparent)] [--chat-composer-attached-tint:color-mix(in_srgb,var(--error)_8%,transparent)]",
-  info: neutralOutline,
-  success: neutralOutline,
-  warning:
-    "[--chat-composer-attached-outline:color-mix(in_srgb,var(--warning)_28%,transparent)] [--chat-composer-attached-tint:color-mix(in_srgb,var(--warning)_8%,transparent)]",
-};
-
 /**
  * An attached surface tucks its bottom under the card below it. A detached one is a whole card
  * of its own, for a notice that sits apart from the composer.
@@ -51,13 +27,10 @@ function Surface({
       data-composer-banner-surface={detached ? "detached" : "attached"}
       data-variant={variant}
       className={cn(
-        surfaceColors,
-        "relative isolate border-0 bg-transparent shadow-none [--chat-composer-attached-tint:transparent]",
-        variantColors[variant],
+        "relative isolate border-0 bg-transparent shadow-none",
         detached
-          ? "[--chat-composer-attachment-overlap:0px] before:rounded-2xl"
-          : // Bleed the mask 1px past the seam to cover Chromium's fractional-pixel backdrop loss.
-            "[--chat-composer-attachment-overlap:calc(1rem+1px)] before:rounded-t-2xl before:mask-t-from-transparent before:mask-t-from-4 before:mask-t-to-black before:mask-t-to-4",
+          ? "before:rounded-box"
+          : "before:rounded-t-box before:mask-t-from-transparent before:mask-t-from-4 before:mask-t-to-black before:mask-t-to-4",
         "before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:border before:border-(--chat-composer-attached-outline)",
         "before:bg-(--chat-composer-attached-surface)/(--glass-opacity) before:bg-linear-to-b before:from-(--chat-composer-attached-tint) before:to-(--chat-composer-attached-tint) before:backdrop-blur-(--glass-blur) before:backdrop-saturate-(--glass-saturation)",
         "before:shadow-composer dark:before:shadow-composer-dark",
@@ -76,10 +49,8 @@ function Attachment({ className, ...props }: ComponentProps<"div">) {
     <div
       data-slot="composer-banner-attachment"
       className={cn(
-        "mx-auto -mb-[calc(1rem+1px)] w-[calc(100%-2*var(--chat-composer-drawer-inset))]",
-        // Only the banner touching the composer gets the dark seam shade; stacked ones would band.
-        "[&:has(+[data-slot=composer-banner-attachment])]:[--chat-composer-attached-seam:transparent]",
-        "[&+[data-slot=composer-banner-attachment]_[data-composer-banner-surface=attached]]:before:rounded-none [&+[data-slot=composer-banner-attachment]_[data-composer-banner-surface=attached]]:before:border-t-0 [&+[data-slot=composer-banner-attachment]_[data-composer-banner-surface=attached]]:[--composer-banner-corner-top:var(--control-radius)]",
+        "mx-(--chat-composer-drawer-inset)",
+        "[&+[data-slot=composer-banner-attachment]_[data-composer-banner-surface=attached]]:before:rounded-none [&+[data-slot=composer-banner-attachment]_[data-composer-banner-surface=attached]]:before:border-t-0",
         className,
       )}
       {...props}
@@ -104,7 +75,7 @@ function Column({ className, ...props }: ComponentProps<"div">) {
     <div
       className={cn(
         "flex min-w-0 flex-1 flex-col empty:hidden",
-        "[&>[data-slot=composer-banner-attachment]]:w-full [&>[data-slot=composer-banner-attachment]:last-child]:mb-0",
+        "[&>[data-slot=composer-banner-attachment]]:mx-0 [&>[data-slot=composer-banner-attachment]:last-child]:mb-0",
         className,
       )}
       {...props}
@@ -125,9 +96,9 @@ function Root({
   return (
     <Surface
       className={cn(
-        "min-w-0 px-1 py-(--composer-banner-padding-block) after:block after:h-(--chat-composer-attachment-overlap) text-xs/4 [--composer-banner-corner-top:var(--radius-xl)] [--composer-banner-icon-column:--spacing(7)] [--composer-banner-padding-block:--spacing(1)] sm:[--composer-banner-icon-column:--spacing(6)]",
-        density === "comfortable" && "[--composer-banner-padding-block:--spacing(1.25)]",
-        density === "spacious" && "px-3 [--composer-banner-padding-block:--spacing(3)]",
+        "min-w-0 px-1 py-1 after:block after:h-(--chat-composer-attachment-overlap) text-meta",
+        density === "comfortable" && "py-2",
+        density === "spacious" && "px-2 py-2",
         width === "content" ? "w-fit max-w-full flex-none" : "@container",
         // A corner button nests inside the banner's radius only when the padding
         // is tight; spacious padding already leaves the default radius concentric.
@@ -136,8 +107,8 @@ function Root({
           "[&>[data-composer-banner-row]:first-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-se-(--composer-banner-corner-top)",
           "[&>[data-composer-banner-row]:first-child>[data-slot=composer-banner-actions]>:last-child>[data-slot=button]:last-of-type]:rounded-se-(--composer-banner-corner-top)",
           "[&>:first-child>[data-composer-banner-row]:first-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-se-(--composer-banner-corner-top)",
-          "data-[composer-banner-surface=detached]:[&>[data-composer-banner-row]:only-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-ee-xl",
-          "data-[composer-banner-surface=detached]:[&>[data-composer-banner-row]:only-child>[data-slot=composer-banner-actions]>:last-child>[data-slot=button]:last-of-type]:rounded-ee-xl",
+          "data-[composer-banner-surface=detached]:[&>[data-composer-banner-row]:only-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-ee-box",
+          "data-[composer-banner-surface=detached]:[&>[data-composer-banner-row]:only-child>[data-slot=composer-banner-actions]>:last-child>[data-slot=button]:last-of-type]:rounded-ee-box",
         ],
         className,
       )}
@@ -159,12 +130,11 @@ function Row({
 }) {
   const rowProps = {
     className: cn(
-      "group/banner-row grid min-h-(--composer-banner-icon-column) w-full min-w-0 grid-cols-[var(--composer-banner-icon-column)_minmax(0,1fr)_auto] items-center gap-x-1 text-start",
-      "not-has-[>[data-slot=composer-banner-actions]]:grid-cols-[var(--composer-banner-icon-column)_minmax(0,1fr)]",
-      "[&:is(button)]:cursor-pointer [&:is(button)]:rounded-xl [&:is(button)]:hover:bg-foreground/5 [&:is(button)]:focus-visible:outline-2 [&:is(button)]:focus-visible:-outline-offset-2 [&:is(button)]:focus-visible:outline-ring",
-      layout === "wrap-actions" &&
-        "flex flex-wrap *:data-[slot=composer-banner-content]:max-w-[calc(100%-var(--composer-banner-icon-column)-var(--spacing))] *:data-[slot=composer-banner-content]:grow",
-      layout === "approval" && "items-start gap-x-2 gap-y-3",
+      "group/banner-row grid min-h-(--composer-banner-icon-column) w-full min-w-0 grid-cols-(--grid-lead-trail) items-center gap-x-1 text-start",
+      "not-has-[>[data-slot=composer-banner-actions]]:grid-cols-(--grid-lead)",
+      "[&:is(button)]:cursor-pointer [&:is(button)]:rounded-box [&:is(button)]:hover:bg-foreground/5 [&:is(button)]:focus-visible:outline-2 [&:is(button)]:focus-visible:-outline-offset-2 [&:is(button)]:focus-visible:outline-ring",
+      layout === "wrap-actions" && "flex flex-wrap *:data-[slot=composer-banner-content]:grow",
+      layout === "approval" && "items-start gap-x-2 gap-y-2",
       className,
     ),
     "data-composer-banner-row": "true",
@@ -183,8 +153,8 @@ function Icon({ className, ...props }: ComponentProps<"span">) {
       aria-hidden
       data-slot="composer-banner-icon"
       className={cn(
-        "col-start-1 row-start-1 flex w-(--composer-banner-icon-column) min-w-0 flex-none items-center justify-center text-muted-foreground [&>svg]:size-3",
-        "group-data-[composer-banner-layout=approval]/banner-row:pt-0.5 group-data-[composer-banner-layout=approval]/banner-row:text-warning group-data-[composer-banner-layout=approval]/banner-row:[&>svg]:size-4",
+        "col-start-1 row-start-1 flex w-(--composer-banner-icon-column) min-w-0 flex-none items-center justify-center text-ink-2 [&>svg]:size-3",
+        "group-data-[composer-banner-layout=approval]/banner-row:pt-1 group-data-[composer-banner-layout=approval]/banner-row:text-warning group-data-[composer-banner-layout=approval]/banner-row:[&>svg]:size-4",
         className,
       )}
       {...props}
@@ -199,8 +169,8 @@ function Content({ className, ...props }: ComponentProps<"span">) {
       className={cn(
         "col-start-2 row-start-1 flex min-w-0 items-center gap-1 *:data-[slot=composer-banner-separator]:mx-0",
         "@max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:col-end-4",
-        "group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:col-[1/3] group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:ps-2 sm:group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:ps-1.5",
-        "group-not-has-[>[data-slot=composer-banner-icon],>[data-slot=composer-banner-actions]]/banner-row:pe-2 sm:group-not-has-[>[data-slot=composer-banner-icon],>[data-slot=composer-banner-actions]]/banner-row:pe-1.5",
+        "group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:col-start-1 group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:col-end-3 group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:ps-2 sm:group-not-has-[>[data-slot=composer-banner-icon]]/banner-row:ps-2",
+        "group-not-has-[>[data-slot=composer-banner-icon],>[data-slot=composer-banner-actions]]/banner-row:pe-2 sm:group-not-has-[>[data-slot=composer-banner-icon],>[data-slot=composer-banner-actions]]/banner-row:pe-2",
         className,
       )}
       {...props}
@@ -213,7 +183,7 @@ function Separator() {
     <span
       aria-hidden
       data-slot="composer-banner-separator"
-      className="mx-1 inline-block flex-none text-muted-foreground/40"
+      className="mx-1 inline-block flex-none text-ink-3"
     >
       ·
     </span>
@@ -226,7 +196,7 @@ function Actions({ className, ...props }: ComponentProps<"span">) {
       data-slot="composer-banner-actions"
       className={cn(
         "col-start-3 row-start-1 flex flex-wrap items-center justify-end gap-1",
-        "group-data-[composer-banner-layout=approval]/banner-row:self-center group-data-[composer-banner-layout=approval]/banner-row:gap-1.5 @max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:col-start-2 @max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:col-end-4 @max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:row-start-2",
+        "group-data-[composer-banner-layout=approval]/banner-row:self-center group-data-[composer-banner-layout=approval]/banner-row:gap-2 @max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:col-start-2 @max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:col-end-4 @max-[560px]:group-data-[composer-banner-layout=approval]/banner-row:row-start-2",
         "group-data-[composer-banner-layout=wrap-actions]/banner-row:ms-auto",
         className,
       )}
@@ -248,12 +218,7 @@ function Children({ className, render, ...props }: useRender.ComponentProps<"div
 
 function Scroll({ className, children, ...props }: ComponentProps<typeof ScrollArea>) {
   return (
-    <ScrollArea
-      radius="none"
-      scrollFade
-      className={cn("h-auto max-h-[min(24rem,40dvh)]", className)}
-      {...props}
-    >
+    <ScrollArea radius="none" scrollFade className={cn("h-auto max-h-96", className)} {...props}>
       {}
       <div className="[[data-has-overflow-y]>&]:pe-2">{children}</div>
     </ScrollArea>
@@ -264,7 +229,7 @@ function Count({ className, ...props }: ComponentProps<"span">) {
   return (
     <span
       className={cn(
-        "inline-flex min-w-(--composer-banner-icon-column,1em) flex-none justify-center font-medium text-muted-foreground tabular-nums",
+        "inline-flex min-w-(--composer-banner-icon-column,1em) flex-none justify-center font-medium text-ink-2 tabular-nums",
         className,
       )}
       {...props}
@@ -273,13 +238,11 @@ function Count({ className, ...props }: ComponentProps<"span">) {
 }
 
 function Body({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("min-w-0 ps-8 sm:ps-7", className)} {...props} />;
+  return <div className={cn("min-w-0 ps-8 sm:ps-8", className)} {...props} />;
 }
 
 function Dot({ className, ...props }: ComponentProps<"span">) {
-  return (
-    <span className={cn("size-1.5 flex-none rounded-full bg-current", className)} {...props} />
-  );
+  return <span className={cn("size-2 flex-none rounded-full bg-current", className)} {...props} />;
 }
 
 function ToggleIcon({ expanded }: { expanded: boolean }) {
@@ -291,7 +254,7 @@ function ToggleIcon({ expanded }: { expanded: boolean }) {
       tabIndex={-1}
       className="pointer-events-none"
     >
-      <ChevronDownIcon className={cn("size-3.5", !expanded && "rotate-180")} />
+      <ChevronDownIcon className={cn("size-4", !expanded && "rotate-180")} />
     </Button>
   );
 }
@@ -299,7 +262,7 @@ function ToggleIcon({ expanded }: { expanded: boolean }) {
 function Dismiss({ className, children, ...props }: ComponentProps<typeof Button>) {
   return (
     <Button size="icon-xs" variant="ghost" className={className} {...props}>
-      {children ?? <XIcon className="size-3.5" />}
+      {children ?? <XIcon className="size-4" />}
     </Button>
   );
 }

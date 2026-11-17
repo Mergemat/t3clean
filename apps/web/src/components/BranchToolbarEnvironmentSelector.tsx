@@ -68,7 +68,7 @@ export const BranchToolbarEnvironmentSelector = memo(function BranchToolbarEnvir
   if (envLocked || (onEnvironmentChange === undefined && onAddToMachine === undefined)) {
     const lockedRow = (
       <span
-        className="inline-flex h-7 min-w-0 max-w-full items-center gap-1.5 border border-transparent px-1.75 font-normal text-muted-foreground/70 text-sm sm:h-6 sm:text-xs"
+        className="inline-flex h-6 min-w-0 max-w-full items-center gap-2 border border-transparent px-2 font-normal text-ink-2 text-body sm:h-6 sm:text-meta"
         data-composer-context-control
       >
         <EnvironmentMachineIcon
@@ -140,7 +140,7 @@ export const BranchToolbarEnvironmentSelector = memo(function BranchToolbarEnvir
                 if (autoEnvironmentLabel) onAutoEnvironment?.();
               }}
             >
-              <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-2">
                 <ScaleIcon className="size-3" aria-hidden="true" />
                 {autoEnvironmentLabel ?? "Auto balance"}
               </span>
@@ -152,7 +152,7 @@ export const BranchToolbarEnvironmentSelector = memo(function BranchToolbarEnvir
               value={environmentValue(env.environmentId)}
               disabled={onEnvironmentChange === undefined && env.environmentId !== environmentId}
             >
-              <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-2">
                 <EnvironmentMachineIcon kind={env.machine} className="size-3" />
                 {env.label}
               </span>

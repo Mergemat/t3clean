@@ -37,7 +37,7 @@ import { resolveComposerControlsOwnership } from "./composerControlsOwnership";
  * expanded footer or the resting controls host.
  */
 // Model and effort share one trigger; it stays filled while its popup is open.
-const MODEL_TRIGGER_STATES = "data-popup-open:bg-accent data-popup-open:text-foreground";
+const MODEL_TRIGGER_STATES = "data-popup-open:bg-accent data-popup-open:text-ink-1";
 
 export function ComposerControlsBar(props: {
   environmentId: EnvironmentId;
@@ -214,7 +214,7 @@ export function ComposerControlsBar(props: {
       triggerClassName={cn(
         "group/model-trigger",
         MODEL_TRIGGER_STATES,
-        composerControlsCollapsed ? "min-w-13 shrink text-xs!" : "min-w-13",
+        composerControlsCollapsed ? "min-w-12 shrink text-meta!" : "min-w-12",
       )}
       triggerSuffix={effort.suffix}
       triggerDetail={effort.detail}
@@ -280,7 +280,10 @@ export function ComposerControlsBar(props: {
                 "flex w-max min-w-max shrink-0 items-center gap-1",
                 hidden && "pointer-events-none invisible absolute",
                 index >= restingBlockDefs.length - iconOnlyBlockCount &&
-                  "[&_[data-composer-control-label]]:pointer-events-none [&_[data-composer-control-label]]:invisible [&_[data-composer-control-label]]:absolute [&_[data-composer-control-label]]:w-max [&_[data-composer-control-label]]:max-w-none [&_[data-composer-control-compact-icon]]:[visibility:inherit] [&_[data-composer-control-compact-icon]]:relative",
+                  "[&_[data-composer-control-label]]:pointer-events-none [&_[data-composer-control-label]]:invisible [&_[data-composer-control-label]]:absolute [&_[data-composer-control-label]]:w-max [&_[data-composer-control-label]]:max-w-none [&_[data-composer-control-compact-icon]]:relative",
+                !hidden &&
+                  index >= restingBlockDefs.length - iconOnlyBlockCount &&
+                  "[&_[data-composer-control-compact-icon]]:visible",
               )}
             >
               {def.content}

@@ -74,7 +74,7 @@ function DeviceHostDiagnostics(props: {
   const diagnostics = deviceHostDiagnostics(props.hosts, props.hostStatuses);
   if (diagnostics.length === 0) return null;
   return (
-    <div role="status" className={cn("space-y-1 text-xs text-muted-foreground", props.className)}>
+    <div role="status" className={cn("space-y-1 text-meta text-ink-2", props.className)}>
       {diagnostics.map(({ hostId, label, detail }) => (
         <p key={hostId} className="whitespace-pre-line break-words">
           {label}: {detail}
@@ -191,10 +191,10 @@ export function DeviceSetup(props: {
       <WizardPanel>
         <DeviceHostUpdates state={props.state} environmentId={props.environmentId} />
         {step === 0 ? (
-          <section className="space-y-3 text-sm">
+          <section className="space-y-2 text-body">
             <h3 className="font-medium">Enable the device hub</h3>
-            <div className="flex items-start justify-between gap-4">
-              <p className="text-muted-foreground">{deviceHubDescription}</p>
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-ink-2">{deviceHubDescription}</p>
               <Switch
                 checked={enabled}
                 disabled={!canConfigure || busy || pending !== null}
@@ -215,7 +215,7 @@ export function DeviceSetup(props: {
         ) : null}
 
         {step === 1 || (step === 0 && enabled && localPlatformsUnavailable) ? (
-          <section className={cn("space-y-3 text-sm", step === 0 && "mt-4")}>
+          <section className={cn("space-y-2 text-body", step === 0 && "mt-2")}>
             <h3 className="font-medium">Check simulator support</h3>
             <DevicePlatformSetup
               state={props.state}
@@ -232,10 +232,10 @@ export function DeviceSetup(props: {
         ) : null}
 
         {step === 2 ? (
-          <section className="space-y-3 text-sm">
+          <section className="space-y-2 text-body">
             <h3 className="font-medium">Allow agent control</h3>
-            <div className="flex items-start justify-between gap-4">
-              <p className="text-muted-foreground">{agentDeviceDescription}</p>
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-ink-2">{agentDeviceDescription}</p>
               <Switch
                 checked={props.state.agentAccessEnabled}
                 disabled={!canConfigure || !enabled || busy || pending !== null}
@@ -246,13 +246,13 @@ export function DeviceSetup(props: {
               />
             </div>
             <AgentDeviceSetupStatus state={props.state} pending={pending === "agent"} />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               Leave this off to keep manual device controls without giving agents access.
             </p>
           </section>
         ) : null}
         {props.state.hostStatus === "failed" && props.state.hostStatusDetail ? (
-          <p role="alert" className="mt-3 text-xs text-destructive">
+          <p role="alert" className="mt-2 text-meta text-destructive">
             {props.state.hostStatusDetail}
           </p>
         ) : null}
@@ -298,7 +298,7 @@ export function DeviceHubSetupStatus({
 }) {
   if (!pending && !deviceHubReadiness(state).ready) return null;
   return (
-    <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
+    <p role="status" className="flex items-center gap-2 text-meta text-ink-2">
       {pending ? <Spinner size="xs" /> : <Check className="size-3 text-success" />}
       {pending
         ? state.hostStatus === "installing"
@@ -324,14 +324,14 @@ function DevicePlatformSetup(props: {
   readonly onCheck: () => void;
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <PlatformStatus platform="iOS" status={platformSetupStatus(props.state, "ios")} />
       <PlatformStatus platform="Android" status={platformSetupStatus(props.state, "android")} />
       <DeviceHostDiagnostics hosts={props.state.hosts} hostStatuses={props.state.hostStatuses} />
-      <p className="text-xs text-muted-foreground">
+      <p className="text-meta text-ink-2">
         You can use either platform. Fixing a missing platform does not block the other one.
       </p>
-      <Button size="compact" variant="outline" disabled={props.disabled} onClick={props.onCheck}>
+      <Button size="sm" variant="outline" disabled={props.disabled} onClick={props.onCheck}>
         {props.checking ? <Spinner size="xs" /> : null}
         {props.checking ? "Checking…" : "Check again"}
       </Button>
@@ -358,7 +358,7 @@ export function AgentDeviceSetupStatus(props: {
             ? "Updating…"
             : "Updating agent access…";
     return (
-      <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
+      <p role="status" className="flex items-center gap-2 text-meta text-ink-2">
         <Spinner size="xs" />
         {label}
       </p>
@@ -370,7 +370,7 @@ export function AgentDeviceSetupStatus(props: {
     props.state.hosts.some((host) => host.agentDeviceInstalled)
   ) {
     return (
-      <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
+      <p role="status" className="flex items-center gap-2 text-meta text-ink-2">
         <Check className="size-3 text-success" />
         Agent tools are ready.
       </p>
@@ -386,16 +386,19 @@ function PlatformStatus(props: {
 }) {
   return (
     <div
-      className={cn("flex gap-2", !props.compact && "rounded-md border border-border/60 px-3 py-2")}
+      className={cn(
+        "flex gap-2",
+        !props.compact && "rounded-row border border-border/60 px-2 py-2",
+      )}
     >
       {props.status.ready ? (
-        <Check className="mt-0.5 size-4 shrink-0 text-success" />
+        <Check className="h-lh w-4 shrink-0 text-success" />
       ) : (
-        <CircleAlert className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+        <CircleAlert className="h-lh w-4 shrink-0 text-ink-2" />
       )}
       <div className={cn(props.compact && props.status.ready && "flex items-center gap-2")}>
         <p className="font-medium">{props.platform}</p>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-meta text-ink-2">
           {props.compact && props.status.ready ? "Ready" : props.status.message}
         </p>
       </div>

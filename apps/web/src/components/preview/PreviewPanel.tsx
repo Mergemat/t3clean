@@ -36,8 +36,8 @@ export function PreviewPanel({
   if (!canOperatePreview || !available) {
     return (
       <PreviewPanelShell mode={mode}>
-        <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
-          <p className="max-w-sm text-sm text-muted-foreground">
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-2 p-6 text-center">
+          <p className="max-w-sm text-body text-ink-2">
             {canOperatePreview
               ? "Preview is only available in the T3 Code desktop app."
               : "Pair this client again with preview access to control browser previews."}

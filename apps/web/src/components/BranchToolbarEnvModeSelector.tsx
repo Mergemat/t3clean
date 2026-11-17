@@ -73,7 +73,7 @@ export const BranchToolbarEnvModeSelector = memo(function BranchToolbarEnvModeSe
   if (envLocked || forceNewWorktree) {
     const lockedRow = (
       <span
-        className="inline-flex h-7 min-w-0 items-center gap-1.5 border border-transparent px-1.75 font-normal text-muted-foreground/70 text-sm sm:h-6 sm:text-xs"
+        className="inline-flex h-6 min-w-0 items-center gap-2 border border-transparent px-2 font-normal text-ink-2 text-body sm:h-6 sm:text-meta"
         data-composer-context-control
       >
         {activeWorktreePath ? (
@@ -151,12 +151,12 @@ export const BranchToolbarEnvModeSelector = memo(function BranchToolbarEnvModeSe
       <SelectPopup
         alignItemWithTrigger={false}
         {...composerFloatingLayerProps}
-        className={showPreviousWorktree ? "w-[min(21rem,calc(100vw-2rem))]" : undefined}
+        className={showPreviousWorktree ? "w-84 max-w-(--viewport-inset)" : undefined}
       >
         <SelectGroup>
           <SelectGroupLabel>Workspace</SelectGroupLabel>
           <SelectItem value="local">
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               {activeWorktreePath ? (
                 <FolderGitIcon className="size-3" />
               ) : (
@@ -166,7 +166,7 @@ export const BranchToolbarEnvModeSelector = memo(function BranchToolbarEnvModeSe
             </span>
           </SelectItem>
           <SelectItem value="worktree">
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               <FolderGit2Icon className="size-3" />
               {resolveEnvModeLabel("worktree")}
             </span>

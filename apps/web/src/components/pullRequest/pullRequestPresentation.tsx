@@ -91,7 +91,7 @@ function reviewDecisionPresentation(decision: PullRequestReviewDecision) {
       return {
         Icon: UserRoundIcon,
         label: "Awaiting review",
-        toneClassName: "text-muted-foreground/60",
+        toneClassName: "text-ink-3",
       };
   }
 }
@@ -105,7 +105,7 @@ export function PullRequestReviewDecisionGlyph({
   return (
     <Tooltip>
       <TooltipTrigger render={<span className="inline-flex shrink-0" />}>
-        <presentation.Icon aria-hidden className={cn("size-3.5", presentation.toneClassName)} />
+        <presentation.Icon aria-hidden className={cn("size-4", presentation.toneClassName)} />
         <span className="sr-only">{presentation.label}</span>
       </TooltipTrigger>
       <TooltipPopup>{presentation.label}</TooltipPopup>
@@ -217,10 +217,10 @@ const CHECK_STATUS_PRESENTATION = {
   cancelled: {
     label: "Cancelled",
     Icon: OctagonXIcon,
-    toneClassName: "text-muted-foreground/70",
+    toneClassName: "text-ink-2",
   },
-  skipped: { label: "Skipped", Icon: CircleSlashIcon, toneClassName: "text-muted-foreground/70" },
-  neutral: { label: "Neutral", Icon: CircleDashedIcon, toneClassName: "text-muted-foreground/70" },
+  skipped: { label: "Skipped", Icon: CircleSlashIcon, toneClassName: "text-ink-2" },
+  neutral: { label: "Neutral", Icon: CircleDashedIcon, toneClassName: "text-ink-2" },
 } as const satisfies Record<
   PullRequestCheckStatus,
   { label: string; Icon: typeof CircleCheckIcon | typeof Spinner; toneClassName: string }
@@ -245,10 +245,7 @@ export function pullRequestCheckStatusLabel(
 export function PullRequestCheckStatusIcon({ status }: { status: PullRequestCheckStatus }) {
   const presentation = CHECK_STATUS_PRESENTATION[status];
   return (
-    <presentation.Icon
-      aria-hidden
-      className={cn("size-3.5 shrink-0", presentation.toneClassName)}
-    />
+    <presentation.Icon aria-hidden className={cn("size-4 shrink-0", presentation.toneClassName)} />
   );
 }
 
@@ -310,7 +307,7 @@ const REVIEW_OUTCOME_PRESENTATION = {
   dismissed: {
     label: "Review dismissed",
     Icon: CircleDashedIcon,
-    toneClassName: "text-muted-foreground/70",
+    toneClassName: "text-ink-2",
     ringClassName: "ring-2 ring-muted-foreground/60",
     staleRingClassName:
       "ring-2 ring-[color-mix(in_srgb,var(--contrast-muted-foreground)_30%,var(--background))]",
@@ -358,7 +355,7 @@ export function PullRequestReviewOutcomeIcon({
   return (
     <presentation.Icon
       aria-hidden
-      className={cn("size-3.5 shrink-0", presentation.toneClassName, className)}
+      className={cn("size-4 shrink-0", presentation.toneClassName, className)}
     />
   );
 }
@@ -421,7 +418,7 @@ export function PullRequestActorAvatar({
     <span
       aria-hidden
       className={cn(
-        "flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-3xs font-medium text-muted-foreground",
+        "flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-meta font-medium text-ink-2",
         className,
       )}
     >
@@ -454,9 +451,9 @@ export function PullRequestActorLabel({
 }) {
   const login = actor?.login ?? "ghost";
   const label = (
-    <span className={cn("flex min-w-0 items-baseline", variant === "label" && "gap-1.5")}>
+    <span className={cn("flex min-w-0 items-baseline", variant === "label" && "gap-2")}>
       <PullRequestActorAvatar actor={actor} className="self-center" />
-      <span className={variant === "label" ? "truncate font-medium text-foreground" : "sr-only"}>
+      <span className={variant === "label" ? "truncate font-medium text-ink-1" : "sr-only"}>
         {login}
       </span>
     </span>
@@ -527,16 +524,12 @@ export function PullRequestMetaLine({
 }) {
   const segments = Children.toArray(children);
   return (
-    <span className={cn("flex min-w-0 items-center gap-1.5", className)}>
+    <span className={cn("flex min-w-0 items-center gap-2", className)}>
       {segments.flatMap((segment, index) =>
         index === 0
           ? segment
           : [
-              <span
-                aria-hidden
-                className="shrink-0 text-muted-foreground/50"
-                key={separatorKey(segment)}
-              >
+              <span aria-hidden className="shrink-0 text-ink-3" key={separatorKey(segment)}>
                 ·
               </span>,
               segment,

@@ -278,7 +278,7 @@ export function DraftHeroHeadline({
                   <ProjectFavicon project={entry.group} className="size-4 shrink-0" />
                 ) : null}
                 <Tooltip>
-                  <TooltipTrigger render={<span className="min-w-0 flex-1 text-sm" />}>
+                  <TooltipTrigger render={<span className="min-w-0 flex-1 text-body" />}>
                     <DraftProjectName value={item.label} />
                   </TooltipTrigger>
                   <TooltipPopup side="top">{item.label}</TooltipPopup>
@@ -308,7 +308,7 @@ export function DraftHeroHeadline({
     <button
       type="button"
       onClick={openAddProject}
-      className="pointer-events-auto inline min-w-0 max-w-full cursor-pointer border-muted-foreground/35 border-b border-dotted text-muted-foreground/60 transition-colors hover:border-muted-foreground/60 hover:text-muted-foreground/80 focus-visible:rounded-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+      className="pointer-events-auto inline min-w-0 max-w-full cursor-pointer border-muted-foreground/35 border-b border-dotted text-ink-3 transition-colors hover:border-muted-foreground/60 hover:text-ink-2 focus-visible:rounded-row focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
     >
       <DraftProjectName value={activeProjectTitle ?? "Add a project"} singleLine />
     </button>
@@ -358,7 +358,7 @@ export function DraftHeroHeadline({
           {projectSelector}
         </DraftHeroProjectHeading>
       ) : (
-        <h1 className="w-full text-center font-normal text-2xl text-foreground tracking-tight sm:text-3xl">
+        <h1 className="w-full text-center font-normal text-title text-ink-1 tracking-tight sm:text-3xl">
           {isScratchDraft ? (
             <>What should we work on?</>
           ) : canChooseProject ? (
@@ -369,7 +369,7 @@ export function DraftHeroHeadline({
         </h1>
       )}
       {scratchWorkspaceRoot === null ? null : (
-        <p className="mt-2 flex h-6 w-full items-center justify-center text-sm">
+        <p className="mt-2 flex h-6 w-full items-center justify-center text-body">
           {isScratchDraft ? projectSelector : orStartWithoutProject}
         </p>
       )}

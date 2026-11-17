@@ -25,17 +25,14 @@ export const VoiceWaveform = memo(function VoiceWaveform(props: { level: number 
   }, [prefersReducedMotion, props.level]);
 
   return (
-    <div
-      aria-hidden
-      className="flex h-4 min-w-0 flex-1 items-center justify-end gap-0.5 overflow-hidden"
-    >
+    <div aria-hidden className="flex h-4 min-w-0 flex-1 items-center justify-end overflow-hidden">
       {WAVEFORM_BAR_IDS.map((id, index) => (
         <span
           key={id}
           ref={(bar) => {
             barsRef.current[index] = bar;
           }}
-          className="h-full w-0.5 shrink-0 origin-center rounded-full bg-foreground opacity-35 transition-[transform,opacity] duration-100 ease-out motion-reduce:transition-none"
+          className="h-full w-1 shrink-0 origin-center rounded-full bg-foreground opacity-35 transition duration-100 ease-out motion-reduce:transition-none"
           style={{ transform: `scaleY(${prefersReducedMotion ? 0.4 : WAVEFORM_REST_SCALE})` }}
         />
       ))}
@@ -44,8 +41,9 @@ export const VoiceWaveform = memo(function VoiceWaveform(props: { level: number 
 });
 
 /**
- * The capsule every dictation state renders in. Default matches the composer's send button
- * and insets its pill buttons; compact matches the `xs` buttons in text-field action rows.
+ * The capsule every dictation state renders in. Its buttons sit flush, so it takes their height
+ * and corner: default matches the composer's `icon-sm` controls, compact the `xs` buttons in
+ * text-field action rows.
  */
 export function VoiceInputPill({
   children,
@@ -60,11 +58,11 @@ export function VoiceInputPill({
     <div
       data-slot="voice-input-pill"
       className={cn(
-        "flex min-w-0 items-center gap-1.5 ring-1 ring-inset",
+        "flex min-w-0 items-center gap-2 ring-1 ring-inset",
         size === "compact"
           ? // Phones give the capsule its own row so the field's buttons stay together below it.
-            "h-7 rounded-md max-sm:order-first max-sm:basis-full sm:h-6"
-          : "h-9 max-w-fit grow-[1.5] basis-0 rounded-full p-0.5 sm:h-8",
+            "h-6 rounded-row max-sm:order-first max-sm:basis-full sm:h-6"
+          : "h-8 max-w-fit grow-2 basis-0 rounded-row",
         tone === "error"
           ? "bg-destructive/6 text-destructive ring-destructive/24"
           : "bg-muted/48 ring-border",

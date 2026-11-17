@@ -19,7 +19,7 @@ import ChatMarkdown from "../ChatMarkdown";
 import { assetMediaActionsSource } from "./ChatMarkdownMedia";
 import { Minimize2Icon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { getVirtualizedScrollFadeClassName } from "../ui/scroll-area";
+import { virtualizedScrollFadeProps } from "../ui/scroll-area";
 import {
   liveWorkEntryLabel,
   resolveWorkGroupScrollIndex,
@@ -332,10 +332,8 @@ function ExpandedWorkGroupEntries({
           aria-label="Tool calls"
           data-tool-group-scroll
           style={{ maxHeight: `calc(min(18rem, 50dvh) + ${expandedContentHeight}px)` }}
-          className={cn(
-            "scrollbar-gutter-stable scroll-py-6 overflow-x-hidden rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70",
-            getVirtualizedScrollFadeClassName(fades),
-          )}
+          className="virtualized-scroll-fade scrollbar-gutter-stable scroll-py-6 overflow-x-hidden rounded-row focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
+          {...virtualizedScrollFadeProps(fades)}
         />
       </WorkLogList>
     </WorkGroupViewCtx>
@@ -361,8 +359,8 @@ export function WorkingTimelineRow({ row }: { row: Extract<TimelineRow, { kind: 
     "Working..."
   );
   return (
-    <div className="border-b border-border/60 pb-2 pt-1">
-      <div className="flex h-6 min-w-0 items-baseline gap-2 px-1 text-sm leading-relaxed text-muted-foreground tabular-nums">
+    <div className="pb-2 pt-1">
+      <div className="flex h-6 min-w-0 items-baseline gap-2 px-1 text-body leading-relaxed text-ink-2 tabular-nums">
         <span
           ref={shimmer ? observeVisibleAnimation : undefined}
           className="relative shrink-0 overflow-hidden whitespace-nowrap"
@@ -390,7 +388,7 @@ function BackgroundWorktreeSetupChip({ snapshot }: { snapshot: WorktreeSetupSnap
         render={
           <Button
             variant="ghost-muted"
-            size="micro"
+            size="xs"
             className="ml-auto min-w-0 shrink-0"
             aria-label={`Background setup is still running: ${scriptName}. Show setup progress.`}
           />
@@ -414,7 +412,7 @@ function BackgroundWorktreeSetupChip({ snapshot }: { snapshot: WorktreeSetupSnap
 
 function CompactingLabel({ createdAt }: { createdAt: string | null }) {
   return (
-    <span className="inline-flex items-center gap-1.5">
+    <span className="inline-flex items-center gap-2">
       <Minimize2Icon aria-hidden="true" className="size-3" />
       {createdAt ? (
         <span>
@@ -447,7 +445,7 @@ export function ThinkingTimelineRow({ row }: { row: Extract<TimelineRow, { kind:
   return (
     <button
       type="button"
-      className="group/live-work flex min-h-6 w-full max-w-full cursor-pointer items-center rounded-md text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
+      className="group/live-work flex min-h-6 w-full max-w-full cursor-pointer items-center rounded-row text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70"
       aria-expanded={row.expanded === true}
       onClick={() => ctx.onToggleWorkGroup(groupId, row.id)}
     >
@@ -476,7 +474,7 @@ function LiveActivityRow({
   return (
     <div
       ref={animated ? observeVisibleAnimation : undefined}
-      className="relative min-h-6 w-fit max-w-full min-w-0 overflow-hidden rounded-md text-sm leading-relaxed"
+      className="relative min-h-6 w-fit max-w-full min-w-0 overflow-hidden rounded-row text-body leading-relaxed"
     >
       <LiveActivityContent
         label={label}
@@ -522,11 +520,7 @@ function LiveActivityContent({
           <span
             className={cn(
               "flex size-4 items-center justify-center",
-              failed
-                ? failedToolIconClassName
-                : highlighted
-                  ? "text-foreground"
-                  : "text-icon-muted",
+              failed ? failedToolIconClassName : highlighted ? "text-ink-1" : "text-ink-3",
             )}
             role={announceFailure ? "img" : undefined}
             aria-label={announceFailure ? "Tool call failed" : undefined}
@@ -542,11 +536,7 @@ function LiveActivityContent({
       }
       label={
         <span
-          className={cn(
-            "block truncate",
-            highlighted && "text-foreground",
-            active && "live-tool-shine",
-          )}
+          className={cn("block truncate", highlighted && "text-ink-1", active && "live-tool-shine")}
         >
           {label}
         </span>
@@ -586,7 +576,7 @@ export function LiveWorkEntryTimelineRow({
     <button
       type="button"
       className={cn(
-        "group/live-work flex w-full max-w-full cursor-pointer rounded-md text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70",
+        "group/live-work flex w-full max-w-full cursor-pointer rounded-row text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70",
         thoughtLine ? "flex-col items-start" : "min-h-6 items-center",
       )}
       aria-label={
@@ -600,7 +590,7 @@ export function LiveWorkEntryTimelineRow({
       {thoughtLine ? (
         <WorkLogRow
           icon={
-            <span className="flex size-4 items-center justify-center text-icon-muted">
+            <span className="flex size-4 items-center justify-center text-ink-3">
               <ToolActivityIconView
                 icon={undefined}
                 fallbackName="brain"
@@ -697,7 +687,7 @@ function WorkGroupHeader(props: {
         <ToolActivityIconView
           icon={props.toolIcon}
           fallbackName={props.iconName}
-          className="size-4 shrink-0 stroke-2 text-icon-muted"
+          className="size-4 shrink-0 stroke-2 text-ink-3"
           muted
         />
       }

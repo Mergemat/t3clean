@@ -1113,8 +1113,8 @@ export function PreviewView({
               className="absolute inset-0 h-full w-full"
             />
           ) : (
-            <div className="flex h-full items-center justify-center p-8 text-center">
-              <p className="max-w-sm text-sm text-muted-foreground">
+            <div className="flex h-full items-center justify-center p-6 text-center">
+              <p className="max-w-sm text-body text-ink-2">
                 This tab is open in the T3 Code desktop app.
               </p>
             </div>
