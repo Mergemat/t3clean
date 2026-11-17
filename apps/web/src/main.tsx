@@ -13,6 +13,11 @@ import { reloadOnceForChunkLoadError } from "./lib/chunkReloadGuard";
 
 const router = startAppServices();
 
+// Development mode only: tests run this entry in Node, where the shortcut has no window.
+if (import.meta.env.MODE === "development") {
+  void import("./lib/gridOverlay").then((module) => module.installGridShortcut());
+}
+
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined;
 
 let reloadScheduled = false;

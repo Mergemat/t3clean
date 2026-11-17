@@ -8,7 +8,7 @@ const SCROLLS_VERTICALLY = /(?:^|:)overflow-(?:y-)?auto$/u;
 // unprotected.
 const RESERVES_GUTTER =
   /^(?:scrollbar-gutter-(?:stable|both)|\[scrollbar-gutter:stable(?:_both-edges)?\])$/u;
-const HIDES_SCROLLBAR = /^\[scrollbar-width:none\]$/u;
+const HIDES_SCROLLBAR = /^(?:\[scrollbar-width:none\]|scrollbar-none)$/u;
 const CENTERED_BY_MARGIN = /(?:^|:)mx?-auto$/u;
 const COLUMN = /(?:^|:)flex-col(?:-reverse)?$/u;
 const ALWAYS_COLUMN = /^flex-col(?:-reverse)?$/u;

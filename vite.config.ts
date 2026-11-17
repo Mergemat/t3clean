@@ -90,6 +90,22 @@ const RESTRICTED_PULL_REQUEST_GLYPH_IMPORTS = {
     "Pick a glyph by meaning from PullRequestGlyph in apps/web/src/components/pullRequest/pullRequestIcons.tsx so every surface draws the same pull request the same way.",
 };
 
+// The grid's corner rings (apps/web/DESIGN.md). shadcn's lint grammar only knows Tailwind's own
+// radius names, so the rings are declared here as shape classes.
+const SYSTEM_SHAPE_CLASSES = [
+  "",
+  "-t",
+  "-b",
+  "-l",
+  "-r",
+  "-s",
+  "-e",
+  "-tl",
+  "-tr",
+  "-bl",
+  "-br",
+].flatMap((side) => ["chip", "row", "box", "region"].map((radius) => `rounded${side}-${radius}`));
+
 // Vite+ supports remote configuration before its published types include it.
 const cacheUrl = remoteCacheUrl(import.meta.dirname);
 const taskCacheConfig = {
@@ -543,23 +559,14 @@ export default defineConfig({
         rules: { "shadcn/no-raw-colors": "off" },
       },
       {
+        // Every value comes from a scale or a named token, primitives included; rerun
+        // scripts/tokenize-classes.ts after merging upstream. Only brand marks keep raw colours.
         files: ["apps/web/src/**"],
-        excludeFiles: ["apps/web/src/components/ui/**"],
         rules: {
-          "shadcn/require-static-classes": "error",
           "shadcn/no-arbitrary-values": [
             "error",
             {
               allow: [
-                "layout",
-                "transition",
-                "rounded-[inherit]",
-                "gap-[0.33em]",
-                "gap-[0.2em]",
-                "leading-[normal]",
-                "underline-offset-[0.2em]",
-                "rounded-[25%]",
-                "text-[length:80cqh]",
                 "bg-[Highlight]",
                 "fill-[#26251E]",
                 "fill-[#EDECEC]",
@@ -570,15 +577,32 @@ export default defineConfig({
               ],
             },
           ],
+        },
+      },
+      {
+        files: ["apps/web/src/**"],
+        excludeFiles: ["apps/web/src/components/ui/**"],
+        rules: {
+          "shadcn/require-static-classes": "error",
           "shadcn/no-restyle": [
             "error",
             {
-              allow: ["layout"],
+              // app-region marks what the window can be dragged by; it is behaviour, not style.
+              allow: ["layout", "app-region-no-drag"],
               contracts: [
                 {
                   // CollapsibleTrigger has no styled counterpart; other triggers use render={<Button …/>}.
                   pattern: "^CollapsibleTrigger$",
-                  allow: ["layout", "color", "typography", "spacing", "shape", "effects", "motion"],
+                  allow: [
+                    "layout",
+                    "color",
+                    "typography",
+                    "spacing",
+                    "shape",
+                    "effects",
+                    "motion",
+                    ...SYSTEM_SHAPE_CLASSES,
+                  ],
                 },
               ],
             },

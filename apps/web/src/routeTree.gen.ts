@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as PairRouteImport } from './routes/pair'
 import { Route as GuestRouteImport } from './routes/guest'
+import { Route as DesignLabRouteImport } from './routes/design-lab'
 import { Route as ConnectAgentRouteImport } from './routes/connect-agent'
 import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as ApproveAgentRouteImport } from './routes/approve-agent'
@@ -19,7 +20,6 @@ import { Route as ChatRouteImport } from './routes/_chat'
 import { Route as ChatIndexRouteImport } from './routes/_chat.index'
 import { Route as ProjectsProjectKeyRouteImport } from './routes/projects.$projectKey'
 import { Route as ChatUsageRouteImport } from './routes/_chat.usage'
-import { Route as ChatUiLabRouteImport } from './routes/_chat.ui-lab'
 import { Route as ChatSettingsRouteImport } from './routes/_chat.settings'
 import { Route as ChatPullRequestsRouteImport } from './routes/_chat.pull-requests'
 import { Route as ChatNewRouteImport } from './routes/_chat.new'
@@ -69,6 +69,11 @@ const GuestRoute = GuestRouteImport.update({
   path: '/guest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DesignLabRoute = DesignLabRouteImport.update({
+  id: '/design-lab',
+  path: '/design-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConnectAgentRoute = ConnectAgentRouteImport.update({
   id: '/connect-agent',
   path: '/connect-agent',
@@ -101,11 +106,6 @@ const ProjectsProjectKeyRoute = ProjectsProjectKeyRouteImport.update({
 const ChatUsageRoute = ChatUsageRouteImport.update({
   id: '/usage',
   path: '/usage',
-  getParentRoute: () => ChatRoute,
-} as any)
-const ChatUiLabRoute = ChatUiLabRouteImport.update({
-  id: '/ui-lab',
-  path: '/ui-lab',
   getParentRoute: () => ChatRoute,
 } as any)
 const ChatSettingsRoute = ChatSettingsRouteImport.update({
@@ -285,13 +285,13 @@ export interface FileRoutesByFullPath {
   '/approve-agent': typeof ApproveAgentRoute
   '/connect': typeof ConnectRoute
   '/connect-agent': typeof ConnectAgentRoute
+  '/design-lab': typeof DesignLabRoute
   '/guest': typeof GuestRoute
   '/pair': typeof PairRoute
   '/welcome': typeof WelcomeRoute
   '/new': typeof ChatNewRoute
   '/pull-requests': typeof ChatPullRequestsRoute
   '/settings': typeof ChatSettingsRouteWithChildren
-  '/ui-lab': typeof ChatUiLabRoute
   '/usage': typeof ChatUsageRoute
   '/projects/$projectKey': typeof ProjectsProjectKeyRoute
   '/$environmentId/$threadId': typeof ChatEnvironmentIdThreadIdRoute
@@ -329,13 +329,13 @@ export interface FileRoutesByTo {
   '/approve-agent': typeof ApproveAgentRoute
   '/connect': typeof ConnectRoute
   '/connect-agent': typeof ConnectAgentRoute
+  '/design-lab': typeof DesignLabRoute
   '/guest': typeof GuestRoute
   '/pair': typeof PairRoute
   '/welcome': typeof WelcomeRoute
   '/new': typeof ChatNewRoute
   '/pull-requests': typeof ChatPullRequestsRoute
   '/settings': typeof ChatSettingsRouteWithChildren
-  '/ui-lab': typeof ChatUiLabRoute
   '/usage': typeof ChatUsageRoute
   '/projects/$projectKey': typeof ProjectsProjectKeyRoute
   '/': typeof ChatIndexRoute
@@ -376,13 +376,13 @@ export interface FileRoutesById {
   '/approve-agent': typeof ApproveAgentRoute
   '/connect': typeof ConnectRoute
   '/connect-agent': typeof ConnectAgentRoute
+  '/design-lab': typeof DesignLabRoute
   '/guest': typeof GuestRoute
   '/pair': typeof PairRoute
   '/welcome': typeof WelcomeRoute
   '/_chat/new': typeof ChatNewRoute
   '/_chat/pull-requests': typeof ChatPullRequestsRoute
   '/_chat/settings': typeof ChatSettingsRouteWithChildren
-  '/_chat/ui-lab': typeof ChatUiLabRoute
   '/_chat/usage': typeof ChatUsageRoute
   '/projects/$projectKey': typeof ProjectsProjectKeyRoute
   '/_chat/': typeof ChatIndexRoute
@@ -424,13 +424,13 @@ export interface FileRouteTypes {
     | '/approve-agent'
     | '/connect'
     | '/connect-agent'
+    | '/design-lab'
     | '/guest'
     | '/pair'
     | '/welcome'
     | '/new'
     | '/pull-requests'
     | '/settings'
-    | '/ui-lab'
     | '/usage'
     | '/projects/$projectKey'
     | '/$environmentId/$threadId'
@@ -468,13 +468,13 @@ export interface FileRouteTypes {
     | '/approve-agent'
     | '/connect'
     | '/connect-agent'
+    | '/design-lab'
     | '/guest'
     | '/pair'
     | '/welcome'
     | '/new'
     | '/pull-requests'
     | '/settings'
-    | '/ui-lab'
     | '/usage'
     | '/projects/$projectKey'
     | '/'
@@ -514,13 +514,13 @@ export interface FileRouteTypes {
     | '/approve-agent'
     | '/connect'
     | '/connect-agent'
+    | '/design-lab'
     | '/guest'
     | '/pair'
     | '/welcome'
     | '/_chat/new'
     | '/_chat/pull-requests'
     | '/_chat/settings'
-    | '/_chat/ui-lab'
     | '/_chat/usage'
     | '/projects/$projectKey'
     | '/_chat/'
@@ -561,6 +561,7 @@ export interface RootRouteChildren {
   ApproveAgentRoute: typeof ApproveAgentRoute
   ConnectRoute: typeof ConnectRoute
   ConnectAgentRoute: typeof ConnectAgentRoute
+  DesignLabRoute: typeof DesignLabRoute
   GuestRoute: typeof GuestRoute
   PairRoute: typeof PairRoute
   WelcomeRoute: typeof WelcomeRoute
@@ -589,6 +590,13 @@ declare module '@tanstack/react-router' {
       path: '/guest'
       fullPath: '/guest'
       preLoaderRoute: typeof GuestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-lab': {
+      id: '/design-lab'
+      path: '/design-lab'
+      fullPath: '/design-lab'
+      preLoaderRoute: typeof DesignLabRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connect-agent': {
@@ -638,13 +646,6 @@ declare module '@tanstack/react-router' {
       path: '/usage'
       fullPath: '/usage'
       preLoaderRoute: typeof ChatUsageRouteImport
-      parentRoute: typeof ChatRoute
-    }
-    '/_chat/ui-lab': {
-      id: '/_chat/ui-lab'
-      path: '/ui-lab'
-      fullPath: '/ui-lab'
-      preLoaderRoute: typeof ChatUiLabRouteImport
       parentRoute: typeof ChatRoute
     }
     '/_chat/settings': {
@@ -949,7 +950,6 @@ interface ChatRouteChildren {
   ChatNewRoute: typeof ChatNewRoute
   ChatPullRequestsRoute: typeof ChatPullRequestsRoute
   ChatSettingsRoute: typeof ChatSettingsRouteWithChildren
-  ChatUiLabRoute: typeof ChatUiLabRoute
   ChatUsageRoute: typeof ChatUsageRoute
   ChatIndexRoute: typeof ChatIndexRoute
   ChatEnvironmentIdThreadIdRoute: typeof ChatEnvironmentIdThreadIdRoute
@@ -960,7 +960,6 @@ const ChatRouteChildren: ChatRouteChildren = {
   ChatNewRoute: ChatNewRoute,
   ChatPullRequestsRoute: ChatPullRequestsRoute,
   ChatSettingsRoute: ChatSettingsRouteWithChildren,
-  ChatUiLabRoute: ChatUiLabRoute,
   ChatUsageRoute: ChatUsageRoute,
   ChatIndexRoute: ChatIndexRoute,
   ChatEnvironmentIdThreadIdRoute: ChatEnvironmentIdThreadIdRoute,
@@ -974,6 +973,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApproveAgentRoute: ApproveAgentRoute,
   ConnectRoute: ConnectRoute,
   ConnectAgentRoute: ConnectAgentRoute,
+  DesignLabRoute: DesignLabRoute,
   GuestRoute: GuestRoute,
   PairRoute: PairRoute,
   WelcomeRoute: WelcomeRoute,
