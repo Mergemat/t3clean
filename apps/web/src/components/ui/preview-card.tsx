@@ -23,14 +23,14 @@ function PreviewCardPopup({
     <PreviewCardPrimitive.Portal>
       <PreviewCardPrimitive.Positioner
         align={align}
-        className="z-[140] max-w-(--available-width)"
+        className="z-140 max-w-(--available-width)"
         data-slot="preview-card-positioner"
         side={side}
         sideOffset={sideOffset}
       >
         <PreviewCardPrimitive.Popup
           className={cn(
-            "dropdown-glass origin-(--transform-origin) rounded-xl text-popover-foreground outline-none transition-[scale,opacity] duration-150 ease-out data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            "dropdown-glass origin-(--transform-origin) rounded-box text-popover-foreground outline-none transition duration-150 ease-out data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
             className,
           )}
           data-slot="preview-card-popup"

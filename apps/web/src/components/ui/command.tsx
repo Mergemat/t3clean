@@ -50,7 +50,7 @@ function CommandDialogViewport({ className, ...props }: CommandDialogPrimitive.V
   return (
     <CommandDialogPrimitive.Viewport
       className={cn(
-        "pointer-events-none fixed inset-0 z-50 flex flex-col items-center px-4 [-webkit-app-region:no-drag] pt-[max(--spacing(4),4vh,calc(var(--command-titlebar-height)+--spacing(2)))] pb-[max(--spacing(4),4vh)] sm:pt-[max(10vh,calc(var(--command-titlebar-height)+--spacing(2)))] sm:pb-[10vh]",
+        "pointer-events-none fixed inset-0 z-50 flex flex-col items-center px-4 app-region-no-drag pt-(--command-titlebar-height) pb-4 sm:py-6",
         className,
       )}
       data-slot="command-dialog-viewport"
@@ -79,7 +79,7 @@ function CommandDialogPopup({
           ref={popupRef}
           className={cn(
             DIALOG_POPUP_CLASS,
-            "pointer-events-auto max-h-105 max-w-xl text-foreground transition-none data-ending-style:pointer-events-none",
+            "pointer-events-auto mt-2 max-h-104 max-w-xl text-ink-1 sm:mt-0 transition-none data-ending-style:pointer-events-none",
             className,
           )}
           data-slot="command-dialog-popup"
@@ -114,16 +114,16 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof AutocompleteInput>) {
   return (
-    <div className="px-[var(--command-shell-inset)] py-1.5 [&_[data-slot=autocomplete-start-addon]]:ps-[calc(var(--command-shell-inset)+0.0625rem)]">
+    <div className="px-(--command-shell-inset) py-2 [&_[data-slot=autocomplete-start-addon]]:ps-(--command-shell-inset)">
       <AutocompleteInput
         autoFocus
         className={cn(
-          "border-transparent! bg-transparent! shadow-none before:hidden has-focus-visible:ring-0 placeholder:text-placeholder *:data-[slot=autocomplete-input]:ps-9! sm:*:data-[slot=autocomplete-input]:ps-[calc(var(--command-shell-inset)+1.5rem)]!",
+          "border-transparent! bg-transparent! shadow-none before:hidden has-focus-visible:ring-0 placeholder:text-ink-3 *:data-[slot=autocomplete-input]:ps-8! sm:*:data-[slot=autocomplete-input]:ps-8!",
           className,
         )}
         placeholder={placeholder}
         size="lg"
-        startAddon={<SearchIcon className="translate-x-0.5 text-icon-muted" />}
+        startAddon={<SearchIcon className="text-ink-3" />}
         {...props}
       />
     </div>
@@ -133,7 +133,7 @@ function CommandInput({
 function CommandList({ className, ...props }: React.ComponentProps<typeof AutocompleteList>) {
   return (
     <AutocompleteList
-      className={cn("not-empty:scroll-py-2 not-empty:p-2", className)}
+      className={cn("not-empty:scroll-py-2 not-empty:nest-box", className)}
       data-slot="command-list"
       {...props}
     />
@@ -146,7 +146,7 @@ function CommandListVirtualized({
 }: React.ComponentProps<typeof AutocompleteListVirtualized>) {
   return (
     <AutocompleteListVirtualized
-      className={cn("flex max-h-[inherit] min-h-0 flex-col", className)}
+      className={cn("flex max-h-inherit min-h-0 flex-col", className)}
       data-slot="command-list"
       {...props}
     />
@@ -166,7 +166,7 @@ function CommandPanel({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative min-h-0 overflow-hidden rounded-t-xl not-has-[+[data-slot=command-footer]]:rounded-b-2xl bg-transparent **:data-[slot=scroll-area-scrollbar]:mt-2 [touch-action:pan-y]",
+        "relative min-h-0 overflow-hidden rounded-t-box not-has-[+[data-slot=command-footer]]:rounded-b-box bg-transparent **:data-[slot=scroll-area-scrollbar]:mt-2 touch-pan-y",
         className,
       )}
       {...props}
@@ -200,7 +200,7 @@ function CommandItem({
   return (
     <AutocompleteItem
       className={cn(
-        "py-1.5 data-selected:bg-foreground/[0.06] data-highlighted:bg-foreground/[0.09] data-highlighted:text-foreground [&[data-highlighted][data-selected]]:bg-foreground/[0.09] [&[data-highlighted][data-selected]]:text-foreground",
+        "py-2 data-selected:bg-foreground/8 data-highlighted:bg-foreground/9 data-highlighted:text-ink-1 [&[data-highlighted][data-selected]]:bg-foreground/9 [&[data-highlighted][data-selected]]:text-ink-1",
         active !== undefined &&
           "cursor-pointer hover:bg-transparent hover:text-inherit data-highlighted:bg-transparent data-highlighted:text-inherit data-selected:bg-transparent data-selected:text-inherit [&[data-highlighted][data-selected]]:bg-transparent [&[data-highlighted][data-selected]]:text-inherit",
         active && "bg-accent! text-accent-foreground!",
@@ -217,7 +217,7 @@ function CommandShortcut({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
       className={cn(
-        "ms-auto font-medium font-sans text-secondary-label text-xs tracking-widest",
+        "ms-auto font-medium font-sans text-ink-2 text-meta tracking-widest",
         className,
       )}
       data-slot="command-shortcut"
@@ -230,7 +230,7 @@ function CommandFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative flex items-center justify-between gap-2 rounded-b-[calc(var(--radius-2xl)-1px)] border-t border-foreground/[0.07] bg-foreground/[0.025] px-[var(--command-content-inset)] py-2.5 font-medium text-sm text-muted-foreground [&_[data-slot=kbd-group]]:font-sans [&_[data-slot=kbd]]:bg-foreground/[0.08] [&_[data-slot=kbd]]:text-foreground [&_[data-slot=kbd]]:ring-0",
+        "relative flex items-center justify-between gap-2 rounded-b-inherit border-t border-foreground/7 bg-foreground/3 px-(--command-content-inset) py-2 font-medium text-body text-ink-2 [&_[data-slot=kbd-group]]:font-sans [&_[data-slot=kbd]]:bg-foreground/8 [&_[data-slot=kbd]]:text-ink-1 [&_[data-slot=kbd]]:ring-0",
         className,
       )}
       data-slot="command-footer"
@@ -248,7 +248,7 @@ function CommandFooterAction({
       {...props}
       variant="ghost-muted"
       size="xs"
-      className={cn("h-auto px-2 text-xs hover:bg-transparent", className)}
+      className={cn("h-auto px-2 text-meta hover:bg-transparent", className)}
     />
   );
 }

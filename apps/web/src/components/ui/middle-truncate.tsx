@@ -35,7 +35,7 @@ export function MiddleTruncate({
         "inline-flex min-w-0 max-w-full overflow-hidden whitespace-nowrap",
         variant === "cap-aligned" &&
           // Padding keeps descenders inside the box, so the cut does not clip them.
-          "overflow-x-clip overflow-y-visible [&>span]:[text-box:trim-both_cap_alphabetic] [&>span]:-mb-1 [&>span]:pb-1 [&>span]:overflow-x-clip [&>span]:overflow-y-visible",
+          "overflow-x-clip overflow-y-visible [&>span]:text-box-trim [&>span]:-mb-1 [&>span]:pb-1 [&>span]:overflow-x-clip [&>span]:overflow-y-visible",
         className,
       )}
       {...props}
@@ -43,10 +43,10 @@ export function MiddleTruncate({
       {split ? (
         <>
           {/* The tail carries the ellipsis so it sits flush; a CSS ellipsis leaves a ragged gap. */}
-          <span ref={headRef} className="peer min-w-0 overflow-hidden whitespace-pre">
+          <span ref={headRef} className="min-w-0 overflow-hidden whitespace-pre">
             {split.head}
           </span>
-          <span className="shrink-0 whitespace-pre peer-data-overflow:before:content-['…']">
+          <span className="shrink-0 whitespace-pre" data-slot="middle-truncate-tail">
             {split.tail}
           </span>
         </>

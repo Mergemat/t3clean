@@ -4,7 +4,7 @@ import type * as React from "react";
 
 import { cn } from "~/lib/utils";
 
-const alertVariants = cva("relative rounded-xl border px-3.5 py-3 text-card-foreground text-sm", {
+const alertVariants = cva("relative rounded-box border px-4 py-3 text-card-foreground text-body", {
   defaultVariants: {
     surface: "default",
     variant: "default",
@@ -15,9 +15,9 @@ const alertVariants = cva("relative rounded-xl border px-3.5 py-3 text-card-fore
       glass: "alert-glass",
     },
     variant: {
-      default: "bg-transparent dark:bg-input/32 [&_svg]:text-muted-foreground",
+      default: "bg-transparent dark:bg-input/32 [&_svg]:text-ink-2",
       sidebar:
-        "rounded-lg border-sidebar-border bg-sidebar-control-surface px-2 py-1.5 text-[11px] leading-4 [&_[data-slot=alert-description]]:block [&_[data-slot=alert-description]]:text-sidebar-muted-foreground",
+        "rounded-row border-sidebar-border bg-sidebar-control-surface px-2 py-2 text-meta leading-4 [&_[data-slot=alert-description]]:block [&_[data-slot=alert-description]]:text-ink-2",
       error:
         "border-error/32 bg-error-surface text-error-foreground [&_[data-slot=alert-description]]:text-error-foreground/80 [&_svg]:text-error",
       info: "border-info/32 bg-info/4 [&_svg]:text-info",
@@ -91,7 +91,7 @@ function Alert({
           controlAlignment === "first-line" ? "items-start" : "items-center",
           controlAlignment === "first-line" &&
             action.length > 0 &&
-            "min-h-7 pt-1 sm:min-h-6 sm:pt-0.5",
+            "min-h-7 pt-1 sm:min-h-6 sm:pt-1",
         )}
       >
         {icon.length > 0 && (
@@ -106,9 +106,7 @@ function Alert({
             {icon}
           </div>
         )}
-        {content.length > 0 && (
-          <div className="flex min-w-0 flex-1 flex-col gap-0.5">{content}</div>
-        )}
+        {content.length > 0 && <div className="flex min-w-0 flex-1 flex-col">{content}</div>}
         {action.length > 0 && (
           <div
             className={cn(
@@ -131,7 +129,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
 function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex flex-col gap-2.5 text-muted-foreground", className)}
+      className={cn("flex flex-col gap-3 text-ink-2", className)}
       data-slot="alert-description"
       {...props}
     />

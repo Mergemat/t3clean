@@ -106,7 +106,7 @@ function TooltipPositioner(props: TooltipPrimitive.Positioner.Props) {
   const titlebarHeight = useNativeTitlebarHeight();
   return (
     <TooltipPrimitive.Positioner
-      className="pointer-events-none z-[140] max-w-(--available-width) transition-[top,left,right,bottom,transform] data-instant:transition-none"
+      className="pointer-events-none z-140 max-w-(--available-width) transition data-instant:transition-none"
       collisionPadding={{
         top: COLLISION_PADDING + titlebarHeight,
         right: COLLISION_PADDING,
@@ -125,6 +125,7 @@ function TooltipPopup({
   sideOffset = 4,
   side = "top",
   variant = "default",
+  corner = "row",
   anchor,
   children,
   ...props
@@ -133,6 +134,8 @@ function TooltipPopup({
   side?: TooltipPrimitive.Positioner.Props["side"];
   sideOffset?: TooltipPrimitive.Positioner.Props["sideOffset"];
   variant?: "default" | "glass" | "code";
+  /** The corner, and with it the inset: text sits one corner in (DESIGN.md). */
+  corner?: "box" | "row";
   anchor?: TooltipPrimitive.Positioner.Props["anchor"];
 }) {
   return (
@@ -140,18 +143,26 @@ function TooltipPopup({
       <TooltipPositioner align={align} anchor={anchor} side={side} sideOffset={sideOffset}>
         <TooltipPrimitive.Popup
           className={cn(
-            "relative flex origin-(--transform-origin) rounded-xl text-popover-foreground text-xs transition-[scale,opacity] duration-125 ease-out before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 data-instant:duration-0 dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+            corner === "row" ? "rounded-row" : "rounded-box",
+            "relative flex origin-(--transform-origin) text-popover-foreground text-meta transition duration-125 ease-out before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit before:shadow-edge-light data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 data-instant:duration-0 dark:before:shadow-edge-dark",
             "dropdown-glass",
             variant === "glass" && "before:hidden",
             variant === "code"
-              ? "max-w-120 wrap-anywhere text-left font-mono text-[11px] leading-relaxed"
+              ? "max-w-120 wrap-anywhere text-left font-mono text-meta leading-relaxed"
               : "max-w-80 wrap-anywhere whitespace-normal leading-snug",
             className,
           )}
           data-slot="tooltip-popup"
           {...props}
         >
-          <div className="min-w-0 px-3 py-1" data-slot="tooltip-viewport">
+          {/* Text sits one corner in; a one-line label keeps half a step above and below. */}
+          <div
+            className={cn(
+              "min-w-0",
+              corner === "box" ? "p-4" : variant === "default" ? "px-2 py-1" : "p-2",
+            )}
+            data-slot="tooltip-viewport"
+          >
             {children}
           </div>
         </TooltipPrimitive.Popup>

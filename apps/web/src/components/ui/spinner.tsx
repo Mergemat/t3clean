@@ -8,13 +8,13 @@ const spinnerVariants = cva("motion-safe:visible-animate-spin", {
   variants: {
     size: {
       xs: "size-3",
-      sm: "size-3.5",
+      sm: "size-4",
       md: "size-4",
       lg: "size-5",
     },
     tone: {
       current: "",
-      muted: "text-muted-foreground",
+      muted: "text-ink-2",
     },
   },
   defaultVariants: { tone: "current" },

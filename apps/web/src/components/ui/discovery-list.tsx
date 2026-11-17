@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 
 export function DiscoveryList({ children }: { readonly children: ReactNode }) {
   return (
-    <div className="flex flex-col divide-y divide-border/60 overflow-hidden rounded-xl border border-border/70 bg-background">
+    <div className="flex flex-col divide-y divide-border/60 overflow-hidden rounded-box border border-border/70 bg-background">
       {children}
     </div>
   );
@@ -28,8 +28,8 @@ export function DiscoveryListRow({
     >
       {icon}
       <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium text-foreground">{title}</span>
-        <span className="truncate text-xs text-muted-foreground">{description}</span>
+        <span className="truncate text-body font-medium text-ink-1">{title}</span>
+        <span className="truncate text-meta text-ink-2">{description}</span>
       </div>
       {action}
     </button>

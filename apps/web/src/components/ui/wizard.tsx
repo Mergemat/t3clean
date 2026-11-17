@@ -15,7 +15,7 @@ export function WizardPopup({
 }) {
   return (
     <DialogPopup {...props} className={size === "wide" ? "max-w-3xl" : "max-w-xl"}>
-      <ScrollArea className="*:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-4">
+      <ScrollArea className="*:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2">
         <div className="flex min-h-0 flex-col">{children}</div>
       </ScrollArea>
     </DialogPopup>
@@ -80,7 +80,7 @@ export function WizardSteps({
   const Step = onStepChange ? "button" : "div";
   return (
     <ol
-      className="grid auto-cols-fr grid-flow-col gap-1 rounded-xl bg-background p-1 ring-1 ring-black/5 dark:bg-white/4 dark:ring-white/5"
+      className="grid auto-cols-fr grid-flow-col gap-1 rounded-box bg-background p-2 ring-1 ring-black/5 dark:bg-white/4 dark:ring-white/5"
       role="list"
       aria-label="Setup progress"
     >
@@ -91,11 +91,11 @@ export function WizardSteps({
               ? { type: "button" as const, disabled: isStepDisabled?.(index) }
               : {})}
             className={cn(
-              "flex w-full min-w-0 items-center gap-2 rounded-lg px-2.5 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring max-sm:justify-center max-sm:px-2",
+              "flex w-full min-w-0 items-center gap-2 rounded-row px-3 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring max-sm:justify-center max-sm:px-2",
               onStepChange &&
                 "cursor-pointer hover:bg-card disabled:cursor-default disabled:hover:bg-transparent",
               index === currentStep &&
-                "bg-card text-foreground shadow-xs ring-1 ring-inset ring-black/5 hover:bg-card dark:shadow-none dark:ring-white/5",
+                "bg-card text-ink-1 shadow-xs ring-1 ring-inset ring-black/5 hover:bg-card dark:shadow-none dark:ring-white/5",
             )}
             aria-current={index === currentStep ? "step" : undefined}
             aria-label={`${step}, step ${index + 1}${index < currentStep && summaries?.[index] ? `, ${summaries?.[index]}` : ""}`}
@@ -103,12 +103,12 @@ export function WizardSteps({
           >
             <span
               className={cn(
-                "grid size-5 shrink-0 place-items-center rounded-full text-sm font-medium ring-1",
+                "grid size-5 shrink-0 place-items-center rounded-full text-body font-medium ring-1",
                 index < currentStep
                   ? "bg-primary text-primary-foreground ring-primary"
                   : index === currentStep
                     ? "bg-primary/10 text-primary ring-primary/30"
-                    : "bg-card text-muted-foreground ring-black/10 dark:bg-white/5 dark:ring-white/10",
+                    : "bg-card text-ink-2 ring-black/10 dark:bg-white/5 dark:ring-white/10",
               )}
               aria-hidden
             >
@@ -116,8 +116,8 @@ export function WizardSteps({
             </span>
             <span
               className={cn(
-                "min-w-0 truncate text-sm font-medium max-sm:hidden",
-                index === currentStep ? "text-foreground" : "text-muted-foreground",
+                "min-w-0 truncate text-body font-medium max-sm:hidden",
+                index === currentStep ? "text-ink-1" : "text-ink-2",
               )}
             >
               {step}

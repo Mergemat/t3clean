@@ -10,6 +10,11 @@ import {
 import type { HsvColor } from "../../lib/color";
 import { cn } from "../../lib/utils";
 
+// The hue axis drawn with the same hsl() the thumb uses, so the two always line up.
+const HUE_SPECTRUM = `linear-gradient(to right, ${[0, 60, 120, 180, 240, 300, 360]
+  .map((hue) => `hsl(${hue} 100% 50%)`)
+  .join(", ")})`;
+
 function clamp(value: number) {
   return Math.min(1, Math.max(0, value));
 }
@@ -112,8 +117,8 @@ export function ColorSaturationValuePlane({
       aria-label={`${label} saturation and brightness`}
       role="group"
       className={cn(
-        "relative cursor-crosshair touch-none overflow-hidden bg-[linear-gradient(to_top,#000,transparent),linear-gradient(to_right,#fff,transparent)] has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-inset has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-popover",
-        variant === "edge" ? "h-36 rounded-none" : "h-32 rounded-lg",
+        "relative cursor-crosshair touch-none overflow-hidden bg-linear-to-r from-white to-transparent has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-inset has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-popover",
+        variant === "edge" ? "h-36 rounded-none" : "h-32 rounded-row",
         className,
       )}
       style={{
@@ -121,6 +126,10 @@ export function ColorSaturationValuePlane({
       }}
       {...handlers}
     >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-linear-to-t from-black to-transparent"
+      />
       <span id={instructionsId} className="sr-only">
         Use arrow keys to adjust the focused value. Hold Shift for larger steps. Use Home and End
         for the minimum and maximum. Press Tab to move between saturation and brightness.
@@ -150,14 +159,14 @@ export function ColorSaturationValuePlane({
           />
           <span
             aria-hidden
-            className="pointer-events-none invisible absolute bottom-2 left-2 z-10 rounded bg-popover px-1.5 py-0.5 text-xs text-popover-foreground peer-focus-visible:visible"
+            className="pointer-events-none invisible absolute bottom-2 left-2 z-10 rounded-chip bg-popover px-2 py-1 text-meta text-popover-foreground peer-focus-visible:visible"
           >
             {axisLabel} {Math.round(value[axis] * 100)}%
           </span>
         </label>
       ))}
       <span
-        className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.4)]"
+        className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white ring-1 ring-black/40"
         style={{
           left: `calc(${value.s} * (100% - 0.75rem) + 0.375rem)`,
           top: `calc(${1 - value.v} * (100% - 0.75rem) + 0.375rem)`,
@@ -211,10 +220,11 @@ export function ColorHueSlider({
     >
       <span
         aria-hidden
-        className="h-2.5 w-full rounded-full bg-[linear-gradient(to_right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)] shadow-[inset_0_0_0_1px_rgb(0_0_0_/_12%)]"
+        className="h-3 w-full rounded-full inset-ring inset-ring-black/12"
+        style={{ backgroundImage: HUE_SPECTRUM }}
       />
       <span
-        className="pointer-events-none absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.4)]"
+        className="pointer-events-none absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white ring-1 ring-black/40"
         style={{
           left: `calc(${value / 360} * (100% - 1rem) + 0.5rem)`,
           backgroundColor: `hsl(${value} 100% 50%)`,

@@ -100,18 +100,16 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
    * Compact UI geometry. Keep these values semantic so sidebar, palette,
    * tooltip, and toolbar controls cannot quietly drift apart.
    */
-  --control-radius: 0.5rem;
-  --sidebar-content-inset: 0.5rem;
-  --sidebar-control-gap: 0.5rem;
+  --sidebar-content-inset: --spacing(2);
+  --sidebar-control-gap: --spacing(2);
   --sidebar-icon-color: color-mix(
     in srgb,
     var(--contrast-sidebar-muted-foreground) 85%,
     var(--sidebar)
   );
-  --sidebar-row-content-inset: 0.625rem;
-  --command-shell-inset: 0.5rem;
-  --command-content-inset: 1rem;
-  --floating-content-inset: 0.75rem;
+  --command-shell-inset: --spacing(2);
+  --command-content-inset: --spacing(4);
+  --floating-content-inset: --spacing(3);
   /* App layer order: the bottom terminal drawer (45, above the timeline minimap),
      docked sheets, then the floating preview player (47–49, see
      previewMiniPlayerLayout.ts), then dialogs and popovers (50 and up). */
@@ -120,27 +118,26 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
   --glass-opacity: 80%;
   --glass-saturation: 1.14;
   --desktop-window-right-resize-inset: 0px;
-  --workspace-topbar-height: 52px;
+  --workspace-topbar-height: --spacing(13);
   --workspace-controls-top: 0px;
-  --workspace-controls-left: calc(env(safe-area-inset-left) + 0.75rem);
-  --workspace-controls-right: calc(env(safe-area-inset-right) + 0.75rem);
+  /* Puts the sidebar toggle's icon on the sidebar's content column; the 1px undoes the toggle's
+     nudge for the macOS traffic lights, which set their own value. */
+  --workspace-controls-left: calc(env(safe-area-inset-left) + --spacing(2.5) - 1px);
+  /* Header controls end on the same frame margin as the windows below them. */
+  --workspace-controls-right: calc(env(safe-area-inset-right) + var(--window-gap));
   --workspace-native-controls-inset: 0px;
-  --workspace-titlebar-control-size: 1.75rem;
-  --workspace-titlebar-control-gap: 0.75rem;
-  --workspace-titlebar-scroll-fade-height: 1.5rem;
-  --chat-content-max-width: 46rem;
-  --thread-details-panel-width: 17.5rem;
+  --workspace-titlebar-control-size: --spacing(8);
+  --workspace-titlebar-control-gap: --spacing(3);
+  --workspace-titlebar-scroll-fade-height: --spacing(6);
+  --chat-content-max-width: --spacing(184);
+  --thread-details-panel-width: --spacing(70);
   /* The prompt on phones: iOS zooms into any input under 16px on focus. */
   --font-size-prompt-touch: max(var(--font-size-prompt, 1rem), 16px);
-  /* Horizontal gutter shared by the page header and the chat column, clear of
-     the device's safe area. */
-  --workspace-gutter: 0.75rem;
+  /* A header's content sits one step inside the pane below it, so its first and last glyphs line
+     up with the pane's controls (a button's glyph is one step inside its box). */
+  --workspace-gutter: var(--step);
   --workspace-gutter-start: calc(env(safe-area-inset-left) + var(--workspace-gutter));
   --workspace-gutter-end: calc(env(safe-area-inset-right) + var(--workspace-gutter));
-
-  @variant sm {
-    --workspace-gutter: 1.25rem;
-  }
 
   @variant dark {
     --appearance-contrast-target: white;
@@ -153,21 +150,273 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
 .wco {
   --native-titlebar-height: env(titlebar-area-height, 0px);
-  --workspace-topbar-height: max(40px, env(titlebar-area-height, 52px));
+  --workspace-topbar-height: max(--spacing(10), env(titlebar-area-height, 52px));
   --workspace-controls-top: env(titlebar-area-y, 0px);
   --workspace-controls-left: calc(env(titlebar-area-x, 0px) + 0.75rem);
   --workspace-controls-right: calc(
     100vw - env(titlebar-area-width, 100vw) - env(titlebar-area-x, 0px) + 0.75rem
   );
   --workspace-native-controls-inset: calc(
-    100vw - env(titlebar-area-width, 100vw) - env(titlebar-area-x, 0px) + 0.75rem
+    100vw - env(titlebar-area-width, 100vw) - env(titlebar-area-x, 0px) + --spacing(3)
   );
 }
 
 /* The font tokens are declared outside the inline theme so utilities reference
    the variables and Settings -> Appearance can override them at runtime. The
    default stacks are mirrored in `appearanceFonts.ts`. */
+/* The grid. Three roots; spaces, sizes, corners and type derive from them. Rules: apps/web/DESIGN.md.
+   Spacing and sizes use Tailwind's own scale, where 2 is one step. */
+:root {
+  --step: 0.5rem;
+  --type-base: 0.875rem;
+  --type-ratio: 1.2;
+}
+
+/* Derived values resolve where they're declared, so they're declared again on any scope that sets
+   its own roots (the design lab's playground). */
+:root,
+[data-system-scope] {
+  /* Each ring is one step rounder than what it holds. Things smaller than a row get half a step. */
+  --radius-chip: calc(var(--step) / 2);
+  --radius-row: var(--step);
+  --radius-box: calc(var(--step) * 2);
+  --radius-region: calc(var(--step) * 3);
+
+  /* Type: steps of the ratio around the base. Lines round up to half a step to keep the rhythm. */
+  --type-meta: round(calc(var(--type-base) / var(--type-ratio)), 1px);
+  --type-title: round(calc(var(--type-base) * var(--type-ratio) * var(--type-ratio)), 1px);
+  --line-meta: round(up, calc(var(--type-meta) * 1.3), calc(var(--step) / 2));
+  --line-base: round(up, calc(var(--type-base) * 1.4), calc(var(--step) / 2));
+  --line-title: round(up, calc(var(--type-title) * 1.3), calc(var(--step) / 2));
+
+  /* Ink: three levels of the foreground, never a per-component grey. */
+  --ink-1: var(--foreground);
+  --ink-2: color-mix(in oklab, var(--foreground) 64%, transparent);
+  --ink-3: color-mix(in oklab, var(--foreground) 40%, transparent);
+}
+
+@theme inline {
+  --spacing: calc(var(--step) / 2);
+  --radius-chip: var(--radius-chip);
+  --radius-row: var(--radius-row);
+  --radius-box: var(--radius-box);
+  --radius-region: var(--radius-region);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  /* Type roles: size, line and weight in one class. Neighbouring roles differ in one property.
+     An explicit font-* or leading-* still overrides, and ink is its own class. */
+  --text-title: var(--type-title);
+  --text-title--line-height: var(--line-title);
+  --text-title--font-weight: 600;
+  --text-heading: var(--type-base);
+  --text-heading--line-height: var(--line-base);
+  --text-heading--font-weight: 600;
+  --text-body: var(--type-base);
+  --text-body--line-height: var(--line-base);
+  --text-meta: var(--type-meta);
+  --text-meta--line-height: var(--line-meta);
+}
+
+/* The nest. Each ring insets what it holds by one step and is one step rounder than it, so a
+   component is built by choosing rings, never paddings or radii; layout (flex, grid) stays the
+   element's own. Text sits one step inside its row; text placed straight in a box or region
+   takes nest-text to stay on that line. */
+@utility nest-region {
+  padding: var(--step);
+  border-radius: var(--radius-region);
+}
+
+@utility nest-box {
+  padding: var(--step);
+  border-radius: var(--radius-box);
+}
+
+@utility nest-row {
+  gap: var(--step);
+  padding-inline: var(--step);
+  border-radius: var(--radius-row);
+}
+
+@utility nest-text {
+  padding-inline: var(--step);
+}
+
+/* Rows in a list sit half a step apart, so two filled rows (the hovered one beside the selected
+   one) stay two shapes instead of merging into one block. Matched by role: a row rendered as a
+   tooltip trigger loses its data-slot. */
+:is(
+    [role="menuitem"],
+    [role="menuitemradio"],
+    [role="menuitemcheckbox"],
+    [role="option"],
+    [data-slot="command-item"]
+  )
+  + :is(
+    [role="menuitem"],
+    [role="menuitemradio"],
+    [role="menuitemcheckbox"],
+    [role="option"],
+    [data-slot="command-item"]
+  ) {
+  margin-top: calc(var(--step) / 2);
+}
+
+/* Subagent rows in the timeline are each their own timeline entry, so they can't be spaced as
+   siblings; a quarter step above and below leaves the same half step between two of them. */
+:has(> [data-v2-item-type="subagent"]) {
+  padding-block: calc(var(--step) / 4);
+}
+
+/* A pane's bar of controls. Its end controls sit in the pane's corners, so it insets them by the
+   pane's corner less theirs, on every side, and separates from the content by that space, not a
+   line. */
+@utility pane-bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--step);
+  padding: calc(var(--window-radius) - var(--radius-row));
+}
+
+/* The grid, drawn: step lines over the whole window and each ring's inset shaded in its colour.
+   Toggled by html[data-show-grid] (lib/gridOverlay.ts). */
+html[data-show-grid]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  --grid-line: color-mix(in oklab, var(--foreground) 7%, transparent);
+  background-image:
+    repeating-linear-gradient(to right, var(--grid-line) 0 1px, transparent 1px var(--step)),
+    repeating-linear-gradient(to bottom, var(--grid-line) 0 1px, transparent 1px var(--step));
+}
+
+html[data-show-grid] :is(.nest-region, .nest-box, .nest-row, .nest-text) {
+  --nest-band: color-mix(in oklab, var(--nest-color) 28%, transparent);
+  outline: 1px dashed color-mix(in oklab, var(--nest-color) 70%, transparent);
+  outline-offset: -1px;
+  box-shadow:
+    inset var(--step) 0 0 0 var(--nest-band),
+    inset calc(var(--step) * -1) 0 0 0 var(--nest-band);
+}
+
+html[data-show-grid] :is(.nest-region, .nest-box) {
+  box-shadow: inset 0 0 0 var(--step) var(--nest-band);
+}
+
+html[data-show-grid] .nest-region {
+  --nest-color: --theme(--color-amber-400);
+}
+
+html[data-show-grid] .nest-box {
+  --nest-color: --theme(--color-sky-400);
+}
+
+html[data-show-grid] .nest-row {
+  --nest-color: --theme(--color-emerald-400);
+}
+
+html[data-show-grid] .nest-text {
+  --nest-color: --theme(--color-fuchsia-400);
+}
+
+/* A button's corner is a quarter of its height: 6 at 24, 8 at 32 (the rounded-row default), 9 at
+   36, 10 at 40. Unlayered, so it wins over the button's own rounded-row utility. Matched by data-size and
+   data-variant, which Button and Toggle set, because a trigger rendering a button replaces its
+   data-slot. */
+:is([data-size="xs"], [data-size="icon-xs"])[data-variant]:not(
+    [data-slot="toggle-group"],
+    [data-variant="segmented"]
+  ) {
+  border-radius: calc(--spacing(6) / 4);
+}
+
+:is([data-size="default"], [data-size="icon"])[data-variant]:not(
+    [data-slot="toggle-group"],
+    [data-variant="segmented"]
+  ) {
+  border-radius: calc(--spacing(9) / 4);
+}
+
+:is([data-size="lg"], [data-size="icon-lg"])[data-variant]:not(
+    [data-slot="toggle-group"],
+    [data-variant="segmented"]
+  ) {
+  border-radius: calc(--spacing(10) / 4);
+}
+
+/* Values the Tailwind scales don't cover, as named tokens: classes never carry raw values
+   (shadcn/no-arbitrary-values). scripts/tokenize-classes.ts maps arbitrary classes onto these. */
+:root {
+  --grid-lead: auto minmax(0, 1fr);
+  --grid-trail: minmax(0, 1fr) auto;
+  --grid-lead-trail: auto minmax(0, 1fr) auto;
+  /* Collapsible rows animate between these; both must be fr for the transition. */
+  --grid-open: 1fr;
+  --grid-closed: 0fr;
+  --viewport-inset: calc(100vw - --spacing(8));
+}
+
+@utility rounded-inherit {
+  border-radius: inherit;
+}
+@utility rounded-t-inherit {
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+@utility rounded-b-inherit {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+@utility rounded-s-inherit {
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+}
+@utility rounded-e-inherit {
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+}
+/* CSS properties Tailwind has no utility for, named after the property. */
+@utility app-region-no-drag {
+  -webkit-app-region: no-drag;
+}
+@utility content-visibility-auto {
+  content-visibility: auto;
+}
+/* The size a skipped row reserves before it renders: a spacing-scale step, remembered once seen. */
+@utility contain-intrinsic-block-* {
+  contain-intrinsic-block-size: auto --spacing(--value(number));
+}
+@utility overflow-anchor-none {
+  overflow-anchor: none;
+}
+/* An icon or chip beside text centres on the text's x-height, not its line box: lowercase reads by
+   its x-height, which sits (cap - x) / 2 below the box centre, 0.09em in Inter. */
+@utility optical-centre {
+  translate: 0 0.09em;
+}
+@utility text-box-trim {
+  text-box: trim-both cap alphabetic;
+}
+@utility size-em {
+  width: 1em;
+  height: 1em;
+}
+@utility h-cap {
+  height: 1cap;
+}
+@utility max-h-inherit {
+  max-height: inherit;
+}
+
 @theme {
+  /* One-pixel edge light on raised surfaces. */
+  --shadow-edge-light: 0 1px color-mix(in oklab, black 4%, transparent);
+  --shadow-edge-dark: 0 -1px color-mix(in oklab, white 6%, transparent);
+  --shadow-edge-dark-faint: 0 -1px color-mix(in oklab, white 2%, transparent);
   --font-sans:
     -apple-system, BlinkMacSystemFont, "Inter Variable", "Segoe UI", system-ui, sans-serif;
   --font-mono:
@@ -288,12 +537,6 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
   --color-sidebar-row-active: var(--sidebar-row-active);
   --color-sidebar-row-selected: var(--sidebar-row-selected);
   --color-sidebar-border: var(--contrast-sidebar-border);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
   @keyframes skeleton {
     /* The single loading-bar breath used by every skeleton: one opacity pulse
        per container, stepped so however many bars sit under it, the compositor
@@ -505,20 +748,46 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
 /* Virtualizers own their native scroll element, so they cannot use ScrollArea's
    viewport fade. Keep the scrollbar lane opaque while sharing the same fade
-   contract across those lists. */
+   contract across those lists. The list marks the edges it can scroll toward
+   with ScrollArea's attribute names (virtualizedScrollFadeProps). */
 @utility virtualized-scroll-fade {
-  -webkit-mask-image: var(--virtualized-scroll-fade-mask), linear-gradient(black, black);
-  mask-image: var(--virtualized-scroll-fade-mask), linear-gradient(black, black);
-  -webkit-mask-position: left, right;
-  mask-position: left, right;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size:
-    calc(100% - var(--app-scrollbar-width)) 100%,
-    var(--app-scrollbar-width) 100%;
-  mask-size:
-    calc(100% - var(--app-scrollbar-width)) 100%,
-    var(--app-scrollbar-width) 100%;
+  &:is([data-overflow-y-start], [data-overflow-y-end]) {
+    --fade-size: --spacing(6);
+    -webkit-mask-image: var(--virtualized-scroll-fade-mask), linear-gradient(black, black);
+    mask-image: var(--virtualized-scroll-fade-mask), linear-gradient(black, black);
+    -webkit-mask-position: left, right;
+    mask-position: left, right;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size:
+      calc(100% - var(--app-scrollbar-width)) 100%,
+      var(--app-scrollbar-width) 100%;
+    mask-size:
+      calc(100% - var(--app-scrollbar-width)) 100%,
+      var(--app-scrollbar-width) 100%;
+  }
+
+  &[data-overflow-y-start] {
+    --virtualized-scroll-fade-mask: linear-gradient(to bottom, transparent, black var(--fade-size));
+  }
+
+  &[data-overflow-y-end] {
+    --virtualized-scroll-fade-mask: linear-gradient(
+      to bottom,
+      black calc(100% - var(--fade-size)),
+      transparent
+    );
+  }
+
+  &[data-overflow-y-start][data-overflow-y-end] {
+    --virtualized-scroll-fade-mask: linear-gradient(
+      to bottom,
+      transparent,
+      black var(--fade-size),
+      black calc(100% - var(--fade-size)),
+      transparent
+    );
+  }
 }
 
 /* Stage-channel art needs a mask and pseudo-element gradient, so keep the
@@ -600,7 +869,7 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 }
 
 @utility live-activity-focus {
-  --live-activity-focus-width: 4.5rem;
+  --live-activity-focus-width: --spacing(18);
 
   right: auto;
   left: calc(-1 * var(--live-activity-focus-width));
@@ -931,7 +1200,7 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
   [data-settings-page-scroll] div.settings-search-target-pulse,
   [data-settings-page-scroll] section.settings-search-target-pulse > div:first-child {
     animation: settings-search-target-pulse 650ms ease-in-out 2;
-    border-radius: 0.75rem;
+    border-radius: var(--radius-box);
   }
 
   /* The pulse is the destination indicator; without it (reduced motion), the
@@ -960,62 +1229,60 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
   .settings-slider {
     --settings-slider-progress: 0%;
-    --settings-slider-fill-offset: 0.5rem;
+    --settings-slider-fill-offset: --spacing(2);
     --settings-slider-fill-position: calc(
       var(--settings-slider-progress) + var(--settings-slider-fill-offset)
     );
     appearance: none;
-    height: 1.5rem;
+    height: --spacing(6);
     background: transparent;
     cursor: pointer;
   }
 
   .settings-slider::-webkit-slider-runnable-track {
-    height: 0.375rem;
+    height: --spacing(1.5);
     border-radius: 9999px;
     background: linear-gradient(
       to right,
       var(--primary) 0 var(--settings-slider-fill-position),
-      color-mix(in srgb, var(--contrast-muted-foreground) 22%, transparent)
-        var(--settings-slider-fill-position) 100%
+      var(--input) var(--settings-slider-fill-position) 100%
     );
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--contrast-border) 55%, transparent);
   }
 
   .settings-slider::-moz-range-track {
-    height: 0.375rem;
+    height: --spacing(1.5);
     border-radius: 9999px;
-    background: color-mix(in srgb, var(--contrast-muted-foreground) 22%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--contrast-border) 55%, transparent);
+    background: var(--input);
   }
 
   .settings-slider::-moz-range-progress {
-    height: 0.375rem;
+    height: --spacing(1.5);
     border-radius: 9999px;
     background: var(--primary);
   }
 
   .settings-slider::-webkit-slider-thumb {
     appearance: none;
-    width: 1rem;
-    height: 1rem;
-    margin-top: -0.3125rem;
-    border: 2px solid var(--primary);
+    width: --spacing(4);
+    height: --spacing(4);
+    margin-top: calc(--spacing(1.5) * -1);
+    border: 0;
     border-radius: 9999px;
-    background: var(--background);
-    box-shadow: 0 1px 2px color-mix(in srgb, var(--contrast-foreground) 12%, transparent);
+    /* The switch's knob: solid white, a soft shadow, no ring. */
+    background: white;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
     transition:
       transform 120ms ease,
       box-shadow 120ms ease;
   }
 
   .settings-slider::-moz-range-thumb {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid var(--primary);
+    width: --spacing(4);
+    height: --spacing(4);
+    border: 0;
     border-radius: 9999px;
-    background: var(--background);
-    box-shadow: 0 1px 2px color-mix(in srgb, var(--contrast-foreground) 12%, transparent);
+    background: white;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
     transition:
       transform 120ms ease,
       box-shadow 120ms ease;
@@ -1023,12 +1290,10 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
   .settings-slider:hover::-webkit-slider-thumb {
     transform: scale(1.08);
-    box-shadow: 0 1px 3px color-mix(in srgb, var(--contrast-foreground) 20%, transparent);
   }
 
   .settings-slider:hover::-moz-range-thumb {
     transform: scale(1.08);
-    box-shadow: 0 1px 3px color-mix(in srgb, var(--contrast-foreground) 20%, transparent);
   }
 
   .settings-slider:active::-webkit-slider-thumb {
@@ -1045,14 +1310,14 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
   .settings-slider:focus-visible::-webkit-slider-thumb {
     box-shadow:
-      inset 0 0 0 1px var(--background),
-      inset 0 0 0 3px var(--ring);
+      0 1px 3px rgb(0 0 0 / 30%),
+      0 0 0 2px var(--ring);
   }
 
   .settings-slider:focus-visible::-moz-range-thumb {
     box-shadow:
-      inset 0 0 0 1px var(--background),
-      inset 0 0 0 3px var(--ring);
+      0 1px 3px rgb(0 0 0 / 30%),
+      0 0 0 2px var(--ring);
   }
 
   @media (forced-colors: active) {
@@ -1110,7 +1375,6 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
 :root {
   color-scheme: light;
-  --radius: 0.5rem;
   --background: var(--color-zinc-25);
   --app-chrome-background: var(--background);
   --toolbar-background: var(--app-chrome-background);
@@ -1436,15 +1700,15 @@ html[data-theme-token-probe] *::after {
 #theme-inspector-hover [data-theme-inspector-hover-label] {
   position: absolute;
   left: 0;
-  max-width: 12rem;
+  max-width: --spacing(48);
   overflow: hidden;
-  padding: 0.2rem 0.45rem;
+  padding: --spacing(1) --spacing(2);
   border: 1px solid color-mix(in oklab, var(--ring) 48%, var(--contrast-border));
-  border-radius: 0.4rem;
+  border-radius: var(--radius-row);
   background: var(--popover);
   box-shadow: 0 4px 16px rgb(0 0 0 / 24%);
   color: var(--contrast-popover-foreground);
-  font-size: 0.6875rem;
+  font-size: var(--text-2xs);
   font-weight: 600;
   line-height: 1rem;
   text-overflow: ellipsis;
@@ -1452,11 +1716,11 @@ html[data-theme-token-probe] *::after {
 }
 
 #theme-inspector-hover[data-placement="above"] [data-theme-inspector-hover-label] {
-  bottom: calc(100% + 0.35rem);
+  bottom: calc(100% + --spacing(1.5));
 }
 
 #theme-inspector-hover[data-placement="below"] [data-theme-inspector-hover-label] {
-  top: calc(100% + 0.35rem);
+  top: calc(100% + --spacing(1.5));
 }
 
 /* Workspace actions use a small, separate chrome hierarchy. Keeping these
@@ -1753,7 +2017,7 @@ body {
 }
 
 .electron-windows {
-  --desktop-window-right-resize-inset: 6px;
+  --desktop-window-right-resize-inset: --spacing(1.5);
 }
 
 /* App-chrome grain. Baked into each surface's own background (behind
@@ -1853,7 +2117,7 @@ code {
 :where(:not(iframe))::-webkit-scrollbar-track {
   background: transparent;
   /* Keeps the thumb clear of rounded card corners. */
-  margin-block: 16px;
+  margin-block: --spacing(4);
 }
 
 /* The transparent border insets the visible thumb inside its lane. */
@@ -1886,7 +2150,7 @@ code {
 .chat-markdown .chat-markdown-table-container,
 .composer-tiptap ul,
 .composer-tiptap ol {
-  margin: 0.65rem 0;
+  margin: --spacing(2.5) 0;
 }
 
 .chat-markdown-math-display .katex-display {
@@ -1899,28 +2163,28 @@ code {
 :is(.chat-markdown, .composer-tiptap) h4,
 :is(.chat-markdown, .composer-tiptap) h5,
 :is(.chat-markdown, .composer-tiptap) h6 {
-  margin: 1.25rem 0 0.5rem;
+  margin: --spacing(5) 0 --spacing(2);
   font-weight: 600;
   line-height: 1.3;
   color: var(--contrast-foreground);
 }
 
 :is(.chat-markdown, .composer-tiptap) h1 {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
 }
 
 :is(.chat-markdown, .composer-tiptap) h2 {
-  font-size: 1.125rem;
+  font-size: var(--text-lg);
 }
 
 :is(.chat-markdown, .composer-tiptap) h3 {
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 :is(.chat-markdown, .composer-tiptap) h4,
 :is(.chat-markdown, .composer-tiptap) h5,
 :is(.chat-markdown, .composer-tiptap) h6 {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
 }
 
 :is(.chat-markdown, .composer-tiptap) h6 {
@@ -1931,8 +2195,8 @@ code {
   /* Reset for nested uls under a widened ol. --list-gutter is an inherited
      custom property, so without this a task-list under a multi-digit ordered
      list would inherit the outer gutter instead of its own default. */
-  --list-gutter: 1.25rem;
-  padding-inline-start: 1.25rem;
+  --list-gutter: --spacing(5);
+  padding-inline-start: --spacing(5);
   list-style-type: disc;
 }
 
@@ -1940,8 +2204,8 @@ code {
    measured per font in appearanceFonts. ChatMarkdown widens it inline for
    multi-digit markers; setting it here stops a nested ol inheriting that. */
 :is(.chat-markdown, .composer-tiptap) ol {
-  --list-gutter: max(1.25rem, var(--list-marker-sans, 0px));
-  padding-inline-start: var(--list-gutter, 1.25rem);
+  --list-gutter: max(--spacing(5), var(--list-marker-sans, 0px));
+  padding-inline-start: var(--list-gutter, --spacing(5));
   list-style-type: decimal;
 }
 
@@ -1958,43 +2222,43 @@ code {
 /* The prompt font and size can differ from the interface, so its gutter must
    also follow the prompt's font metrics. */
 .composer-tiptap ol {
-  --list-gutter: max(1.25rem, 3ch);
+  --list-gutter: max(--spacing(5), 3ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="3"]) {
-  --list-gutter: max(1.25rem, 4ch);
+  --list-gutter: max(--spacing(5), 4ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="4"]) {
-  --list-gutter: max(1.25rem, 5ch);
+  --list-gutter: max(--spacing(5), 5ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="5"]) {
-  --list-gutter: max(1.25rem, 6ch);
+  --list-gutter: max(--spacing(5), 6ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="6"]) {
-  --list-gutter: max(1.25rem, 7ch);
+  --list-gutter: max(--spacing(5), 7ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="7"]) {
-  --list-gutter: max(1.25rem, 8ch);
+  --list-gutter: max(--spacing(5), 8ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="8"]) {
-  --list-gutter: max(1.25rem, 9ch);
+  --list-gutter: max(--spacing(5), 9ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="9"]) {
-  --list-gutter: max(1.25rem, 10ch);
+  --list-gutter: max(--spacing(5), 10ch);
 }
 
 .composer-tiptap ol:has(> li[data-marker-width="10"]) {
-  --list-gutter: max(1.25rem, 11ch);
+  --list-gutter: max(--spacing(5), 11ch);
 }
 
 .composer-tiptap ul {
-  padding-inline-start: max(1.25rem, 2ch);
+  padding-inline-start: max(--spacing(5), 2ch);
 }
 
 :is(.chat-markdown, .composer-tiptap) ul ul {
@@ -2018,7 +2282,7 @@ code {
 }
 
 .chat-markdown li + li {
-  margin-top: 0.25rem;
+  margin-top: --spacing(1);
 }
 
 /* GitHub-style task lists: the checkbox replaces the list marker. */
@@ -2028,7 +2292,7 @@ code {
 
 .chat-markdown li.task-list-item input[type="checkbox"] {
   margin-block: 0 0.15em;
-  margin-inline: calc(-1 * var(--list-gutter, 1.25rem)) 0.35em;
+  margin-inline: calc(-1 * var(--list-gutter, --spacing(5))) 0.35em;
   vertical-align: middle;
 }
 
@@ -2086,12 +2350,12 @@ code {
 
 :is(.chat-markdown, .composer-tiptap) blockquote {
   border-inline-start: 2px solid color-mix(in srgb, currentcolor 35%, transparent);
-  padding-inline-start: 0.8rem;
+  padding-inline-start: --spacing(3);
   color: inherit;
 }
 
 .composer-tiptap blockquote {
-  margin: 0.65rem 0;
+  margin: --spacing(2.5) 0;
 }
 
 /* Surface borders can blend into dark message bubbles; rules need a readable color. */
@@ -2102,7 +2366,7 @@ code {
 }
 
 .composer-tiptap hr {
-  margin: 0.65rem 0;
+  margin: --spacing(2.5) 0;
 }
 
 /* Block spacing separates blocks, not the draft from the composer edge. A
@@ -2122,11 +2386,11 @@ code {
 }
 
 .chat-markdown section[data-footnotes] {
-  margin-top: 1.25rem;
+  margin-top: --spacing(5);
   border-top: 1px solid var(--contrast-border);
-  padding-top: 0.75rem;
+  padding-top: --spacing(3);
   color: var(--contrast-muted-foreground);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
 }
 
 .chat-markdown section[data-footnotes] ol {
@@ -2134,24 +2398,24 @@ code {
 }
 
 .chat-markdown section[data-footnotes] li + li {
-  margin-top: 0.35rem;
+  margin-top: --spacing(1.5);
 }
 
 .chat-markdown a[data-footnote-ref],
 .chat-markdown a[data-footnote-backref] {
   display: inline-flex;
-  min-width: 1rem;
+  min-width: --spacing(4);
   align-items: center;
   justify-content: center;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-chip);
   text-decoration: none;
-  font-size: 0.6875rem;
+  font-size: var(--text-2xs);
   font-weight: 600;
 }
 
 .chat-markdown :not(pre) > code {
   border: 1px solid transparent;
-  border-radius: 0.25rem;
+  border-radius: var(--radius-chip);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   background: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
@@ -2173,9 +2437,9 @@ code {
   max-width: 100%;
   overflow-x: auto;
   border: 1px solid var(--contrast-border);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-row);
   background: var(--muted);
-  padding: 0.8rem 0.9rem;
+  padding: --spacing(3) --spacing(3.5);
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--contrast-border) 78%, transparent) transparent;
 }
@@ -2269,14 +2533,14 @@ code {
   overflow-wrap: normal;
   word-break: normal;
   /* One step under 15px prose. */
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
 }
 
 /* Top-aligned so wrapped rows share a first line, and the outer columns sit
    flush with the surrounding prose. */
 .chat-markdown th,
 .chat-markdown td {
-  padding: 0.45rem 0.75rem;
+  padding: --spacing(2) --spacing(3);
   text-wrap: pretty;
   text-align: start;
   vertical-align: top;
@@ -2292,7 +2556,7 @@ code {
 
 .chat-markdown thead th {
   border-bottom: 1px solid color-mix(in srgb, var(--contrast-border) 60%, transparent);
-  padding-block: 0.55rem;
+  padding-block: --spacing(2);
   font-weight: 600;
 }
 
@@ -2302,7 +2566,7 @@ code {
 
 /* Caps a long path, URL, or chip at 24rem; text past the cap wraps. */
 .chat-markdown :is(th, td) {
-  max-width: 24rem;
+  max-width: --spacing(96);
   overflow-wrap: break-word;
 }
 
@@ -2330,7 +2594,7 @@ code {
 /* Chat width setting. Comfortable keeps the default --chat-content-max-width,
    which sizes the timeline lane, the composer, and ChatCanvas's width probe. */
 :root[data-chat-width="wide"] {
-  --chat-content-max-width: 72rem;
+  --chat-content-max-width: --spacing(288);
 }
 
 :root[data-chat-width="full"] {
@@ -2367,7 +2631,7 @@ code {
   --diffs-search-panel-fg: var(--popover-foreground);
   --diffs-search-panel-modified: var(--primary);
   --diffs-header-font-fallback: var(--font-sans);
-  --diffs-search-panel-inset-top: 40px;
+  --diffs-search-panel-inset-top: --spacing(10);
 }
 
 /* Pierre's file renderer owns its own surface tokens. Keep the root of a file
@@ -2522,7 +2786,7 @@ code {
 .composer-tiptap .ProseMirror-selectednode {
   outline: 2px solid var(--ring);
   outline-offset: -2px;
-  border-radius: 6px;
+  border-radius: var(--radius-row);
 }
 
 .composer-tiptap .composer-chip-range-selected {
@@ -2533,7 +2797,7 @@ code {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 6px;
+  border-radius: var(--radius-row);
   background: Highlight;
   opacity: 0.3;
   pointer-events: none;
@@ -2550,13 +2814,13 @@ code {
 }
 
 .composer-tiptap ul[data-type="taskList"] ul[data-type="taskList"] {
-  padding-inline-start: 1.375rem;
+  padding-inline-start: --spacing(6);
 }
 
 .composer-tiptap li[data-checked] {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: --spacing(2);
   margin: 0;
   padding: 0;
 }
@@ -2572,8 +2836,8 @@ code {
 .composer-tiptap li[data-checked] > label input[type="checkbox"] {
   display: block;
   margin: 0;
-  width: 0.95rem;
-  height: 0.95rem;
+  width: --spacing(4);
+  height: --spacing(4);
   cursor: pointer;
 }
 
@@ -2589,18 +2853,18 @@ code {
 @layer components {
   .chat-composer-lane {
     padding-inline-start: calc(
-      env(safe-area-inset-left) + 0.75rem + var(--chat-lane-inset-start, 0px)
+      env(safe-area-inset-left) + --spacing(3) + var(--chat-lane-inset-start, 0px)
     );
     padding-inline-end: calc(
-      env(safe-area-inset-right) + 0.75rem + var(--chat-lane-inset-end, 0px)
+      env(safe-area-inset-right) + --spacing(3) + var(--chat-lane-inset-end, 0px)
     );
   }
   [data-chat-canvas] .messages-timeline-scroll {
     padding-inline-start: calc(
-      0.75rem + var(--chat-lane-inset-start, 0px) - var(--chat-timeline-gutter, 0px)
+      --spacing(3) + var(--chat-lane-inset-start, 0px) - var(--chat-timeline-gutter, 0px)
     );
     padding-inline-end: calc(
-      0.75rem + var(--chat-lane-inset-end, 0px) - var(--chat-timeline-gutter, 0px)
+      --spacing(3) + var(--chat-lane-inset-end, 0px) - var(--chat-timeline-gutter, 0px)
     );
   }
   .chat-scroll-to-bottom,
@@ -2611,16 +2875,18 @@ code {
   @media (min-width: 640px) {
     .chat-composer-lane {
       padding-inline-start: calc(
-        env(safe-area-inset-left) + 3rem + var(--chat-lane-inset-start, 0px)
+        env(safe-area-inset-left) + --spacing(12) + var(--chat-lane-inset-start, 0px)
       );
-      padding-inline-end: calc(env(safe-area-inset-right) + 3rem + var(--chat-lane-inset-end, 0px));
+      padding-inline-end: calc(
+        env(safe-area-inset-right) + --spacing(12) + var(--chat-lane-inset-end, 0px)
+      );
     }
     [data-chat-canvas] .messages-timeline-scroll {
       padding-inline-start: calc(
-        3rem + var(--chat-lane-inset-start, 0px) - var(--chat-timeline-gutter, 0px)
+        --spacing(12) + var(--chat-lane-inset-start, 0px) - var(--chat-timeline-gutter, 0px)
       );
       padding-inline-end: calc(
-        3rem + var(--chat-lane-inset-end, 0px) - var(--chat-timeline-gutter, 0px)
+        --spacing(12) + var(--chat-lane-inset-end, 0px) - var(--chat-timeline-gutter, 0px)
       );
     }
   }
@@ -2652,10 +2918,10 @@ code {
    0 window:  panes cut through the frame onto the aurora, outlined and shaded by the frame.
               What sits inside a window is glass in the window colour.
    Siblings on a level follow the same rules, with no per-component exceptions:
-     windows        concentric with the app window's corner, 8px gaps
-     window content 16px corners (messages, code, composer, changed files)
-     floats         12px corners; text 12px from the edge, lists 4px with items inside
-     items          8px corners: float items, and every row and control on the surface */
+     windows        rounded-2xl, 8px gaps; a corner in the app window's corner is concentric with it
+     window content rounded-2xl (messages, code, composer, changed files)
+     floats         rounded-xl; text 12px from the edge, lists 4px with items inside
+     items          rounded-lg: float items, and every row and control on the surface */
 :root {
   --level-line: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
 
@@ -2670,11 +2936,13 @@ code {
 
   --window-fill: var(--card);
   /* The OS window corner, measured: 16px on macOS 26, 8px on Windows 11. The page can't read it.
-     A window sits the gap plus the OS edge (2px) inside it, and stays concentric by taking that
-     much off the corner. */
+     A window corner that sits in the OS corner is concentric with it: it takes the gap and the OS
+     edge (2px) off. Every other window corner takes the scale. */
   --app-corner: 16px;
-  --window-gap: 8px;
-  --window-radius: max(4px, calc(var(--app-corner) - var(--window-gap) - 2px));
+  --window-gap: --spacing(2);
+  /* A region: the details card (a box, 16) floats one step inside it and runs parallel. */
+  --window-radius: var(--radius-region);
+  --window-corner: max(var(--radius-chip), calc(var(--app-corner) - var(--window-gap) - 2px));
   --window-shade: inset 0 1px 2px rgb(0 0 0 / 45%), inset 0 10px 24px -14px rgb(0 0 0 / 70%);
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
@@ -2730,6 +2998,24 @@ html.electron-windows {
   --pane-fill: var(--window-fill);
 }
 
+/* Corners in the OS window's corners. The right panel is always at the bottom right. Without
+   it the chat column is last, and its bottom window (the terminal when open) takes the corner. */
+[data-right-panel-surface-content],
+[data-chat-column]:last-child > [data-chat-header] + div:last-child,
+[data-chat-column]:last-child
+  [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"]) {
+  border-bottom-right-radius: var(--window-corner);
+}
+
+[data-slot="sidebar"]:not([data-state="expanded"])
+  ~ [data-slot="sidebar-inset"]
+  :is(
+    [data-chat-header] + div:last-child,
+    [data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])
+  ) {
+  border-bottom-left-radius: var(--window-corner);
+}
+
 /* Windows are one fill, so the terminal's canvas (read from this variable when it mounts) takes
    the window's instead of the theme's separate terminal colour. */
 [data-thread-terminal-drawer] {
@@ -2765,11 +3051,22 @@ html.electron-windows {
   background-color: var(--window-content-fill) !important;
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border: 1px solid var(--level-line) !important;
-  border-radius: var(--radius-2xl) !important;
+  border-radius: var(--radius-box) !important;
+}
+
+/* Boxes in an assistant message hang on the lane's edges like the composer and user messages; the
+   message text sits 16 in, on the same line as the text inside them. */
+[data-chat-header]
+  + div
+  .group\/assistant
+  :is([data-changed-files-state], .chat-markdown > .chat-markdown-codeblock) {
+  margin-inline: calc(--spacing(4) * -1);
 }
 
 [data-chat-header] + div [data-changed-files-header] {
   background: none !important;
+  /* Sits 1px inside the card, so its corners follow the card's. */
+  border-radius: inherit !important;
 }
 
 [data-chat-header] + div [data-slot="composer-shell"] {
@@ -2836,23 +3133,438 @@ html.electron-windows {
   backdrop-filter: none;
 }
 
-[data-thread-details-panel="inline"] [data-thread-details-card] {
-  border-radius: 8px;
-  --radius: 0.25rem;
-  --control-radius: 4px;
-}
-
 [data-right-panel-surface-content] [data-surface-subheader] {
   height: auto;
   min-height: 0;
-  padding: 10px;
+  padding: --spacing(2.5);
 }
 
+/* Window content starts 16px in, the same column as every other container. */
 [data-thread-terminal-drawer] > .flex-1 > div {
-  padding: 10px 12px;
+  padding: --spacing(4);
 }
 
 [data-thread-terminal-drawer] > .absolute {
-  top: 10px;
-  right: 10px;
+  top: --spacing(2.5);
+  right: --spacing(2.5);
+}
+
+/* The stash menu reads this from JS; as a registered length its computed value resolves to px. */
+@property --chat-composer-drawer-inset {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+/* Primitive mechanics: maths between variables, kept out of class strings. */
+/* Layered as components so a utility passed through className still overrides, as it did when
+   tailwind-merge dropped the class it replaced. Unlayered themed rules still win. */
+@layer components {
+  /* Button icons follow the label unless the variant mutes them. Matched by variant, since a
+     trigger that renders a Button replaces its data-slot. */
+  [data-variant] {
+    --control-icon-color: currentColor;
+  }
+
+  [data-variant="ghost"],
+  [data-variant="glass"],
+  [data-variant="outline"] {
+    --control-icon-color: var(--contrast-muted-foreground);
+  }
+
+  /* Autofill paints its own background; a transition that never finishes keeps it hidden. The
+     input is matched through its control, since a render prop can replace its data-slot. */
+  [data-slot="input-control"] > input,
+  [data-slot="number-field-input"] {
+    transition: background-color 5000000s ease-in-out 0s;
+  }
+
+  /* A switch is a thumb in a track padded half a step: the thumb travels its own width. Default
+     is a small control's height (24), sm is 20. */
+  [data-slot="switch"],
+  [data-slot="menu-checkbox-item-switch"] {
+    --thumb-size: --spacing(4);
+    width: calc(var(--thumb-size) * 2 + --spacing(2));
+    height: calc(var(--thumb-size) + --spacing(2));
+  }
+
+  [data-slot="switch"][data-size="sm"],
+  [data-slot="menu-checkbox-item-switch"] {
+    --thumb-size: --spacing(3);
+  }
+
+  [data-slot="switch-thumb"],
+  [data-slot="menu-checkbox-item-switch-thumb"] {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: var(--thumb-size);
+    transition:
+      translate 0.15s,
+      border-radius 0.15s,
+      scale 0.1s 0.1s,
+      transform-origin 0.15s;
+  }
+
+  :where([role="switch"]:active, [data-slot="label"]:active, [data-slot="field-label"]:active)
+    [data-slot="switch-thumb"],
+  :where([data-slot="menu-checkbox-item"]:active) [data-slot="menu-checkbox-item-switch-thumb"] {
+    border-radius: var(--thumb-size) / calc(var(--thumb-size) * 1.1);
+  }
+
+  [data-slot="switch-thumb"][data-checked],
+  :where([data-slot="menu-checkbox-item"][data-checked])
+    [data-slot="menu-checkbox-item-switch-thumb"] {
+    translate: var(--thumb-size);
+  }
+
+  [data-slot="switch"][data-mixed] > [data-slot="switch-thumb"] {
+    translate: calc(var(--thumb-size) / 2);
+  }
+
+  [data-slot="menu-checkbox-item-switch-thumb"] {
+    transform-origin: left;
+  }
+
+  :where([data-slot="menu-checkbox-item"][data-checked])
+    [data-slot="menu-checkbox-item-switch-thumb"] {
+    transform-origin: right;
+  }
+
+  /* Each edge fades by --fade-size, or by how far the content overflows that edge if less. */
+  [data-slot="scroll-area-viewport"][data-scroll-fade] {
+    --fade-size: --spacing(6);
+    mask-image:
+      linear-gradient(
+        to left,
+        black calc(100% - min(var(--fade-size), var(--scroll-area-overflow-x-start))),
+        transparent
+      ),
+      linear-gradient(
+        to right,
+        black calc(100% - min(var(--fade-size), var(--scroll-area-overflow-x-end))),
+        transparent
+      ),
+      linear-gradient(
+        to bottom,
+        black calc(100% - min(var(--fade-size), var(--scroll-area-overflow-y-end))),
+        transparent
+      ),
+      linear-gradient(
+        to top,
+        black calc(100% - min(var(--fade-size), var(--scroll-area-overflow-y-start))),
+        transparent
+      );
+    mask-composite: intersect;
+  }
+
+  [data-slot="scroll-area-viewport"]:has(> [data-slot="sidebar-content"]) {
+    --fade-size: --spacing(3);
+  }
+
+  /* The outgoing and incoming contents keep the popup's target width while it morphs, so they do
+     not rewrap mid-transition. */
+  [data-slot="popover-viewport"] {
+    --viewport-inline-padding: --spacing(4);
+  }
+
+  [data-slot="popover-viewport"][data-padding="none"] {
+    --viewport-inline-padding: 0px;
+  }
+
+  [data-slot="popover-viewport"][data-variant="panel"] {
+    --viewport-inline-padding: --spacing(2);
+  }
+
+  [data-slot="popover-viewport"] :is([data-current], [data-previous]) {
+    width: calc(var(--popup-width) - 2 * var(--viewport-inline-padding) - 2px);
+  }
+
+  [data-overflow] ~ [data-slot="middle-truncate-tail"]::before {
+    content: "…";
+  }
+
+  [data-slot="toast-viewport"] {
+    --toast-inset: --spacing(4);
+
+    @variant sm {
+      --toast-inset: --spacing(8);
+    }
+  }
+
+  /* Collapsed toasts behind the front one take its height and shrink toward it. The front toast
+     never shrinks (its scale is 1), so the height it would take does not matter. */
+  [data-slot="toast"] {
+    --toast-gap: --spacing(3);
+    --toast-peek: --spacing(3);
+    --toast-scale: max(0, 1 - var(--toast-index) * 0.1);
+    --toast-shrink: calc(1 - var(--toast-scale));
+    --toast-calc-height: max(
+      var(--toast-frontmost-height, var(--toast-height)),
+      var(--toast-height)
+    );
+    transition:
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.5s,
+      height 0.15s;
+  }
+
+  [data-slot="toast"]:not([data-expanded]) {
+    --toast-calc-height: var(--toast-frontmost-height);
+  }
+
+  /* Order matters below: rules of equal specificity resolve to the later one, so entering and
+     leaving override the resting stack. */
+  [data-slot="toast"][data-ending-style]:not([data-limited]):not([data-swipe-direction]) {
+    transform: translateY(calc(100% + var(--toast-inset)));
+  }
+
+  [data-slot="toast"][data-position][data-expanded] {
+    transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--toast-calc-offset-y));
+  }
+
+  [data-slot="toast"][data-position*="bottom"] {
+    --toast-calc-offset-y: calc(
+      var(--toast-offset-y) * -1 + var(--toast-index) * var(--toast-gap) * -1 +
+        var(--toast-swipe-movement-y)
+    );
+    transform: translateX(var(--toast-swipe-movement-x))
+      translateY(
+        calc(
+          var(--toast-swipe-movement-y) - (var(--toast-index) * var(--toast-peek)) -
+            (var(--toast-shrink) * var(--toast-calc-height))
+        )
+      )
+      scale(var(--toast-scale));
+  }
+
+  [data-slot="toast"][data-position*="bottom"][data-starting-style] {
+    transform: translateY(calc(100% + var(--toast-inset)));
+  }
+
+  [data-slot="toast"][data-position*="top"] {
+    --toast-calc-offset-y: calc(
+      var(--toast-offset-y) + var(--toast-index) * var(--toast-gap) + var(--toast-swipe-movement-y)
+    );
+    transform: translateX(var(--toast-swipe-movement-x))
+      translateY(
+        calc(
+          var(--toast-swipe-movement-y) + (var(--toast-index) * var(--toast-peek)) +
+            (var(--toast-shrink) * var(--toast-calc-height))
+        )
+      )
+      scale(var(--toast-scale));
+  }
+
+  [data-slot="toast"][data-position*="top"][data-starting-style] {
+    transform: translateY(calc(-100% - var(--toast-inset)));
+  }
+
+  [data-slot="toast"][data-position*="top"][data-position*="right"][data-ending-style]:not(
+      [data-limited]
+    ):not([data-swipe-direction]) {
+    transform: translateX(calc(100% + var(--toast-inset))) translateY(var(--toast-calc-offset-y));
+  }
+
+  [data-slot="toast"][data-position*="top"][data-position*="right"][data-starting-style] {
+    transform: translateX(calc(100% + var(--toast-inset))) translateY(var(--toast-calc-offset-y));
+  }
+
+  [data-slot="toast"][data-ending-style][data-swipe-direction="down"] {
+    transform: translateY(calc(var(--toast-swipe-movement-y) + 100% + var(--toast-inset)));
+  }
+
+  [data-slot="toast"][data-ending-style][data-swipe-direction="left"] {
+    transform: translateX(calc(var(--toast-swipe-movement-x) - 100% - var(--toast-inset)))
+      translateY(var(--toast-calc-offset-y));
+  }
+
+  [data-slot="toast"][data-ending-style][data-swipe-direction="right"] {
+    transform: translateX(calc(var(--toast-swipe-movement-x) + 100% + var(--toast-inset)))
+      translateY(var(--toast-calc-offset-y));
+  }
+
+  [data-slot="toast"][data-ending-style][data-swipe-direction="up"] {
+    transform: translateY(calc(var(--toast-swipe-movement-y) - 100% - var(--toast-inset)));
+  }
+
+  [data-slot="composer-shell"] {
+    --chat-composer-drawer-inset: --spacing(6);
+    --chat-composer-glass-surface: var(--card);
+    --chat-composer-outline: rgb(0 0 0 / 8%);
+
+    @variant dark {
+      --chat-composer-glass-surface: var(--surface-raised);
+      --chat-composer-highlight: rgb(255 255 255 / 3%);
+      --chat-composer-outline: color-mix(in srgb, var(--color-white) 5%, transparent);
+    }
+  }
+
+  html[data-theme-id] [data-slot="composer-shell"] {
+    --chat-composer-glass-surface: var(--app-theme-surface-raised);
+    --chat-composer-outline: var(--app-theme-toolbar-border);
+  }
+
+  html[data-theme-id]:not([data-theme-id="t3-chat"]) [data-slot="composer-shell"] {
+    @variant dark {
+      --chat-composer-highlight: color-mix(in srgb, var(--app-theme-input) 12%, transparent);
+      --chat-composer-outline: color-mix(in srgb, var(--app-theme-input) 30%, var(--background));
+    }
+  }
+
+  html[data-theme-id="t3-chat"] [data-slot="composer-shell"] {
+    @variant dark {
+      --chat-composer-highlight: color-mix(in srgb, #432d48 12%, transparent);
+      --chat-composer-outline: #241e28;
+    }
+  }
+
+  [data-composer-banner-surface] {
+    --chat-composer-attached-surface: var(--chat-composer-glass-surface, var(--card));
+    --chat-composer-attached-tint: transparent;
+
+    @variant dark {
+      --chat-composer-attached-surface: var(--chat-composer-glass-surface, var(--surface-raised));
+    }
+  }
+
+  html[data-theme-id] [data-composer-banner-surface] {
+    --chat-composer-attached-surface: var(--app-theme-surface-raised);
+  }
+
+  /* Bleeds 1px past the seam to cover Chromium's fractional-pixel backdrop loss. */
+  [data-composer-banner-surface="attached"] {
+    --chat-composer-attachment-overlap: calc(--spacing(4) + 1px);
+  }
+
+  [data-composer-banner-surface="detached"] {
+    --chat-composer-attachment-overlap: 0px;
+  }
+
+  [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
+    --chat-composer-attached-outline: var(
+      --chat-composer-outline,
+      color-mix(in srgb, var(--contrast-foreground) 8%, transparent)
+    );
+
+    @variant dark {
+      --chat-composer-attached-outline: var(
+        --chat-composer-outline,
+        color-mix(in srgb, var(--color-white) 5%, transparent)
+      );
+    }
+  }
+
+  html[data-theme-id]
+    [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
+    --chat-composer-attached-outline: var(--chat-composer-outline, var(--app-theme-toolbar-border));
+  }
+
+  html[data-theme-id]:not([data-theme-id="t3-chat"])
+    [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
+    @variant dark {
+      --chat-composer-attached-outline: var(
+        --chat-composer-outline,
+        color-mix(in srgb, var(--app-theme-input) 30%, var(--background))
+      );
+    }
+  }
+
+  html[data-theme-id="t3-chat"]
+    [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
+    @variant dark {
+      --chat-composer-attached-outline: #241e28;
+    }
+  }
+
+  [data-composer-banner-surface][data-variant="error"] {
+    --chat-composer-attached-outline: color-mix(in srgb, var(--error) 32%, transparent);
+    --chat-composer-attached-tint: color-mix(in srgb, var(--error) 8%, transparent);
+  }
+
+  [data-composer-banner-surface][data-variant="warning"] {
+    --chat-composer-attached-outline: color-mix(in srgb, var(--warning) 28%, transparent);
+    --chat-composer-attached-tint: color-mix(in srgb, var(--warning) 8%, transparent);
+  }
+
+  [data-slot="composer-banner"] {
+    --composer-banner-corner-top: var(--radius-box);
+    --composer-banner-icon-column: --spacing(7);
+
+    @variant sm {
+      --composer-banner-icon-column: --spacing(6);
+    }
+  }
+
+  [data-composer-banner-layout="wrap-actions"] > [data-slot="composer-banner-content"] {
+    max-width: calc(100% - var(--composer-banner-icon-column) - --spacing(1));
+  }
+
+  [data-slot="composer-banner-attachment"] {
+    margin-bottom: calc((--spacing(4) + 1px) * -1);
+  }
+
+  /* Only the banner touching the composer gets the dark seam shade; stacked ones would band. */
+  [data-slot="composer-banner-attachment"]:has(+ [data-slot="composer-banner-attachment"]) {
+    --chat-composer-attached-seam: transparent;
+  }
+
+  [data-slot="composer-banner-attachment"]
+    + [data-slot="composer-banner-attachment"]
+    [data-composer-banner-surface="attached"] {
+    --composer-banner-corner-top: var(--radius-row);
+  }
+
+  [data-slot="composer-shell"]:has([data-composer-banner-surface="attached"])
+    [data-chat-composer-main-surface]
+    [data-chat-composer-mobile-collapsed="true"] {
+    min-height: calc(--spacing(4) + 1px);
+  }
+
+  .composer-tiptap {
+    min-height: calc(2lh + --spacing(2));
+  }
+
+  [data-user-message-bubble] [data-slot="context-chip"] {
+    --context-chip-ink: var(--context-chip-message, var(--context-chip-accent));
+  }
+
+  .diff-render-surface {
+    --code-background: var(--background);
+  }
+
+  [data-slot="chat-markdown-image"] {
+    max-width: min(100%, --spacing(120));
+  }
+
+  [data-slot="expanded-media"] {
+    --media-width: 92vw;
+    --media-height: min(
+      calc((100vh - var(--native-titlebar-height, 0px)) * 0.86),
+      calc(100vh - var(--native-titlebar-height, 0px) - --spacing(40))
+    );
+
+    @variant sm {
+      --media-width: calc(92vw - --spacing(24));
+    }
+  }
+
+  [data-slot="sidebar-chrome-trigger"] {
+    top: calc(var(--workspace-controls-top) - env(safe-area-inset-top));
+    margin-left: calc(var(--workspace-controls-left) + 1px - env(safe-area-inset-left));
+  }
+
+  [data-slot="project-favicon-emoji"] {
+    font-size: 80cqh;
+  }
+
+  [data-slot="update-everything-table"] {
+    grid-template-columns: minmax(--spacing(16), max-content) max-content minmax(
+        min-content,
+        1fr
+      ) max-content;
+  }
+
+  [data-slot="text-generation-tasks"] {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
 }

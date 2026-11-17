@@ -39,7 +39,7 @@ function AlertDialogViewport({ className, ...props }: AlertDialogPrimitive.Viewp
   return (
     <AlertDialogPrimitive.Viewport
       className={cn(
-        "fixed inset-0 z-50 grid grid-rows-[1fr_auto_1fr] justify-items-center p-4",
+        "fixed inset-0 z-50 grid content-center-safe justify-items-center p-4",
         className,
       )}
       data-slot="alert-dialog-viewport"
@@ -79,7 +79,9 @@ function AlertDialogPopup({
     <AlertDialogPortal container={portalContainer}>
       <AlertDialogBackdrop />
       <AlertDialogViewport
-        className={cn(bottomStickOnMobile && "max-sm:grid-rows-[1fr_auto] max-sm:p-0 max-sm:pt-12")}
+        className={cn(
+          bottomStickOnMobile && "max-sm:grid-rows-(--grid-trail) max-sm:p-0 max-sm:pt-6",
+        )}
       >
         {popup}
       </AlertDialogViewport>
@@ -90,10 +92,7 @@ function AlertDialogPopup({
 function AlertDialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "flex min-h-0 flex-col gap-2 p-6 text-center max-sm:pb-4 sm:text-left",
-        className,
-      )}
+      className={cn("flex min-h-0 flex-col gap-2 p-4 text-center sm:text-left", className)}
       data-slot="alert-dialog-header"
       {...props}
     />
@@ -110,8 +109,9 @@ function AlertDialogFooter({
   return (
     <div
       className={cn(
-        "flex flex-col-reverse gap-2 px-6 sm:flex-row sm:justify-end sm:rounded-b-[calc(var(--radius-2xl)-1px)]",
-        variant === "default" && "border-t bg-muted/72 py-4",
+        "flex flex-col-reverse gap-2 px-4 sm:flex-row sm:justify-end sm:rounded-b-inherit",
+        // The footer separates by its own surface, not a line.
+        variant === "default" && "bg-muted/72 py-4",
         variant === "bare" && "pb-6",
         className,
       )}
@@ -124,7 +124,7 @@ function AlertDialogFooter({
 function AlertDialogTitle({ className, ...props }: AlertDialogPrimitive.Title.Props) {
   return (
     <AlertDialogPrimitive.Title
-      className={cn("wrap-anywhere shrink-0 font-semibold text-xl leading-snug", className)}
+      className={cn("wrap-anywhere shrink-0 font-semibold text-title leading-snug", className)}
       data-slot="alert-dialog-title"
       {...props}
     />
@@ -135,7 +135,7 @@ function AlertDialogDescription({ className, ...props }: AlertDialogPrimitive.De
   return (
     <AlertDialogPrimitive.Description
       className={cn(
-        "wrap-anywhere max-h-[min(24rem,60dvh)] min-h-0 overflow-y-auto overscroll-contain text-muted-foreground text-sm select-text",
+        "wrap-anywhere max-h-96 min-h-0 overflow-y-auto overscroll-contain text-ink-2 text-body select-text",
         className,
       )}
       data-slot="alert-dialog-description"
