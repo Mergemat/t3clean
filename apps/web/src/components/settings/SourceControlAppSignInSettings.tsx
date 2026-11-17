@@ -49,7 +49,7 @@ function AppMark(props: { readonly signedIn: boolean }) {
       <T3AppIcon className="size-full" />
       {props.signedIn ? (
         <span className="absolute -right-1 -bottom-1 grid size-4 place-items-center rounded-full bg-success text-white ring-2 ring-card">
-          <CheckIcon aria-hidden className="size-2.5" strokeWidth={3} />
+          <CheckIcon aria-hidden className="size-3" strokeWidth={3} />
         </span>
       ) : null}
     </div>
@@ -59,18 +59,18 @@ function AppMark(props: { readonly signedIn: boolean }) {
 /** The device code, one cell per character, as GitHub prints it. */
 function DeviceCode(props: { readonly code: string }) {
   return (
-    <div className="flex items-center gap-1 font-mono text-lg font-medium">
+    <div className="flex items-center gap-1 font-mono text-title font-medium">
       <span className="sr-only">{props.code}</span>
       {Array.from(props.code, (char, index) =>
         char === "-" ? (
-          <span key={index} aria-hidden className="px-0.5 text-muted-foreground">
+          <span key={index} aria-hidden className="px-1 text-ink-2">
             –
           </span>
         ) : (
           <span
             key={index}
             aria-hidden
-            className="grid h-10 w-8 place-items-center rounded-md border border-border bg-background shadow-xs"
+            className="grid h-10 w-8 place-items-center rounded-row border border-border bg-background shadow-xs"
           >
             {char}
           </span>
@@ -209,21 +209,21 @@ export function SourceControlAppSignInSettings({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-xl border bg-card",
+        "overflow-hidden rounded-box border bg-card",
         state.status === "failed" && !signedIn ? "border-destructive/40" : "border-border",
       )}
     >
-      <div className="flex items-center gap-3 p-3">
+      <div className="flex items-center gap-2 p-2">
         <AppMark signedIn={signedIn} />
-        <div className="min-w-0 flex-1 space-y-0.5">
-          <p className="text-sm font-medium text-foreground">{appSignIn.appName}</p>
-          <div className="text-xs text-muted-foreground">{subtitle}</div>
+        <div className="min-w-0 flex-1">
+          <p className="text-body font-medium text-ink-1">{appSignIn.appName}</p>
+          <div className="text-meta text-ink-2">{subtitle}</div>
         </div>
         <div className="shrink-0">{action}</div>
       </div>
 
       {waiting !== null ? (
-        <div className="grid gap-4 border-t border-border bg-muted/40 px-3 py-4 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-6">
+        <div className="grid gap-2 bg-muted/40 px-2 py-4 sm:grid-cols-(--grid-lead) sm:items-center sm:gap-6">
           <div className="flex items-center gap-2">
             <DeviceCode code={waiting.userCode} />
             <Button
@@ -232,7 +232,7 @@ export function SourceControlAppSignInSettings({
               aria-label="Copy code"
               onClick={() => copyToClipboard(waiting.userCode, undefined)}
             >
-              {isCopied ? <CheckIcon className="size-3.5" /> : <CopyIcon className="size-3.5" />}
+              {isCopied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
             </Button>
           </div>
           <div className="grid gap-2 sm:justify-items-end">
@@ -244,10 +244,10 @@ export function SourceControlAppSignInSettings({
               onClick={() => copyToClipboard(waiting.userCode, undefined)}
             >
               Copy code & open GitHub
-              <ExternalLinkIcon aria-hidden className="size-3.5" />
+              <ExternalLinkIcon aria-hidden className="size-4" />
             </Button>
-            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span aria-hidden className="size-1.5 rounded-full bg-warning" />
+            <p className="flex items-center gap-2 text-meta text-ink-2">
+              <span aria-hidden className="size-2 rounded-full bg-warning" />
               Waiting for approval · code expires at {expiryTime(waiting.expiresAt)}
             </p>
           </div>
@@ -255,7 +255,7 @@ export function SourceControlAppSignInSettings({
       ) : null}
 
       {signedIn ? (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 bg-muted/40 px-2 py-2 text-meta text-ink-2">
           <span className="min-w-0 flex-1">
             Reaches repositories in accounts and organizations that installed the app.
           </span>
@@ -265,10 +265,7 @@ export function SourceControlAppSignInSettings({
       ) : null}
 
       {state.status === "failed" && !signedIn ? (
-        <p
-          role="alert"
-          className="border-t border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive"
-        >
+        <p role="alert" className="bg-destructive/5 px-2 py-2 text-meta text-destructive">
           {state.message}
         </p>
       ) : null}

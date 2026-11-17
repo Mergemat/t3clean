@@ -25,18 +25,14 @@ export function AdvancedSettings({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="group flex min-h-10 w-full items-center gap-1.5 rounded-b-xl px-3 text-left text-xs font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-panel-open:rounded-none sm:px-4">
+      <CollapsibleTrigger className="group flex min-h-10 w-full items-center gap-2 rounded-b-box px-4 text-left text-meta font-medium text-ink-2 outline-none transition-colors hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-panel-open:rounded-none">
         <ChevronRightIcon
           aria-hidden
-          className="size-3.5 shrink-0 transition-transform duration-150 group-data-panel-open:rotate-90 motion-reduce:transition-none"
+          className="size-4 shrink-0 transition-transform duration-150 group-data-panel-open:rotate-90 motion-reduce:transition-none"
         />
         Advanced
       </CollapsibleTrigger>
-      <CollapsiblePanel>
-        <div className="border-t border-border/50 *:not-first:border-t *:not-first:border-border/50">
-          {children}
-        </div>
-      </CollapsiblePanel>
+      <CollapsiblePanel>{children}</CollapsiblePanel>
     </Collapsible>
   );
 }

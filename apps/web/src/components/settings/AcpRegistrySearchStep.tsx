@@ -164,7 +164,7 @@ export function AcpRegistrySearchStep({
   const resultCount = results?.length ?? 0;
 
   return (
-    <section className="grid gap-3" aria-labelledby="acp-registry-search-heading">
+    <section className="grid gap-2" aria-labelledby="acp-registry-search-heading">
       <h3 className="sr-only" id="acp-registry-search-heading">
         Choose an agent
       </h3>
@@ -224,20 +224,20 @@ export function AcpRegistrySearchStep({
       ) : null}
 
       {isInitialSearch ? (
-        <div className="flex min-h-20 items-center justify-center text-sm text-muted-foreground">
+        <div className="flex min-h-20 items-center justify-center text-body text-ink-2">
           Searching the registry...
         </div>
       ) : null}
 
       {results ? (
         results.length === 0 ? (
-          <div className="flex min-h-28 flex-col items-center justify-center rounded-2xl border border-dashed px-4 text-center">
-            <p className="text-sm font-medium">No compatible agents found</p>
-            <p className="mt-1 text-xs text-muted-foreground">Try a broader search.</p>
+          <div className="flex min-h-28 flex-col items-center justify-center rounded-box border border-dashed px-4 text-center">
+            <p className="text-body font-medium">No compatible agents found</p>
+            <p className="mt-1 text-meta text-ink-2">Try a broader search.</p>
           </div>
         ) : (
           <ScrollArea scrollFade className="max-h-64">
-            <div className="pr-2.5">
+            <div className="pr-2">
               {results.map((agent) => (
                 <AcpRegistryAgentRow
                   agent={agent}
@@ -272,26 +272,26 @@ function AcpRegistryAgentRow({
   const progressLabel = agent.distribution === "binary" ? "Downloading" : "Preparing";
   const aboutUrl = agent.website || agent.repository;
   return (
-    <article className="min-w-0 py-2.5">
-      <div className="flex min-w-0 items-center justify-between gap-3">
-        <div className="flex min-w-0 flex-1 items-center gap-3">
+    <article className="min-w-0 py-2">
+      <div className="flex min-w-0 items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
           <ProviderInstanceIcon
             driverKind={ProviderDriverKind.make("acpRegistry")}
             displayName={agent.name}
             acpRegistryAgentId={agent.id}
             acpRegistryIconUrl={agent.icon ?? undefined}
-            iconClassName="size-6 rounded-md text-muted-foreground"
+            iconClassName="size-6 rounded-row text-ink-2"
           />
           <div className="min-w-0 flex-1">
             <div className="flex min-w-0 items-baseline gap-2">
-              <h4 className="min-w-0 truncate text-sm font-medium text-foreground">{agent.name}</h4>
+              <h4 className="min-w-0 truncate text-body font-medium text-ink-1">{agent.name}</h4>
             </div>
             {agent.description ? (
-              <p className="mt-0.5 truncate text-xs text-muted-foreground">{agent.description}</p>
+              <p className="truncate text-meta text-ink-2">{agent.description}</p>
             ) : null}
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex shrink-0 items-center gap-2">
           {aboutUrl ? (
             <Tooltip>
               <TooltipTrigger

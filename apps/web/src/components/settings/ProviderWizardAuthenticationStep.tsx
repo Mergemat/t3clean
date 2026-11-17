@@ -38,7 +38,7 @@ export function ProviderWizardAuthenticationStep({
   return (
     <>
       <WizardPanel className="min-h-72">
-        <SettingsGroup variant="plain">
+        <SettingsGroup>
           {provider && (canAuthenticate || signedIn) ? (
             <ProviderAuthenticationSection
               environmentId={environmentId}

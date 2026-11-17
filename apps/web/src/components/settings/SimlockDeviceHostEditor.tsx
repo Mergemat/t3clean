@@ -107,7 +107,7 @@ export function SimlockDeviceHostEditor(props: {
     min: number,
     max: number,
   ) => (
-    <label className="block space-y-1.5">
+    <label className="block space-y-2">
       <span>{label}</span>
       <Input
         type="number"
@@ -147,7 +147,7 @@ export function SimlockDeviceHostEditor(props: {
             </DialogDescription>
           </DialogHeader>
           <DialogPanel>
-            <label className="block space-y-1.5 text-sm">
+            <label className="block space-y-2 text-body">
               <span>Name</span>
               <Input
                 autoFocus
@@ -160,7 +160,7 @@ export function SimlockDeviceHostEditor(props: {
                 }}
               />
             </label>
-            <label className="block space-y-1.5 text-sm">
+            <label className="block space-y-2 text-body">
               <span>Gateway URL</span>
               <Input
                 required
@@ -175,7 +175,7 @@ export function SimlockDeviceHostEditor(props: {
                 }}
               />
             </label>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {props.environments.map((environment) => (
                 <SimlockTokenField
                   key={environment.environmentId}
@@ -199,7 +199,7 @@ export function SimlockDeviceHostEditor(props: {
                   }
                 />
               ))}
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 Leases, drives, and streams devices. Create one{several ? " per environment" : ""}{" "}
                 with <code>simlock --gateway token create --role agent</code>, or leave it blank to
                 add it later. A blank token uses the machine's{" "}
@@ -207,16 +207,16 @@ export function SimlockDeviceHostEditor(props: {
                 <code>AGENT_DEVICE_DAEMON_BASE_URL</code> is this gateway.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-2 gap-2 text-body">
               {limit("maxLeases", "Devices at once", 1, 20)}
               {limit("maxLeaseMinutes", "Lease minutes", 5, 240)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               A lease ends after the lease minutes even while in use.
               {props.isNew ? null : " Saving restarts this host, which releases its devices."}
             </p>
             {problem === null || !gatewayUrl ? null : (
-              <p className="text-xs text-destructive" role="alert">
+              <p className="text-meta text-destructive" role="alert">
                 {problem}
               </p>
             )}
@@ -277,22 +277,20 @@ function SimlockTokenField(props: {
   const identity = AsyncResult.isSuccess(check) ? check.value : null;
   const status =
     props.gatewayUrl === null ? null : check._tag === "Initial" || check.waiting ? (
-      <span className="text-muted-foreground">Checking…</span>
+      <span className="text-ink-2">Checking…</span>
     ) : identity ? (
-      <span className="text-muted-foreground">
+      <span className="text-ink-2">
         {identity.tokenSource === "env"
           ? `Using this machine's agent-device token (${identity.signedInAs}).`
           : `Accepted as ${identity.signedInAs}.`}
       </span>
     ) : AsyncResult.isFailure(check) ? (
-      <span
-        className={props.token.kind === "cleared" ? "text-muted-foreground" : "text-destructive"}
-      >
+      <span className={props.token.kind === "cleared" ? "text-ink-2" : "text-destructive"}>
         {failureMessage(check.cause)}
       </span>
     ) : null;
   return (
-    <div className="space-y-1.5 text-sm">
+    <div className="space-y-2 text-body">
       <label htmlFor={id} className="block">
         {props.label}
       </label>
@@ -348,11 +346,11 @@ function SimlockTokenField(props: {
               setInputKey((key) => key + 1);
             }}
           >
-            <XIcon className="size-3.5" />
+            <XIcon className="size-4" />
           </Button>
         ) : null}
       </div>
-      {status ? <p className="text-xs">{status}</p> : null}
+      {status ? <p className="text-meta">{status}</p> : null}
     </div>
   );
 }

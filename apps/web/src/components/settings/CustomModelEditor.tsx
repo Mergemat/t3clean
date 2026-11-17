@@ -160,7 +160,7 @@ export function CustomModelEditor({
         className="min-w-0 flex-1"
         aria-label="Choice label"
       />
-      <label className="flex shrink-0 items-center gap-1.5 text-2xs text-muted-foreground">
+      <label className="flex shrink-0 items-center gap-2 text-meta text-ink-2">
         <Switch
           size="sm"
           checked={choice.isDefault}
@@ -172,7 +172,7 @@ export function CustomModelEditor({
         Default
       </label>
       <Button
-        size="icon-micro"
+        size="icon-xs"
         variant="ghost-muted"
         aria-label="Remove choice"
         onClick={() =>
@@ -189,16 +189,16 @@ export function CustomModelEditor({
   const renderDescriptor = (descriptor: EditorDescriptor, index: number) => (
     <div
       key={descriptor.key}
-      className="flex flex-col gap-2 rounded-md border border-border/60 bg-background/40 p-2.5"
+      className="flex flex-col gap-2 rounded-row border border-border/60 bg-background/40 p-2"
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="w-14 shrink-0 text-2xs text-muted-foreground">Option {index + 1}</span>
+        <span className="w-14 shrink-0 text-meta text-ink-2">Option {index + 1}</span>
         {presets.length > 0 ? (
           <Select
             value={idSelectValue(descriptor)}
             onValueChange={(value) => applyPresetId(descriptor, value)}
           >
-            <SelectTrigger size="compact" className="w-40" aria-label="Option id">
+            <SelectTrigger variant="ghost" size="compact" aria-label="Option id">
               <SelectValue>
                 {idSelectValue(descriptor) === CUSTOM_ID_VALUE ? "Custom…" : descriptor.id}
               </SelectValue>
@@ -207,8 +207,8 @@ export function CustomModelEditor({
               {presets.map((preset) => (
                 <SelectItem key={preset.id} value={preset.id}>
                   <span className="flex items-baseline gap-2">
-                    <code className="font-mono text-xs">{preset.id}</code>
-                    <span className="text-muted-foreground">{preset.label}</span>
+                    <code className="font-mono text-meta">{preset.id}</code>
+                    <span className="text-ink-2">{preset.label}</span>
                   </span>
                 </SelectItem>
               ))}
@@ -242,7 +242,7 @@ export function CustomModelEditor({
             updateDescriptor(descriptor.key, { type: value === "boolean" ? "boolean" : "select" })
           }
         >
-          <SelectTrigger size="compact" className="w-24" aria-label="Option type">
+          <SelectTrigger variant="ghost" size="compact" aria-label="Option type">
             <SelectValue>{descriptor.type === "boolean" ? "Toggle" : "Choices"}</SelectValue>
           </SelectTrigger>
           <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -251,7 +251,7 @@ export function CustomModelEditor({
           </SelectPopup>
         </Select>
         <Button
-          size="icon-micro"
+          size="icon-xs"
           variant="ghost-muted"
           aria-label={`Remove option ${index + 1}`}
           onClick={() => removeDescriptor(descriptor.key)}
@@ -260,7 +260,7 @@ export function CustomModelEditor({
         </Button>
       </div>
       {descriptor.type === "select" ? (
-        <div className="flex flex-col gap-1.5 pl-16">
+        <div className="flex flex-col gap-2 pl-6">
           {descriptor.choices.map((choice) => renderChoice(descriptor, choice))}
           <Button
             type="button"
@@ -283,7 +283,7 @@ export function CustomModelEditor({
 
   return (
     <div
-      className="mx-2 mt-1 mb-2 flex flex-col gap-3 rounded-md border border-border bg-muted/20 p-3"
+      className="mx-2 mt-1 mb-2 flex flex-col gap-2 rounded-row border border-border bg-muted/20 p-2"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           event.preventDefault();
@@ -292,7 +292,7 @@ export function CustomModelEditor({
       }}
     >
       <div className="flex flex-col gap-1">
-        <label htmlFor={domId("name")} className="text-xs text-muted-foreground">
+        <label htmlFor={domId("name")} className="text-meta text-ink-2">
           Display name
         </label>
         <Input
@@ -309,12 +309,13 @@ export function CustomModelEditor({
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-xs text-muted-foreground">Options shown in the composer</span>
+          <span className="text-meta text-ink-2">Options shown in the composer</span>
           {startFromCandidates.length > 0 ? (
             <Select value={START_FROM_NONE} onValueChange={handleStartFrom}>
               <SelectTrigger
+                variant="ghost"
                 size="compact"
-                className="w-44"
+
                 aria-label="Copy options from a built-in model"
               >
                 <SelectValue>Copy from…</SelectValue>
@@ -330,7 +331,7 @@ export function CustomModelEditor({
           ) : null}
         </div>
         {draft.descriptors.length === 0 ? (
-          <p className="text-xs text-muted-foreground/70">
+          <p className="text-meta text-ink-2">
             No custom options. The composer uses the provider's default options.
           </p>
         ) : null}
@@ -365,7 +366,7 @@ export function CustomModelEditor({
         </div>
       </div>
 
-      {error ? <p className="text-xs text-destructive">{error}</p> : null}
+      {error ? <p className="text-meta text-destructive">{error}</p> : null}
 
       <div className="flex gap-2">
         <Button size="sm" variant="outline" onClick={handleSave}>

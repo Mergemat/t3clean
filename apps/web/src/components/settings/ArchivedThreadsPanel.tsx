@@ -199,7 +199,7 @@ export function ArchivedThreadsPanel() {
                 {isLoadingArchive ? (
                   <Spinner size="sm" tone="muted" />
                 ) : (
-                  <ArchiveIcon className="size-3.5 text-muted-foreground" />
+                  <ArchiveIcon className="size-4 text-ink-2" />
                 )}
                 {isLoadingArchive
                   ? "Loading archived threads"
@@ -257,7 +257,7 @@ export function ArchivedThreadsPanel() {
                               />
                             }
                           >
-                            <Icon className="size-3.5" />
+                            <Icon className="size-4" />
                           </TooltipTrigger>
                           <TooltipPopup>{label}</TooltipPopup>
                         </Tooltip>

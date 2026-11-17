@@ -13,8 +13,8 @@ export function ProjectsSettings() {
   const unavailable =
     scope.kind === "unavailable" ? (
       <SettingsPageContainer>
-        <div className="flex flex-col items-start gap-3">
-          <p className="text-sm text-muted-foreground">{scope.message}</p>
+        <div className="flex flex-col items-start gap-2">
+          <p className="text-body text-ink-2">{scope.message}</p>
           {value.machine || value.checkout ? (
             <Button
               variant="outline"

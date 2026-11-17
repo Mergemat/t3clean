@@ -117,7 +117,7 @@ export function ProjectActionsSettings() {
         description="Commands that run in this project's checkout or its worktree, with optional shortcuts."
         onResetOverride={() => void persist(() => null)}
         control={
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
             {importableScripts.length > 0 ? (
               <Menu>
                 <MenuTrigger
@@ -132,12 +132,12 @@ export function ProjectActionsSettings() {
                   }
                 >
                   Import scripts
-                  <ChevronDownIcon className="size-3.5" />
+                  <ChevronDownIcon className="size-4" />
                 </MenuTrigger>
                 <MenuPopup align="end">
                   <MenuGroup>
                     <MenuGroupLabel>Import from t3.json</MenuGroupLabel>
-                    <p className="px-2 pb-2 text-pretty text-sm text-muted-foreground">
+                    <p className="px-2 pb-2 text-pretty text-body text-ink-2">
                       Add actions declared by this checkout without editing them first.
                     </p>
                   </MenuGroup>
@@ -150,9 +150,7 @@ export function ProjectActionsSettings() {
                       <ScriptIcon icon={fileScript.icon ?? "play"} className="size-4 shrink-0" />
                       <div className="min-w-0 flex-1">
                         <div className="truncate font-medium">{fileScript.name}</div>
-                        <div className="truncate font-mono text-muted-foreground">
-                          {fileScript.command}
-                        </div>
+                        <div className="truncate font-mono text-ink-2">{fileScript.command}</div>
                       </div>
                     </MenuItem>
                   ))}
@@ -165,7 +163,7 @@ export function ProjectActionsSettings() {
               disabled={saving || !canWriteSettings || targets.length === 0}
               onClick={() => setRequest({ scriptId: null, initial: EMPTY_PROJECT_SCRIPT_INPUT })}
             >
-              <PlusIcon className="size-3.5" />
+              <PlusIcon className="size-4" />
               Add action
             </Button>
           </div>

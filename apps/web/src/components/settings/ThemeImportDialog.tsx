@@ -100,12 +100,12 @@ function ThemeJsonEditor({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-input bg-background shadow-xs/5 focus-within:border-ring focus-within:ring-3 focus-within:ring-inset focus-within:ring-ring/24">
+    <div className="relative overflow-hidden rounded-box border border-input bg-background shadow-xs/5 focus-within:border-ring focus-within:ring-3 focus-within:ring-inset focus-within:ring-ring/24">
       {isPlainText ? null : (
         <pre
           ref={highlightRef}
           aria-hidden
-          className="pointer-events-none absolute inset-0 m-0 overflow-hidden whitespace-pre-wrap break-words p-3 font-mono text-xs leading-5 text-foreground"
+          className="pointer-events-none absolute inset-0 m-0 overflow-hidden whitespace-pre-wrap break-words p-2 font-mono text-meta leading-5 text-ink-1"
         >
           <code dangerouslySetInnerHTML={{ __html: highlightedJson }} />
         </pre>
@@ -113,8 +113,8 @@ function ThemeJsonEditor({
       <textarea
         aria-label="Theme JSON"
         className={cn(
-          "relative z-10 block min-h-44 w-full resize-y overflow-auto bg-transparent p-3 font-mono text-xs leading-5 caret-foreground outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground",
-          isPlainText ? "text-foreground" : "text-transparent",
+          "relative z-10 block min-h-44 w-full resize-y overflow-auto bg-transparent p-2 font-mono text-meta leading-5 caret-foreground outline-none placeholder:text-ink-2 selection:bg-primary selection:text-primary-foreground",
+          isPlainText ? "text-ink-1" : "text-transparent",
         )}
         id={id}
         onChange={(event) => onChange(event.currentTarget.value)}
@@ -420,12 +420,8 @@ function ThemeImportBody({
         signal={signal}
       />
 
-      <div className="flex items-center gap-3" aria-hidden>
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-muted-foreground text-2xs uppercase tracking-wider">
-          or import a file
-        </span>
-        <div className="h-px flex-1 bg-border" />
+      <div className="flex items-center gap-2" aria-hidden>
+        <span className="text-ink-2 text-meta uppercase tracking-wider">or import a file</span>
       </div>
 
       {(() => {
@@ -462,8 +458,8 @@ function ThemeImportBody({
         );
         const editorSection = () => (
           <div className="space-y-2">
-            <div className="flex items-baseline justify-between gap-3">
-              <label className="text-sm font-medium" htmlFor="theme-json-editor">
+            <div className="flex items-baseline justify-between gap-2">
+              <label className="text-body font-medium" htmlFor="theme-json-editor">
                 Theme JSON
               </label>
             </div>
@@ -472,10 +468,10 @@ function ThemeImportBody({
         );
         if (conflicts) {
           return (
-            <div className="space-y-3">
-              <div className="rounded-xl border border-border/70 bg-muted/20 p-3">
-                <p className="text-sm font-medium">Already installed</p>
-                <p className="mt-1 text-xs text-muted-foreground">
+            <div className="space-y-2">
+              <div className="rounded-box border border-border/70 bg-muted/20 p-4">
+                <p className="text-body font-medium">Already installed</p>
+                <p className="mt-1 text-meta text-ink-2">
                   {conflicts.map((theme) => theme.label).join(", ")}
                 </p>
               </div>
@@ -497,17 +493,17 @@ function ThemeImportBody({
           );
         }
         return (
-          <div className="space-y-4">
+          <div className="space-y-2">
             <div
               className={cn(
-                "flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed px-3 py-3 transition-colors",
+                "flex flex-wrap items-center justify-between gap-2 rounded-box border border-dashed px-4 py-2 transition-colors",
                 isDropTarget ? "border-ring bg-accent/20" : "border-border/80 bg-muted/20",
               )}
               {...dropHandlers}
             >
               <div className="min-w-0">
-                <p className="text-sm font-medium">Theme file</p>
-                <p className="truncate text-xs text-muted-foreground">
+                <p className="text-body font-medium">Theme file</p>
+                <p className="truncate text-meta text-ink-2">
                   {fileName ?? "Drop T3 Code or VS Code .json files"}
                 </p>
               </div>

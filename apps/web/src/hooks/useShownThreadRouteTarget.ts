@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import {
   getAppModalReturnThreadTarget,
-  isAppModalPage,
+  isOverlayPage,
 } from "../components/sidebar/mainAppLocation";
 import type { ThreadRouteTarget } from "../threadRoutes";
 import { useThreadRouteTarget } from "./useThreadRouteTarget";
@@ -14,12 +14,12 @@ function threadRouteTargetKey(target: ThreadRouteTarget | null) {
   return target.kind === "server" ? scopedThreadKey(target.threadRef) : target.draftId;
 }
 
-/** Settings and Usage render over the thread that opened them; that thread stays the shown one. */
+/** Usage renders over the thread that opened it; that thread stays the shown one. */
 export function useShownThreadRouteTarget() {
   const routeTarget = useThreadRouteTarget();
   // Read matches, not location, so this agrees with the params useThreadRouteTarget reads.
   const modalOpen = useMatches({
-    select: (matches) => matches.some((match) => isAppModalPage(match.pathname)),
+    select: (matches) => matches.some((match) => isOverlayPage(match.pathname)),
   });
   const [backgroundTarget, setBackgroundTarget] = useState(() =>
     modalOpen ? getAppModalReturnThreadTarget() : routeTarget,

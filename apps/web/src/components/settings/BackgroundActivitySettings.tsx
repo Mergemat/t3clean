@@ -124,12 +124,12 @@ function BackgroundActivityAdvancedDialog({
         <DialogPanel>
           <fieldset
             disabled={!canWriteSettings}
-            className="min-w-0 overflow-hidden rounded-xl border bg-card text-card-foreground"
+            className="min-w-0 overflow-hidden rounded-box border bg-card text-card-foreground"
           >
-            <div className="flex flex-col gap-3 border-b px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 space-y-1">
-                <div className="text-sm font-medium">Shared policy</div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <div className="text-body font-medium">Shared policy</div>
+                <p className="text-meta leading-relaxed text-ink-2">
                   Controls whether background work may run after a subscribed interval fires.
                 </p>
               </div>
@@ -148,8 +148,9 @@ function BackgroundActivityAdvancedDialog({
                 }}
               >
                 <SelectTrigger
+                  variant="ghost"
                   size="sm"
-                  className="w-full sm:w-40"
+
                   aria-label="Shared background policy"
                 >
                   <SelectValue>{BACKGROUND_ACTIVITY_PROFILE_LABELS[activeProfile]}</SelectValue>
@@ -168,12 +169,12 @@ function BackgroundActivityAdvancedDialog({
               </Select>
             </div>
 
-            <div className="flex flex-col gap-3 border-b px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 space-y-1">
-                <div className="text-sm font-medium">
+                <div className="text-body font-medium">
                   {searchableSetting("git-fetch-interval").title}
                 </div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <p className="text-meta leading-relaxed text-ink-2">
                   Refresh remote branch status in the background.
                 </p>
               </div>
@@ -194,14 +195,14 @@ function BackgroundActivityAdvancedDialog({
                     )
                   }
                 />
-                <span className="text-xs text-muted-foreground">seconds</span>
+                <span className="text-meta text-ink-2">seconds</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 space-y-1">
-                <div className="text-sm font-medium">Provider health interval</div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <div className="text-body font-medium">Provider health interval</div>
+                <p className="text-meta leading-relaxed text-ink-2">
                   Refresh provider availability, versions, and auth state. Model catalog updates
                   follow Provider update checks.
                 </p>
@@ -223,14 +224,14 @@ function BackgroundActivityAdvancedDialog({
                     )
                   }
                 />
-                <span className="text-xs text-muted-foreground">seconds</span>
+                <span className="text-meta text-ink-2">seconds</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 space-y-1">
-                <div className="text-sm font-medium">Host power monitor</div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <div className="text-body font-medium">Host power monitor</div>
+                <p className="text-meta leading-relaxed text-ink-2">
                   Poll host power state while clients are active.
                 </p>
               </div>
@@ -251,14 +252,14 @@ function BackgroundActivityAdvancedDialog({
                     )
                   }
                 />
-                <span className="text-xs text-muted-foreground">seconds</span>
+                <span className="text-meta text-ink-2">seconds</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 space-y-1">
-                <div className="text-sm font-medium">Idle host monitor</div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <div className="text-body font-medium">Idle host monitor</div>
+                <p className="text-meta leading-relaxed text-ink-2">
                   Poll host power state when no foreground client is active.
                 </p>
               </div>
@@ -279,17 +280,14 @@ function BackgroundActivityAdvancedDialog({
                     )
                   }
                 />
-                <span className="text-xs text-muted-foreground">seconds</span>
+                <span className="text-meta text-ink-2">seconds</span>
               </div>
             </div>
 
-            <div className="grid gap-0 border-t sm:grid-cols-2">
+            <div className="grid sm:grid-cols-2">
               {BACKGROUND_ACTIVITY_BOOLEAN_OVERRIDES.map(({ key, label }) => (
-                <label
-                  key={key}
-                  className="flex items-center justify-between gap-3 border-b px-4 py-3 last:border-b-0 sm:border-r sm:even:border-r-0"
-                >
-                  <span className="text-sm font-medium">{label}</span>
+                <label key={key} className="flex items-center justify-between gap-2 px-4 py-2">
+                  <span className="text-body font-medium">{label}</span>
                   <Switch
                     checked={resolvedBackgroundActivity[key]}
                     onCheckedChange={(checked) =>
@@ -353,7 +351,7 @@ export function BackgroundActivitySettingsRow() {
       settingKeys={["backgroundActivity"]}
       id={searchableSetting("background-activity").id}
       title={
-        <span className="inline-flex items-center gap-1.5">
+        <span className="inline-flex items-center gap-2">
           {searchableSetting("background-activity").title}
           <PolicyTooltip>
             This shared policy gates background work such as Git refreshes and provider health
@@ -385,8 +383,9 @@ export function BackgroundActivitySettingsRow() {
             }}
           >
             <SelectTrigger
+              variant="ghost"
               size="sm"
-              className="w-full sm:w-40"
+
               aria-label="Background activity profile"
             >
               <SelectValue>

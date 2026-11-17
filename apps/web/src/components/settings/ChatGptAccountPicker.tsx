@@ -63,20 +63,20 @@ export function ChatGptAccountPicker({
             {profiles.map((profile) => (
               <label
                 key={profile.id}
-                className="flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-3 text-sm"
+                className="flex cursor-pointer items-center gap-2 rounded-row border px-2 py-2 text-body"
               >
                 <Radio value={profile.id} />
                 <span className="min-w-0 break-all font-medium">{profile.name}</span>
               </label>
             ))}
-            <label className="flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-3 text-sm">
+            <label className="flex cursor-pointer items-center gap-2 rounded-row border px-2 py-2 text-body">
               <Radio value="chatgpt-change-account" />
               <span className="font-medium">Use a different account</span>
             </label>
           </RadioGroup>
         </div>
         {error ? (
-          <p role="alert" className="px-6 pb-3 text-sm text-destructive">
+          <p role="alert" className="px-6 pb-2 text-body text-destructive">
             {error}
           </p>
         ) : null}

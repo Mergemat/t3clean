@@ -13,7 +13,7 @@ export function ChatGptUsageButton(props: Omit<ComponentProps<typeof Button>, "o
       onClick={() => void ensureLocalApi().shell.openExternal(CHATGPT_USAGE_URL)}
     >
       Manage usage
-      <ExternalLinkIcon className="size-3.5" aria-hidden="true" />
+      <ExternalLinkIcon className="size-4" aria-hidden="true" />
     </Button>
   );
 }

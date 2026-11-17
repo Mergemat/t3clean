@@ -149,14 +149,14 @@ export function CodexSetupSection(props: CodexSetupSectionProps) {
         }
         control={
           existingReady ? (
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-success-foreground">
-              <CheckIcon className="size-3.5" />
+            <span className="inline-flex items-center gap-2 text-meta font-medium text-success-foreground">
+              <CheckIcon className="size-4" />
               Ready
             </span>
           ) : existingChecking ? (
-            <span className="text-xs text-muted-foreground">Checking...</span>
+            <span className="text-meta text-ink-2">Checking...</span>
           ) : existingAuthenticated ? (
-            <span className="text-xs text-muted-foreground">{existingSummary.headline}</span>
+            <span className="text-meta text-ink-2">{existingSummary.headline}</span>
           ) : (
             <ManagedControl reason={chatGptDenial}>
               <ChatGptConnectionButton
@@ -694,7 +694,7 @@ function ManagedCodexSetup({
   );
   const callbackCompletion =
     !handoff && auth?.phase === "waiting" && url ? (
-      <div className="flex w-full flex-col gap-3 text-xs leading-relaxed text-muted-foreground">
+      <div className="flex w-full flex-col gap-2 text-meta leading-relaxed text-ink-2">
         <p>If sign-in doesn't return to T3 Code, paste the URL from the final localhost page.</p>
         <form
           className="flex flex-col gap-2 sm:flex-row sm:items-center"
@@ -743,7 +743,7 @@ function ManagedCodexSetup({
               onClick={() => void ensureLocalApi().shell.openExternal(url)}
             >
               Try sign-in in your browser
-              <ExternalLinkIcon className="size-3.5" />
+              <ExternalLinkIcon className="size-4" />
             </Button>
           </div>
         ) : null}
@@ -759,14 +759,14 @@ function ManagedCodexSetup({
     ) : null;
   const callbackHelpContent =
     callbackCompletion && callbackHelpOpen ? (
-      <div id={callbackHelpId} className="w-full border-t border-border/50 pt-3">
+      <div id={callbackHelpId} className="w-full pt-2">
         {callbackCompletion}
       </div>
     ) : null;
   const callbackFallback = needsManualCallback ? (
     callbackCompletion
   ) : callbackCompletion ? (
-    <div className="space-y-3 text-xs leading-relaxed text-muted-foreground">
+    <div className="space-y-2 text-meta leading-relaxed text-ink-2">
       <CodexSignInDescription
         label="Having trouble signing in?"
         expanded={callbackHelpOpen}
@@ -855,8 +855,8 @@ function ManagedCodexSetup({
           }
           control={
             authenticated && !busy ? (
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-success-foreground">
-                <CheckIcon className="size-3.5" />
+              <span className="inline-flex items-center gap-2 text-meta font-medium text-success-foreground">
+                <CheckIcon className="size-4" />
                 Ready
               </span>
             ) : authActive ? (
@@ -925,7 +925,7 @@ function ManagedCodexSetup({
         >
           {needsManualCallback ? callbackFallback : callbackHelpContent}
           {setupError ? (
-            <p role="alert" className="text-xs text-destructive">
+            <p role="alert" className="text-meta text-destructive">
               {setupError}
             </p>
           ) : null}
@@ -935,7 +935,7 @@ function ManagedCodexSetup({
   }
 
   return (
-    <section aria-label="Codex setup" className="divide-y divide-border/50">
+    <section aria-label="Codex setup">
       {accountPicker}
       <SettingsRow
         title="ChatGPT account"
@@ -1056,18 +1056,18 @@ function ManagedCodexSetup({
         }
       />
       {authenticated ? (
-        <div className="flex justify-end px-3 py-1 sm:px-4">
+        <div className="flex justify-end px-4 py-1">
           <ChatGptUsageButton />
         </div>
       ) : null}
       {logoutWarning ? (
-        <p role="alert" className="px-3 py-2 text-xs text-muted-foreground sm:px-4">
+        <p role="alert" className="px-4 py-2 text-meta text-ink-2">
           {logoutWarning}
         </p>
       ) : null}
-      {callbackFallback ? <div className="px-3 py-3 sm:px-4">{callbackFallback}</div> : null}
+      {callbackFallback ? <div className="px-4 py-2">{callbackFallback}</div> : null}
       {error || authQuery.error || installQuery.error || installation?.phase === "failed" ? (
-        <p role="alert" className="px-3 py-2 text-xs text-destructive sm:px-4">
+        <p role="alert" className="px-4 py-2 text-meta text-destructive">
           {error ??
             (installation?.phase === "failed"
               ? installation.message
@@ -1164,7 +1164,7 @@ function CodexSignInDescription({
   return (
     <button
       type="button"
-      className="inline-flex items-center gap-1.5 rounded-sm text-left leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+      className="inline-flex items-center gap-2 rounded-row text-left leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
       aria-label="Having trouble signing in?"
       aria-expanded={expanded}
       aria-controls={controls}
@@ -1191,12 +1191,12 @@ function CodexWelcomeCard({
 }) {
   const footer = Children.toArray(children);
   return (
-    <div className="rounded-lg border border-border bg-background px-4 py-4">
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="rounded-box border border-border bg-background px-4 py-4">
+      <div className="flex flex-wrap items-center gap-2">
         <OpenAI className="size-5 shrink-0 fill-foreground" />
         <div className="min-w-0 flex-1">
-          <h3 className="text-sm font-medium">{title}</h3>
-          <div className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{description}</div>
+          <h3 className="text-body font-medium">{title}</h3>
+          <div className="text-meta leading-relaxed text-ink-2">{description}</div>
         </div>
         {control || secondaryControl ? (
           <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 has-[button]:w-full has-[button]:flex-col-reverse has-[button]:items-end sm:has-[button]:w-auto sm:has-[button]:flex-row sm:has-[button]:items-center">
@@ -1206,7 +1206,7 @@ function CodexWelcomeCard({
         ) : null}
       </div>
       {footer.length > 0 ? (
-        <div className="ml-8 mt-2 flex flex-wrap items-center gap-2">{footer}</div>
+        <div className="ml-6 mt-2 flex flex-wrap items-center gap-2">{footer}</div>
       ) : null}
     </div>
   );

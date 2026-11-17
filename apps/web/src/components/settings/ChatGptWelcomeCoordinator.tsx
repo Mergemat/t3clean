@@ -69,7 +69,7 @@ export function ChatGptWelcomeCoordinator() {
             Eligible usage in T3 Code uses your ChatGPT plan. Manage your shared usage and any
             credit settings in ChatGPT.
           </DialogDescription>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             {next?.providerName} on {next?.environmentLabel}
           </p>
         </DialogHeader>

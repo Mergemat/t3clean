@@ -1,6 +1,5 @@
 import { useLegendListRef } from "~/hooks/useLegendListRef";
 import { LegendList, type LegendListRef } from "@legendapp/list/react";
-import { CheckIcon } from "lucide-react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   displayFontFamily,
@@ -18,6 +17,7 @@ import {
 } from "../ui/combobox";
 import { SelectButton } from "../ui/select";
 import { stackedThreadToast, toastManager } from "../ui/toast";
+import { ListRowGap } from "../ui/list-row-gap";
 
 const DEFAULT_FONT_VALUE = "__default__";
 
@@ -162,11 +162,8 @@ export function FontFamilyPicker({
           <span className="min-w-0 truncate" style={{ fontFamily: displayFontFamily(family) }}>
             {family}
           </span>
-          <span className="flex shrink-0 items-center gap-1.5">
-            {isDefault ? <span className="text-3xs text-muted-foreground/60">default</span> : null}
-            {item === selectedValue ? (
-              <CheckIcon className="size-3.5 text-muted-foreground" />
-            ) : null}
+          <span className="flex shrink-0 items-center gap-2">
+            {isDefault ? <span className="text-meta text-ink-3">default</span> : null}
           </span>
         </div>
       </ComboboxItem>
@@ -217,6 +214,7 @@ export function FontFamilyPicker({
                 keyExtractor={(item) => item}
                 renderItem={({ item, index }) => renderItem(item, index)}
                 estimatedItemSize={30}
+                ItemSeparatorComponent={ListRowGap}
                 drawDistance={360}
                 onScroll={handleMetricsChange}
                 onLayout={handleMetricsChange}

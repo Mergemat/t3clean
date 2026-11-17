@@ -142,7 +142,7 @@ function LinkedEnvironmentRow({
     <div className={ITEM_ROW_CLASSNAME}>
       <div className={ITEM_ROW_INNER_CLASSNAME}>
         <div className="min-w-0 flex-1 space-y-1">
-          <div className="flex min-h-5 items-center gap-1.5">
+          <div className="flex min-h-5 items-center gap-2">
             <ConnectionStatusDot
               tooltipText={status}
               dotClassName={
@@ -156,12 +156,12 @@ function LinkedEnvironmentRow({
               }
               pingClassName={null}
             />
-            <h3 className="text-sm font-medium text-foreground">{link.label}</h3>
+            <h3 className="text-body font-medium text-ink-1">{link.label}</h3>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             {accessConfig[link.access].label} · {status}
           </p>
-          <p className="truncate text-xs text-muted-foreground/80">{link.urls.join(", ")}</p>
+          <p className="truncate text-meta text-ink-2">{link.urls.join(", ")}</p>
         </div>
         {canUnlink ? (
           <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto sm:justify-end">
@@ -294,7 +294,7 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
         <DialogPanel>
           <form
             id={formId}
-            className="space-y-4"
+            className="space-y-2"
             autoComplete="off"
             onSubmit={(event) => {
               event.preventDefault();
@@ -310,13 +310,13 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
               />
             ) : null}
             {machine?.linked ? (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 Already linked. Linking again renews it with the access you pick.
               </p>
             ) : null}
             {needsAddress ? (
-              <label className="block space-y-1.5">
-                <span className="block text-xs font-medium text-foreground">Address</span>
+              <label className="block space-y-2">
+                <span className="block text-meta font-medium text-ink-1">Address</span>
                 <Input
                   value={address}
                   onChange={(event) => {
@@ -331,7 +331,7 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
                   spellCheck={false}
                 />
                 {machine !== null ? (
-                  <span className="block text-xs text-muted-foreground">
+                  <span className="block text-meta text-ink-2">
                     This app has no address for {machine.label} that another machine can reach.
                     Enter its https or Tailscale address.
                   </span>
@@ -340,8 +340,8 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
             ) : null}
             {needsAddress && address.trim() ? <LinkAddressWarning address={address} /> : null}
             {selected === null || canMint ? null : (
-              <label className="block space-y-1.5">
-                <span className="block text-xs font-medium text-foreground">Pairing code</span>
+              <label className="block space-y-2">
+                <span className="block text-meta font-medium text-ink-1">Pairing code</span>
                 <Input
                   value={pairingCode}
                   onChange={(event) => setPairingCode(event.target.value)}
@@ -354,7 +354,7 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
                   spellCheck={false}
                 />
                 {machine !== null ? (
-                  <span className="block text-xs text-muted-foreground">
+                  <span className="block text-meta text-ink-2">
                     Create a link on {machine.label}: Settings → Sharing & access → Authorized
                     clients → Create link, then paste its code here.
                   </span>

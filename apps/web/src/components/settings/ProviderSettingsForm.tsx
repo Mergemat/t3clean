@@ -252,14 +252,14 @@ function ProviderCommandArguments({
       }
     >
       {rows.length > 0 ? (
-        <div className="mt-3 min-w-0 space-y-2 pb-2">
+        <div className="mt-2 min-w-0 space-y-2 pb-2">
           {rows.map((argument, index) =>
             managedReason !== undefined ? (
-              <code key={argument.id} className="block min-w-0 truncate text-xs">
+              <code key={argument.id} className="block min-w-0 truncate text-meta">
                 {argument.value}
               </code>
             ) : (
-              <div key={argument.id} className="flex min-w-0 items-center gap-1.5">
+              <div key={argument.id} className="flex min-w-0 items-center gap-2">
                 <DraftInput
                   size="sm"
                   font="mono"
@@ -276,7 +276,7 @@ function ProviderCommandArguments({
                 />
                 <Button
                   type="button"
-                  size="icon-micro"
+                  size="icon-xs"
                   variant="ghost-destructive"
                   onClick={() =>
                     updateArguments(rows.filter((current) => current.id !== argument.id))
@@ -397,7 +397,7 @@ function SecretSettingsControl({
           onClick={() => onChange(nextProviderConfigWithFieldValue(value, field, ""))}
           aria-label={`Clear ${field.label}`}
         >
-          <XIcon className="size-3.5" />
+          <XIcon className="size-4" />
         </Button>
       ) : null}
     </div>
@@ -431,7 +431,13 @@ function ProviderSettingsSelect({
         onChange(nextProviderConfigWithFieldValue(value, field, next === fallback ? "" : next));
       }}
     >
-      <SelectTrigger id={inputId} size={size} className={className} aria-label={field.label}>
+      <SelectTrigger
+        variant="ghost"
+        id={inputId}
+        size={size}
+        className={className}
+        aria-label={field.label}
+      >
         <SelectValue>{label}</SelectValue>
       </SelectTrigger>
       <SelectPopup align="start" alignItemWithTrigger={false}>
@@ -483,7 +489,7 @@ function ProviderSettingsTextInput({
         spellCheck={false}
       />
       {rejected !== null ? (
-        <p className="text-2xs text-destructive">Enter a valid value. It was not saved.</p>
+        <p className="text-meta text-destructive">Enter a valid value. It was not saved.</p>
       ) : null}
     </div>
   );
@@ -496,7 +502,7 @@ function FieldFrame(props: {
   if (props.variant === "card") {
     return <div>{props.children}</div>;
   }
-  return <div className="grid gap-1.5">{props.children}</div>;
+  return <div className="grid gap-2">{props.children}</div>;
 }
 
 interface ProviderSettingsFieldRowProps {
@@ -520,10 +526,8 @@ function ProviderSettingsFieldRow({
 }: ProviderSettingsFieldRowProps) {
   const inputId = `${idPrefix}-${field.key}`;
   const descriptionClassName =
-    variant === "dialog"
-      ? "text-2xs text-muted-foreground"
-      : "mt-1 block text-xs text-muted-foreground";
-  const label = <span className="text-xs font-medium text-foreground">{field.label}</span>;
+    variant === "dialog" ? "text-meta text-ink-2" : "mt-1 block text-meta text-ink-2";
+  const label = <span className="text-meta font-medium text-ink-1">{field.label}</span>;
   const description = field.description ? (
     <span className={descriptionClassName}>{field.description}</span>
   ) : null;
@@ -555,7 +559,7 @@ function ProviderSettingsFieldRow({
         <Textarea
           id={inputId}
           aria-describedby={descriptionId}
-          className="w-full max-w-full @min-[32rem]/settings-row:w-[min(24rem,50cqw)]"
+          className="w-full max-w-full @min-[32rem]/settings-row:w-64 @min-[48rem]/settings-row:w-96"
           value={readProviderConfigString(value, field.key)}
           onChange={(event) =>
             onChange(nextProviderConfigWithFieldValue(value, field, event.target.value))
@@ -591,7 +595,7 @@ function ProviderSettingsFieldRow({
               onClick={() => onChange(nextProviderConfigWithFieldValue(value, field, ""))}
               aria-label={`Clear ${field.label}`}
             >
-              <XIcon className="size-3.5" />
+              <XIcon className="size-4" />
             </Button>
           ) : null}
         </div>
@@ -622,7 +626,7 @@ function ProviderSettingsFieldRow({
   if (field.control === "switch") {
     return (
       <FieldFrame variant={variant}>
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-2">
           <div className="min-w-0">
             {label}
             {description}
@@ -649,7 +653,7 @@ function ProviderSettingsFieldRow({
             value={value}
             inputId={inputId}
             size="sm"
-            className={cn("w-full", variant === "card" && "mt-1.5")}
+            className={cn("w-full", variant === "card" && "mt-2")}
             onChange={onChange}
           />
           {description}
@@ -665,7 +669,7 @@ function ProviderSettingsFieldRow({
           {label}
           <Textarea
             id={inputId}
-            className={cn(variant === "card" && "mt-1.5")}
+            className={cn(variant === "card" && "mt-2")}
             value={readProviderConfigString(value, field.key)}
             onChange={(event) =>
               onChange(nextProviderConfigWithFieldValue(value, field, event.target.value))
@@ -690,7 +694,7 @@ function ProviderSettingsFieldRow({
           <BufferedInput
             id={inputId}
             size="sm"
-            className="mt-1.5"
+            className="mt-2"
             type={field.secret ? undefined : type}
             autoComplete={!field.secret && field.control === "password" ? "off" : undefined}
             value={readProviderConfigString(value, field.key)}

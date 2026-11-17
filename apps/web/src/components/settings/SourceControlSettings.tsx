@@ -18,7 +18,6 @@ import { useEnvironmentQuery } from "../../state/query";
 import { serverEnvironment } from "../../state/server";
 import { sourceControlEnvironment } from "../../state/sourceControl";
 import { useAtomCommand } from "../../state/use-atom-command";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Collapsible, CollapsibleContent } from "../ui/collapsible";
 import {
@@ -51,6 +50,7 @@ import { PullRequestGlyph } from "~/components/pullRequest/pullRequestIcons";
 import { isSourceControlProviderOffered } from "@t3tools/client-runtime/operations/projects";
 import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
 import { sourceControlIcon } from "~/sourceControlPresentation";
+import { SettingsStatus } from "./settingsLayout";
 
 const EMPTY_DISCOVERY_RESULT: SourceControlDiscoveryResult = {
   versionControlSystems: [],
@@ -119,7 +119,7 @@ function sourceControlItemIcon(
   const Icon = isProviderDiscoveryItem(item)
     ? host && sourceControlIcon(host)
     : VCS_ICONS[item.kind];
-  return Icon ? <Icon className="size-4.5 text-foreground/80" aria-hidden /> : null;
+  return Icon ? <Icon className="size-4 text-ink-2" aria-hidden /> : null;
 }
 
 function SourceControlItemMark({
@@ -139,7 +139,7 @@ function SourceControlItemMark({
       {icon}
       <span
         className={cn(
-          "pointer-events-none absolute -left-0.5 -top-0.5 size-2 rounded-full ring-2 ring-background",
+          "pointer-events-none absolute -left-1 -top-1 size-2 rounded-full ring-2 ring-background",
           dotClassName,
         )}
         aria-hidden
@@ -194,8 +194,8 @@ function itemSummary({
       return (
         <span>
           {item.label} is not authenticated on this server. Sign in or configure credentials using
-          the <code className="rounded bg-muted px-1 py-px text-2xs">{item.executable}</code> tool
-          on the server host to enable change request features.
+          the <code className="rounded-chip bg-muted px-1 py-px text-meta">{item.executable}</code>{" "}
+          tool on the server host to enable change request features.
         </span>
       );
     }
@@ -241,29 +241,29 @@ function DiscoveryItemRow({
   return (
     <div
       className={cn(
-        "first:rounded-t-xl last:rounded-b-xl transition-colors hover:bg-muted/20",
+        "first:rounded-t-box last:rounded-b-box transition-colors hover:bg-muted/20",
         isVcsNotReady(item) && "opacity-80",
       )}
     >
-      <div className="px-3 py-3 sm:px-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="px-4 py-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0 flex-1 space-y-1">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <SourceControlItemMark item={item} />
-              <span className="truncate text-sm font-medium text-foreground">{item.label}</span>
-              {version ? <code className="text-xs text-muted-foreground">{version}</code> : null}
+              <span className="truncate text-body font-medium text-ink-1">{item.label}</span>
+              {version ? <code className="text-meta text-ink-2">{version}</code> : null}
               {isVcsNotReady(item) ? (
-                <Badge variant="warning" size="sm">
+                <SettingsStatus variant="warning" size="sm">
                   Coming Soon
-                </Badge>
+                </SettingsStatus>
               ) : null}
               {authStatus?.badge ? (
-                <Badge variant={authStatus.badge} size="sm">
+                <SettingsStatus variant={authStatus.badge} size="sm">
                   {authStatus.label}
-                </Badge>
+                </SettingsStatus>
               ) : null}
             </div>
-            <p className="flex min-w-0 flex-wrap items-center gap-x-1 text-xs leading-normal text-muted-foreground/80">
+            <p className="flex min-w-0 flex-wrap items-center gap-x-1 text-meta leading-normal text-ink-2">
               {itemSummary({ item, auth, authAccount })}
             </p>
           </div>
@@ -277,7 +277,7 @@ function DiscoveryItemRow({
                 aria-label={`Toggle ${item.label} details`}
               >
                 <ChevronDownIcon
-                  className={cn("size-3.5 transition-transform", isExpanded && "rotate-180")}
+                  className={cn("size-4 transition-transform", isExpanded && "rotate-180")}
                 />
               </Button>
             ) : null}
@@ -309,7 +309,7 @@ function DiscoveryItemRow({
       {hasDetails ? (
         <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
           <CollapsibleContent>
-            <div className="px-3 pb-4 pt-1 sm:px-4">{children}</div>
+            <div className="px-4 pb-4 pt-1">{children}</div>
           </CollapsibleContent>
         </Collapsible>
       ) : null}
@@ -327,15 +327,15 @@ function SourceControlSectionSkeleton({
   return (
     <SettingsSection title={title} headerAction={headerAction}>
       {SOURCE_CONTROL_SKELETON_ROWS.map((row) => (
-        <div key={row} className="first:rounded-t-xl last:rounded-b-xl px-3 py-3 sm:px-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div key={row} className="first:rounded-t-box last:rounded-b-box px-4 py-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0 flex-1 space-y-2">
               <div className="flex items-center gap-2">
                 <span className="relative inline-flex size-5 shrink-0 items-center justify-center">
-                  <Skeleton className="size-4.5" />
+                  <Skeleton className="size-4" />
                   <Skeleton
                     shape="pill"
-                    className="pointer-events-none absolute -left-0.5 -top-0.5 size-2"
+                    className="pointer-events-none absolute -left-1 -top-1 size-2"
                     aria-hidden
                   />
                 </span>
@@ -345,8 +345,8 @@ function SourceControlSectionSkeleton({
               <Skeleton shape="pill" className="h-3 w-full max-w-xs" />
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <Skeleton className="size-7" />
-              <Skeleton shape="pill" className="h-5 w-9" />
+              <Skeleton className="size-6" />
+              <Skeleton shape="pill" className="h-5 w-8" />
             </div>
           </div>
         </div>
@@ -453,10 +453,8 @@ export function SourceControlSettingsPanel() {
               />
             ) : null}
             {credentials.appSignIn && item.appSignIn === true ? (
-              <div className="flex items-center gap-3 text-2xs text-muted-foreground">
-                <span aria-hidden className="h-px flex-1 bg-border" />
+              <div className="flex items-center gap-2 text-meta text-ink-2">
                 Or use your own credentials
-                <span aria-hidden className="h-px flex-1 bg-border" />
               </div>
             ) : null}
             <SourceControlTokenSettings
@@ -515,7 +513,7 @@ export function SourceControlSettingsPanel() {
       <ProjectDefaultsSettings category="source-control" />
       {environmentId === null ? (
         <SettingsSection id={searchableSetting("source-control").id} title="Server environment">
-          <p className="px-4 py-3 text-sm text-muted-foreground">
+          <p className="px-4 py-2 text-body text-ink-2">
             Connect an environment to inspect its version control tools and hosting integrations.
           </p>
         </SettingsSection>

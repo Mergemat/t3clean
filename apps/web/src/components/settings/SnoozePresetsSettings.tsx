@@ -262,7 +262,7 @@ function SnoozePresetList(props: {
 
   return (
     <div
-      className="flex flex-col gap-1.5 pt-3 pb-2"
+      className="flex flex-col gap-2 pt-2 pb-2"
       onBlur={(event) => {
         const list = event.currentTarget;
         const next = event.relatedTarget;
@@ -285,10 +285,10 @@ function SnoozePresetList(props: {
             className="flex flex-wrap items-center gap-2"
           >
             <SnoozePresetFields preset={preset} onChange={(next) => props.onChange(index, next)} />
-            <div className="ml-auto flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+            <div className="ml-auto flex min-w-0 items-center gap-2 text-meta text-ink-2">
               {preview.tone === "menu" ? (
                 <span className="truncate">
-                  <span className="text-foreground">{preview.label}</span>
+                  <span className="text-ink-1">{preview.label}</span>
                   <span className="ps-2 tabular-nums">{preview.when}</span>
                 </span>
               ) : (
@@ -306,13 +306,13 @@ function SnoozePresetList(props: {
           </div>
         );
       })}
-      <p className="text-xs text-muted-foreground">
+      <p className="text-meta text-ink-2">
         {menuOrder.length === 0 ? "Menus offer only Custom…" : `Menu now: ${menuOrder.join(" · ")}`}
       </p>
       <div>
         <Button
           variant="ghost-muted"
-          size="compact"
+          size="sm"
           disabled={props.presets.length >= MAX_SNOOZE_PRESETS}
           onClick={props.onAdd}
         >
@@ -320,9 +320,7 @@ function SnoozePresetList(props: {
           Add option
         </Button>
         {props.presets.length >= MAX_SNOOZE_PRESETS ? (
-          <span className="ps-2 text-xs text-muted-foreground">
-            Up to {MAX_SNOOZE_PRESETS} options
-          </span>
+          <span className="ps-2 text-meta text-ink-2">Up to {MAX_SNOOZE_PRESETS} options</span>
         ) : null}
       </div>
     </div>
@@ -356,7 +354,7 @@ function SnoozePresetFields(props: {
           onChange(next);
         }}
       >
-        <SelectTrigger size="sm" className="w-32" aria-label="When">
+        <SelectTrigger variant="ghost" size="sm" aria-label="When">
           <SelectValue />
         </SelectTrigger>
         <SelectPopup>
@@ -374,7 +372,7 @@ function SnoozePresetFields(props: {
         />
       ) : (
         <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">at</span>
+          <span className="text-meta text-ink-2">at</span>
           <Input
             nativeInput
             size="sm"
@@ -454,7 +452,7 @@ function DurationFields(props: { minutes: number; onChange: (minutes: number) =>
           }
         }}
       >
-        <SelectTrigger size="sm" className="w-28" aria-label="Unit">
+        <SelectTrigger variant="ghost" size="sm" aria-label="Unit">
           <SelectValue />
         </SelectTrigger>
         <SelectPopup>

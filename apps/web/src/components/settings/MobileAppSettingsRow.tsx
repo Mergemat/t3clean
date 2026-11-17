@@ -34,10 +34,10 @@ export function MobileAppSettingsRow() {
                 {label}
               </PopoverTrigger>
               <PopoverPopup align="end">
-                <div className="flex flex-col items-center gap-3">
+                <div className="flex flex-col items-center gap-2">
                   <PopoverTitle>{store}</PopoverTitle>
-                  <p className="text-xs text-muted-foreground">Scan with your phone camera.</p>
-                  <div className="rounded-lg bg-white p-1.5">
+                  <p className="text-meta text-ink-2">Scan with your phone camera.</p>
+                  <div className="rounded-row bg-white p-2">
                     <QRCodeSvg
                       value={url}
                       size={128}

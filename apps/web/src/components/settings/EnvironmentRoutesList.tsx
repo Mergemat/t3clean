@@ -93,7 +93,7 @@ export function EnvironmentRoutesList({
   };
 
   return (
-    <div className="mt-2 border-t border-border/50 py-2">
+    <div className="mt-2 py-2">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -115,7 +115,7 @@ export function EnvironmentRoutesList({
           </ol>
         </SortableContext>
       </DndContext>
-      <div className="-ml-1.5 pt-1">
+      <div className="-ml-2 pt-1">
         <Button size="xs" variant="ghost-muted" onClick={onAddRoute}>
           <PlusIcon className="size-3" />
           Add route
@@ -157,35 +157,33 @@ function SortableRouteRow({
       style={{ transform: CSS.Translate.toString(transform), transition }}
       className={cn(
         "flex items-center gap-2 py-2",
-        isDragging && "relative z-10 rounded-md bg-background shadow-md",
+        isDragging && "relative z-10 rounded-row bg-background shadow-md",
       )}
     >
       <div className="min-w-0 flex-1">
-        <p className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+        <p className="flex items-center gap-2 text-meta font-medium text-ink-1">
           {label}
-          {inUse ? (
-            <span className="rounded-sm bg-success/12 px-1 text-2xs font-normal text-success-foreground">
-              In use
-            </span>
-          ) : null}
+          {inUse ? <span className="text-meta text-success-foreground">In use</span> : null}
         </p>
         {address !== null ? (
-          <p className="truncate text-2xs text-muted-foreground">
+          <p className="truncate text-meta text-ink-2">
             {address}
             {isLearned(route) ? " · found automatically" : ""}
           </p>
         ) : null}
       </div>
-      <button
+      <Button
         type="button"
         ref={setActivatorNodeRef}
         {...attributes}
         {...listeners}
+        size="icon-xs"
+        variant="ghost-muted"
         aria-label={`Reorder ${label}, position ${position}`}
-        className="flex size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded text-muted-foreground/70 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring active:cursor-grabbing"
+        className="cursor-grab touch-none active:cursor-grabbing"
       >
-        <GripVerticalIcon className="size-3.5" />
-      </button>
+        <GripVerticalIcon />
+      </Button>
       {removable ? (
         <Tooltip>
           <TooltipTrigger

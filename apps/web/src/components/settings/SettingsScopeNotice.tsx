@@ -52,7 +52,7 @@ export function SettingsScopeNotice({
       <EnvironmentMachineIcon
         aria-hidden
         kind={resolveEnvironmentMachineKind(environment.serverConfig)}
-        className="size-4 shrink-0 text-muted-foreground"
+        className="size-4 shrink-0 text-ink-2"
       />
     ) : null;
   const choiceGroups =
@@ -118,7 +118,7 @@ export function SettingsScopeNotice({
           : [
               {
                 label: "Open all environments",
-                icon: <LayersIcon aria-hidden className="size-4 shrink-0 text-muted-foreground" />,
+                icon: <LayersIcon aria-hidden className="size-4 shrink-0 text-ink-2" />,
                 search: {},
               },
             ];
@@ -128,7 +128,7 @@ export function SettingsScopeNotice({
         type="button"
         className={cn(
           ITEM_ROW_CLASSNAME,
-          "flex w-full min-w-0 cursor-pointer items-center gap-3 text-left outline-none hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+          "flex w-full min-w-0 cursor-pointer items-center gap-2 text-left outline-none hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
         )}
         onClick={() => {
           if (targetId)
@@ -147,28 +147,26 @@ export function SettingsScopeNotice({
       >
         {choice.icon}
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-medium">{choice.label}</span>
+          <span className="block truncate text-body font-medium">{choice.label}</span>
           {choice.secondary ? (
             <Tooltip>
-              <TooltipTrigger
-                render={<span className="block truncate text-xs text-muted-foreground" />}
-              >
+              <TooltipTrigger render={<span className="block truncate text-meta text-ink-2" />}>
                 {choice.secondary}
               </TooltipTrigger>
               <TooltipPopup>{choice.secondary}</TooltipPopup>
             </Tooltip>
           ) : null}
         </span>
-        <ChevronRightIcon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+        <ChevronRightIcon aria-hidden className="size-4 shrink-0 text-ink-2" />
       </button>
     ));
   };
   const notice = (
-    <div className="space-y-3">
-      <p role="status" className="px-3 text-sm text-muted-foreground sm:px-4">
+    <div className="space-y-2">
+      <p role="status" className="px-4 text-body text-ink-2">
         {children}
       </p>
-      <div className="space-y-4">
+      <div className="space-y-2">
         {choiceGroups.map((group) =>
           group?.displayName ? (
             <SettingsSection key={group.projectKey} title={group.displayName}>

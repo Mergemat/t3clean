@@ -92,7 +92,7 @@ function AccessScopeSummary({
           <button
             type="button"
             aria-label={`${label}: show ${scopeCountLabel}`}
-            className="cursor-help underline decoration-border underline-offset-2 outline-hidden hover:text-foreground focus-visible:text-foreground"
+            className="cursor-help underline decoration-border underline-offset-2 outline-hidden hover:text-ink-1 focus-visible:text-ink-1"
           />
         }
       >
@@ -105,9 +105,9 @@ function AccessScopeSummary({
         className="w-max max-w-80 whitespace-normal"
       >
         <p className="mb-1 font-medium">Granted scopes</p>
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col">
           {scopes.map((scope) => (
-            <code key={scope} className="font-mono text-foreground/85">
+            <code key={scope} className="font-mono text-ink-1">
               {scope}
             </code>
           ))}
@@ -119,7 +119,7 @@ function AccessScopeSummary({
 
 function endpointRowClassName(isAvailable: boolean) {
   return cn(
-    "relative first:rounded-t-xl last:rounded-b-xl px-3 py-3 sm:px-4",
+    "relative first:rounded-t-box last:rounded-b-box px-4 py-2",
     !isAvailable && "bg-muted/15",
   );
 }
@@ -266,14 +266,14 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
     <div className={ITEM_ROW_CLASSNAME}>
       <div className={ITEM_ROW_INNER_CLASSNAME}>
         <div className="min-w-0 flex-1 space-y-1">
-          <div className="flex min-h-5 items-center gap-1.5">
+          <div className="flex min-h-5 items-center gap-2">
             <ConnectionStatusDot
               tooltipText={`Link created at ${formatAccessTimestamp(pairingLink.createdAt)}`}
               dotClassName="bg-warning"
             />
-            <h3 className="text-sm font-medium text-foreground">{primaryLabel}</h3>
+            <h3 className="text-body font-medium text-ink-1">{primaryLabel}</h3>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             <Tooltip>
               <TooltipTrigger render={<span />}>
                 {formatExpiresInLabel(pairingLink.expiresAt, nowMs)}
@@ -284,11 +284,9 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
             <AccessScopeSummary scopes={pairingLink.scopes} label="Pairing link scopes" />
           </p>
           {!credential ? (
-            <p className="text-2xs text-muted-foreground/70">
-              Create a new link to share from this client.
-            </p>
+            <p className="text-meta text-ink-2">Create a new link to share from this client.</p>
           ) : shareablePairingUrl === null ? (
-            <p className="text-2xs text-muted-foreground/70">
+            <p className="text-meta text-ink-2">
               Copy the token and pair from another client using this backend&apos;s reachable host.
             </p>
           ) : null}
@@ -350,7 +348,7 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
                   onClick={(event) => event.currentTarget.select()}
                 />
                 {isRevealValueUrl && isRevealValueQrShareable ? (
-                  <div className="flex justify-center rounded-xl border border-border/60 bg-muted/30 p-4">
+                  <div className="flex justify-center rounded-box border border-border/60 bg-muted/30 p-4">
                     <QRCodeSvg
                       value={revealValue}
                       size={132}
@@ -386,16 +384,16 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
       {isQrPanelOpen && qrPairingUrl !== null ? (
         <div
           id={qrPanelId}
-          className="mt-3 flex flex-col gap-4 border-t border-border/50 pt-3 sm:flex-row sm:items-start sm:justify-between"
+          className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between"
         >
-          <div className="min-w-0 flex-1 space-y-3">
+          <div className="min-w-0 flex-1 space-y-2">
             {endpointCopyOptions.length > 1 ? (
               <div
-                className="space-y-1.5"
+                className="space-y-2"
                 role="radiogroup"
                 aria-label="Endpoint the pairing QR code and URL use"
               >
-                <p className="text-2xs text-muted-foreground/70">Reach this machine via</p>
+                <p className="text-meta text-ink-2">Reach this machine via</p>
                 {endpointCopyOptions.map((option) => {
                   const isSelected = option.id === selectedQrOption?.id;
                   return (
@@ -405,7 +403,7 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
                       role="radio"
                       aria-checked={isSelected}
                       className={cn(
-                        "flex w-full items-baseline gap-2 rounded-lg border px-2.5 py-1.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+                        "flex w-full items-baseline gap-2 rounded-row border px-2 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
                         isSelected
                           ? "border-foreground/60 bg-muted/30"
                           : "border-border/50 hover:bg-muted/20",
@@ -414,25 +412,23 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
                     >
                       <span
                         className={cn(
-                          "text-xs font-medium",
-                          isSelected ? "text-foreground" : "text-muted-foreground",
+                          "text-meta font-medium",
+                          isSelected ? "text-ink-1" : "text-ink-2",
                         )}
                       >
                         {option.label}
                       </span>
-                      <span className="min-w-0 truncate text-2xs text-muted-foreground/70">
-                        {option.detail}
-                      </span>
+                      <span className="min-w-0 truncate text-meta text-ink-2">{option.detail}</span>
                     </button>
                   );
                 })}
               </div>
             ) : null}
-            <div className="flex items-center gap-2 rounded-lg border border-border/60 bg-muted/30 px-2.5 py-1.5">
+            <div className="flex items-center gap-2 rounded-row border border-border/60 bg-muted/30 px-2 py-2">
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <code className="min-w-0 flex-1 truncate font-mono text-2xs text-muted-foreground">
+                    <code className="min-w-0 flex-1 truncate font-mono text-meta text-ink-2">
                       {qrPairingUrl}
                     </code>
                   }
@@ -453,7 +449,7 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
             </Button>
           </div>
           {canRenderQrForSelection ? (
-            <div className="w-fit shrink-0 self-center rounded-xl bg-white p-3 sm:self-start">
+            <div className="w-fit shrink-0 self-center rounded-box bg-white p-2 sm:self-start">
               <QRCodeSvg
                 value={qrPairingUrl}
                 size={168}
@@ -463,8 +459,8 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
               />
             </div>
           ) : (
-            <div className="flex size-[192px] shrink-0 items-center justify-center self-center rounded-xl border border-border/50 p-4 sm:self-start">
-              <p className="text-center text-2xs text-muted-foreground/70">
+            <div className="flex size-48 shrink-0 items-center justify-center self-center rounded-box border border-border/50 p-4 sm:self-start">
+              <p className="text-center text-meta text-ink-2">
                 No QR for this endpoint. Another device scanning a loopback link would dial itself;
                 copy the URL for use on this machine instead.
               </p>
@@ -516,20 +512,20 @@ const ConnectedClientListRow = memo(function ConnectedClientListRow({
     <div className={ITEM_ROW_CLASSNAME}>
       <div className={ITEM_ROW_INNER_CLASSNAME}>
         <div className="min-w-0 flex-1 space-y-1">
-          <div className="flex min-h-5 items-center gap-1.5">
+          <div className="flex min-h-5 items-center gap-2">
             <ConnectionStatusDot
               tooltipText={statusTooltip}
               dotClassName={isLive ? "bg-success" : "bg-muted-foreground/30"}
               pingClassName={isLive ? "bg-success/60 duration-2000" : null}
             />
-            <h3 className="text-sm font-medium text-foreground">{primaryLabel}</h3>
+            <h3 className="text-body font-medium text-ink-1">{primaryLabel}</h3>
             {clientSession.current ? (
-              <span className="text-3xs text-muted-foreground/80 rounded-md border border-border/50 bg-muted/50 px-1 py-0.5">
+              <span className="text-meta text-ink-2 rounded-chip border border-border/50 bg-muted/50 px-1 py-1">
                 This device
               </span>
             ) : null}
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             {deviceInfoBits.length > 0 ? (
               <>
                 {deviceInfoBits.join(" · ")}
@@ -677,7 +673,7 @@ export const AuthorizedClientsHeaderAction = memo(function AuthorizedClientsHead
           </DialogHeader>
           <DialogPanel>
             <label className="block">
-              <span className="mb-1.5 block text-xs font-medium text-foreground">
+              <span className="mb-2 block text-meta font-medium text-ink-1">
                 Client label (optional)
               </span>
               <Input
@@ -688,13 +684,11 @@ export const AuthorizedClientsHeaderAction = memo(function AuthorizedClientsHead
                 autoFocus
               />
             </label>
-            <section className="space-y-3">
-              <div className="flex items-center justify-between gap-3">
+            <section className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <h3 className="text-xs font-medium text-foreground">Permissions</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Limit what the paired client can do.
-                  </p>
+                  <h3 className="text-meta font-medium text-ink-1">Permissions</h3>
+                  <p className="text-meta text-ink-2">Limit what the paired client can do.</p>
                 </div>
                 <div className="flex gap-1">
                   <Button
@@ -730,22 +724,22 @@ export const AuthorizedClientsHeaderAction = memo(function AuthorizedClientsHead
                   </Button>
                 </div>
               </div>
-              <div className="divide-y divide-border/60 rounded-lg border border-input bg-muted/25">
+              <div className="rounded-row border border-input bg-muted/25">
                 {PAIRING_SCOPE_OPTIONS.filter(({ scope }) => delegatableScopes.includes(scope)).map(
                   ({ scope, title, description }) => (
                     <label
                       key={scope}
-                      className="flex cursor-pointer items-start gap-3 px-3 py-2.5 transition-colors hover:bg-muted/40"
+                      className="flex cursor-pointer items-start gap-2 px-2 py-2 transition-colors hover:bg-muted/40"
                     >
                       <Checkbox
-                        className="mt-0.5"
+                        className=""
                         checked={pairingScopes.includes(scope)}
                         disabled={isCreatingPairingLink}
                         onCheckedChange={(checked) => togglePairingScope(scope, checked === true)}
                       />
                       <span className="min-w-0">
-                        <span className="block text-xs font-medium text-foreground">{title}</span>
-                        <span className="block text-xs leading-snug text-muted-foreground">
+                        <span className="block text-meta font-medium text-ink-1">{title}</span>
+                        <span className="block text-meta leading-snug text-ink-2">
                           {description}
                         </span>
                       </span>
@@ -754,9 +748,9 @@ export const AuthorizedClientsHeaderAction = memo(function AuthorizedClientsHead
                 )}
               </div>
               {selectedScopes.length === 0 ? (
-                <p className="text-xs text-destructive">Select at least one permission.</p>
+                <p className="text-meta text-destructive">Select at least one permission.</p>
               ) : selectedScopes.includes(AuthAccessWriteScope) ? (
-                <p className="text-xs text-warning">
+                <p className="text-meta text-warning">
                   This client can create or revoke access for other devices.
                 </p>
               ) : null}
@@ -846,7 +840,7 @@ export const PairingClientsList = memo(function PairingClientsList({
 
       {pairingLinks.length === 0 && clientSessions.length === 0 && !isLoading ? (
         <div className={ITEM_ROW_CLASSNAME}>
-          <p className="text-xs text-muted-foreground/60">No pairing links or client sessions.</p>
+          <p className="text-meta text-ink-3">No pairing links or client sessions.</p>
         </div>
       ) : null}
     </>
@@ -881,16 +875,14 @@ export const AdvertisedEndpointListRow = memo(function AdvertisedEndpointListRow
       {isDefault ? (
         <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-primary" aria-hidden />
       ) : null}
-      <div className="flex min-h-7 min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-        <div className="flex min-h-7 min-w-0 flex-1 items-center gap-3">
-          <h3 className="shrink-0 text-sm leading-5 font-medium text-foreground">
-            {endpoint.label}
-          </h3>
+      <div className="flex min-h-6 min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+        <div className="flex min-h-6 min-w-0 flex-1 items-center gap-2">
+          <h3 className="shrink-0 text-body leading-5 font-medium text-ink-1">{endpoint.label}</h3>
           {shouldShowEndpointUrl ? (
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <p className="min-w-0 truncate text-xs leading-5 text-muted-foreground">
+                  <p className="min-w-0 truncate text-meta leading-5 text-ink-2">
                     {endpoint.httpBaseUrl}
                   </p>
                 }
@@ -899,14 +891,14 @@ export const AdvertisedEndpointListRow = memo(function AdvertisedEndpointListRow
             </Tooltip>
           ) : null}
           {!isAvailable ? (
-            <span className="inline-flex h-6 shrink-0 items-center rounded-md border border-border/70 px-1.5 text-3xs text-muted-foreground">
+            <span className="inline-flex h-6 shrink-0 items-center rounded-row border border-border/70 px-2 text-meta text-ink-2">
               Setup required
             </span>
           ) : null}
         </div>
-        <div className="ml-auto flex min-h-7 shrink-0 items-center justify-end gap-2">
+        <div className="ml-auto flex min-h-6 shrink-0 items-center justify-end gap-2">
           {isDefault ? (
-            <span className="inline-flex h-6 items-center rounded-md border border-primary/30 bg-primary/10 px-1.5 text-3xs text-primary">
+            <span className="inline-flex h-6 items-center rounded-row border border-primary/30 bg-primary/10 px-2 text-meta text-primary">
               Default
             </span>
           ) : null}
@@ -964,7 +956,7 @@ export function NetworkAccessDescription({
     <>
       <span className="min-w-0 truncate">{endpoint.httpBaseUrl}</span>
       {hiddenEndpointCount > 0 ? (
-        <span className="shrink-0 text-xs font-medium">
+        <span className="shrink-0 text-meta font-medium">
           {expanded ? "Hide" : `+${hiddenEndpointCount}`}
         </span>
       ) : null}
@@ -977,7 +969,7 @@ export function NetworkAccessDescription({
       {hiddenEndpointCount > 0 ? (
         <button
           type="button"
-          className="inline-flex min-w-0 max-w-full items-baseline gap-2 border-b border-dotted border-muted-foreground/60 text-left text-muted-foreground underline-offset-4 hover:border-foreground hover:text-foreground"
+          className="inline-flex min-w-0 max-w-full items-baseline gap-2 border-b border-dotted border-muted-foreground/60 text-left text-ink-2 underline-offset-4 hover:border-foreground hover:text-ink-1"
           onClick={onToggleExpanded}
           aria-expanded={expanded}
         >

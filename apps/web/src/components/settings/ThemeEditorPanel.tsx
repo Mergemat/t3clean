@@ -901,10 +901,11 @@ export function ThemeEditorPanel({
   };
 
   const renderNameField = () => (
-    <label className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] items-center gap-3">
-      <span className="text-sm font-medium">Theme name</span>
+    <label className="grid grid-cols-3 items-center gap-2">
+      <span className="text-body font-medium">Theme name</span>
       <Input
         autoFocus
+        className="col-span-2"
         size="sm"
         onChange={(event) => {
           setName(event.currentTarget.value);
@@ -934,10 +935,11 @@ export function ThemeEditorPanel({
   };
 
   const renderAppearanceButtons = () => (
-    <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] items-center gap-3">
-      <span className="text-sm font-medium">Appearance</span>
+    <div className="grid grid-cols-3 items-center gap-2">
+      <span className="text-body font-medium">Appearance</span>
       <ToggleGroup
         aria-label="Theme appearance"
+        className="col-span-2"
         variant="segmented"
         value={[activeAppearance]}
         onValueChange={(next) => {
@@ -957,14 +959,12 @@ export function ThemeEditorPanel({
   );
 
   const renderColorsHeader = () => (
-    <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] items-start gap-3">
+    <div className="grid grid-cols-3 items-start gap-2">
       <div>
-        <h3 className="text-sm font-medium">Colors</h3>
-        {isAdvanced ? null : (
-          <p className="text-xs text-muted-foreground">Two colors, rest derived</p>
-        )}
+        <h3 className="text-body font-medium">Colors</h3>
+        {isAdvanced ? null : <p className="text-meta text-ink-2">Two colors, rest derived</p>}
       </div>
-      <div className="flex min-w-0 items-start gap-3">
+      <div className="col-span-2 flex min-w-0 items-start gap-2">
         {isAdvanced ? (
           <Input
             aria-label="Filter colors"
@@ -975,7 +975,7 @@ export function ThemeEditorPanel({
             value={roleQuery}
           />
         ) : null}
-        <label className="ml-auto flex shrink-0 cursor-pointer items-center gap-2 pt-0.5 text-sm font-medium">
+        <label className="ml-auto flex shrink-0 cursor-pointer items-center gap-2 pt-1 text-body font-medium">
           <span>Advanced</span>
           <Switch
             aria-label="Use advanced theme colors"
@@ -1023,14 +1023,14 @@ export function ThemeEditorPanel({
       ),
     })).filter((group) => group.families.length > 0);
     return isAdvanced ? (
-      <div className="space-y-5">
+      <div className="space-y-2">
         {groups.map((group) => (
           <section className="space-y-2" key={group.id}>
-            <h4 className="text-sm font-medium text-foreground">{group.title}</h4>
+            <h4 className="text-body font-medium text-ink-1">{group.title}</h4>
             {renderRoleFields(group.families, "grid gap-1")}
           </section>
         ))}
-        {groups.length === 0 ? <p className="text-xs text-muted-foreground">No matches.</p> : null}
+        {groups.length === 0 ? <p className="text-meta text-ink-2">No matches.</p> : null}
       </div>
     ) : (
       <div className="grid gap-1">
@@ -1135,7 +1135,7 @@ export function ThemeEditorPanel({
     <div
       aria-label={isEditing ? "Edit theme" : "Create theme"}
       className={cn(
-        "dialog-glass fixed z-[110] flex max-h-[min(42rem,calc(100dvh-6rem))] w-[min(26rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-xl border text-popover-foreground",
+        "dialog-glass fixed z-110 flex max-h-168 w-104 max-w-(--viewport-inset) flex-col overflow-hidden rounded-box border text-popover-foreground",
         position === null && "bottom-4 right-4",
         isMinimized && "max-h-none",
       )}
@@ -1158,18 +1158,18 @@ export function ThemeEditorPanel({
       }}
     >
       <div
-        className="flex cursor-grab touch-none select-none items-center gap-1 border-b border-border/70 px-3 py-2 active:cursor-grabbing"
+        className="flex cursor-grab touch-none select-none items-center gap-1 border-b border-border/70 px-2 py-2 active:cursor-grabbing"
         onPointerCancel={endDrag}
         onPointerDown={handleDragPointerDown}
         onPointerMove={handleDragPointerMove}
         onPointerUp={endDrag}
       >
         <div className="flex min-w-0 flex-1 items-baseline gap-2">
-          <h2 className="shrink-0 truncate text-sm font-medium">
+          <h2 className="shrink-0 truncate text-body font-medium">
             {isEditing ? "Edit theme" : "Create theme"}
           </h2>
           {isMinimized ? null : (
-            <p className="truncate text-xs text-muted-foreground">
+            <p className="truncate text-meta text-ink-2">
               {isInspecting
                 ? "Select an element · Esc to cancel"
                 : selectedRole
@@ -1223,15 +1223,15 @@ export function ThemeEditorPanel({
 
       {isMinimized ? null : (
         <>
-          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto py-3 pl-3 pr-1.5">
+          <div className="min-h-0 flex-1 space-y-2 overflow-y-auto py-2 pl-2 pr-2">
             {renderNameField()}
             {error ? (
-              <p aria-live="polite" className="text-sm text-destructive">
+              <p aria-live="polite" className="text-body text-destructive">
                 {error}
               </p>
             ) : null}
             {renderAppearanceButtons()}
-            <div className="space-y-3">
+            <div className="space-y-2">
               {renderColorsHeader()}
               {renderColorFields()}
             </div>
@@ -1247,7 +1247,7 @@ export function ThemeEditorPanel({
               </Button>
               {cssOpen ? (
                 <>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-meta text-ink-2">
                     Saved with this theme and included when you export it. Web and desktop only.
                     Rules that load remote files are ignored.
                   </p>
@@ -1256,7 +1256,7 @@ export function ThemeEditorPanel({
               ) : null}
             </div>
           </div>
-          <div className="flex items-center justify-end gap-2 border-t border-border/70 px-3 py-2">
+          <div className="flex items-center justify-end gap-2 border-t border-border/70 px-2 py-2">
             <Button size="sm" variant="ghost" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
@@ -1282,14 +1282,14 @@ export function ThemeEditorPanel({
           </div>
           <div
             aria-hidden
-            className="absolute bottom-0 right-0 z-10 flex size-5 cursor-se-resize touch-none select-none items-end justify-end p-1 text-muted-foreground/70"
+            className="absolute bottom-0 right-0 z-10 flex size-5 cursor-se-resize touch-none select-none items-end justify-end p-1 text-ink-2"
             onPointerCancel={endResize}
             onPointerDown={handleResizePointerDown}
             onPointerMove={handleResizePointerMove}
             onPointerUp={endResize}
           >
             <svg
-              className="size-2.5"
+              className="size-3"
               fill="none"
               stroke="currentColor"
               strokeLinecap="round"

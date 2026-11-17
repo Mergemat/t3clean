@@ -89,7 +89,6 @@ import { ProviderInstanceIcon } from "../chat/ProviderInstanceIcon";
 import { ProviderPackageIcon } from "../chat/ProviderPackageIcon";
 import { TraitsPicker } from "../chat/TraitsPicker";
 import { VoiceInputSetup } from "../chat/VoiceInputSetup";
-import { Badge } from "../ui/badge";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -102,7 +101,6 @@ import {
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
-  MenuRadioItemIndicator,
   MenuSearchInput,
   MenuSeparator,
   MenuTrigger,
@@ -137,6 +135,7 @@ import { searchableSetting } from "./settingsSearch";
 import { useOptionalSettingsScope, useSettingsScope } from "./SettingsScopeContext";
 import { useScopedModelDisabledReason } from "./useScopedModelAvailability";
 import { useScopedSettings, useUpdateScopedSettings } from "./useScopedSettings";
+import { SettingsStatus } from "./settingsLayout";
 
 const OFF = "off";
 function CloudSpeechLogo({ provider }: { provider: CloudSpeechProvider }) {
@@ -192,7 +191,7 @@ type ModelCardProps = {
 function ModelBadge(props: { icon: ReactNode; label: string; tooltip: string }) {
   return (
     <Tooltip>
-      <TooltipTrigger render={<Badge variant="outline" />}>
+      <TooltipTrigger render={<SettingsStatus variant="outline" />}>
         {props.icon}
         {props.label}
       </TooltipTrigger>
@@ -206,17 +205,17 @@ function ModelCard(props: ModelCardProps) {
   const downloading = model.state === "downloading" || model.state === "verifying";
   const progress = model.downloaded === undefined ? 0 : (model.downloaded / model.size) * 100;
   return (
-    <div className="@container/model px-3 py-3">
+    <div className="@container/model px-2 py-2">
       <div
         className={cn(
-          "flex flex-col gap-2.5",
+          "flex flex-col gap-2",
           !props.stacked &&
-            "@min-[28rem]/model:flex-row @min-[28rem]/model:items-start @min-[28rem]/model:gap-4",
+            "@min-[28rem]/model:flex-row @min-[28rem]/model:items-start @min-[28rem]/model:gap-2",
         )}
       >
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-sm font-medium leading-5">{model.name}</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-body font-medium leading-5">{model.name}</span>
             {model.recommended ? (
               <ModelBadge
                 icon={<StarIcon className="mr-1 size-3" />}
@@ -240,14 +239,10 @@ function ModelCard(props: ModelCardProps) {
             ) : null}
           </div>
           {model.description ? (
-            <p className="mt-0.5 text-xs leading-normal text-muted-foreground">
-              {model.description}
-            </p>
+            <p className="text-meta leading-normal text-ink-2">{model.description}</p>
           ) : null}
           {model.linkedFrom ? (
-            <p className="mt-0.5 break-all text-2xs text-muted-foreground">
-              Using your file at {model.linkedFrom}
-            </p>
+            <p className="break-all text-meta text-ink-2">Using your file at {model.linkedFrom}</p>
           ) : null}
           <ModelBenchmarks
             model={model}
@@ -273,11 +268,11 @@ function ModelCard(props: ModelCardProps) {
                 className="h-1 overflow-hidden rounded-full bg-muted"
               >
                 <div
-                  className="h-full bg-primary transition-[width] duration-200"
+                  className="h-full bg-primary transition duration-200"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <p className="mt-1 text-2xs text-muted-foreground">
+              <p className="mt-1 text-meta text-ink-2">
                 {model.state === "verifying"
                   ? "Verifying download…"
                   : `${Math.round(progress)}% downloaded`}
@@ -285,7 +280,7 @@ function ModelCard(props: ModelCardProps) {
             </div>
           ) : null}
         </div>
-        <div className="flex max-w-full shrink-0 flex-wrap items-center gap-1.5">
+        <div className="flex max-w-full shrink-0 flex-wrap items-center gap-2">
           {props.testControls}
           {downloading ? (
             <Button
@@ -295,7 +290,7 @@ function ModelCard(props: ModelCardProps) {
               disabled={!props.canCancel}
               onClick={props.onCancel}
             >
-              <XIcon className="size-3.5" />
+              <XIcon className="size-4" />
             </Button>
           ) : model.state === "downloadable" ? (
             <Button size="sm" variant="outline" disabled={props.busy} onClick={props.onDownload}>
@@ -406,16 +401,16 @@ function DictionaryEditor(props: {
       {words.length > 0 ? (
         <ul
           aria-label={`${label} entries`}
-          className="mt-2.5 flex flex-col gap-1.5 @min-[32rem]/settings-row:flex-row @min-[32rem]/settings-row:flex-wrap"
+          className="mt-2 flex flex-col gap-2 @min-[32rem]/settings-row:flex-row @min-[32rem]/settings-row:flex-wrap"
         >
           {words.map(({ term, aliases }) => (
             <li
               key={term}
-              className="flex items-center gap-1 rounded-md border border-border/60 bg-muted/30 py-0.5 pl-2 pr-0.5 text-xs"
+              className="flex items-center gap-1 rounded-row border border-border/60 bg-muted/30 py-1 pl-2 pr-1 text-meta"
             >
               <span className="font-medium">{term}</span>
               {aliases.length > 0 ? (
-                <span className="text-muted-foreground">← {aliases.join(", ")}</span>
+                <span className="text-ink-2">← {aliases.join(", ")}</span>
               ) : null}
               {aliasDraft?.term === term ? (
                 <Input
@@ -485,7 +480,7 @@ function ProjectDictionaryRow() {
           : "Used by everyone who dictates on this environment."
       }
     >
-      <div className="mt-3 pb-2">
+      <div className="mt-2 pb-2">
         <DictionaryEditor
           label={isProjectScope ? "project dictionary" : "shared dictionary"}
           words={words}
@@ -556,13 +551,11 @@ function CleanupModelRow() {
       description="Model for transcript cleanup, such as a cheaper or faster one. When disabled, use the text generation model configured for this environment."
       control={
         connectedEnvironments.length === 0 ? (
-          <span className="text-sm text-muted-foreground">Connect an environment first.</span>
+          <span className="text-body text-ink-2">Connect an environment first.</span>
         ) : (
           <div className="flex min-w-0 flex-wrap items-center gap-2 @min-[32rem]/settings-row:justify-end">
             {dedicated && (!hasProvider || !instanceEntry) ? (
-              <span className="text-sm text-muted-foreground">
-                No text generation providers available.
-              </span>
+              <span className="text-body text-ink-2">No text generation providers available.</span>
             ) : null}
             {dedicated && hasProvider && instanceEntry ? (
               <>
@@ -750,7 +743,12 @@ function AdvancedSpeechSettings({
                 );
             }}
           >
-            <SelectTrigger size="sm" aria-label="Transcription hardware" className="max-w-72">
+            <SelectTrigger
+              variant="ghost"
+              size="sm"
+              aria-label="Transcription hardware"
+              className="max-w-72"
+            >
               <SelectValue>
                 {supported.acceleration === "auto"
                   ? "Auto"
@@ -775,7 +773,7 @@ function AdvancedSpeechSettings({
       />
       <SettingsRow
         title="Unload model"
-        description="Release the model’s memory on the environment after it sits idle."
+        description="Frees its memory after it sits idle."
         control={
           <Select
             value={supported.modelUnloadTimeout}
@@ -792,7 +790,7 @@ function AdvancedSpeechSettings({
                 );
             }}
           >
-            <SelectTrigger size="sm" aria-label="Unload model" className="max-w-72">
+            <SelectTrigger variant="ghost" size="sm" aria-label="Unload model" className="max-w-72">
               <SelectValue>{UNLOAD_LABELS[supported.modelUnloadTimeout]}</SelectValue>
             </SelectTrigger>
             <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -878,8 +876,8 @@ function SpeechModelBrowser(props: {
       description={`Grades are error rates and speed is seconds per 30 s of audio, from Handy’s benchmark ${status.benchmarkTier === "cpu" ? "CPU" : "GPU"}.`}
       className="@container/voice-models"
     >
-      <div className="mt-3 flex min-w-0 gap-2">
-        <InputGroup className="min-w-0 flex-1 **:[input]:h-9 sm:**:[input]:h-8">
+      <div className="mt-2 flex min-w-0 gap-2">
+        <InputGroup className="min-w-0 flex-1 **:[input]:h-8 sm:**:[input]:h-8">
           <InputGroupAddon>
             <SearchIcon aria-hidden />
           </InputGroupAddon>
@@ -938,7 +936,7 @@ function SpeechModelBrowser(props: {
                 </MenuCheckboxItem>
               ))}
               {visibleLanguages.length === 0 && (
-                <p className="px-2 py-1.5 text-sm text-muted-foreground">No languages match.</p>
+                <p className="px-2 py-2 text-body text-ink-2">No languages match.</p>
               )}
             </div>
           </MenuPopup>
@@ -960,11 +958,10 @@ function SpeechModelBrowser(props: {
               >
                 {(Object.keys(sortLabels) as SpeechModelSort[]).map((value) => (
                   <MenuRadioItem key={value} value={value} closeOnClick>
-                    <span className="flex items-center justify-between gap-3">
+                    <span className="flex items-center justify-between gap-2">
                       {value === "accuracy"
                         ? `Most accurate in ${languageLabel(accuracyLanguage)}`
                         : sortLabels[value]}
-                      <MenuRadioItemIndicator />
                     </span>
                   </MenuRadioItem>
                 ))}
@@ -978,13 +975,13 @@ function SpeechModelBrowser(props: {
         </Menu>
       </div>
       <div
-        className="mt-2 mb-2 max-h-96 divide-y divide-border/60 overflow-y-auto rounded-lg border border-border/60"
+        className="mt-2 mb-2 max-h-96 overflow-y-auto rounded-row border border-border/60"
         role="region"
         aria-label="Transcription models"
         tabIndex={0}
       >
         {sortedModels.length === 0 && (
-          <p className="px-3 py-3 text-sm text-muted-foreground">No models match.</p>
+          <p className="px-2 py-2 text-body text-ink-2">No models match.</p>
         )}
         {renderedModels.map((model) => {
           const card: ModelCardProps = {
@@ -1121,7 +1118,7 @@ function TranscriptionTest(props: {
                 </Button>
               ) : null
             ) : (
-              <span className="text-xs text-muted-foreground">
+              <span className="text-meta text-ink-2">
                 {speech.status?.supported === false
                   ? speech.status.reason
                   : "Waiting for the environment to connect"}
@@ -1131,10 +1128,10 @@ function TranscriptionTest(props: {
         }
       >
         {showTranscript ? (
-          <div className="mt-3 flex items-start gap-3 rounded-lg border border-border/60 bg-muted/30 py-1 ps-3 pe-1">
-            <div className="min-w-0 flex-1 py-1.5">
+          <div className="mt-2 flex items-start gap-2 rounded-row border border-border/60 bg-muted/30 py-1 ps-2 pe-1">
+            <div className="min-w-0 flex-1 py-2">
               {speech.preview || transcript !== null ? null : (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-meta text-ink-2">
                   Say a sentence. Cleanup is skipped, so you see exactly what the model heard.
                 </p>
               )}
@@ -1142,12 +1139,12 @@ function TranscriptionTest(props: {
                 <p
                   role="status"
                   aria-label="Test transcript"
-                  className="select-text whitespace-pre-wrap break-words text-sm leading-relaxed"
+                  className="select-text whitespace-pre-wrap break-words text-body leading-relaxed"
                 >
                   {speech.preview ? (
                     <>
                       {speech.preview.committed}
-                      <span className="text-muted-foreground">{speech.preview.tentative}</span>
+                      <span className="text-ink-2">{speech.preview.tentative}</span>
                     </>
                   ) : (
                     transcript || "No speech recognized. Try again."
@@ -1310,7 +1307,7 @@ export function VoiceSettingsPanel() {
             </Tooltip>
           }
         >
-          <div className="mt-3 pb-2">
+          <div className="mt-2 pb-2">
             <MicrophoneOrderList order={order} devices={microphones} />
           </div>
         </SettingsRow>
@@ -1331,7 +1328,7 @@ export function VoiceSettingsPanel() {
                   void updateClientSettings({ voiceShortcutMode: value as VoiceShortcutMode });
               }}
             >
-              <SelectTrigger size="sm" aria-label="Dictation shortcut mode">
+              <SelectTrigger variant="ghost" size="sm" aria-label="Dictation shortcut mode">
                 <SelectValue>{SHORTCUT_MODES[settings.voiceShortcutMode].label}</SelectValue>
               </SelectTrigger>
               <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -1339,9 +1336,7 @@ export function VoiceSettingsPanel() {
                   <SelectItem key={mode} value={mode}>
                     <span className="flex flex-col">
                       {SHORTCUT_MODES[mode].label}
-                      <span className="text-xs text-muted-foreground">
-                        {SHORTCUT_MODES[mode].hint}
-                      </span>
+                      <span className="text-meta text-ink-2">{SHORTCUT_MODES[mode].hint}</span>
                     </span>
                   </SelectItem>
                 ))}
@@ -1361,7 +1356,7 @@ export function VoiceSettingsPanel() {
               : "Where your speech is turned into text."
           }
           control={
-            <div className="flex w-full min-w-0 items-center gap-1.5 @min-[32rem]/settings-row:w-auto">
+            <div className="flex w-full min-w-0 items-center gap-2 @min-[32rem]/settings-row:w-auto">
               <Select
                 value={destinationValue}
                 onValueChange={(value) => {
@@ -1385,6 +1380,7 @@ export function VoiceSettingsPanel() {
                 }}
               >
                 <SelectTrigger
+                  variant="ghost"
                   size="sm"
                   aria-label="Transcribe with"
                   className="min-w-0 @min-[32rem]/settings-row:w-auto @min-[32rem]/settings-row:max-w-72"
@@ -1405,7 +1401,7 @@ export function VoiceSettingsPanel() {
                             ? (chosenEnvironment?.label ?? "Chosen environment (unavailable)")
                             : "Off"}
                         {destination.cloudProvider && (
-                          <span className="text-muted-foreground">
+                          <span className="text-ink-2">
                             {" via "}
                             {chosenEnvironment?.label ?? "unavailable environment"}
                           </span>
@@ -1589,7 +1585,7 @@ export function VoiceSettingsPanel() {
           title="Your dictionary"
           description="Names and terms to spell your way, saved on this device."
         >
-          <div className="mt-3 pb-2">
+          <div className="mt-2 pb-2">
             <DictionaryEditor
               label="dictionary"
               words={settings.speechCustomWords}
@@ -1637,7 +1633,7 @@ export function VoiceSettingsPanel() {
                     });
                 }}
               >
-                <SelectTrigger size="sm" aria-label="Cleanup instructions">
+                <SelectTrigger variant="ghost" size="sm" aria-label="Cleanup instructions">
                   <SelectValue>
                     {settings.speechPostProcessingPrompt.mode === "custom" ? "Custom" : "Built-in"}
                   </SelectValue>
@@ -1650,7 +1646,7 @@ export function VoiceSettingsPanel() {
             }
           >
             {settings.speechPostProcessingPrompt.mode === "custom" ? (
-              <div className="mt-3 pb-2">
+              <div className="mt-2 pb-2">
                 <Textarea
                   aria-label="Custom cleanup instructions"
                   maxLength={10_000}

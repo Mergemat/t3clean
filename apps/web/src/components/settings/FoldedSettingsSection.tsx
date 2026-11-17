@@ -38,13 +38,13 @@ export function FoldedSettingsSection({
     return (
       <section id={id} ref={targetRef} tabIndex={-1} className="outline-none">
         <Collapsible open={open} onOpenChange={setOpen}>
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             <div
               data-settings-scroll-target
-              className="flex min-h-7 items-start justify-between gap-4 px-3 sm:px-4"
+              className="flex min-h-6 items-start justify-between gap-2 px-4"
             >
               <h2>
-                <CollapsibleTrigger className="flex min-h-7 items-center gap-2 rounded-md text-sm font-normal text-foreground/70 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+                <CollapsibleTrigger className="flex min-h-6 items-center gap-2 rounded-row text-body font-normal text-ink-2 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
                   {title}
                   <ChevronRightIcon
                     aria-hidden
@@ -68,34 +68,28 @@ export function FoldedSettingsSection({
 
   return (
     <section id={id} ref={targetRef} tabIndex={-1} className="outline-none">
-      <Collapsible open={open} onOpenChange={setOpen} render={<SettingsGroup divided={false} />}>
+      <Collapsible open={open} onOpenChange={setOpen} render={<SettingsGroup />}>
         {/* On a narrow screen the controls drop below the title instead of covering it. */}
-        <div className="flex flex-wrap items-center gap-x-4 px-3 sm:px-4">
-          <CollapsibleTrigger className="flex min-h-11 min-w-0 flex-1 basis-40 items-center gap-2 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring rounded-md">
+        <div className="flex flex-wrap items-center gap-x-2 px-4">
+          <CollapsibleTrigger className="flex min-h-12 min-w-0 flex-1 basis-40 items-center gap-2 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring rounded-row">
             <ChevronRightIcon
               aria-hidden
               className={cn(
-                "size-4 shrink-0 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none",
+                "size-4 shrink-0 text-ink-2 transition-transform duration-150 motion-reduce:transition-none",
                 open && "rotate-90",
               )}
             />
-            <span className="shrink-0 text-sm font-medium">{title}</span>
+            <span className="shrink-0 text-body font-medium">{title}</span>
             {summary ? (
-              <span className="min-w-0 truncate text-xs text-muted-foreground">{summary}</span>
+              <span className="min-w-0 truncate text-meta text-ink-2">{summary}</span>
             ) : null}
           </CollapsibleTrigger>
           {control ? (
-            <div className="ms-auto flex max-w-full items-center py-1.5">{control}</div>
+            <div className="ms-auto flex max-w-full items-center py-2">{control}</div>
           ) : null}
         </div>
-        {!open && collapsedContent ? (
-          <div className="border-t border-border/50 empty:hidden">{collapsedContent}</div>
-        ) : null}
-        <CollapsiblePanel>
-          <div className="border-t border-border/50 *:not-first:border-t *:not-first:border-border/50">
-            {children}
-          </div>
-        </CollapsiblePanel>
+        {!open && collapsedContent ? <div className="empty:hidden">{collapsedContent}</div> : null}
+        <CollapsiblePanel>{children}</CollapsiblePanel>
       </Collapsible>
     </section>
   );

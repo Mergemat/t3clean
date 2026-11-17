@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import {
   DEFAULT_UNIFIED_SETTINGS,
@@ -22,12 +21,9 @@ import {
   isFontFamilyAvailable,
   isMonospaceFamily,
   resolveDefaultFamilyLabel,
-  resolveTerminalFontPreference,
-  resolveTerminalFontSizePreference,
   TYPOGRAPHY_ADVANCED_STORAGE_KEY,
 } from "../../appearanceFonts";
 import { AdvancedSettings } from "./AdvancedSettings";
-import { CodeFontPreview, PromptFontPreview, TerminalFontPreview } from "./SettingsFontPreviews";
 import { discoverInstalledFonts, FontFamilyPicker, useFontEnumeration } from "./FontFamilyPicker";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
 import { Switch } from "../ui/switch";
@@ -65,7 +61,7 @@ function useFontDefaultFamilies() {
   };
 }
 
-function InterfaceFontRow({ preview }: { preview?: ReactNode }) {
+function InterfaceFontRow() {
   const settings = useScopedSettings();
   const updateSettings = useUpdateScopedSettings();
   const defaults = useFontDefaultFamilies();
@@ -91,7 +87,6 @@ function InterfaceFontRow({ preview }: { preview?: ReactNode }) {
         defaultValue: DEFAULT_UNIFIED_SETTINGS.fontSizeInterface,
         onChange: (fontSizeInterface) => updateSettings({ fontSizeInterface }),
       }}
-      {...(preview !== undefined ? { preview } : {})}
     />
   );
 }
@@ -122,7 +117,6 @@ function PromptFontRow() {
         defaultValue: DEFAULT_UNIFIED_SETTINGS.fontSizePrompt,
         onChange: (fontSizePrompt) => updateSettings({ fontSizePrompt }),
       }}
-      preview={<PromptFontPreview />}
     />
   );
 }
@@ -130,11 +124,9 @@ function PromptFontRow() {
 function CodeFontRow({
   title,
   description = "Code blocks, diffs, and file previews.",
-  preview,
 }: {
   title?: string;
   description?: string;
-  preview?: ReactNode;
 }) {
   const settings = useScopedSettings();
   const updateSettings = useUpdateScopedSettings();
@@ -163,7 +155,6 @@ function CodeFontRow({
         defaultValue: DEFAULT_UNIFIED_SETTINGS.fontSizeCode,
         onChange: (fontSizeCode) => updateSettings({ fontSizeCode }),
       }}
-      preview={preview ?? <CodeFontPreview />}
     />
   );
 }
@@ -175,7 +166,7 @@ function TerminalFontRow() {
   return (
     <FontFamilySettingsRow
       {...searchableSetting("terminal-font")}
-      description="Terminal output, independent from code blocks and diffs."
+      description="Independent from code blocks and diffs."
       defaultFamily={defaults.code}
       defaultValue={DEFAULT_UNIFIED_SETTINGS.fontFamilyTerminal}
       value={settings.fontFamilyTerminal}
@@ -195,16 +186,6 @@ function TerminalFontRow() {
         defaultValue: DEFAULT_UNIFIED_SETTINGS.fontSizeTerminal,
         onChange: (fontSizeTerminal) => updateSettings({ fontSizeTerminal }),
       }}
-      preview={
-        <TerminalFontPreview
-          family={resolveTerminalFontPreference({
-            advanced: true,
-            code: settings.fontFamilyCode,
-            terminal: settings.fontFamilyTerminal,
-          })}
-          size={settings.fontSizeTerminal}
-        />
-      }
     />
   );
 }
@@ -216,7 +197,7 @@ function FontSmoothingRow() {
   return (
     <SettingsRow
       {...searchableSetting("font-smoothing")}
-      description="Use thinner grayscale text smoothing instead of the macOS default."
+      description="Thinner grayscale smoothing instead of the macOS default."
       resetAction={
         settings.fontSmoothing !== DEFAULT_UNIFIED_SETTINGS.fontSmoothing ? (
           <SettingResetButton
@@ -244,7 +225,7 @@ function WordWrapRow() {
   return (
     <SettingsRow
       {...searchableSetting("word-wrap")}
-      description="Wrap long lines in code blocks, diffs, and file previews by default."
+      description="Code blocks, diffs, and file previews, by default."
       resetAction={
         settings.wordWrap !== DEFAULT_UNIFIED_SETTINGS.wordWrap ? (
           <SettingResetButton
@@ -285,7 +266,7 @@ function SeparateFontsRow({
   return (
     <SettingsRow
       {...searchableSetting("separate-fonts")}
-      description="Set the prompt, code, and terminal fonts separately instead of one monospace font."
+      description="Instead of one monospace font for the prompt, code, and terminal."
       control={
         <Switch
           checked={checked}
@@ -298,30 +279,12 @@ function SeparateFontsRow({
 }
 
 function SimpleFontRows() {
-  const settings = useScopedSettings();
   return (
     <>
-      <InterfaceFontRow preview={<PromptFontPreview />} />
+      <InterfaceFontRow />
       <CodeFontRow
         title="Monospace font"
         description="Code blocks, diffs, file previews, and the terminal."
-        preview={
-          <>
-            <CodeFontPreview />
-            <TerminalFontPreview
-              family={resolveTerminalFontPreference({
-                advanced: false,
-                code: settings.fontFamilyCode,
-                terminal: settings.fontFamilyTerminal,
-              })}
-              size={resolveTerminalFontSizePreference({
-                advanced: false,
-                code: settings.fontSizeCode,
-                terminal: settings.fontSizeTerminal,
-              })}
-            />
-          </>
-        }
       />
     </>
   );
@@ -363,7 +326,6 @@ function FontFamilySettingsRow({
   description,
   defaultFamily,
   defaultValue,
-  preview,
   value,
   onValueChange,
   onReset,
@@ -375,7 +337,6 @@ function FontFamilySettingsRow({
   description: string;
   defaultFamily: string;
   defaultValue: string;
-  preview?: ReactNode;
   value: string;
   onValueChange: (value: string) => void;
   onReset: () => void;
@@ -514,7 +475,7 @@ function FontFamilySettingsRow({
           }
         }}
       >
-        <SelectTrigger size="sm" className="w-22 shrink-0" aria-label={size.label}>
+        <SelectTrigger variant="ghost" size="sm" className="shrink-0" aria-label={size.label}>
           <SelectValue>{size.value} px</SelectValue>
         </SelectTrigger>
         <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -536,8 +497,6 @@ function FontFamilySettingsRow({
       description={description}
       resetAction={resetAction}
       control={control}
-    >
-      {preview}
-    </SettingsRow>
+    />
   );
 }

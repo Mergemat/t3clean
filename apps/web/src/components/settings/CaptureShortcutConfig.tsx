@@ -139,15 +139,15 @@ export function CaptureShortcutConfig({
   };
 
   return (
-    <div className="space-y-4 text-sm">
+    <div className="space-y-2 text-body">
       {!result ? (
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-2">
           <span>Shortcut</span>
           {recorder.input}
         </div>
       ) : null}
       {recorder.recording ? (
-        <p role="status" className="text-xs text-muted-foreground">
+        <p role="status" className="text-meta text-ink-2">
           Press your shortcut. Esc cancels.
         </p>
       ) : null}
@@ -161,7 +161,7 @@ export function CaptureShortcutConfig({
         </p>
       ) : preview ? (
         <>
-          <p className="text-muted-foreground">
+          <p className="text-ink-2">
             {changed
               ? preview.operation === "remove"
                 ? "Review the change below to remove your shortcut."
@@ -172,7 +172,7 @@ export function CaptureShortcutConfig({
           </p>
           {diff ? (
             <div
-              className="max-h-80 overflow-auto rounded-lg border text-xs"
+              className="max-h-80 overflow-auto rounded-row border text-meta"
               aria-label="Shortcut changes"
             >
               <FileDiff
@@ -187,7 +187,7 @@ export function CaptureShortcutConfig({
             </div>
           ) : null}
           {changed ? (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               Only these changes will be saved. We'll keep a backup.
             </p>
           ) : null}
@@ -217,7 +217,7 @@ export function CaptureShortcutConfig({
         </>
       ) : (
         <>
-          <p className="text-muted-foreground">
+          <p className="text-ink-2">
             Allow T3 Code to read your desktop settings. You'll review any changes here before
             saving.
           </p>
@@ -236,23 +236,23 @@ export function CaptureShortcutConfig({
         </p>
       ) : null}
       {state.shortcutActionRegistered === false && state.shortcutMessage ? (
-        <p role="status" className="text-muted-foreground">
+        <p role="status" className="text-ink-2">
           {state.shortcutPending
             ? "Connecting to your desktop…"
             : "Restart T3 Code to finish connecting your shortcut."}
         </p>
       ) : null}
-      <details className="text-xs text-muted-foreground">
+      <details className="text-meta text-ink-2">
         <summary className="cursor-pointer">Advanced</summary>
-        <div className="mt-3 space-y-3">
+        <div className="mt-2 space-y-2">
           {error?.detail || result?.warning ? (
             <div className="space-y-1">
-              <p className="font-medium text-foreground">Troubleshooting</p>
+              <p className="font-medium text-ink-1">Troubleshooting</p>
               <p className="break-words">{error?.detail ?? result?.warning}</p>
             </div>
           ) : null}
           <div className="space-y-1">
-            <p className="font-medium text-foreground">Settings file</p>
+            <p className="font-medium text-ink-1">Settings file</p>
             <p className="break-all font-mono">
               {preview?.path ??
                 state.shortcutConfigPath ??
@@ -298,14 +298,14 @@ export function CaptureShortcutConfig({
               : "On Omarchy, use your own bindings file, not its defaults."}
           </p>
           {result?.backupPath ? <p className="break-all">Backup: {result.backupPath}</p> : null}
-          <p className="font-medium text-foreground">Manual setup</p>
+          <p className="font-medium text-ink-1">Manual setup</p>
           <p>
             {niri
               ? "Paste this inside binds { … } in your Niri config, then save."
               : "Add this binding to your Hyprland config, then save."}{" "}
             Change the keys if needed.
           </p>
-          <pre className="max-h-40 overflow-auto whitespace-pre-wrap break-all rounded-xl bg-muted/50 p-3">
+          <pre className="max-h-40 overflow-auto whitespace-pre-wrap break-all rounded-row bg-muted/50 p-2">
             {state.shortcutBinding}
           </pre>
           <Button

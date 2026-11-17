@@ -11,7 +11,8 @@ import { pickModelSelection } from "@t3tools/shared/model";
 import { AsyncResult } from "effect/reactivity";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
-import { CheckIcon, MoreVertical, PlusIcon, ServerIcon } from "lucide-react";
+import { MoreVertical, PlusIcon, ServerIcon } from "lucide-react";
+import { cn } from "~/lib/utils";
 import { useState } from "react";
 
 import { useEnvironmentSettings, useUpdateEnvironmentSettings } from "../../hooks/useSettings";
@@ -114,7 +115,7 @@ export function TextGeneratorsSettings({
             <SettingsRow
               key={id}
               title={
-                <span className="inline-flex items-center gap-2.5">
+                <span className="inline-flex items-center gap-2">
                   <ProviderInstanceIcon
                     driverKind={textGeneratorBrand(config)}
                     displayName={name}
@@ -125,7 +126,7 @@ export function TextGeneratorsSettings({
               }
               description={
                 // Indented past the icon so it lines up with the name.
-                <span className="block truncate ps-7.5">
+                <span className="block truncate ps-8">
                   {config.enabled ? "" : "Off · "}
                   {config.baseUrl.replace(/^https?:\/\//, "")}
                 </span>
@@ -338,7 +339,7 @@ function TextGeneratorWizard({
         <WizardPanel>
           {step === 0 ? (
             <form
-              className="grid gap-4"
+              className="grid gap-2"
               onSubmit={(event) => {
                 event.preventDefault();
                 void connect();
@@ -346,8 +347,8 @@ function TextGeneratorWizard({
             >
               <fieldset disabled={checking} className="contents">
                 {existing === null ? (
-                  <div className="grid gap-1.5">
-                    <span className="text-sm font-medium">Service</span>
+                  <div className="grid gap-2">
+                    <span className="text-body font-medium">Service</span>
                     <div
                       role="radiogroup"
                       aria-label="Service"
@@ -363,8 +364,8 @@ function TextGeneratorWizard({
                             aria-checked={selected}
                             className={
                               selected
-                                ? "flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 px-2 py-3 text-sm font-medium text-foreground ring-1 ring-primary ring-inset outline-none focus-visible:ring-2 focus-visible:ring-inset"
-                                : "flex flex-col items-center gap-2 rounded-lg border bg-background px-2 py-3 text-sm text-muted-foreground outline-none hover:bg-accent/50 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                                ? "flex flex-col items-center gap-2 rounded-row border border-primary bg-primary/5 px-2 py-2 text-body font-medium text-ink-1 ring-1 ring-primary ring-inset outline-none focus-visible:ring-2 focus-visible:ring-inset"
+                                : "flex flex-col items-center gap-2 rounded-row border bg-background px-2 py-2 text-body text-ink-2 outline-none hover:bg-accent/50 hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                             }
                             onClick={() => {
                               setPreset(candidate);
@@ -389,7 +390,7 @@ function TextGeneratorWizard({
                   </div>
                 ) : null}
                 {showBaseUrl ? (
-                  <div className="grid gap-1.5">
+                  <div className="grid gap-2">
                     <Label htmlFor="text-generator-url">Base URL</Label>
                     <Input
                       id="text-generator-url"
@@ -404,7 +405,7 @@ function TextGeneratorWizard({
                     />
                   </div>
                 ) : null}
-                <div className="grid gap-1.5">
+                <div className="grid gap-2">
                   <Label htmlFor="text-generator-key">
                     {keyRequired ? "API key" : "API key (optional)"}
                   </Label>
@@ -423,7 +424,7 @@ function TextGeneratorWizard({
                     onValidityChange={setKeyValid}
                   />
                 </div>
-                <div className="grid gap-1.5">
+                <div className="grid gap-2">
                   <Label htmlFor="text-generator-label">Name (optional)</Label>
                   <Input
                     id="text-generator-label"
@@ -439,20 +440,20 @@ function TextGeneratorWizard({
                   />
                 </div>
                 {checkError ? (
-                  <p role="alert" className="text-sm text-destructive">
+                  <p role="alert" className="text-body text-destructive">
                     {checkError}
                   </p>
                 ) : null}
               </fieldset>
             </form>
           ) : (
-            <div className="grid gap-4">
-              <p className="text-sm text-muted-foreground">
+            <div className="grid gap-2">
+              <p className="text-body text-ink-2">
                 {name} is connected and lists {modelCount} {modelCount === 1 ? "model" : "models"}.
                 Switch any of these to it, or keep what they use now.
               </p>
               {/* One grid for all rows, so pickers and Test buttons line up in columns. */}
-              <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-2 gap-y-4">
+              <div className="grid items-center gap-x-2 gap-y-2" data-slot="text-generation-tasks">
                 {TASKS.map((task) => (
                   <TextGenerationTaskPicker
                     key={task.key}
@@ -542,18 +543,18 @@ function TextGenerationTaskPicker({
   };
   return (
     <>
-      <div className="grid min-w-0 gap-0.5 pe-2">
-        <span className="text-sm">{label}</span>
+      <div className="grid min-w-0 pe-2">
+        <span className="text-body">{label}</span>
         {shown?.error ? (
-          <span role="alert" className="text-xs text-destructive">
+          <span role="alert" className="text-meta text-destructive">
             {shown.error}
           </span>
         ) : shown ? (
-          <span role="status" className="text-xs text-muted-foreground">
+          <span role="status" className="text-meta text-ink-2">
             {selection.model} answered. It works.
           </span>
         ) : own === null ? (
-          <span className="text-xs text-muted-foreground">Follows the text generation model</span>
+          <span className="text-meta text-ink-2">Follows the text generation model</span>
         ) : null}
       </div>
       <div className="justify-self-end">
@@ -630,9 +631,9 @@ function TextGeneratorModelList({
           onChange={(event) => setQuery(event.target.value)}
         />
       ) : null}
-      <div className="max-h-80 overflow-y-auto rounded-lg border divide-y divide-border/60">
+      <div className="max-h-80 overflow-y-auto rounded-row border">
         {shown.length === 0 ? (
-          <p className="px-3 py-2 text-sm text-muted-foreground">No models match.</p>
+          <p className="px-2 py-2 text-body text-ink-2">No models match.</p>
         ) : (
           <ul role={onSelect ? "listbox" : "list"} aria-label="Models">
             {shown.map((model) => {
@@ -642,12 +643,9 @@ function TextGeneratorModelList({
                   <span className="grid min-w-0 flex-1">
                     <span className="truncate">{model.name}</span>
                     {model.name !== model.id ? (
-                      <span className="truncate font-mono text-xs text-muted-foreground">
-                        {model.id}
-                      </span>
+                      <span className="truncate font-mono text-meta text-ink-2">{model.id}</span>
                     ) : null}
                   </span>
-                  {isSelected ? <CheckIcon className="size-4 shrink-0 text-primary" /> : null}
                 </>
               );
               return (
@@ -659,13 +657,16 @@ function TextGeneratorModelList({
                   {onSelect ? (
                     <button
                       type="button"
-                      className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+                      className={cn(
+                        "flex w-full items-center gap-2 px-2 py-2 text-left text-body hover:bg-accent focus-visible:bg-accent focus-visible:outline-none",
+                        isSelected && "bg-foreground/8",
+                      )}
                       onClick={() => onSelect(model.id)}
                     >
                       {label}
                     </button>
                   ) : (
-                    <div className="flex items-center gap-2 px-3 py-2 text-sm">{label}</div>
+                    <div className="flex items-center gap-2 px-2 py-2 text-body">{label}</div>
                   )}
                 </li>
               );
@@ -724,7 +725,7 @@ function TextGeneratorModelsDialog({
         </DialogHeader>
         <DialogPanel>
           {error ? (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="text-body text-destructive">
               {error}
             </p>
           ) : models === null ? (

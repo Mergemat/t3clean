@@ -524,8 +524,8 @@ export function DeviceSourcesSettings(props: {
       <MenuTrigger
         render={<Button size="sm" variant="outline" disabled={disabled || editing !== null} />}
       >
-        <PlusIcon className="size-3.5" /> Add source
-        <ChevronDownIcon className="size-3.5" />
+        <PlusIcon className="size-4" /> Add source
+        <ChevronDownIcon className="size-4" />
       </MenuTrigger>
       <MenuPopup align="end">
         <MenuItem
@@ -658,32 +658,32 @@ function PlatformIcon(props: {
             type="button"
             aria-label={`${props.row.title}: ${props.label} ${available ? "available" : "not available"}`}
             className={cn(
-              "relative grid size-6 shrink-0 place-items-center rounded-md outline-hidden hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-              available ? "text-foreground" : "text-muted-foreground/45",
+              "relative grid size-6 shrink-0 place-items-center rounded-row outline-hidden hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+              available ? "text-ink-1" : "text-ink-3",
             )}
           />
         }
       >
-        <props.Icon className={cn("size-3.5", props.platform === "ios" && "-translate-y-px")} />
+        <props.Icon className={cn("size-4", props.platform === "ios" && "-translate-y-px")} />
         {partial ? (
           <span
             aria-hidden
-            className="absolute top-0.5 right-0.5 size-1.5 rounded-full bg-warning ring-2 ring-background"
+            className="absolute top-1 right-1 size-2 rounded-full bg-warning ring-2 ring-background"
           />
         ) : null}
       </PopoverTrigger>
       <PopoverPopup side="top" align="end" width="sm">
-        <p className="text-sm font-medium">
+        <p className="text-body font-medium">
           {props.label}{" "}
           {available ? (partial ? "available on some" : "available") : "not available"}
         </p>
         {props.row.shared ? (
           <>
             {uniform && !available && sharedAnswer?.reason ? (
-              <p className="mt-1 text-xs text-muted-foreground">{sharedAnswer.reason}</p>
+              <p className="mt-1 text-meta text-ink-2">{sharedAnswer.reason}</p>
             ) : null}
             {several ? (
-              <dl className="mt-2 space-y-1.5 text-xs">
+              <dl className="mt-2 space-y-2 text-meta">
                 {(
                   [
                     ...(uniform
@@ -697,7 +697,7 @@ function PlatformIcon(props: {
                 ).map(([heading, environments]) =>
                   environments.length > 0 ? (
                     <div key={heading}>
-                      <dt className="text-muted-foreground">{heading}</dt>
+                      <dt className="text-ink-2">{heading}</dt>
                       {environments.map((environment) => {
                         const reason =
                           heading === "Not available"
@@ -706,9 +706,7 @@ function PlatformIcon(props: {
                         return (
                           <dd key={environment.environmentId}>
                             <span className="block truncate">{environment.label}</span>
-                            {reason ? (
-                              <span className="block text-muted-foreground">{reason}</span>
-                            ) : null}
+                            {reason ? <span className="block text-ink-2">{reason}</span> : null}
                           </dd>
                         );
                       })}
@@ -719,13 +717,13 @@ function PlatformIcon(props: {
             ) : null}
           </>
         ) : several ? (
-          <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-xs">
+          <dl className="mt-2 grid grid-cols-(--grid-lead) gap-x-2 gap-y-1 text-meta">
             {props.known.map((environment) => {
               const entry = availability(environment);
               return (
                 <Fragment key={environment.environmentId}>
-                  <dt className="text-muted-foreground">{environment.label}</dt>
-                  <dd className={entry?.available ? "" : "text-muted-foreground"}>
+                  <dt className="text-ink-2">{environment.label}</dt>
+                  <dd className={entry?.available ? "" : "text-ink-2"}>
                     {entry?.available ? "Available" : (entry?.reason ?? "Not available")}
                   </dd>
                 </Fragment>
@@ -733,7 +731,7 @@ function PlatformIcon(props: {
             })}
           </dl>
         ) : !available ? (
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-meta text-ink-2">
             {availability(props.known[0]!)?.reason ?? "Not set up on this machine."}
           </p>
         ) : null}
@@ -752,23 +750,23 @@ function DeviceSourceRow(props: { row: SourceRow }) {
   const problems = issues.filter((environment) => environment.status.tone !== "pending");
   const pending = issues.find((environment) => environment.status.tone === "pending");
   return (
-    <div className="flex items-center gap-3 border-t border-border/60 px-3 py-3 first:border-t-0 sm:px-4">
+    <div className="flex items-center gap-2 px-4 py-2">
       <div className="min-w-0 flex-1">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <p className="truncate text-sm font-medium">{row.title}</p>
+        <div className="flex min-w-0 items-center gap-2">
+          <p className="truncate text-body font-medium">{row.title}</p>
           {row.kind ? (
-            <span className="shrink-0 rounded border border-border px-1 text-3xs uppercase tracking-wide text-muted-foreground">
+            <span className="shrink-0 rounded-chip border border-border px-1 text-meta uppercase tracking-wide text-ink-2">
               {row.kind}
             </span>
           ) : null}
         </div>
-        <p className="truncate text-xs text-muted-foreground">{row.description}</p>
+        <p className="truncate text-meta text-ink-2">{row.description}</p>
         {problems.map((environment) => (
           <p
             key={environment.environmentId}
             role="status"
             className={cn(
-              "mt-1 flex flex-wrap items-center gap-1.5 text-xs",
+              "mt-1 flex flex-wrap items-center gap-2 text-meta",
               environment.status.tone === "error" ? "text-destructive" : "text-warning",
             )}
           >
@@ -782,7 +780,7 @@ function DeviceSourceRow(props: { row: SourceRow }) {
               <Popover>
                 <PopoverTrigger render={<InlineButton />}>Details</PopoverTrigger>
                 <PopoverPopup side="bottom" align="start" width="lg" padding="compact">
-                  <p className="whitespace-pre-wrap break-words font-mono text-xs text-muted-foreground">
+                  <p className="whitespace-pre-wrap break-words font-mono text-meta text-ink-2">
                     {environment.status.detail}
                   </p>
                 </PopoverPopup>
@@ -797,15 +795,12 @@ function DeviceSourceRow(props: { row: SourceRow }) {
         ))}
       </div>
       {pending ? (
-        <span
-          role="status"
-          className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground"
-        >
+        <span role="status" className="flex shrink-0 items-center gap-2 text-meta text-ink-2">
           <Spinner size="xs" />
           {pending.status.label}
         </span>
       ) : (
-        <div className="flex shrink-0 items-center gap-0.5">
+        <div className="flex shrink-0 items-center">
           <SourcePlatforms row={row} />
         </div>
       )}

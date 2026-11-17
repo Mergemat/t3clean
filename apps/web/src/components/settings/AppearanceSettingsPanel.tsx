@@ -144,7 +144,7 @@ export function AppearanceSettingsPanel() {
 
   return (
     <SettingsPageContainer>
-      <SettingsSection id="appearance" title="Colors & themes" variant="plain" hideTitle>
+      <SettingsSection id="appearance" title="Colors & themes" hideTitle>
         <div id={searchableSetting("theme").id}>
           <ThemeLibrary
             appearanceMode={appearanceMode}
@@ -165,7 +165,7 @@ export function AppearanceSettingsPanel() {
       <SettingsSection id="appearance-interface" title="Interface">
         <SettingsRow
           {...searchableSetting("setting-appearance-contrast")}
-          description="Adjust the contrast of colors and borders across the interface."
+          description="Colors and borders across the interface."
           resetAction={
             settings.appearanceContrast !== DEFAULT_UNIFIED_SETTINGS.appearanceContrast ? (
               <SettingResetButton
@@ -179,9 +179,9 @@ export function AppearanceSettingsPanel() {
             ) : null
           }
           control={
-            <div className="flex w-full items-center gap-3 sm:w-52">
+            <div className="flex w-full items-center gap-2 sm:w-52">
               <output
-                className="min-w-12 rounded-md bg-muted px-2 py-1 text-center font-mono text-xs font-medium tabular-nums text-foreground"
+                className="min-w-10 text-end text-meta tabular-nums text-ink-2"
                 htmlFor="appearance-contrast"
               >
                 {settings.appearanceContrast}%
@@ -225,9 +225,9 @@ export function AppearanceSettingsPanel() {
             ) : null
           }
           control={
-            <div className="flex w-full items-center gap-3 sm:w-52">
+            <div className="flex w-full items-center gap-2 sm:w-52">
               <output
-                className="min-w-12 rounded-md bg-muted px-2 py-1 text-center font-mono text-xs font-medium tabular-nums text-foreground"
+                className="min-w-10 text-end text-meta tabular-nums text-ink-2"
                 htmlFor="glass-opacity"
               >
                 {settings.glassOpacity}%
@@ -259,7 +259,7 @@ export function AppearanceSettingsPanel() {
 
         <SettingsRow
           {...searchableSetting("chat-width")}
-          description="Set how wide messages and the composer can grow on large screens."
+          description="Messages and the composer, on large screens."
           resetAction={
             settings.chatWidth !== DEFAULT_UNIFIED_SETTINGS.chatWidth ? (
               <SettingResetButton
@@ -277,7 +277,12 @@ export function AppearanceSettingsPanel() {
                     updateSettings({ chatWidth: value });
                 }}
               >
-                <SelectTrigger size="sm" className="w-full min-w-0" aria-label="Chat width">
+                <SelectTrigger
+                  variant="ghost"
+                  size="sm"
+                  className="min-w-0"
+                  aria-label="Chat width"
+                >
                   <SelectValue>{CHAT_WIDTH_LABELS[settings.chatWidth]}</SelectValue>
                 </SelectTrigger>
                 <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -292,7 +297,7 @@ export function AppearanceSettingsPanel() {
         <ThreadDetailsItemsRow />
         <SettingsRow
           {...searchableSetting("effort-display")}
-          description="Show reasoning effort in the composer as its name, such as High, or as bars."
+          description="Reasoning effort in the composer."
           resetAction={
             settings.effortDisplay !== DEFAULT_UNIFIED_SETTINGS.effortDisplay ? (
               <SettingResetButton
@@ -312,7 +317,12 @@ export function AppearanceSettingsPanel() {
                     updateSettings({ effortDisplay: value });
                 }}
               >
-                <SelectTrigger size="sm" className="w-full min-w-0" aria-label="Effort display">
+                <SelectTrigger
+                  variant="ghost"
+                  size="sm"
+                  className="min-w-0"
+                  aria-label="Effort display"
+                >
                   <SelectValue>{EFFORT_DISPLAY_LABELS[settings.effortDisplay]}</SelectValue>
                 </SelectTrigger>
                 <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -325,7 +335,7 @@ export function AppearanceSettingsPanel() {
         />
         <SettingsRow
           {...searchableSetting("math-rendering")}
-          description="Typeset LaTeX math, such as $x^2$ or \[x^2\], in messages and Markdown previews. The composer keeps TeX source editable."
+          description="In messages and Markdown previews, such as $x^2$. The composer keeps the TeX source editable."
           resetAction={
             settings.mathRenderingEnabled !== DEFAULT_UNIFIED_SETTINGS.mathRenderingEnabled ? (
               <SettingResetButton
@@ -350,7 +360,7 @@ export function AppearanceSettingsPanel() {
         />
         <SettingsRow
           {...searchableSetting("dither-backdrop")}
-          description="An animated dithered aurora behind the chat. Holds a still frame when the system asks for reduced motion."
+          description="An animated aurora behind the chat; still when the system asks for reduced motion."
           resetAction={
             settings.ditherBackdropEnabled !== DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled ? (
               <SettingResetButton
@@ -384,13 +394,12 @@ export function AppearanceSettingsPanel() {
         >
           <SettingsRow
             {...searchableSetting("panel-animations")}
-            description="Set how fast panels open and close."
             control={
-              <div className="grid w-full grid-cols-[5rem_minmax(0,1fr)] items-center gap-3 sm:w-auto sm:grid-cols-[7rem_13rem] sm:gap-4">
+              <div className="grid w-full grid-cols-(--grid-lead) items-center gap-2 sm:w-auto sm:gap-2">
                 <PanelAnimationsPreview durationMs={settings.panelAnimationDurationMs} />
-                <div className="flex w-full items-center gap-3">
+                <div className="flex w-full items-center gap-2">
                   <output
-                    className="min-w-16 rounded-md bg-muted px-2 py-1 text-center font-mono text-xs font-medium tabular-nums text-foreground"
+                    className="min-w-16 rounded-row bg-muted px-2 py-1 text-center font-mono text-meta font-medium tabular-nums text-ink-1"
                     htmlFor="panel-animation-duration"
                   >
                     {settings.panelAnimationDurationMs} ms
@@ -459,8 +468,9 @@ export function AppearanceSettingsPanel() {
                 }}
               >
                 <SelectTrigger
+                  variant="ghost"
                   size="sm"
-                  className="w-full sm:w-40"
+
                   aria-label="Environment identification"
                 >
                   <SelectValue>{environmentIdentificationLabel}</SelectValue>

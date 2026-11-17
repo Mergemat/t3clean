@@ -243,7 +243,7 @@ export function SnapShotSetupDialog({
           />
         </WizardHeader>
         <WizardPanel>
-          <div className="space-y-4 text-sm">
+          <div className="space-y-2 text-body">
             <div className="space-y-2" aria-live="polite">
               <h3 className="flex items-center gap-2 font-medium">{title}</h3>
               <DialogDescription>{description}</DialogDescription>
@@ -253,9 +253,7 @@ export function SnapShotSetupDialog({
                 <p
                   role="status"
                   aria-atomic="true"
-                  className={
-                    checked && !busy && !error ? "text-xs text-muted-foreground" : "sr-only"
-                  }
+                  className={checked && !busy && !error ? "text-meta text-ink-2" : "sr-only"}
                 >
                   {checked && !busy && !error ? captureSetupCheckMessage(state) : null}
                 </p>
@@ -285,7 +283,7 @@ export function SnapShotSetupDialog({
                   />
                 ) : null}
                 {permissionStatus.error && macPermissions ? (
-                  <p role="status" className="text-xs text-muted-foreground">
+                  <p role="status" className="text-meta text-ink-2">
                     {permissionStatus.error}
                   </p>
                 ) : null}
@@ -309,10 +307,10 @@ export function SnapShotSetupDialog({
                 onComplete={() => onClose(true)}
               />
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {shortcutInput}
                 {shortcutStatus ? (
-                  <p className="text-xs text-muted-foreground" role="status">
+                  <p className="text-meta text-ink-2" role="status">
                     {shortcutStatus}
                   </p>
                 ) : null}
@@ -343,9 +341,9 @@ export function SnapShotSetupDialog({
               </p>
             ) : null}
             {details.length > 0 || (step === "access" && (backend === "gnome" || helperBackend)) ? (
-              <details className="text-xs text-muted-foreground">
+              <details className="text-meta text-ink-2">
                 <summary className="cursor-pointer">Advanced</summary>
-                <div className="mt-3 space-y-3">
+                <div className="mt-2 space-y-2">
                   {details.map((detail) => (
                     <p key={detail} className="break-words">
                       {detail}

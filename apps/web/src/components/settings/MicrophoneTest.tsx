@@ -212,21 +212,21 @@ export function MicrophoneTest({
       </Button>
     );
   const panel = error ? (
-    <p role="alert" className="min-w-0 flex-1 text-xs text-destructive">
+    <p role="alert" className="min-w-0 flex-1 text-meta text-destructive">
       {error}
     </p>
   ) : phase === "starting" ? (
-    <span role="status" className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+    <span role="status" className="min-w-0 flex-1 truncate text-meta text-ink-2">
       Opening microphone…
     </span>
   ) : phase === "recording" ? (
     <>
-      <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-destructive" />
+      <span aria-hidden className="size-2 shrink-0 rounded-full bg-destructive" />
       <div className="flex w-24 min-w-0">
         <VoiceWaveform level={level} />
       </div>
       <span
-        className="ms-auto shrink-0 text-xs tabular-nums text-muted-foreground"
+        className="ms-auto shrink-0 text-meta tabular-nums text-ink-2"
         aria-label="Recording time"
       >
         {formatTime(elapsed)} / {formatTime(LOOPBACK_SECONDS)}
@@ -253,8 +253,8 @@ export function MicrophoneTest({
       {panel ? (
         <div
           className={cn(
-            "mt-3 mb-2 flex min-h-10 items-center gap-3 rounded-lg border border-border/60 bg-muted/30 py-1 pe-1",
-            phase === "ready" && !error ? "ps-1" : "ps-3",
+            "mt-2 mb-2 flex min-h-10 items-center gap-2 rounded-row border border-border/60 bg-muted/30 py-1 pe-1",
+            phase === "ready" && !error ? "ps-1" : "ps-2",
           )}
         >
           {panel}
@@ -308,7 +308,7 @@ function MicrophonePlayback({ src, duration }: { src: string; duration: number }
         onError={() => setFailed(true)}
       />
       <Button
-        size="icon-sm-pill"
+        size="icon-sm"
         variant="outline"
         aria-label={playing ? "Pause recording" : "Play recording"}
         onClick={() => void togglePlayback()}
@@ -316,7 +316,7 @@ function MicrophonePlayback({ src, duration }: { src: string; duration: number }
         {playing ? <PauseIcon /> : <PlayIcon />}
       </Button>
       {failed ? (
-        <p role="alert" className="min-w-0 flex-1 text-xs text-destructive">
+        <p role="alert" className="min-w-0 flex-1 text-meta text-destructive">
           Could not play this recording. Try recording again.
         </p>
       ) : (
@@ -336,10 +336,10 @@ function MicrophonePlayback({ src, duration }: { src: string; duration: number }
             if (audio.current) audio.current.currentTime = next;
             setPosition(next);
           }}
-          className="h-1 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&::-webkit-slider-thumb]:size-2.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-moz-range-thumb]:size-2.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-primary"
+          className="h-1 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-primary focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-moz-range-thumb]:size-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-primary"
         />
       )}
-      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+      <span className="shrink-0 text-meta tabular-nums text-ink-2">
         {formatTime(position)} / {formatTime(duration)}
       </span>
     </>

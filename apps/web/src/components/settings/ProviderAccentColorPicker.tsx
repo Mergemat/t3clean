@@ -64,7 +64,7 @@ function ProviderCustomColorPanel(props: {
           variant="edge"
         />
       </div>
-      <div className="grid gap-3 p-3">
+      <div className="grid gap-2 p-2">
         <div onPointerDownCapture={startDrag}>
           <ColorHueSlider
             label="Accent color hue"
@@ -92,7 +92,7 @@ function ProviderCustomColorPanel(props: {
         {props.showAddButton ? (
           <PopoverClose
             render={
-              <Button type="button" size="compact" onClick={() => onCommit(currentColor)}>
+              <Button type="button" size="sm" onClick={() => onCommit(currentColor)}>
                 Add color
               </Button>
             }
@@ -144,17 +144,17 @@ function ProviderCustomColorPicker(props: {
           showAddButton={!normalized}
         />
         {normalized ? (
-          <div className="border-t border-border/60 p-1">
+          <div className="p-1">
             <PopoverClose
               render={
                 <Button
                   type="button"
-                  size="compact"
+                  size="sm"
                   variant="ghost-muted"
                   className="w-full justify-start"
                   onClick={props.onClear}
                 >
-                  <XIcon className="size-3.5" aria-hidden />
+                  <XIcon className="size-4" aria-hidden />
                   Clear color
                 </Button>
               }
@@ -219,9 +219,9 @@ export function ProviderAccentColorPicker(props: {
 
   return (
     <div className="grid gap-2">
-      <span className="text-xs font-medium text-foreground">Accent color</span>
+      <span className="text-meta font-medium text-ink-1">Accent color</span>
       {picker}
-      {description ? <span className="text-xs text-muted-foreground">{description}</span> : null}
+      {description ? <span className="text-meta text-ink-2">{description}</span> : null}
     </div>
   );
 }

@@ -77,13 +77,13 @@ export function SecretProviderDialog({
         <DialogPanel>
           <form
             id="secret-provider-form"
-            className="grid gap-4"
+            className="grid gap-2"
             onSubmit={(event) => {
               event.preventDefault();
               save();
             }}
           >
-            <div className="grid gap-1.5">
+            <div className="grid gap-2">
               <Label htmlFor="secret-provider-name">Name</Label>
               <Input
                 id="secret-provider-name"
@@ -101,13 +101,13 @@ export function SecretProviderDialog({
                 <p
                   id="secret-provider-name-error"
                   role="alert"
-                  className="text-xs text-destructive"
+                  className="text-meta text-destructive"
                 >
                   {nameError}
                 </p>
               ) : null}
             </div>
-            <div className="grid gap-1.5">
+            <div className="grid gap-2">
               <Label htmlFor="secret-provider-account">Account</Label>
               <Input
                 id="secret-provider-account"
@@ -125,12 +125,12 @@ export function SecretProviderDialog({
                 <p
                   id="secret-provider-account-error"
                   role="alert"
-                  className="text-xs text-destructive"
+                  className="text-meta text-destructive"
                 >
                   {accountError}
                 </p>
               ) : null}
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 The account shorthand, sign-in address without https://, or ID that op account list
                 shows.
               </p>

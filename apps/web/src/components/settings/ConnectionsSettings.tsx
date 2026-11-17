@@ -160,9 +160,7 @@ const BACKEND_VALUE_WSL_OFF = "backend:wsl-off";
 function LocalVersionStatusLabel() {
   const updateState = useDesktopUpdateState();
   return (
-    <span className="text-xs text-muted-foreground">
-      {resolveLocalVersionStatusLabel(updateState)}
-    </span>
+    <span className="text-meta text-ink-2">{resolveLocalVersionStatusLabel(updateState)}</span>
   );
 }
 
@@ -189,7 +187,7 @@ function AccessSettings() {
   const accessEnvironmentId = accessEnvironment?.environmentId ?? null;
   const picker =
     candidates.length > 1 && accessEnvironmentId !== null ? (
-      <div className="flex min-w-0 items-center gap-1.5 px-3 text-sm text-muted-foreground sm:px-4">
+      <div className="flex min-w-0 items-center gap-2 px-4 text-body text-ink-2">
         <span className="shrink-0">Showing access for</span>
         <Select
           value={accessEnvironmentId}
@@ -197,7 +195,7 @@ function AccessSettings() {
             if (next !== null) setSelectedEnvironmentId(next);
           }}
         >
-          <SelectTrigger size="sm" className="w-auto max-w-72" aria-label="Environment">
+          <SelectTrigger variant="ghost" size="sm" className="max-w-72" aria-label="Environment">
             <SelectValue>
               {(value: EnvironmentId) => {
                 const environment = candidates.find(
@@ -218,13 +216,13 @@ function AccessSettings() {
                   <EnvironmentMachineIcon
                     aria-hidden
                     kind={resolveEnvironmentMachineKind(environment.serverConfig)}
-                    className="size-3.5 shrink-0"
+                    className="size-4 shrink-0"
                   />
                   <span className="min-w-0 truncate">
                     {settingsScopeEnvironmentLabel(environment, candidates)}
                   </span>
                   {environment.connection.phase !== "connected" ? (
-                    <span className="shrink-0 text-xs text-muted-foreground">Offline</span>
+                    <span className="shrink-0 text-meta text-ink-2">Offline</span>
                   ) : null}
                 </span>
               </SelectItem>
@@ -1014,8 +1012,9 @@ function ConnectionsSettingsContent({
               }}
             >
               <SelectTrigger
+                variant="ghost"
                 size="sm"
-                className="w-full sm:w-56"
+
                 aria-label="WSL backend"
                 disabled={isUpdatingWslBackend}
               >
@@ -1045,7 +1044,7 @@ function ConnectionsSettingsContent({
           <SettingsRow
             title="WSL only"
             description="Run only the WSL backend. T3 Code restarts when this changes."
-            className="bg-muted/20 pl-7 sm:pl-8"
+            className="bg-muted/20 pl-8 sm:pl-8"
             control={
               <Switch
                 checked={desktopWslState.wslOnly}
@@ -1117,7 +1116,7 @@ function ConnectionsSettingsContent({
     <>
       {desktopAccessManagementError ? (
         <div className={ITEM_ROW_CLASSNAME}>
-          <p className="text-xs text-destructive">{desktopAccessManagementError}</p>
+          <p className="text-meta text-destructive">{desktopAccessManagementError}</p>
         </div>
       ) : null}
       {renderPairingClientsList(visibleDesktopPairingLinks, desktopClientSessions)}
@@ -1226,7 +1225,7 @@ function ConnectionsSettingsContent({
                       />
                     }
                   >
-                    <EllipsisIcon className="size-3.5" />
+                    <EllipsisIcon className="size-4" />
                   </MenuTrigger>
                   <MenuPopup align="end">
                     <EnvironmentIconMenu
@@ -1239,7 +1238,7 @@ function ConnectionsSettingsContent({
             }
           >
             {accessServerConfig?.managedPolicy ? (
-              <div className="px-3 py-2 sm:px-4">
+              <div className="px-4 py-2">
                 <ManagedByOrganization policy={accessServerConfig.managedPolicy} />
               </div>
             ) : null}
@@ -1312,12 +1311,12 @@ function ConnectionsSettingsContent({
               />
             ) : null}
             {accessEnvironment ? (
-              <details className="group px-3 sm:px-4">
-                <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-md text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+              <details className="group px-4">
+                <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-row text-body font-medium outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
                   Permissions
                   <ChevronRightIcon
                     aria-hidden
-                    className="size-3 text-muted-foreground group-open:rotate-90"
+                    className="size-3 text-ink-2 group-open:rotate-90"
                   />
                 </summary>
                 <SessionPermissions
@@ -1363,13 +1362,13 @@ function ConnectionsSettingsContent({
               <ScrollArea
                 scrollFade
                 chainVerticalScroll
-                className="max-h-[22.5rem]"
+                className="max-h-90"
                 data-testid="authorized-clients-scroll-area"
               >
                 {canReadAccess ? (
                   renderAuthorizedClients()
                 ) : (
-                  <p className="px-4 py-3 text-xs text-muted-foreground">
+                  <p className="px-4 py-2 text-meta text-ink-2">
                     This connection can create access links but cannot view authorized clients.
                   </p>
                 )}
@@ -1417,7 +1416,7 @@ function ConnectionsSettingsContent({
                   disabled={isUpdatingDesktopServerExposure}
                   render={<Button variant="outline" disabled={isUpdatingDesktopServerExposure} />}
                 >
-                  <span className="[text-box:trim-both_cap_alphabetic]">Cancel</span>
+                  <span className="text-box-trim">Cancel</span>
                 </AlertDialogClose>
                 <Button
                   variant="default"
@@ -1429,7 +1428,7 @@ function ConnectionsSettingsContent({
                   }
                 >
                   {isUpdatingDesktopServerExposure && <Spinner size="sm" />}
-                  <span className="[text-box:trim-both_cap_alphabetic]">
+                  <span className="text-box-trim">
                     {isUpdatingDesktopServerExposure
                       ? "Restarting…"
                       : pendingDesktopServerExposureMode === "network-accessible"
@@ -1603,7 +1602,7 @@ function ConnectionsSettingsContent({
               </DialogHeader>
               <DialogPanel>
                 <label className="block">
-                  <span className="text-sm font-medium text-foreground">HTTPS port</span>
+                  <span className="text-body font-medium text-ink-1">HTTPS port</span>
                   <Input
                     className="mt-2"
                     type="number"
@@ -1617,14 +1616,14 @@ function ConnectionsSettingsContent({
                   />
                 </label>
                 {!isTailscaleServePortValid ? (
-                  <p className="mt-2 text-xs text-destructive">Enter a port from 1 to 65535.</p>
+                  <p className="mt-2 text-meta text-destructive">Enter a port from 1 to 65535.</p>
                 ) : null}
-                <div className="rounded-md border border-border/70 bg-muted/20 px-3 py-2">
-                  <p className="text-xs font-medium text-muted-foreground">HTTPS endpoint</p>
+                <div className="rounded-row border border-border/70 bg-muted/20 px-2 py-2">
+                  <p className="text-meta font-medium text-ink-2">HTTPS endpoint</p>
                   <Tooltip>
                     <TooltipTrigger
                       render={
-                        <p className="mt-1 truncate text-sm text-foreground">
+                        <p className="mt-1 truncate text-body text-ink-1">
                           {pendingTailscaleServeBaseUrl ?? "Pending MagicDNS endpoint"}
                         </p>
                       }

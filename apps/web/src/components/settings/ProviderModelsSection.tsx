@@ -324,9 +324,7 @@ export function ProviderModelsSection({
   };
 
   const groupLabel = (label: string, isFirst: boolean) => (
-    <div className={cn("px-2 pb-1.5 text-2xs text-muted-foreground", isFirst ? "pt-1" : "pt-5")}>
-      {label}
-    </div>
+    <div className={cn("px-2 pb-2 text-meta text-ink-2", isFirst ? "pt-1" : "pt-4")}>{label}</div>
   );
 
   return (
@@ -359,7 +357,7 @@ export function ProviderModelsSection({
               {allBuiltInModelsHidden ? "Enable all" : "Disable all"}
             </Button>
           ) : null}
-          <span className="text-xs text-muted-foreground">
+          <span className="text-meta text-ink-2">
             {models.length} model{models.length === 1 ? "" : "s"}
             {favoriteCount > 0
               ? ` · ${favoriteCount} favorite${favoriteCount === 1 ? "" : "s"}`
@@ -386,7 +384,7 @@ export function ProviderModelsSection({
         className="mt-2 -mx-2 max-h-64 overflow-y-auto lg:max-h-none lg:min-h-0 lg:flex-1"
       >
         {visibleModels.length === 0 ? (
-          <p className="px-2 py-2 text-xs text-muted-foreground">
+          <p className="px-2 py-2 text-meta text-ink-2">
             {isFiltering ? "No models match." : "No models reported for this provider yet."}
           </p>
         ) : null}
@@ -433,7 +431,7 @@ export function ProviderModelsSection({
       </div>
 
       {driverKind === "antigravity" || !canManageCustomModels ? null : isAdding ? (
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row">
           <Input
             id={`provider-instance-${instanceId}-custom-model`}
             size="sm"
@@ -469,7 +467,7 @@ export function ProviderModelsSection({
       ) : null}
 
       {driverKind !== "antigravity" && error ? (
-        <p className="mt-2 text-xs text-destructive">{error}</p>
+        <p className="mt-2 text-meta text-destructive">{error}</p>
       ) : null}
     </div>
   );
@@ -507,7 +505,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
   readonly onRemove: (slug: string) => void;
 }) {
   const capLabels = describeModelCapabilities(model, flagMissingReasoning);
-  const nameClassName = cn("text-xs", isHidden ? "text-muted-foreground" : "text-foreground/90");
+  const nameClassName = cn("text-meta", isHidden ? "text-ink-2" : "text-ink-1");
   const pickerTooltip = model.isCustom
     ? "Custom models are always shown in the picker"
     : isHidden
@@ -518,7 +516,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
     <div
       data-model-slug={model.slug}
       className={cn(
-        "grid h-7 grid-cols-[1.5rem_minmax(0,1fr)_auto_minmax(5.5rem,auto)_auto] items-center gap-2 rounded-md px-2 transition-colors hover:bg-muted/30",
+        "flex h-6 items-center gap-2 rounded-row px-2 transition-colors hover:bg-muted/30",
         isHidden && "opacity-50",
       )}
     >
@@ -526,7 +524,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
         <TooltipTrigger
           render={
             <Button
-              size="icon-micro"
+              size="icon-xs"
               variant="ghost-muted"
               disabled={!canWritePreferences}
               onClick={() => onToggleFavorite(model.slug)}
@@ -542,7 +540,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
           {isFavorite ? "Remove from favorites" : "Add to favorites"}
         </TooltipPopup>
       </Tooltip>
-      <span className="flex min-w-0 items-baseline gap-2">
+      <span className="flex min-w-0 flex-1 items-baseline gap-2">
         <Tooltip>
           <TooltipTrigger
             render={
@@ -551,35 +549,31 @@ const ProviderModelRow = memo(function ProviderModelRow({
           >
             <span className={cn(nameClassName, "max-w-full shrink-0 truncate")}>{model.name}</span>
             {model.name !== model.slug ? (
-              <code className="truncate font-mono text-2xs text-muted-foreground/70">
-                {model.slug}
-              </code>
+              <code className="truncate font-mono text-meta text-ink-2">{model.slug}</code>
             ) : null}
           </TooltipTrigger>
           <TooltipPopup side="top" align="start">
             <div>{model.name}</div>
             {model.name !== model.slug ? (
-              <code className="font-mono text-2xs text-muted-foreground">{model.slug}</code>
+              <code className="font-mono text-meta text-ink-2">{model.slug}</code>
             ) : null}
           </TooltipPopup>
         </Tooltip>
-        {model.isCustom ? (
-          <span className="shrink-0 text-2xs text-muted-foreground/70">custom</span>
-        ) : null}
+        {model.isCustom ? <span className="shrink-0 text-meta text-ink-2">custom</span> : null}
       </span>
-      <span className="text-2xs text-muted-foreground/70">
+      <span className="shrink-0 text-meta text-ink-2">
         {capLabels.length > 0 ? (
           <span className="hidden sm:inline">{capLabels.join(" · ")}</span>
         ) : null}
       </span>
-      <span className="flex shrink-0 items-center justify-end gap-0.5">
+      <span className="flex min-w-22 shrink-0 items-center justify-end">
         {!isHidden && !isFiltering ? (
           <>
             <Tooltip>
               <TooltipTrigger
                 render={
                   <Button
-                    size="icon-micro"
+                    size="icon-xs"
                     variant="ghost-muted"
                     disabled={!canWritePreferences || !canMoveUp}
                     onClick={() => onMove(model.slug, -1)}
@@ -595,7 +589,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
               <TooltipTrigger
                 render={
                   <Button
-                    size="icon-micro"
+                    size="icon-xs"
                     variant="ghost-muted"
                     disabled={!canWritePreferences || !canMoveDown}
                     onClick={() => onMove(model.slug, 1)}
@@ -615,7 +609,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
               <TooltipTrigger
                 render={
                   <Button
-                    size="icon-micro"
+                    size="icon-xs"
                     variant="ghost-muted"
                     disabled={!canManageCustomModels}
                     aria-label={`Edit ${model.slug}`}
@@ -631,7 +625,7 @@ const ProviderModelRow = memo(function ProviderModelRow({
               <TooltipTrigger
                 render={
                   <Button
-                    size="icon-micro"
+                    size="icon-xs"
                     variant="ghost-muted"
                     disabled={!canManageCustomModels}
                     aria-label={`Remove ${model.slug}`}

@@ -1,7 +1,7 @@
 import { resolveEnvironmentMachineKind } from "@t3tools/contracts";
 import { fileBasename } from "@t3tools/shared/path";
 import { useLocation } from "@tanstack/react-router";
-import { CheckIcon, ChevronDownIcon, FolderIcon, LayersIcon } from "lucide-react";
+import { ChevronDownIcon, FolderIcon, LayersIcon } from "lucide-react";
 import { Fragment, useState, type ReactNode } from "react";
 
 import type { SidebarProjectSnapshot } from "../../sidebarProjectGrouping";
@@ -23,7 +23,6 @@ import {
   MenuPopup,
   MenuRadioGroup,
   MenuRadioItem,
-  MenuRadioItemIndicator,
   MenuSeparator,
   MenuTrigger,
 } from "../ui/menu";
@@ -80,12 +79,12 @@ export function SettingsScopeSentence() {
     onChange: scope.selectScope,
   };
   return (
-    <p className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 px-3 text-sm text-muted-foreground sm:px-4">
-      <span className="flex min-w-0 items-center gap-1.5">
+    <p className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 px-2 text-body text-ink-2">
+      <span className="flex min-w-0 items-center gap-2">
         <span className="shrink-0">Applying settings for</span>
         <ProjectScopeMenu {...props} />
       </span>
-      <span className="flex min-w-0 items-center gap-1.5">
+      <span className="flex min-w-0 items-center gap-2">
         <span className="shrink-0">
           {scope.search.machine || scope.scope.kind === "checkout" ? "on" : "across"}
         </span>
@@ -111,12 +110,10 @@ function ScopeOptionLabel({ option }: { option: ScopeOption }) {
       <span className="min-w-0 flex-1">
         <span className="block truncate">{option.label}</span>
         {option.secondary ? (
-          <span className="block truncate text-xs text-muted-foreground">{option.secondary}</span>
+          <span className="block truncate text-meta text-ink-2">{option.secondary}</span>
         ) : null}
       </span>
-      {option.offline ? (
-        <span className="shrink-0 text-xs text-muted-foreground">Offline</span>
-      ) : null}
+      {option.offline ? <span className="shrink-0 text-meta text-ink-2">Offline</span> : null}
     </>
   );
 }
@@ -145,7 +142,7 @@ function ScopeMenu({
   const trigger = (
     <Trigger
       aria-label={`${ariaLabel}: ${label}`}
-      render={<Button variant="outline" size="sm" />}
+      render={<Button variant="ghost" size="sm" />}
       className="min-w-0 max-w-72"
     >
       {icon}
@@ -153,7 +150,7 @@ function ScopeMenu({
       <ChevronDownIcon
         aria-hidden
         strokeWidth={1.75}
-        className="-me-0.5 size-3.5 shrink-0 text-muted-foreground opacity-70"
+        className="size-4 shrink-0 text-ink-2 opacity-70"
       />
     </Trigger>
   );
@@ -192,9 +189,6 @@ function ScopeMenu({
             {(option: ScopeOption) => (
               <ComboboxItem key={option.value} value={option}>
                 <ScopeOptionLabel option={option} />
-                {option.value === value ? (
-                  <CheckIcon aria-hidden className="size-3.5 shrink-0" />
-                ) : null}
               </ComboboxItem>
             )}
           </ComboboxList>
@@ -218,7 +212,6 @@ function ScopeMenu({
                 <MenuRadioItem value={option.value} closeOnClick>
                   <span className="flex min-w-0 items-center gap-2">
                     <ScopeOptionLabel option={option} />
-                    <MenuRadioItemIndicator />
                   </span>
                 </MenuRadioItem>
                 {index === 0 && allOption ? <MenuSeparator /> : null}
@@ -261,7 +254,7 @@ function EnvironmentScopeMenu({
           <EnvironmentMachineIcon
             aria-hidden
             kind={resolveEnvironmentMachineKind(selected.serverConfig)}
-            className="size-3.5 shrink-0"
+            className="size-4 shrink-0"
           />
         ) : null
       }
@@ -283,7 +276,7 @@ function EnvironmentScopeMenu({
           : {
               value: ALL_ENVIRONMENTS_VALUE,
               label: "All environments",
-              icon: <LayersIcon aria-hidden className="size-3.5 shrink-0" />,
+              icon: <LayersIcon aria-hidden className="size-4 shrink-0" />,
             }
       }
       options={options.map((environment) => {
@@ -299,7 +292,7 @@ function EnvironmentScopeMenu({
             <EnvironmentMachineIcon
               aria-hidden
               kind={resolveEnvironmentMachineKind(environment.serverConfig)}
-              className="size-3.5 shrink-0"
+              className="size-4 shrink-0"
             />
           ),
           offline: environment.connection.phase !== "connected",
@@ -315,11 +308,11 @@ function CheckoutScopeMenu({ value, groups, onChange }: SettingsScopeMenuProps) 
   if (checkouts.length === 0) return null;
   const selected = checkouts.find((member) => member.physicalProjectKey === value.checkout);
   return (
-    <span className="flex min-w-0 items-center gap-1.5">
+    <span className="flex min-w-0 items-center gap-2">
       <span className="shrink-0">in</span>
       <ScopeMenu
         ariaLabel="Checkout scope"
-        icon={<FolderIcon aria-hidden className="size-3.5 shrink-0" />}
+        icon={<FolderIcon aria-hidden className="size-4 shrink-0" />}
         label={
           selected
             ? settingsScopeCheckoutLabel(selected, checkouts)
@@ -357,7 +350,7 @@ function ProjectScopeMenu({ value, groups, environments, onChange }: SettingsSco
   return (
     <ScopeMenu
       ariaLabel="Project scope"
-      icon={selected ? <ProjectFavicon project={selected} className="size-3.5 shrink-0" /> : null}
+      icon={selected ? <ProjectFavicon project={selected} className="size-4 shrink-0" /> : null}
       label={selected?.displayName ?? (value.project ? "Unavailable project" : "All projects")}
       value={projectAxisValue(value)}
       onChange={(next) => onChange(selectProjectAxis(value, next))}
@@ -381,7 +374,7 @@ function ProjectScopeMenu({ value, groups, environments, onChange }: SettingsSco
           value: group.projectKey,
           label: group.displayName,
           secondary: group.archived ? ["Archived", location].filter(Boolean).join(" · ") : location,
-          icon: <ProjectFavicon project={group} className="size-3.5 shrink-0" />,
+          icon: <ProjectFavicon project={group} className="size-4 shrink-0" />,
         };
       })}
     />

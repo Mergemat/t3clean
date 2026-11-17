@@ -142,7 +142,7 @@ export function EasDeviceHostEditor(props: {
     label: string,
     max: number,
   ) => (
-    <label className="block space-y-1.5">
+    <label className="block space-y-2">
       <span>{label}</span>
       <Input
         type="number"
@@ -181,7 +181,7 @@ export function EasDeviceHostEditor(props: {
             </DialogDescription>
           </DialogHeader>
           <DialogPanel>
-            <label className="block space-y-1.5 text-sm">
+            <label className="block space-y-2 text-body">
               <span>Name</span>
               <Input
                 autoFocus
@@ -194,7 +194,7 @@ export function EasDeviceHostEditor(props: {
                 }}
               />
             </label>
-            <div className="space-y-1.5 text-sm">
+            <div className="space-y-2 text-body">
               <label htmlFor={tokenId} className="block">
                 Expo access token
               </label>
@@ -251,13 +251,13 @@ export function EasDeviceHostEditor(props: {
                       resetAccount();
                     }}
                   >
-                    <XIcon className="size-3.5" />
+                    <XIcon className="size-4" />
                   </Button>
                 ) : null}
               </div>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-lg border border-border/60 px-3 py-2.5">
-              <p role="status" className="min-w-0 text-xs text-muted-foreground">
+            <div className="flex items-center justify-between gap-2 rounded-row border border-border/60 px-2 py-2">
+              <p role="status" className="min-w-0 text-meta text-ink-2">
                 {account.status === "signed-in"
                   ? `Signed in as ${account.account.signedInAs} with ${CREDENTIAL_SOURCES[account.account.credentialSource]}.`
                   : account.status === "failed"
@@ -276,7 +276,7 @@ export function EasDeviceHostEditor(props: {
                 {account.status === "checking" ? <Spinner size="xs" /> : null} Check account
               </Button>
             </div>
-            <div className="space-y-1.5 text-sm">
+            <div className="space-y-2 text-body">
               <span>Expo project</span>
               <Select
                 value={draft.appId ?? FROM_THREAD_PROJECT}
@@ -289,7 +289,7 @@ export function EasDeviceHostEditor(props: {
                   });
                 }}
               >
-                <SelectTrigger size="sm" aria-label="Expo project">
+                <SelectTrigger variant="ghost" size="sm" aria-label="Expo project">
                   <SelectValue>
                     {(value: string) =>
                       value === FROM_THREAD_PROJECT
@@ -310,24 +310,24 @@ export function EasDeviceHostEditor(props: {
                   ))}
                 </SelectPopup>
               </Select>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta text-ink-2">
                 Sessions bill the project's Expo account. "From the thread's project" reads
                 extra.eas.projectId from the project's app config.
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-3 text-sm">
+            <div className="grid grid-cols-3 gap-2 text-body">
               {limit("maxConcurrentSessions", "Sessions at once", 20)}
               {limit("maxSessionMinutes", "Session minutes", 115)}
               {limit("idleMinutes", "Idle minutes", 60)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-meta text-ink-2">
               Expo Simulators needs a paid Expo account. A session runs for up to 115 minutes and
               stops early when it is idle for the idle minutes, so idle minutes must be less than
               session minutes.
               {props.isNew ? null : " Saving restarts this host and stops its running sessions."}
             </p>
             {problem === null ? null : (
-              <p className="text-xs text-destructive" role="alert">
+              <p className="text-meta text-destructive" role="alert">
                 {problem}
               </p>
             )}

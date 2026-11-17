@@ -230,8 +230,9 @@ export function SourceControlWritingSettingsSection() {
             }}
           >
             <SelectTrigger
+              variant="ghost"
               size="sm"
-              className="w-full sm:w-56"
+
               aria-label="Commit and pull request writing"
             >
               <SelectValue>
@@ -251,7 +252,7 @@ export function SourceControlWritingSettingsSection() {
         }
       >
         {writingStyleMixed ? (
-          <div className="mt-3 max-w-2xl space-y-2 pb-3.5">
+          <div className="mt-2 max-w-2xl space-y-2 pb-4">
             {editingAllInstructions ? (
               <>
                 <Textarea
@@ -293,7 +294,7 @@ export function SourceControlWritingSettingsSection() {
             )}
           </div>
         ) : style.mode === "custom" ? (
-          <div className="mt-3 max-w-2xl pb-3.5">
+          <div className="mt-2 max-w-2xl pb-4">
             <Textarea
               key={style.customInstructions}
               ref={customInstructionsRef}
@@ -337,7 +338,7 @@ export function SourceControlWritingSettingsSection() {
             description="Must be a coding agent: it reads the pull request over many steps. Off uses the writer model, or Codex or Claude if that model is a text generator."
             control={
               !hasServerTargets ? (
-                <span className="text-sm text-muted-foreground">
+                <span className="text-body text-ink-2">
                   Connect an environment to choose its review guide model.
                 </span>
               ) : (
@@ -447,7 +448,7 @@ export function SourceControlWritingSettingsSection() {
               ) : null
             }
           >
-            <div className="mt-3 max-w-2xl pb-3.5">
+            <div className="mt-2 max-w-2xl pb-4">
               <Textarea
                 key={`${scopeKey}:${mixedReviewGuideInstructions}:${settings.reviewGuideInstructions}`}
                 aria-label="Review guide instructions"
@@ -486,7 +487,7 @@ export function SourceControlWritingSettingsSection() {
           settingKeys={["sourceControlWritingStyle"]}
           mixed={templatesMixed}
           {...searchableSetting("follow-change-request-templates")}
-          description="Use the repository's pull request template when it has one."
+          description="When the repository has one."
           resetAction={
             templatesMixed ||
             style.followChangeRequestTemplates !== defaults.followChangeRequestTemplates ? (
@@ -525,13 +526,13 @@ export function SourceControlWritingSettingsSection() {
           description="Model for commit messages, pull request text, and branch or bookmark names. When disabled, use the text generation model configured for this environment."
           control={
             !hasServerTargets ? (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-body text-ink-2">
                 Connect an environment to choose its source control writer model.
               </span>
             ) : (
               <div className="flex flex-wrap items-center justify-end gap-2">
                 {usesDedicatedModel && !canEnableDedicatedModel ? (
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-body text-ink-2">
                     No text generation providers available.
                   </span>
                 ) : null}

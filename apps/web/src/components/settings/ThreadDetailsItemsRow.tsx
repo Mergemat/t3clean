@@ -19,7 +19,7 @@ export function ThreadDetailsItemsRow() {
   return (
     <SettingsRow
       {...searchableSetting("thread-details-items")}
-      description="Choose what the thread details card shows. You can also right-click the card."
+      description="You can also right-click the card."
       resetAction={
         isDefaultThreadDetailsVisibility(visibility) ? null : (
           <SettingResetButton
@@ -33,9 +33,8 @@ export function ThreadDetailsItemsRow() {
           <MenuTrigger
             render={
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
-                className="w-full justify-between sm:w-40"
                 aria-label={`Thread details: ${enabled} of ${THREAD_DETAILS_ITEMS.length} on`}
               />
             }

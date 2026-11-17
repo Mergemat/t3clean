@@ -65,7 +65,7 @@ export function PullRequestRoutingSettings({
         ) ?? "Off"
       }
     >
-      <p className="px-3 py-2.5 text-xs text-muted-foreground sm:px-4">
+      <p className="px-4 py-2 text-meta text-ink-2">
         Machines you trust here can read PR data through each other's source control access. Enable
         both machines. Read and act may use broader permissions than the machine that owns them.
         This applies only to this device.
@@ -101,8 +101,9 @@ export function PullRequestRoutingSettings({
             }}
           >
             <SelectTrigger
+              variant="ghost"
               size="xs"
-              className="w-32"
+
               aria-label={`${environment.label} pull request routing`}
             >
               <SelectValue />

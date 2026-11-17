@@ -101,7 +101,7 @@ export function DatabaseStorageNotice({
             title={`${formatGiB(status.reclaimableBytes)} on ${label}`}
             description={<code className="select-text break-all">{status.compactCommand}</code>}
             control={
-              <div className="flex flex-wrap items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant="outline"
                   size="xs"
@@ -167,7 +167,7 @@ function ReclaimRow({
           : `The last attempt failed: ${status.reclaimFailure}`
       }
       control={
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             size="xs"

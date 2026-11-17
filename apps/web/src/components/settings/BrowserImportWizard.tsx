@@ -277,12 +277,7 @@ function FullDiskAccessStep({
           permissions={[
             {
               id: "fullDiskAccess",
-              icon: (
-                <HardDriveIcon
-                  className="size-8 shrink-0 text-muted-foreground"
-                  aria-hidden="true"
-                />
-              ),
+              icon: <HardDriveIcon className="size-8 shrink-0 text-ink-2" aria-hidden="true" />,
               title: "Full Disk Access",
               description: `Read ${source.name}'s cookies for this import.`,
               granted: permission.status.fullDiskAccess,
@@ -291,12 +286,12 @@ function FullDiskAccessStep({
           ]}
         />
         {openingError || permission.error ? (
-          <p role="status" className="mt-3 text-xs text-muted-foreground">
+          <p role="status" className="mt-2 text-meta text-ink-2">
             {openingError ?? permission.error}
           </p>
         ) : null}
         {!permission.isReady(["fullDiskAccess"]) ? (
-          <p className="mt-3 text-xs text-muted-foreground">
+          <p className="mt-2 text-meta text-ink-2">
             {stillRequired
               ? "Access is still required. Quit and reopen T3 Code if you just allowed it, then retry the import."
               : "If access doesn't update after you allow it, quit and reopen T3 Code, then retry the import."}
@@ -351,11 +346,9 @@ function ConfigureStep({
         </DialogDescription>
       </DialogHeader>
       <DialogPanel>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
           <section className="flex-1 space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              From
-            </p>
+            <p className="text-meta font-medium uppercase tracking-wide text-ink-2">From</p>
             {source.profiles.map((profile) => (
               <SelectableTile
                 key={profile.directory}
@@ -366,14 +359,12 @@ function ConfigureStep({
               />
             ))}
           </section>
-          <div className="flex shrink-0 items-center justify-center text-muted-foreground">
+          <div className="flex shrink-0 items-center justify-center text-ink-2">
             <ArrowDownIcon className="size-4 sm:hidden" />
             <ArrowRightIcon className="hidden size-4 sm:block" />
           </div>
           <section className="flex-1 space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Into
-            </p>
+            <p className="text-meta font-medium uppercase tracking-wide text-ink-2">Into</p>
             {canCreateProfile ? (
               <SelectableTile
                 selected={target.kind === "new"}
@@ -394,7 +385,7 @@ function ConfigureStep({
           </section>
         </div>
         {targetFeedback ? (
-          <p role="alert" className="mt-3 text-sm text-destructive">
+          <p role="alert" className="mt-2 text-body text-destructive">
             {targetFeedback}
           </p>
         ) : null}
@@ -431,18 +422,16 @@ function SelectableTile({
       aria-pressed={selected}
       onClick={onSelect}
       className={cn(
-        "flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+        "flex w-full cursor-pointer items-center justify-between gap-2 rounded-row border px-2 py-2 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
         selected
           ? "border-primary bg-primary/8"
           : "border-border/60 hover:border-border hover:bg-muted/40",
       )}
     >
       <span className="min-w-0">
-        <span className="block truncate text-sm font-medium text-foreground">{title}</span>
+        <span className="block truncate text-body font-medium text-ink-1">{title}</span>
         {subtitle ? (
-          <span className="block truncate text-xs tabular-nums text-muted-foreground">
-            {subtitle}
-          </span>
+          <span className="block truncate text-meta tabular-nums text-ink-2">{subtitle}</span>
         ) : null}
       </span>
       <span
@@ -451,7 +440,7 @@ function SelectableTile({
           selected ? "border-primary bg-primary text-primary-foreground" : "border-input",
         )}
       >
-        {selected ? <CheckIcon className="size-2.5" /> : null}
+        {selected ? <CheckIcon className="size-3" /> : null}
       </span>
     </button>
   );
@@ -465,9 +454,9 @@ function ImportingStep() {
         <DialogDescription>This may take a moment.</DialogDescription>
       </DialogHeader>
       <DialogPanel>
-        <div className="flex items-center gap-3 py-2">
+        <div className="flex items-center gap-2 py-2">
           <Spinner size="md" tone="muted" />
-          <span className="text-sm text-muted-foreground">Importing…</span>
+          <span className="text-body text-ink-2">Importing…</span>
         </div>
       </DialogPanel>
     </>
@@ -492,9 +481,9 @@ function CheckingStep({
         </DialogDescription>
       </DialogHeader>
       <DialogPanel>
-        <div className="flex items-center gap-3 py-2">
+        <div className="flex items-center gap-2 py-2">
           <Spinner size="md" tone="muted" />
-          <span className="text-sm text-muted-foreground">
+          <span className="text-body text-ink-2">
             {check === "fullDiskAccess" ? "Checking access…" : "Checking…"}
           </span>
         </div>
@@ -538,10 +527,8 @@ function DoneStep({
       </DialogHeader>
       {skippedDomains.length > 0 ? (
         <DialogPanel>
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Skipped
-          </p>
-          <p className="mt-1 text-sm text-foreground">{formatSkippedDomains(skippedDomains)}</p>
+          <p className="text-meta font-medium uppercase tracking-wide text-ink-2">Skipped</p>
+          <p className="mt-1 text-body text-ink-1">{formatSkippedDomains(skippedDomains)}</p>
         </DialogPanel>
       ) : null}
       <DialogFooter>

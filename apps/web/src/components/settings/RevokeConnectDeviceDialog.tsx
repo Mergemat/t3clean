@@ -83,18 +83,18 @@ function RevokeConnectDeviceDialogPopup({
           Approval for new devices is off, so a revoked device signed in to your T3 Connect account
           can connect again on its own.
         </AlertDialogDescription>
-        <label className="mt-2 flex cursor-pointer items-start gap-3">
+        <label className="mt-2 flex cursor-pointer items-start gap-2">
           <Checkbox
-            className="mt-0.5"
+            className=""
             checked={turnOnApproval}
             disabled={busy}
             onCheckedChange={(checked) => setTurnOnApproval(checked === true)}
           />
           <span className="min-w-0">
-            <span className="block text-sm font-medium text-foreground">
+            <span className="block text-body font-medium text-ink-1">
               Require approval for new devices
             </span>
-            <span className="block text-xs text-muted-foreground">
+            <span className="block text-meta text-ink-2">
               The device has to be approved here before it can connect again.
             </span>
           </span>

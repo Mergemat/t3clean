@@ -170,7 +170,7 @@ function RetentionControl({
   return (
     <div
       ref={row}
-      className="flex items-center gap-3"
+      className="flex items-center gap-2"
       onBlur={(event) => {
         if (event.currentTarget.contains(event.relatedTarget)) return;
         if (held && draft !== null) commit(draft);
@@ -234,15 +234,13 @@ function RetentionControl({
                 }
               }}
             />
-            <span aria-hidden="true" className="self-center pr-2 text-xs">
+            <span aria-hidden="true" className="self-center pr-2 text-meta">
               days
             </span>
             <NumberFieldIncrement aria-label={`Increase ${label}`} />
           </NumberFieldGroup>
         </NumberField>
-      ) : (
-        <span className="text-xs text-muted-foreground">Off</span>
-      )}
+      ) : null}
       <Switch
         aria-label={label}
         checked={on}
@@ -305,19 +303,19 @@ function CleanupResults({
                 <span className={`block ${entry.outcome === "failed" ? "text-destructive" : ""}`}>
                   {entry.reason}
                 </span>
-                <span className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 border-l border-border/60 pl-3">
+                <span className="grid grid-cols-(--grid-lead) gap-x-2 gap-y-1">
                   <span>Machine</span>
-                  <span className="text-foreground/80">{environmentLabel}</span>
+                  <span className="text-ink-2">{environmentLabel}</span>
                   {entry.projectPath && (
                     <>
                       <span>Project</span>
-                      <code className="text-foreground/80">{entry.projectPath}</code>
+                      <code className="text-ink-2">{entry.projectPath}</code>
                     </>
                   )}
                   {entry.path && (
                     <>
                       <span>Folder</span>
-                      <code className="text-foreground/80">{entry.path}</code>
+                      <code className="text-ink-2">{entry.path}</code>
                     </>
                   )}
                   {entry.threadTitle && (
@@ -332,7 +330,7 @@ function CleanupResults({
             control={
               (entry.outcome === "removed" ||
                 (entry.outcome === "kept" && entry.bytes !== null)) && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-meta text-ink-2">
                   {[
                     entry.kind !== "worktree" && entry.files !== null
                       ? `${entry.files.toLocaleString()} ${entry.files === 1 ? "file" : "files"}`
@@ -348,12 +346,12 @@ function CleanupResults({
         );
       })}
       {report.omittedCount > 0 && (
-        <p className="px-3 py-2.5 text-xs text-muted-foreground sm:px-4">
+        <p className="px-4 py-2 text-meta text-ink-2">
           {environmentLabel}: {report.omittedCount.toLocaleString()} more results.
         </p>
       )}
       {report.entries.length === 0 && report.omittedCount === 0 && (
-        <p className="px-3 py-2.5 text-xs text-muted-foreground sm:px-4">
+        <p className="px-4 py-2 text-meta text-ink-2">
           {environmentLabel}: Nothing needed cleanup.
         </p>
       )}
@@ -460,7 +458,7 @@ function CleanupSection() {
     ).finally(() => setPending(false));
   };
   return (
-    <SettingsSection id="storage-cleanup" title="Cleanup" variant="plain">
+    <SettingsSection id="storage-cleanup" title="Cleanup">
       <SettingsGroup>
         <SettingsRow
           {...searchableSetting("storage-delete-now")}
@@ -588,7 +586,7 @@ export function WorktreeCleanupSection() {
     )
   ) {
     return (
-      <SettingsSection id="storage-worktrees" title="Cleanup" variant="plain">
+      <SettingsSection id="storage-worktrees" title="Cleanup">
         <SettingsScopeNotice inline target="all">
           Update the selected machines to configure project worktree cleanup.
         </SettingsScopeNotice>
@@ -597,7 +595,7 @@ export function WorktreeCleanupSection() {
   }
   if (!supportsStorageCleanup(connectedEnvironments)) {
     return (
-      <SettingsSection id="storage-worktrees" title="Cleanup" variant="plain">
+      <SettingsSection id="storage-worktrees" title="Cleanup">
         <StorageCleanupScopeNotice />
       </SettingsSection>
     );
@@ -629,7 +627,7 @@ export function WorktreeCleanupSection() {
                     updateSettings({ worktreeCleanup: { mode: "custom", rules: {} } });
                 }}
               >
-                <SelectTrigger size="sm" aria-label="Automatic worktree cleanup">
+                <SelectTrigger variant="ghost" size="sm" aria-label="Automatic worktree cleanup">
                   <SelectValue>
                     {mixedModes
                       ? "Mixed"
@@ -655,7 +653,7 @@ export function WorktreeCleanupSection() {
               title="Delete worktrees with deleted threads"
               status={ruleStatus("worktreeOnDelete")}
               managedPaths={lockablePath("worktreeOnDelete")}
-              description="Remove unused worktrees when active or archived threads are deleted. Worktrees with local changes are kept."
+              description="Worktrees with local changes are kept."
               serverScoped={!isProjectScope}
               control={
                 <Switch
@@ -669,7 +667,7 @@ export function WorktreeCleanupSection() {
               title="Delete merged worktrees"
               status={ruleStatus("worktreeOnMerge")}
               managedPaths={lockablePath("worktreeOnMerge")}
-              description="Remove worktrees whose pull request is merged and whose commits are included in the default branch."
+              description="Once their commits are in the default branch."
               serverScoped={!isProjectScope}
               control={
                 <Switch
@@ -683,7 +681,7 @@ export function WorktreeCleanupSection() {
               title="Delete inactive worktrees"
               status={ruleStatus("worktreeAfterDays")}
               managedPaths={lockablePath("worktreeAfterDays")}
-              description="Remove worktrees after their threads have been inactive for this many days. Branches and thread history are kept."
+              description="Branches and thread history are kept."
               serverScoped={!isProjectScope}
               control={
                 <RetentionControl
@@ -716,7 +714,7 @@ export function WorktreeCleanupSection() {
                     ]
                       .filter(Boolean)
                       .join(". ")}
-                    description="Remove worktrees this many days after their thread settles. Set 0 days to remove them at the next cleanup. Branches and thread history are kept."
+                    description="0 days removes them at the next cleanup. Branches and thread history are kept."
                     serverScoped={!isProjectScope}
                     control={
                       <RetentionControl
@@ -734,7 +732,7 @@ export function WorktreeCleanupSection() {
                 title="Delete unchanged worktrees"
                 status={ruleStatus("worktreeUnchanged")}
                 managedPaths={lockablePath("worktreeUnchanged")}
-                description="Remove worktrees with no commits beyond the default branch."
+                description="No commits beyond the default branch."
                 serverScoped={!isProjectScope}
                 control={
                   <Switch
@@ -772,7 +770,11 @@ export function WorktreeCleanupSection() {
                           updateWorktree({ worktreeKeepWhen: next });
                       }}
                     >
-                      <SelectTrigger size="sm" aria-label="Keep worktrees with local changes">
+                      <SelectTrigger
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Keep worktrees with local changes"
+                      >
                         <SelectValue>
                           {ruleStatus("worktreeKeepWhen")
                             ? "Mixed"
@@ -840,7 +842,7 @@ export function StorageCleanupSections() {
     return (
       <>
         {databaseStorageNotice}
-        <SettingsSection id="storage-artifacts" title="Artifacts and logs" variant="plain">
+        <SettingsSection id="storage-artifacts" title="Artifacts and logs">
           <StorageCleanupScopeNotice />
         </SettingsSection>
       </>
@@ -856,7 +858,7 @@ export function StorageCleanupSections() {
             title="Delete old browser artifacts"
             status={artifactsStatus}
             managedPaths={["storageCleanup.browserArtifactsAfterDays"]}
-            description="Delete saved browser captures after this many days. Older capture links will no longer open."
+            description="Older capture links stop opening."
             serverScoped
             control={
               <RetentionControl
@@ -874,7 +876,7 @@ export function StorageCleanupSections() {
             title="Delete old rotated logs"
             status={logsStatus}
             managedPaths={["storageCleanup.logsAfterDays"]}
-            description="Delete inactive rotated log files after this many days. Current logs are kept."
+            description="Current logs are kept."
             serverScoped
             control={
               <RetentionControl

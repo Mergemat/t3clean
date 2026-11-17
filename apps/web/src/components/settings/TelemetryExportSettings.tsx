@@ -145,7 +145,7 @@ function TelemetryExportForm() {
   return (
     <SettingsSection title="OpenTelemetry export" id="telemetry-export">
       <form
-        className="grid gap-4 px-4 py-4 sm:px-5"
+        className="grid gap-2 px-4 py-4"
         onSubmit={async (event) => {
           event.preventDefault();
           if (!environment || saving) return;
@@ -168,12 +168,12 @@ function TelemetryExportForm() {
           }
         }}
       >
-        <p className="text-xs text-muted-foreground">
+        <p className="text-meta text-ink-2">
           Send traces, metrics, and logs to an OTLP HTTP receiver. Restart the server to apply.
           Environment variables override these settings.
         </p>
         {!canEdit && (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             This connection lacks permission to change settings on{" "}
             {environment?.label ?? "the selected environment"}.
           </p>
@@ -190,13 +190,13 @@ function TelemetryExportForm() {
               }
             : check;
           return (
-            <div key={key} className="grid gap-1.5">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-1.5">
+            <div key={key} className="grid gap-2">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
                   {status && <ConnectionStatusDot dotClassName={status.dot} />}
                   <Label htmlFor={key}>{label} endpoint</Label>
                 </div>
-                {status && <span className="text-xs text-muted-foreground">{status.label}</span>}
+                {status && <span className="text-meta text-ink-2">{status.label}</span>}
               </div>
               <div className="flex gap-2">
                 <Input
@@ -232,7 +232,7 @@ function TelemetryExportForm() {
                 )}
               </div>
               {(saved[key] !== (running?.[key] ?? "") || override?.variable) && (
-                <p className="break-all text-xs text-muted-foreground">
+                <p className="break-all text-meta text-ink-2">
                   Running: {running?.[key] || "Disabled"}
                   {override?.variable && (
                     <>
@@ -245,8 +245,8 @@ function TelemetryExportForm() {
             </div>
           );
         })}
-        <div className="flex items-center justify-between gap-3">
-          <p role="status" className="text-xs text-muted-foreground">
+        <div className="flex items-center justify-between gap-2">
+          <p role="status" className="text-meta text-ink-2">
             {message}
           </p>
           <div className="flex shrink-0 gap-2">

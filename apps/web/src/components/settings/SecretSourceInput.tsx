@@ -49,7 +49,7 @@ export function useSecretSources(environmentId: EnvironmentId): ReadonlyArray<Se
 }
 
 function SourceIcon(props: { readonly icon: ComponentType<{ readonly className?: string }> }) {
-  return <props.icon className="size-3.5 shrink-0" />;
+  return <props.icon className="size-4 shrink-0" />;
 }
 
 function SourceLabel(props: {
@@ -57,8 +57,8 @@ function SourceLabel(props: {
   readonly label: string;
 }) {
   return (
-    <span className="flex min-w-0 items-center gap-1.5">
-      <props.icon className="size-3.5 shrink-0" />
+    <span className="flex min-w-0 items-center gap-2">
+      <props.icon className="size-4 shrink-0" />
       <span className="truncate">{props.label}</span>
     </span>
   );
@@ -87,8 +87,9 @@ export function SecretSourceSelect(props: {
       {...(props.disabled === undefined ? {} : { disabled: props.disabled })}
     >
       <SelectTrigger
+        variant="ghost"
         size="sm"
-        className="w-auto min-w-0 shrink-0"
+        className="min-w-0 shrink-0"
         aria-label={`${props.label} source`}
         title={title}
       >
@@ -172,7 +173,7 @@ function SecretCheckButton(props: {
           <span className="inline-flex">
             <Button
               type="button"
-              size="icon-micro"
+              size="icon-xs"
               variant="ghost-muted"
               disabled={props.disabled === true || !canCheck || state?.status === "checking"}
               onClick={() => void run()}
@@ -262,7 +263,7 @@ export function SecretSourceInput({
       <SecretInput {...input} />
     ) : (
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <div className="flex min-w-0 items-center gap-1.5">
+        <div className="flex min-w-0 items-center gap-2">
           <DraftInput
             {...(input.id !== undefined ? { id: input.id } : {})}
             size="sm"
@@ -309,7 +310,7 @@ export function SecretSourceInput({
           ) : null}
         </div>
         {rejectedReference !== null ? (
-          <p className="text-2xs text-destructive">
+          <p className="text-meta text-destructive">
             {definition?.invalidReferenceMessage ?? "Enter a valid secret reference."}
           </p>
         ) : null}
@@ -319,7 +320,7 @@ export function SecretSourceInput({
   if (children !== undefined) return children({ source, value: valueField });
   if (source === null) return valueField;
   return (
-    <div className="flex min-w-0 flex-1 items-start gap-1.5">
+    <div className="flex min-w-0 flex-1 items-start gap-2">
       {source}
       {valueField}
     </div>

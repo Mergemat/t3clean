@@ -388,7 +388,7 @@ function InstanceSessionManagement(
   };
 
   return (
-    <div className="grid gap-3">
+    <div className="grid gap-2">
       <SettingsRow
         title="Native sessions"
         description="Resume agent-owned conversations as T3 threads."
@@ -420,7 +420,12 @@ function InstanceSessionManagement(
                     props.onProjectChange(value as ProjectId);
                   }}
                 >
-                  <SelectTrigger aria-label="Project for ACP sessions" className="w-40" size="sm">
+                  <SelectTrigger
+                    variant="ghost"
+                    aria-label="Project for ACP sessions"
+
+                    size="sm"
+                  >
                     <SelectValue>
                       {props.projects.find((project) => project.id === projectId)?.title}
                     </SelectValue>
@@ -450,17 +455,17 @@ function InstanceSessionManagement(
         {canList && (sessions.length > 0 || nextCursor !== null) ? (
           <>
             {sessions.length > 0 ? (
-              <div className="divide-y divide-border/60 border-y border-border/60">
+              <div>
                 {sessions.map((session) => (
                   <div
                     key={session.sessionId}
-                    className="flex min-w-0 items-center justify-between gap-3 py-2"
+                    className="flex min-w-0 items-center justify-between gap-2 py-2"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-xs text-foreground">
+                      <p className="truncate text-meta text-ink-1">
                         {session.title ?? session.sessionId}
                       </p>
-                      <code className="block truncate text-3xs text-muted-foreground">
+                      <code className="block truncate text-meta text-ink-2">
                         {session.sessionId}
                       </code>
                     </div>
@@ -521,11 +526,11 @@ function InstanceSessionManagement(
       </SettingsRow>
 
       {canConfigureProviders ? (
-        <div className="grid gap-3 border-t border-border/60 px-3 py-3 sm:px-4">
+        <div className="grid gap-2 px-4 py-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <p className="text-xs font-medium text-foreground">Agent providers</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-meta font-medium text-ink-1">Agent providers</p>
+              <p className="text-meta text-ink-2">
                 Configure non-secret routing. Headers are write-only.
               </p>
             </div>
@@ -551,7 +556,12 @@ function InstanceSessionManagement(
                 props.onProjectChange(value as ProjectId);
               }}
             >
-              <SelectTrigger aria-label="Project for ACP providers" className="min-w-48" size="xs">
+              <SelectTrigger
+                variant="ghost"
+                aria-label="Project for ACP providers"
+                className="min-w-48"
+                size="xs"
+              >
                 <SelectValue>
                   {props.projects.find((project) => project.id === projectId)?.title}
                 </SelectValue>
@@ -567,7 +577,7 @@ function InstanceSessionManagement(
           ) : null}
 
           {providers.length > 0 ? (
-            <div className="divide-y divide-border/60 border-y border-border/60">
+            <div>
               {providers.map((provider) => {
                 const draft = providerDrafts[provider.providerId] ?? {
                   apiType: provider.current?.apiType ?? provider.supported[0] ?? "",
@@ -580,13 +590,13 @@ function InstanceSessionManagement(
                     [provider.providerId]: { ...draft, ...update },
                   }));
                 return (
-                  <div key={provider.providerId} className="grid gap-2 py-3">
+                  <div key={provider.providerId} className="grid gap-2 py-2">
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
-                        <p className="truncate text-xs font-medium text-foreground">
+                        <p className="truncate text-meta font-medium text-ink-1">
                           {provider.providerId}
                         </p>
-                        <p className="text-3xs text-muted-foreground">
+                        <p className="text-meta text-ink-2">
                           {provider.current === null ? "Disabled" : "Configured"}
                           {provider.required ? " · Required" : ""}
                         </p>
@@ -622,7 +632,7 @@ function InstanceSessionManagement(
                         ) : null}
                       </div>
                     </div>
-                    <div className="grid gap-2 sm:grid-cols-[9rem_minmax(0,1fr)]">
+                    <div className="grid gap-2 sm:grid-cols-(--grid-lead)">
                       <Select
                         value={draft.apiType}
                         disabled={props.readOnly || savingProviderId !== null}
@@ -630,7 +640,11 @@ function InstanceSessionManagement(
                           if (value !== null) updateDraft({ apiType: value });
                         }}
                       >
-                        <SelectTrigger aria-label={`${provider.providerId} protocol`} size="sm">
+                        <SelectTrigger
+                          variant="ghost"
+                          aria-label={`${provider.providerId} protocol`}
+                          size="sm"
+                        >
                           <SelectValue>{draft.apiType}</SelectValue>
                         </SelectTrigger>
                         <SelectPopup>

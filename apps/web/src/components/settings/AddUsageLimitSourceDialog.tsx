@@ -86,13 +86,13 @@ export function AddUsageLimitSourceDialog({
         <DialogPanel>
           <form
             id={formId}
-            className="grid gap-4"
+            className="grid gap-2"
             onSubmit={(event) => {
               event.preventDefault();
               save();
             }}
           >
-            <div className="grid gap-1.5">
+            <div className="grid gap-2">
               <Label htmlFor="usage-source-url">Hub URL</Label>
               <Input
                 id="usage-source-url"
@@ -102,7 +102,7 @@ export function AddUsageLimitSourceDialog({
                 autoFocus
               />
             </div>
-            <div className="grid gap-1.5">
+            <div className="grid gap-2">
               <Label htmlFor="usage-source-key">Management key</Label>
               <SecretSourceInput
                 id="usage-source-key"
@@ -115,7 +115,7 @@ export function AddUsageLimitSourceDialog({
                 onValidityChange={setKeyValid}
               />
             </div>
-            <div className="grid gap-1.5">
+            <div className="grid gap-2">
               <Label htmlFor="usage-source-label">Label (optional)</Label>
               <Input
                 id="usage-source-label"

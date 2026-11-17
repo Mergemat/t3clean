@@ -151,7 +151,7 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
       }
       control={
         selection ? (
-          <div className="flex min-w-0 flex-wrap items-center justify-end gap-1.5">
+          <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
             <ProviderModelPicker
               environmentId={representative?.environmentId ?? null}
               activeInstanceId={selection.instanceId}
@@ -190,7 +190,7 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
             ) : null}
           </div>
         ) : (
-          <span className="text-sm text-muted-foreground">
+          <span className="text-body text-ink-2">
             {mixedModel ? "Mixed" : "No providers available"}
           </span>
         )
@@ -225,7 +225,7 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
               updateSettings({ defaultThreadEnvMode: value });
           }}
         >
-          <SelectTrigger size="sm" aria-label="Default workspace">
+          <SelectTrigger variant="ghost" size="sm" aria-label="Default workspace">
             <SelectValue>
               {(value: string | null) =>
                 value === "local" || value === "worktree"
@@ -262,7 +262,7 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
       }
       control={
         fallbackSelection ? (
-          <div className="flex min-w-0 flex-wrap items-center justify-end gap-1.5">
+          <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
             <ProviderModelPicker
               environmentId={representative?.environmentId ?? null}
               activeInstanceId={fallbackSelection.instanceId}
@@ -318,7 +318,7 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
             ) : null}
           </div>
         ) : (
-          <span className="text-sm text-muted-foreground">No providers available</span>
+          <span className="text-body text-ink-2">No providers available</span>
         )
       }
     />
@@ -368,10 +368,8 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
                   if (value) updateSettings({ defaultRuntimeMode: value });
                 }}
               >
-                <SelectTrigger size="sm" aria-label="Default permissions">
-                  {!mixedPermissions && (
-                    <PermissionIcon className="size-3.5 shrink-0 text-muted-foreground" />
-                  )}
+                <SelectTrigger variant="ghost" size="sm" aria-label="Default permissions">
+                  {!mixedPermissions && <PermissionIcon className="size-4 shrink-0 text-ink-2" />}
                   <SelectValue>
                     {mixedPermissions
                       ? "Mixed"
@@ -395,12 +393,12 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
                         disabled={managedReason !== undefined}
                         className="min-w-64"
                       >
-                        <div className="grid gap-0.5">
-                          <span className="inline-flex items-center gap-1.5 font-medium">
-                            <Icon className="size-3.5 shrink-0 text-muted-foreground" />
+                        <div className="grid">
+                          <span className="inline-flex items-center gap-2 font-medium">
+                            <Icon className="size-4 shrink-0 text-ink-2" />
                             {option.label}
                           </span>
-                          <span className="text-xs leading-4 text-muted-foreground">
+                          <span className="text-meta leading-4 text-ink-2">
                             {managedReason ?? option.description}
                           </span>
                         </div>
@@ -498,7 +496,11 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
                     updateSettings({ pullRequestMergeMethod: value });
                 }}
               >
-                <SelectTrigger size="sm" aria-label="Default pull request merge method">
+                <SelectTrigger
+                  variant="ghost"
+                  size="sm"
+                  aria-label="Default pull request merge method"
+                >
                   <SelectValue>
                     {(value: string | null) =>
                       value === "merge" || value === "squash" || value === "rebase"
@@ -561,7 +563,7 @@ export function WorktreeSubmodulesRow() {
             if (isWorktreeSubmodules(value)) updateSettings({ worktreeSubmodules: value });
           }}
         >
-          <SelectTrigger size="sm" aria-label="Worktree submodules">
+          <SelectTrigger variant="ghost" size="sm" aria-label="Worktree submodules">
             <SelectValue>
               {(value: string | null) =>
                 isWorktreeSubmodules(value)

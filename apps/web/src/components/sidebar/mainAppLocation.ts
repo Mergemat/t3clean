@@ -4,9 +4,18 @@ import { GUEST_PAGE_PATH } from "../../guestPage";
 import { withoutAssistantCitationHash } from "../../lib/assistantCitationNavigation";
 import { resolveThreadRouteTarget, type ThreadRouteTarget } from "../../threadRoutes";
 
-/** Settings and Usage open as modals over the last main-app view. */
+/** Settings and Usage are away from the threads: they return to the view that opened them. */
 export function isAppModalPage(pathname: string) {
-  return pathname === "/settings" || pathname.startsWith("/settings/") || pathname === "/usage";
+  return isSettingsPage(pathname) || pathname === "/usage";
+}
+
+export function isSettingsPage(pathname: string) {
+  return pathname === "/settings" || pathname.startsWith("/settings/");
+}
+
+/** Usage opens over the view that opened it; Settings is a page of the app itself. */
+export function isOverlayPage(pathname: string) {
+  return pathname === "/usage";
 }
 
 export function isSidebarUtilityPage(pathname: string) {

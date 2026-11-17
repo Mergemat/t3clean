@@ -11,6 +11,7 @@ import {
 } from "@t3tools/contracts";
 import * as Equal from "effect/Equal";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useMessages } from "gt-react";
 import { createContext, type ComponentPropsWithoutRef, type ReactNode, useContext } from "react";
 
 import {
@@ -23,6 +24,7 @@ import { Button } from "../ui/button";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { useOptionalSettingsScope } from "./SettingsScopeContext";
 import { SettingsScopeSentence } from "./SettingsScopeSentence";
+import { SETTINGS_SECTION_LABELS, type SettingsPath } from "./settingsSearch";
 import {
   isProjectScopedSettingKey,
   listProjectOverrides,
@@ -186,7 +188,7 @@ export function SettingsSearchTarget({
 
 // Settings pickers reuse composer controls but match the bordered selects beside them.
 export const SETTINGS_PICKER_TRIGGER_CLASSNAME =
-  "min-w-0 max-w-none shrink-0 border-input bg-background font-normal text-foreground shadow-xs/5 hover:bg-accent/50 dark:bg-input/32 [&_svg[data-composer-control-chevron]]:stroke-[1.75] [&_svg[data-composer-control-chevron]]:opacity-70";
+  "min-w-0 max-w-none shrink-0 border-input bg-background font-normal text-ink-1 shadow-xs/5 hover:bg-accent/50 dark:bg-input/32 [&_svg[data-composer-control-chevron]]:stroke-2 [&_svg[data-composer-control-chevron]]:opacity-70";
 
 export function PolicyTooltip({ children }: { readonly children: string }) {
   return (
@@ -194,13 +196,44 @@ export function PolicyTooltip({ children }: { readonly children: string }) {
       <TooltipTrigger
         delay={200}
         render={
-          <Button size="icon-micro" variant="ghost-muted" aria-label="Background policy details">
-            <InfoIcon className="size-3.5" />
+          <Button size="icon-xs" variant="ghost-muted" aria-label="Background policy details">
+            <InfoIcon className="size-4" />
           </Button>
         }
       />
       <TooltipPopup side="top">{children}</TooltipPopup>
     </Tooltip>
+  );
+}
+
+const STATUS_TONE = {
+  success: "text-success-foreground",
+  warning: "text-warning-foreground",
+  error: "text-destructive-foreground",
+  destructive: "text-destructive-foreground",
+} as const;
+
+/** A setting's status ("Linked", "succeeded"): coloured text in the row, not a chip (DESIGN.md). */
+export function SettingsStatus({
+  variant,
+  size: _size,
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"span"> & {
+  variant?: string | null | undefined;
+  size?: string | null | undefined;
+}) {
+  return (
+    <span
+      {...props}
+      className={cn(
+        "inline-flex shrink-0 items-center gap-1 text-meta",
+        variant && variant in STATUS_TONE
+          ? STATUS_TONE[variant as keyof typeof STATUS_TONE]
+          : "text-ink-2",
+        className,
+      )}
+    />
   );
 }
 
@@ -210,7 +243,6 @@ export function SettingsSection({
   icon,
   titleAction,
   headerAction,
-  variant = "grouped",
   children,
   className,
   ...sectionProps
@@ -220,38 +252,51 @@ export function SettingsSection({
   icon?: ReactNode;
   titleAction?: ReactNode;
   headerAction?: ReactNode;
-  variant?: "grouped" | "plain";
   children: ReactNode;
 }) {
   const targetRef = useSettingsSearchTarget<HTMLElement>(sectionProps.id);
+  // A section named like its page would say the page title twice (DESIGN.md: say a thing once).
+  const m = useMessages();
+  const pageLabel = useLocation({
+    select: (location) => SETTINGS_SECTION_LABELS[location.pathname as SettingsPath] ?? null,
+  });
+  const namedLikePage = pageLabel !== null && m(pageLabel).toLowerCase() === title.toLowerCase();
+  const titleHidden = hideTitle || namedLikePage;
 
   return (
     <section
       {...sectionProps}
       ref={targetRef}
       tabIndex={sectionProps.id ? -1 : sectionProps.tabIndex}
-      className={cn(!hideTitle && "space-y-2.5", className)}
+      className={cn("flex flex-col", className)}
     >
-      {hideTitle ? (
+      {hideTitle || (namedLikePage && !titleAction && !headerAction) ? (
         <h2 className="sr-only">{title}</h2>
       ) : (
         <div
           data-settings-scroll-target
-          className="flex min-h-7 flex-wrap items-start justify-between gap-x-4 gap-y-1 px-3 sm:px-4"
+          // A group label, like a menu's: its text on the rows' text edge. Named like its page,
+          // only its actions show.
+          className="flex min-h-8 flex-wrap items-center justify-between gap-x-2 gap-y-1 px-2"
         >
           <div className="flex min-w-0 items-center gap-1">
-            <h2 className="flex min-h-7 items-center gap-2 text-base font-semibold text-foreground">
+            <h2
+              className={cn(
+                "flex min-h-6 items-center gap-2 text-meta font-medium text-ink-2",
+                namedLikePage && "sr-only",
+              )}
+            >
               {icon}
               {title}
             </h2>
             {titleAction}
           </div>
           {headerAction ? (
-            <div className="flex min-h-7 min-w-7 items-center justify-end">{headerAction}</div>
+            <div className="flex min-h-6 min-w-8 items-center justify-end">{headerAction}</div>
           ) : null}
         </div>
       )}
-      <SettingsGroup data-settings-scroll-target={hideTitle ? "" : undefined} variant={variant}>
+      <SettingsGroup data-settings-scroll-target={titleHidden ? "" : undefined}>
         {children}
       </SettingsGroup>
     </section>
@@ -268,9 +313,9 @@ export function SettingsUnavailableGroup({
   if (message === undefined) return children;
 
   return (
-    <div className="border-border/60 bg-muted/20 py-1.5">
-      <div className="flex items-start gap-2 px-3 py-2 text-xs leading-relaxed text-muted-foreground sm:px-4">
-        <InfoIcon className="mt-0.5 size-3.5 shrink-0 text-warning" />
+    <div className="bg-muted/20 py-2">
+      <div className="flex items-start gap-2 px-4 py-2 text-meta leading-relaxed text-ink-2">
+        <InfoIcon className="h-lh w-4 shrink-0 text-warning" />
         <p>{message}</p>
       </div>
       <div className="[&_h3]:opacity-64 [&_p]:opacity-64">{children}</div>
@@ -418,7 +463,7 @@ export function SettingsRow({
         render={
           <span
             tabIndex={0}
-            className="flex w-full items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring @min-[32rem]/settings-row:w-auto"
+            className="flex w-full items-center rounded-row outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring @min-[32rem]/settings-row:w-auto"
           />
         }
       >
@@ -505,15 +550,15 @@ export function SettingsRow({
       tabIndex={rowProps.id ? -1 : rowProps.tabIndex}
       data-slot="settings-row"
       className={cn(
-        "group/settings-row @container/settings-row rounded-xl px-3 sm:px-4 aria-disabled:opacity-64 aria-disabled:[&_*]:text-muted-foreground",
-        children ? "pt-3 pb-1" : "py-3",
+        "group/settings-row @container/settings-row rounded-row px-2 aria-disabled:opacity-64 aria-disabled:[&_*]:text-ink-2",
+        children ? "pt-2 pb-1" : "py-2",
         className,
       )}
     >
-      <div className="flex flex-col gap-3 @min-[32rem]/settings-row:grid @min-[32rem]/settings-row:grid-cols-[minmax(0,1fr)_auto] @min-[32rem]/settings-row:items-center @min-[32rem]/settings-row:gap-8">
+      <div className="flex flex-col gap-2 @min-[32rem]/settings-row:grid @min-[32rem]/settings-row:grid-cols-(--grid-trail) @min-[32rem]/settings-row:items-center @min-[32rem]/settings-row:gap-6">
         <div className="min-w-0 flex-1 space-y-1">
-          <div className="flex min-h-5 items-center gap-1.5">
-            <h3 className="text-sm font-medium text-foreground">{title}</h3>
+          <div className="flex min-h-5 items-center gap-2">
+            <h3 className="text-body text-ink-1">{title}</h3>
             {renderedInheritance ? (
               <span
                 className={cn(
@@ -532,16 +577,16 @@ export function SettingsRow({
             </span>
           </div>
           {description ? (
-            <p className="max-w-2xl text-pretty text-xs leading-normal text-muted-foreground">
+            <p className="max-w-2xl text-pretty text-meta leading-normal text-ink-2">
               {description}
             </p>
           ) : null}
           {renderedStatus ? (
-            <div className="pt-0.5 text-xs text-muted-foreground">{renderedStatus}</div>
+            <div className="pt-1 text-meta text-ink-2">{renderedStatus}</div>
           ) : null}
         </div>
         {renderedControl ? (
-          <div className="flex w-full min-w-0 shrink-0 items-center gap-2 @min-[32rem]/settings-row:w-auto @min-[32rem]/settings-row:justify-end @min-[32rem]/settings-row:[&_[data-slot=select-trigger]]:min-w-40">
+          <div className="flex w-full min-w-0 shrink-0 items-center gap-2 @min-[32rem]/settings-row:w-auto @min-[32rem]/settings-row:justify-end">
             {renderedControl}
           </div>
         ) : null}
@@ -573,7 +618,7 @@ export function SettingResetButton({
       <TooltipTrigger
         render={
           <Button
-            size="icon-micro"
+            size="icon-xs"
             variant="ghost-muted"
             aria-label={`Reset ${label} to default`}
             disabled={disabled}
@@ -628,7 +673,7 @@ export function SettingsPageContainer({
         className="topbar-scroll-fade scrollbar-gutter-both flex-1 overflow-y-auto"
         data-settings-page-scroll
       >
-        <WorkspacePageContainer width={width} className={cn("gap-8", className)}>
+        <WorkspacePageContainer width={width} className={cn("gap-6", className)}>
           <SettingsScopeSentence />
           {children}
         </WorkspacePageContainer>

@@ -36,7 +36,7 @@ export function BranchNamingSettings() {
         serverScoped
         settingKeys={["branchNamingMode"]}
         {...searchableSetting("worktree-branch-naming")}
-        description="Choose how new worktree branches are named from your first message."
+        description="From your first message."
         status={
           !modeMixed && settings.branchNamingMode === "semantic"
             ? "The model chooses a prefix that describes the work, such as feat/add-search, fix/login-timeout, or refactor/auth."
@@ -61,7 +61,7 @@ export function BranchNamingSettings() {
               }
             }}
           >
-            <SelectTrigger size="sm" aria-label="Worktree branch naming">
+            <SelectTrigger variant="ghost" size="sm" aria-label="Worktree branch naming">
               <SelectValue>
                 {(value: BranchNamingMode | null) => (value === null ? "Mixed" : MODES[value])}
               </SelectValue>
@@ -129,7 +129,7 @@ export function BranchNamingSettings() {
             ) : null
           }
         >
-          <div className="mt-3 max-w-2xl pb-3.5">
+          <div className="mt-2 max-w-2xl pb-4">
             <Textarea
               key={`${scopeKey}:${instructionsMixed}:${settings.branchNameInstructions}`}
               aria-label="Branch naming instructions"

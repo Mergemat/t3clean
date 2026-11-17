@@ -88,9 +88,9 @@ export function ConnectionDiagnosisSummary({
   readonly onToggle: () => void;
 }) {
   return (
-    <div className="text-xs">
+    <div className="text-meta">
       <p className="text-destructive">{diagnosis.headline}</p>
-      <p className="flex flex-wrap items-center gap-1 text-muted-foreground">
+      <p className="flex flex-wrap items-center gap-1 text-ink-2">
         {retryAt !== null ? <RetryCountdown retryAt={retryAt} /> : null}
         {retryAt !== null && attempt > 0 ? <span aria-hidden>·</span> : null}
         {attempt > 0 ? <span>attempt {attempt}</span> : null}
@@ -99,7 +99,7 @@ export function ConnectionDiagnosisSummary({
           type="button"
           aria-expanded={expanded}
           onClick={onToggle}
-          className="inline-flex items-center gap-0.5 rounded-sm outline-none hover:text-foreground focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
+          className="inline-flex items-center rounded-row outline-none hover:text-ink-1 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
         >
           Details
           <ChevronRightIcon
@@ -139,27 +139,27 @@ export function ConnectionDiagnosisPanel({
       ),
   });
   return (
-    <div className="mt-2 grid gap-3 border-t border-border/50 pt-2 text-xs">
-      <ol className="grid gap-0.5">
+    <div className="mt-2 grid gap-2 text-meta">
+      <ol className="grid">
         {diagnosis.hops.map((hop) => (
           <li
             key={hop.hop}
             className={cn(
               "flex gap-2",
-              hop.result === "failed" ? "text-destructive" : "text-muted-foreground",
+              hop.result === "failed" ? "text-destructive" : "text-ink-2",
             )}
           >
             <span aria-hidden className="w-3 text-center">
               {HOP_MARK[hop.result]}
             </span>
-            <span className={cn(hop.result === "ok" && "text-foreground")}>{hop.label}</span>
+            <span className={cn(hop.result === "ok" && "text-ink-1")}>{hop.label}</span>
             <span>{HOP_NOTE[hop.result]}</span>
           </li>
         ))}
       </ol>
       <div>
-        <p className="font-medium text-foreground">What to try</p>
-        <ol className="list-decimal pl-4 text-muted-foreground">
+        <p className="font-medium text-ink-1">What to try</p>
+        <ol className="list-decimal pl-4 text-ink-2">
           {diagnosis.steps.map((step) => (
             <li key={step}>{step}</li>
           ))}
@@ -169,17 +169,17 @@ export function ConnectionDiagnosisPanel({
             href={diagnosis.moreInfoUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            className="text-ink-2 text-ink-1 underline-offset-2 hover:underline"
           >
             More info
           </a>
         ) : null}
       </div>
-      <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 font-mono text-muted-foreground">
+      <dl className="grid grid-cols-(--grid-lead) gap-x-2 font-mono text-ink-2">
         {diagnosis.facts.map(([label, value]) => (
           <div key={label} className="contents">
             <dt>{label}</dt>
-            <dd className="break-all text-foreground">{value}</dd>
+            <dd className="break-all text-ink-1">{value}</dd>
           </div>
         ))}
       </dl>

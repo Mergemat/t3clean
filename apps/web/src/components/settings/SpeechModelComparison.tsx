@@ -65,7 +65,7 @@ export function ModelBenchmarks({
           (code): code is string => code !== undefined,
         );
   return (
-    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground tabular-nums">
+    <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-meta text-ink-2 tabular-nums">
       {visible.map((code) => {
         const score = data?.accuracy[code];
         return (
@@ -73,7 +73,7 @@ export function ModelBenchmarks({
             {languageLabel(code)}:{" "}
             {score ? (
               <>
-                <strong className="font-medium text-foreground">{score.grade}</strong> (
+                <strong className="font-medium text-ink-1">{score.grade}</strong> (
                 {score.errorPercent}% error)
               </>
             ) : (
@@ -90,7 +90,7 @@ export function ModelBenchmarks({
           "not benchmarked"
         ) : (
           <>
-            <strong className="font-medium text-foreground">{seconds} s</strong> / 30 s
+            <strong className="font-medium text-ink-1">{seconds} s</strong> / 30 s
           </>
         )}
       </span>

@@ -190,20 +190,20 @@ export function ProviderAuthenticationSection({
       }
       status={
         statusMessage ? (
-          <p role="status" className="[overflow-wrap:anywhere]">
+          <p role="status" className="wrap-anywhere">
             {statusMessage}
           </p>
         ) : undefined
       }
       control={
-        <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
           {!active && (auth?.methods?.length ?? 0) > 1 ? (
             <Select
               value={auth?.methods?.some((method) => method.id === methodId) ? methodId : ""}
               disabled={disabled}
               onValueChange={(value) => setMethodId(value ?? "")}
             >
-              <SelectTrigger size="sm" aria-label="Sign-in method" className="w-44">
+              <SelectTrigger variant="ghost" size="sm" aria-label="Sign-in method">
                 <SelectValue>
                   {auth?.methods?.find((method) => method.id === methodId)?.name ??
                     "Provider default"}
@@ -341,18 +341,16 @@ export function ProviderAuthenticationSection({
       query.error ? (
         <>
           {interaction?.type === "deviceCode" ? (
-            <p className="py-2 text-sm text-muted-foreground">
+            <p className="py-2 text-body text-ink-2">
               Enter code{" "}
-              <code className="select-all font-mono text-foreground">{interaction.userCode}</code>{" "}
-              in your browser.
+              <code className="select-all font-mono text-ink-1">{interaction.userCode}</code> in
+              your browser.
             </p>
           ) : null}
           {interaction?.type === "terminal" ? (
             <div className="py-2">
               <Suspense
-                fallback={
-                  <p className="text-xs text-muted-foreground">Loading sign-in terminal…</p>
-                }
+                fallback={<p className="text-meta text-ink-2">Loading sign-in terminal…</p>}
               >
                 <ProviderAuthTerminal
                   key={`${auth?.flowId}:${interaction.id}`}
@@ -403,7 +401,7 @@ export function ProviderAuthenticationSection({
           ) : null}
           {interaction?.type === "credentials" ? (
             <form
-              className="grid gap-2 py-2 text-sm leading-normal"
+              className="grid gap-2 py-2 text-body leading-normal"
               onSubmit={(event) => {
                 event.preventDefault();
                 void send({ type: "credentials", values }).then((sent) => {
@@ -438,7 +436,7 @@ export function ProviderAuthenticationSection({
           ) : null}
           {url && (interaction?.type === "browser" ? interaction.acceptsCallback : !interaction) ? (
             <form
-              className="grid gap-2 py-2 text-sm leading-normal"
+              className="grid gap-2 py-2 text-body leading-normal"
               onSubmit={(event) => {
                 event.preventDefault();
                 if (!auth?.flowId || !values.callback?.trim()) return;
@@ -477,7 +475,7 @@ export function ProviderAuthenticationSection({
             </form>
           ) : null}
           {error || query.error ? (
-            <p role="alert" className="py-2 text-xs text-destructive">
+            <p role="alert" className="py-2 text-meta text-destructive">
               {error ?? query.error}
             </p>
           ) : null}

@@ -25,9 +25,9 @@ function RedactedLogin(props: {
   readonly label?: string;
 }) {
   return props.revealed ? (
-    <span className="min-w-0 truncate font-mono text-2xs">{props.account}</span>
+    <span className="min-w-0 truncate font-mono text-meta">{props.account}</span>
   ) : (
-    <span className="min-w-0 truncate font-mono text-2xs">
+    <span className="min-w-0 truncate font-mono text-meta">
       <span className="select-none blur-xs" aria-hidden>
         {redactedPlaceholder(props.account)}
       </span>
@@ -82,20 +82,22 @@ export function SourceControlAccountSettings({
 
   if (groups.length === 0) {
     return (
-      <p className="text-xs text-muted-foreground">
+      <p className="text-meta text-ink-2">
         Sign in with{" "}
-        <code className="rounded bg-muted px-1 py-px text-2xs">{credentials.loginCommand}</code> on
-        the server host, then rescan to choose accounts here.
+        <code className="rounded-chip bg-muted px-1 py-px text-meta">
+          {credentials.loginCommand}
+        </code>{" "}
+        on the server host, then rescan to choose accounts here.
       </p>
     );
   }
 
   return (
-    <div className="grid gap-4">
-      <div className="flex items-center justify-between gap-3">
-        <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground">
-          Choose which <code className="rounded bg-muted px-1 py-px text-2xs">{cliName}</code> login
-          each {label} host uses, or turn a host off.
+    <div className="grid gap-2">
+      <div className="flex items-center justify-between gap-2">
+        <p className="max-w-2xl text-meta leading-relaxed text-ink-2">
+          Choose which <code className="rounded-chip bg-muted px-1 py-px text-meta">{cliName}</code>{" "}
+          login each {label} host uses, or turn a host off.
         </p>
         <Button
           size="icon-xs"
@@ -115,11 +117,11 @@ export function SourceControlAccountSettings({
         const pinned = choice?.account !== undefined && !stalePin ? choice.account : ACTIVE_ACCOUNT;
         return (
           <div key={group.host} className="grid gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <div className="min-w-0 space-y-0.5">
-                <span className="text-xs font-medium text-foreground">{group.host}</span>
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <span className="text-meta font-medium text-ink-1">{group.host}</span>
                 {group.selectable.length === 1 && group.selectable[0] !== undefined ? (
-                  <p className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
+                  <p className="flex min-w-0 items-center gap-1 text-meta text-ink-2">
                     <span>Signed in as</span>
                     <RedactedLogin revealed={revealed} account={group.selectable[0]} />
                   </p>
@@ -133,8 +135,8 @@ export function SourceControlAccountSettings({
               />
             </div>
             {group.selectable.length > 1 ? (
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-xs text-muted-foreground">Account</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-meta text-ink-2">Account</span>
                 <div className="w-64 max-w-full">
                   <Select
                     value={pinned}
@@ -146,7 +148,11 @@ export function SourceControlAccountSettings({
                       });
                     }}
                   >
-                    <SelectTrigger size="sm" aria-label={`${label} account for ${group.host}`}>
+                    <SelectTrigger
+                      variant="ghost"
+                      size="sm"
+                      aria-label={`${label} account for ${group.host}`}
+                    >
                       <SelectValue>
                         {(value: string) =>
                           value === ACTIVE_ACCOUNT ? (
@@ -195,8 +201,8 @@ export function SourceControlAccountSettings({
               </div>
             ) : null}
             {stalePin ? (
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-xs text-warning">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-meta text-warning">
                   The chosen login is no longer signed in, so the active {cliName} login is used.
                 </p>
                 <Button
@@ -212,7 +218,7 @@ export function SourceControlAccountSettings({
             {group.broken.map((entry) => (
               <p
                 key={entry.account}
-                className="flex min-w-0 flex-wrap items-center gap-1 text-xs text-muted-foreground/70"
+                className="flex min-w-0 flex-wrap items-center gap-1 text-meta text-ink-2"
               >
                 <RedactedLogin revealed={revealed} account={entry.account} />
                 <span>
@@ -221,7 +227,7 @@ export function SourceControlAccountSettings({
               </p>
             ))}
             {group.environmentVariable ? (
-              <p className="text-xs text-warning">
+              <p className="text-meta text-warning">
                 {group.environmentVariable} is set on the server, so it overrides the account chosen
                 here until it is unset.
               </p>

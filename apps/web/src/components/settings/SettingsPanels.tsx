@@ -1,7 +1,6 @@
 import { useAtomValue } from "@effect/atom-react";
 import { NotificationSettings } from "./NotificationSettings";
 import { PRIVACY_POLICY_URL } from "../../legalLinks";
-import { CheckIcon } from "lucide-react";
 import { msg, T, useGT, useMessages } from "gt-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
@@ -374,8 +373,9 @@ function AboutVersionSection() {
               }}
             >
               <SelectTrigger
+                variant="ghost"
                 size="sm"
-                className="w-full sm:w-40"
+
                 aria-label="Update track"
                 disabled={switchChannel !== null || updateRun !== null}
               >
@@ -399,7 +399,7 @@ function AboutVersionSection() {
       ) : selectedHostedAppChannel ? (
         <SettingsRow
           {...searchableSetting("update-track")}
-          description="Switches the hosted app release channel."
+          description="The hosted app's release channel."
           control={
             <Select
               value={selectedHostedAppChannel}
@@ -410,7 +410,12 @@ function AboutVersionSection() {
                 );
               }}
             >
-              <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Update track">
+              <SelectTrigger
+                variant="ghost"
+                size="sm"
+
+                aria-label="Update track"
+              >
                 <SelectValue>{HOSTED_APP_CHANNEL_LABEL}</SelectValue>
               </SelectTrigger>
               <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -811,12 +816,7 @@ export function GeneralSettingsPanel() {
         <NotificationSettings />
         <SettingsRow
           {...setting("in-app-notifications")}
-          description={
-            <T>
-              Show a toast when another thread finishes, fails, or needs input or approval while
-              this app has focus.
-            </T>
-          }
+          description={<T>For other threads, while this app has focus.</T>}
           control={
             <Switch
               checked={settings.inAppNotificationsEnabled}
@@ -865,7 +865,7 @@ export function GeneralSettingsPanel() {
         />
         <SettingsRow
           {...setting("project-order")}
-          description={<T>Order of projects in the sidebar project picker and command palette.</T>}
+          description={<T>In the sidebar project picker and command palette.</T>}
           resetAction={
             settings.sidebarProjectSortOrder !==
             DEFAULT_UNIFIED_SETTINGS.sidebarProjectSortOrder ? (
@@ -888,7 +888,12 @@ export function GeneralSettingsPanel() {
                 }
               }}
             >
-              <SelectTrigger size="sm" className="w-full sm:w-44" aria-label={gt("Project order")}>
+              <SelectTrigger
+                variant="ghost"
+                size="sm"
+
+                aria-label={gt("Project order")}
+              >
                 <SelectValue>
                   {m(SIDEBAR_PROJECT_SORT_ORDER_LABELS[settings.sidebarProjectSortOrder])}
                 </SelectValue>
@@ -907,8 +912,8 @@ export function GeneralSettingsPanel() {
           {...setting("working-shelf")}
           description={
             <T>
-              Fold working and monitoring threads into a Working section. They return to the top of
-              the inbox when they need you. The boring sidebar in Labs has no Working section.
+              Working and monitoring threads return to the top of the inbox when they need you. The
+              boring sidebar in Labs has no Working section.
             </T>
           }
           resetAction={
@@ -939,7 +944,6 @@ export function GeneralSettingsPanel() {
       <SettingsSection id="confirmations" title={gt("Confirmations")}>
         <SettingsRow
           {...setting("unpin-confirmation")}
-          description={<T>Ask before unpinning a thread from the pinned section.</T>}
           resetAction={
             settings.confirmThreadUnpin !== DEFAULT_UNIFIED_SETTINGS.confirmThreadUnpin ? (
               <SettingResetButton
@@ -964,9 +968,7 @@ export function GeneralSettingsPanel() {
         />
         <SettingsRow
           {...setting("archive-confirmation")}
-          description={
-            <T>Require a second click on the inline archive action before a thread is archived.</T>
-          }
+          description={<T>A second click on the inline archive action.</T>}
           resetAction={
             settings.confirmThreadArchive !== DEFAULT_UNIFIED_SETTINGS.confirmThreadArchive ? (
               <SettingResetButton
@@ -991,7 +993,6 @@ export function GeneralSettingsPanel() {
         />
         <SettingsRow
           {...setting("delete-confirmation")}
-          description={<T>Ask before deleting a thread and its chat history.</T>}
           resetAction={
             settings.confirmThreadDelete !== DEFAULT_UNIFIED_SETTINGS.confirmThreadDelete ? (
               <SettingResetButton
@@ -1038,8 +1039,9 @@ export function GeneralSettingsPanel() {
                 }}
               >
                 <SelectTrigger
+                  variant="ghost"
                   size="sm"
-                  className="w-full sm:w-40"
+
                   aria-label={gt("Quit shortcut behavior")}
                 >
                   <SelectValue>
@@ -1062,7 +1064,6 @@ export function GeneralSettingsPanel() {
       <SettingsSection id="display" title={gt("Display")}>
         <SettingsRow
           {...setting("language")}
-          description={<T>System default follows your browser or OS language.</T>}
           resetAction={
             settings.language !== DEFAULT_UNIFIED_SETTINGS.language ? (
               <SettingResetButton
@@ -1084,7 +1085,12 @@ export function GeneralSettingsPanel() {
                 }
               }}
             >
-              <SelectTrigger size="sm" className="w-full sm:w-40" aria-label={gt("Language")}>
+              <SelectTrigger
+                variant="ghost"
+                size="sm"
+
+                aria-label={gt("Language")}
+              >
                 <SelectValue>
                   {languageValue === SYSTEM_LANGUAGE
                     ? m(TIMESTAMP_FORMAT_LABELS.locale)
@@ -1106,7 +1112,6 @@ export function GeneralSettingsPanel() {
         />
         <SettingsRow
           {...setting("time-format")}
-          description={<T>System default follows your browser or OS clock preference.</T>}
           resetAction={
             settings.timestampFormat !== DEFAULT_UNIFIED_SETTINGS.timestampFormat ? (
               <SettingResetButton
@@ -1129,8 +1134,9 @@ export function GeneralSettingsPanel() {
               }}
             >
               <SelectTrigger
+                variant="ghost"
                 size="sm"
-                className="w-full sm:w-40"
+
                 aria-label={gt("Timestamp format")}
               >
                 <SelectValue>{m(TIMESTAMP_FORMAT_LABELS[settings.timestampFormat])}</SelectValue>
@@ -1215,8 +1221,9 @@ export function ChatSettingsPanel() {
               }}
             >
               <SelectTrigger
+                variant="ghost"
                 size="sm"
-                className="w-auto min-w-0 max-w-full"
+                className="min-w-0 max-w-full"
                 aria-label="Send shortcut"
               >
                 <SelectValue>
@@ -1229,10 +1236,7 @@ export function ChatSettingsPanel() {
               <SelectPopup align="end" alignItemWithTrigger={false}>
                 {sendShortcutOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    <span className="flex items-center justify-between gap-4">
-                      {option.label}
-                      {settings.sendShortcut === option.value && <CheckIcon aria-hidden="true" />}
-                    </span>
+                    <span className="flex items-center justify-between gap-2">{option.label}</span>
                   </SelectItem>
                 ))}
               </SelectPopup>
@@ -1242,7 +1246,7 @@ export function ChatSettingsPanel() {
         <AdvancedSettings targetIds={[searchableSetting("skills-in-slash-menu").id]}>
           <SettingsRow
             {...searchableSetting("skills-in-slash-menu")}
-            description="Also include skills in the / command menu. Skills always appear when you type $."
+            description="Skills always appear when you type $."
             resetAction={
               settings.showSkillsInSlashMenu !== DEFAULT_UNIFIED_SETTINGS.showSkillsInSlashMenu ? (
                 <SettingResetButton
@@ -1298,7 +1302,12 @@ export function ChatSettingsPanel() {
                 }
               }}
             >
-              <SelectTrigger size="sm" className="w-auto min-w-0" aria-label="Follow-up behavior">
+              <SelectTrigger
+                variant="ghost"
+                size="sm"
+                className="min-w-0"
+                aria-label="Follow-up behavior"
+              >
                 <SelectValue>
                   {settings.followUpBehavior === "queue" ? "Queue" : "Steer"}
                 </SelectValue>
@@ -1339,7 +1348,7 @@ function ToolCallVisibilityRow() {
   return (
     <SettingsRow
       {...searchableSetting("tool-call-visibility")}
-      description="Hide the commands, edits, and searches agents run. Hide successful keeps failures. Zen shows only final answers. Approvals, questions, and errors always show."
+      description="Hide successful keeps failures; Zen shows only final answers. Approvals, questions, and errors always show."
       resetAction={
         settings.toolCallVisibility !== DEFAULT_UNIFIED_SETTINGS.toolCallVisibility ? (
           <SettingResetButton
@@ -1357,7 +1366,12 @@ function ToolCallVisibilityRow() {
             if (isToolCallVisibility(value)) updateSettings({ toolCallVisibility: value });
           }}
         >
-          <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Tool calls in chat">
+          <SelectTrigger
+            variant="ghost"
+            size="sm"
+
+            aria-label="Tool calls in chat"
+          >
             <SelectValue>{TOOL_CALL_VISIBILITY_LABELS[settings.toolCallVisibility]}</SelectValue>
           </SelectTrigger>
           <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -1411,8 +1425,9 @@ function ScreenReaderAnnouncementsRow() {
           }}
         >
           <SelectTrigger
+            variant="ghost"
             size="sm"
-            className="w-full sm:w-48"
+
             aria-label="Screen reader announcements"
           >
             <SelectValue>
@@ -1468,7 +1483,7 @@ function DiffColorsSettingsRow() {
   return (
     <SettingsRow
       {...searchableSetting("diff-color-scheme")}
-      description="Choose colors for additions and deletions, including change counts."
+      description="Including change counts."
       resetAction={
         settings.diffColorScheme !== DEFAULT_UNIFIED_SETTINGS.diffColorScheme ? (
           <SettingResetButton
@@ -1488,7 +1503,7 @@ function DiffColorsSettingsRow() {
                 updateSettings({ diffColorScheme: value });
             }}
           >
-            <SelectTrigger size="sm" className="w-full min-w-0" aria-label="Diff colors">
+            <SelectTrigger variant="ghost" size="sm" className="min-w-0" aria-label="Diff colors">
               <span
                 aria-hidden="true"
                 className={
@@ -1524,7 +1539,7 @@ export function DiffsSettingsPanel() {
       <SettingsSection id="diffs" title="Diffs">
         <SettingsRow
           {...searchableSetting("diff-layout")}
-          description="Show diffs stacked or side by side. The toggle in the diff toolbar changes this too."
+          description="The toggle in the diff toolbar changes this too."
           resetAction={
             settings.diffLayout !== DEFAULT_UNIFIED_SETTINGS.diffLayout ? (
               <SettingResetButton
@@ -1542,7 +1557,12 @@ export function DiffsSettingsPanel() {
                 }
               }}
             >
-              <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Diff layout">
+              <SelectTrigger
+                variant="ghost"
+                size="sm"
+
+                aria-label="Diff layout"
+              >
                 <SelectValue>{DIFF_LAYOUT_LABELS[settings.diffLayout]}</SelectValue>
               </SelectTrigger>
               <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -1558,7 +1578,7 @@ export function DiffsSettingsPanel() {
         />
         <SettingsRow
           {...searchableSetting("hide-whitespace-changes")}
-          description="Set whether the diff panel ignores whitespace-only edits by default."
+          description="In the diff panel, by default."
           resetAction={
             settings.diffIgnoreWhitespace !== DEFAULT_UNIFIED_SETTINGS.diffIgnoreWhitespace ? (
               <SettingResetButton
@@ -1583,7 +1603,7 @@ export function DiffsSettingsPanel() {
         />
         <SettingsRow
           {...searchableSetting("default-diff-file-state")}
-          description="Start with files expanded or collapsed when opening diffs or a pull request's Code tab."
+          description="When opening diffs or a pull request's Code tab."
           resetAction={
             settings.diffFilesCollapsed !== DEFAULT_UNIFIED_SETTINGS.diffFilesCollapsed ? (
               <SettingResetButton
@@ -1606,8 +1626,9 @@ export function DiffsSettingsPanel() {
               }}
             >
               <SelectTrigger
+                variant="ghost"
                 size="sm"
-                className="w-full sm:w-40"
+
                 aria-label="Default diff file state"
               >
                 <SelectValue>{settings.diffFilesCollapsed ? "Collapsed" : "Expanded"}</SelectValue>
@@ -1675,7 +1696,7 @@ function ScopedCompactIdleThreadsRow() {
       settingKeys={["idleCompaction", "compactIdleThreads"]}
       mixed={idleCompaction.mixed}
       {...searchableSetting("compact-idle-threads")}
-      description="When to compact an idle Claude thread over 200,000 tokens: after you return, just before its prompt cache expires, or never. Each Claude provider can override this."
+      description="Claude threads over 200,000 tokens. Each Claude provider can override this."
       resetAction={
         globalIdleCompaction(settings) !== globalIdleCompaction(DEFAULT_UNIFIED_SETTINGS) ? (
           <SettingResetButton
@@ -1694,7 +1715,12 @@ function ScopedCompactIdleThreadsRow() {
             if (mode) updateSettings({ idleCompaction: mode.value });
           }}
         >
-          <SelectTrigger size="sm" className="w-full sm:w-56" aria-label="Compact idle threads">
+          <SelectTrigger
+            variant="ghost"
+            size="sm"
+
+            aria-label="Compact idle threads"
+          >
             <SelectValue>
               {(value: string | null) =>
                 value === null
@@ -1854,7 +1880,7 @@ export function ThreadsSettingsPanel() {
         <SettingsRow
           serverScoped
           {...searchableSetting("auto-resume-limited-threads")}
-          description="Automatically resume threads when their usage limits reset. You can cancel auto-resume in each thread."
+          description="You can cancel it in each thread."
           settingKeys={["autoResumeLimitedThreads"]}
           control={
             <ScopedSwitch
@@ -1870,7 +1896,7 @@ export function ThreadsSettingsPanel() {
         <SettingsRow
           serverScoped
           {...searchableSetting("snooze-limited-threads")}
-          description="Snooze threads until their usage limits reset. Enable auto-resume to continue the agent after the reset."
+          description="Turn on resuming to continue the agent after the reset."
           settingKeys={["snoozeLimitedThreads"]}
           control={
             <ScopedSwitch
@@ -1891,7 +1917,7 @@ export function ThreadsSettingsPanel() {
             serverScoped
             settingKeys={["sidebarAutoSettleOnMerge"]}
             {...searchableSetting("auto-settle-merged-threads")}
-            description="Settle a thread when its pull request merges. Closed pull requests still settle automatically."
+            description="Closed pull requests still settle automatically."
             resetAction={
               settings.sidebarAutoSettleOnMerge !==
               DEFAULT_UNIFIED_SETTINGS.sidebarAutoSettleOnMerge ? (
@@ -2007,15 +2033,13 @@ export function ThreadsSettingsPanel() {
           }
           control={
             !hasServerTargets ? (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-body text-ink-2">
                 Connect an environment to choose its text generation model.
               </span>
             ) : !hasTextGenerationProvider ? (
-              <span className="text-sm text-muted-foreground">
-                No text generation providers available.
-              </span>
+              <span className="text-body text-ink-2">No text generation providers available.</span>
             ) : (
-              <div className="flex flex-wrap items-center justify-end gap-1.5">
+              <div className="flex flex-wrap items-center justify-end gap-2">
                 <ProviderModelPicker
                   environmentId={environmentId}
                   activeInstanceId={textGenInstanceId}
@@ -2128,7 +2152,12 @@ export function ThreadsSettingsPanel() {
                   }
                 }}
               >
-                <SelectTrigger size="sm" className="w-full sm:w-56" aria-label="Response streaming">
+                <SelectTrigger
+                  variant="ghost"
+                  size="sm"
+
+                  aria-label="Response streaming"
+                >
                   <SelectValue>
                     {(value: ResponseStreamingMode | null) =>
                       value === null ? "Mixed" : RESPONSE_STREAMING_MODE_LABELS[value]
@@ -2167,7 +2196,7 @@ export function MaintenanceSettingsPanel() {
           serverScoped
           settingKeys={["enableProviderUpdateChecks"]}
           {...searchableSetting("provider-update-checks")}
-          description="Check installed provider CLIs for newer available versions and fetch model catalog updates. When off, new models may not appear."
+          description="Newer CLI versions and model catalog updates. When off, new models may not appear."
           resetAction={
             settings.enableProviderUpdateChecks !==
             DEFAULT_UNIFIED_SETTINGS.enableProviderUpdateChecks ? (
@@ -2196,7 +2225,7 @@ export function MaintenanceSettingsPanel() {
           {...searchableSetting("continue-threads-after-server-update")}
           serverScoped
           settingKeys={["continueThreadsAfterServerUpdate"]}
-          description="Automatically resume interrupted threads after an update, crash, or machine restart on the selected environments."
+          description="After an update, crash, or machine restart."
           status={
             !hasServerTargets
               ? "All selected connected environments must support restart continuation."
@@ -2237,7 +2266,7 @@ export function MaintenanceSettingsPanel() {
           serverScoped
           settingKeys={["keepAwakeWhileAgentsWork"]}
           {...searchableSetting("keep-awake-while-agents-work")}
-          description="Stop the computer from going to sleep while agents are working, and let it sleep once they finish. Closing a laptop lid still puts it to sleep."
+          description="Closing a laptop lid still puts it to sleep."
           resetAction={
             settings.keepAwakeWhileAgentsWork !==
             DEFAULT_UNIFIED_SETTINGS.keepAwakeWhileAgentsWork ? (
@@ -2322,11 +2351,7 @@ export function AboutSettingsPanel() {
           <AboutVersionSection />
         ) : (
           <>
-            <SettingsRow
-              id={searchableSetting("app-version").id}
-              title={<AboutVersionTitle />}
-              description="Current version of the application."
-            />
+            <SettingsRow id={searchableSetting("app-version").id} title={<AboutVersionTitle />} />
           </>
         )}
         <MobileAppSettingsRow />

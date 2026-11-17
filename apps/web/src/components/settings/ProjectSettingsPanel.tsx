@@ -109,6 +109,7 @@ function CheckoutGroupingSelect({ member }: { member: SidebarProjectGroupMember 
       }}
     >
       <SelectTrigger
+        variant="ghost"
         size="sm"
         aria-label={`Grouping rule for ${member.workspaceRoot} on ${
           member.environmentLabel
@@ -224,7 +225,7 @@ export function ProjectSettingsPanel({
 
   if (!selected) {
     return (
-      <div className="flex flex-1 items-center justify-center p-8 text-sm text-muted-foreground">
+      <div className="flex flex-1 items-center justify-center p-6 text-body text-ink-2">
         {groups.length === 0
           ? "Add a project from the sidebar to configure it here."
           : "This project is no longer available."}
@@ -233,7 +234,7 @@ export function ProjectSettingsPanel({
   }
   if (members.length === 0)
     return (
-      <p className="p-8 text-sm text-muted-foreground">
+      <p className="p-6 text-body text-ink-2">
         This checkout is no longer available in the selected project and environment.
       </p>
     );
@@ -444,7 +445,7 @@ function ProjectDetail({
   );
   const checkoutChoices = (
     <SettingsSection title="Checkouts">
-      <p className="px-3 py-2.5 text-xs text-muted-foreground sm:px-4">
+      <p className="px-4 py-2 text-meta text-ink-2">
         Grouping rule decides how each checkout joins project groups in the sidebar. Changing it can
         move a checkout to a different project.
       </p>
@@ -487,16 +488,16 @@ function ProjectDetail({
             control={hasMultiple ? undefined : checkoutControls(firstMember)}
           >
             {hasMultiple ? (
-              <div className="space-y-3 pb-2 pt-1">
+              <div className="space-y-2 pb-2 pt-1">
                 {members.map((member) => (
                   <div
                     key={member.physicalProjectKey}
-                    className="flex min-w-0 flex-col gap-1.5 @min-[36rem]/settings-row:flex-row @min-[36rem]/settings-row:items-center @min-[36rem]/settings-row:justify-between @min-[36rem]/settings-row:gap-3"
+                    className="flex min-w-0 flex-col gap-2 @min-[36rem]/settings-row:flex-row @min-[36rem]/settings-row:items-center @min-[36rem]/settings-row:justify-between @min-[36rem]/settings-row:gap-2"
                   >
                     <Tooltip>
                       <TooltipTrigger
                         render={
-                          <span className="min-w-0 max-w-full truncate text-xs text-muted-foreground/80" />
+                          <span className="min-w-0 max-w-full truncate text-meta text-ink-2" />
                         }
                       >
                         {member.workspaceRoot}
@@ -525,7 +526,7 @@ function ProjectDetail({
         </Alert>
         <SettingsSection id="project-overview" title="Project" hideTitle>
           {!canEditGroup ? (
-            <p className="px-3 py-2 text-sm text-muted-foreground sm:px-4">
+            <p className="px-4 py-2 text-body text-ink-2">
               {group.memberProjects.length > 1
                 ? "Shared settings require permission to change every checkout in this group."
                 : "This connection cannot change this project."}
@@ -533,7 +534,7 @@ function ProjectDetail({
           ) : null}
           <SettingsRow
             title="Name"
-            description="The shared name for this project group in the sidebar and thread lists."
+            description="Shown in the sidebar and thread lists."
             resetAction={
               canResetScratchTitle ? (
                 <SettingResetButton
@@ -621,7 +622,7 @@ function ProjectDetail({
             <>
               <SettingsRow
                 title="Pin"
-                description="Pinned projects come first in project pickers."
+                description="First in project pickers."
                 control={
                   <Switch
                     checked={group.pinned}

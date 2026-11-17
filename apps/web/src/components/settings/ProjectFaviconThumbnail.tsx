@@ -43,7 +43,7 @@ export function ProjectFaviconThumbnail(props: {
         <img
           key={url}
           alt=""
-          className={`absolute max-h-8 max-w-8 rounded-sm object-contain${imageLoaded ? "" : " invisible"}`}
+          className={`absolute max-h-8 max-w-8 rounded-row object-contain${imageLoaded ? "" : " invisible"}`}
           decoding="async"
           loading="lazy"
           onError={() => setFailedUrl(url)}

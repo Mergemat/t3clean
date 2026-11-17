@@ -15,12 +15,6 @@ vi.mock(import("./useScopedSettings"), async (original) => ({
   useScopedSettings: (() => DEFAULT_UNIFIED_SETTINGS) as never,
   useUpdateScopedSettings: (() => vi.fn()) as never,
 }));
-// The previews mount Ghostty and Shiki, which this test does not exercise.
-vi.mock(import("./SettingsFontPreviews"), () => ({
-  CodeFontPreview: () => <div />,
-  PromptFontPreview: () => <div />,
-  TerminalFontPreview: () => <div />,
-}));
 vi.mock(import("./settingsLayout"), async (original) => ({
   ...(await original()),
   useSettingsSearchTargetId: () => state.searchTargetId,

@@ -79,7 +79,7 @@ export function SourceControlTokenSettings({
 
   return (
     <form
-      className="grid gap-3"
+      className="grid gap-2"
       onSubmit={(event) => {
         event.preventDefault();
         if (normalizedHost && submission !== "") void save(normalizedHost, submission);
@@ -87,12 +87,14 @@ export function SourceControlTokenSettings({
     >
       {/* Locked while saving: a successful save clears the draft, which would drop edits made mid-request. */}
       <fieldset disabled={saving} className="contents">
-        <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground">
+        <p className="max-w-2xl text-meta leading-relaxed text-ink-2">
           A token saved here is used before{" "}
-          <code className="rounded bg-muted px-1 py-px text-2xs">{credentials.tokenEnvVar}</code>{" "}
+          <code className="rounded-chip bg-muted px-1 py-px text-meta">
+            {credentials.tokenEnvVar}
+          </code>{" "}
           and the{" "}
-          <code className="rounded bg-muted px-1 py-px text-2xs">{credentials.cliName}</code> login,
-          so {definition.label} works without the {credentials.cliLabel}. Give it{" "}
+          <code className="rounded-chip bg-muted px-1 py-px text-meta">{credentials.cliName}</code>{" "}
+          login, so {definition.label} works without the {credentials.cliLabel}. Give it{" "}
           {credentials.tokenAccess}.{" "}
           {normalizedHost || defaultHost ? (
             <InlineButton
@@ -109,8 +111,8 @@ export function SourceControlTokenSettings({
             </InlineButton>
           ) : null}
         </p>
-        <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
-          <div className="grid gap-1.5">
+        <div className="grid gap-2 sm:grid-cols-(--grid-lead)">
+          <div className="grid gap-2 sm:w-48">
             <Label htmlFor={`${definition.kind}-token-host-${environmentId}`}>Host</Label>
             <Input
               id={`${definition.kind}-token-host-${environmentId}`}
@@ -121,7 +123,7 @@ export function SourceControlTokenSettings({
               onChange={(event) => setHost(event.target.value)}
             />
           </div>
-          <div className="grid gap-1.5">
+          <div className="grid gap-2">
             <Label htmlFor={`${definition.kind}-token-${environmentId}`}>Token</Label>
             <SecretSourceInput
               id={`${definition.kind}-token-${environmentId}`}
@@ -136,8 +138,8 @@ export function SourceControlTokenSettings({
             />
           </div>
         </div>
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-meta text-ink-2">
             {savedHosts.length === 0
               ? `No token saved; the server uses ${credentials.tokenEnvVar} or the ${credentials.cliName} login.`
               : `Saved for ${savedHosts.join(", ")}.`}

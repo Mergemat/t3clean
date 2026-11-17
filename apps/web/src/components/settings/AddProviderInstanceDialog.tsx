@@ -32,7 +32,6 @@ import { readEnvironmentScope, useEnvironmentScope } from "../../state/session";
 import { Button } from "../ui/button";
 import { ChatGptConnectionButton } from "./ChatGptConnectionButton";
 import { Dialog } from "../ui/dialog";
-import { Badge } from "../ui/badge";
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "../ui/collapsible";
 import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
@@ -61,6 +60,7 @@ import { AddManagedCodexAccountDialog } from "./CodexSetupSection";
 import { MultipleAccountsNote } from "./MultipleAccountsNote";
 import { ProviderEnvironmentSection } from "./ProviderInstanceCard";
 import { useSecretSources } from "./SecretSourceInput";
+import { SettingsStatus } from "./settingsLayout";
 
 const INSTANCE_ID_PATTERN = /^[a-zA-Z][a-zA-Z0-9_-]*$/;
 const DEFAULT_DRIVER_KIND = ProviderDriverKind.make("codex");
@@ -108,26 +108,26 @@ function ProviderOptionGrid({
         <RadioPrimitive.Root
           key={option.driverKind}
           value={option.driverKind}
-          className="relative flex cursor-pointer items-center gap-3 rounded-lg bg-card px-3 py-3 text-left text-muted-foreground outline-none ring-1 ring-black/5 hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-checked:bg-primary/8 data-checked:text-foreground data-checked:ring-2 data-checked:ring-inset data-checked:ring-primary data-checked:hover:bg-primary/8 dark:bg-white/3 dark:ring-white/5 dark:hover:bg-white/5 dark:data-checked:bg-primary/15 dark:data-checked:ring-primary dark:data-checked:hover:bg-primary/15"
+          className="relative flex cursor-pointer items-center gap-2 rounded-row bg-card px-2 py-2 text-left text-ink-2 outline-none ring-1 ring-black/5 hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-checked:bg-primary/8 data-checked:text-ink-1 data-checked:ring-2 data-checked:ring-inset data-checked:ring-primary data-checked:hover:bg-primary/8 dark:bg-white/3 dark:ring-white/5 dark:hover:bg-white/5 dark:data-checked:bg-primary/15 dark:data-checked:ring-primary dark:data-checked:hover:bg-primary/15"
         >
           <ProviderInstanceIcon
             driverKind={option.driverKind}
             displayName={option.label}
             iconClassName="size-4"
           />
-          <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
+          <span className="min-w-0 flex-1 truncate text-body font-medium text-ink-1">
             {option.label}
           </span>
           <RadioPrimitive.Indicator
             className="grid size-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"
             aria-hidden
           >
-            <CheckIcon className="size-3.5 shrink-0" />
+            <CheckIcon className="size-4 shrink-0" />
           </RadioPrimitive.Indicator>
           {option.badgeLabel ? (
-            <Badge variant="warning" size="sm">
+            <SettingsStatus variant="warning" size="sm">
               {option.badgeLabel}
-            </Badge>
+            </SettingsStatus>
           ) : null}
         </RadioPrimitive.Root>
       ))}
@@ -473,7 +473,7 @@ export function AddProviderInstanceDialog({
           <>
             <WizardPanel className={cn(isAcpRegistry && wizardStep === identityStep && "min-h-72")}>
               <div className={cn("grid gap-2", wizardStep !== 0 && "hidden")}>
-                <div id="add-instance-driver-label" className="text-sm font-medium text-foreground">
+                <div id="add-instance-driver-label" className="text-body font-medium text-ink-1">
                   Provider
                 </div>
                 <ProviderOptionGrid
@@ -499,7 +499,7 @@ export function AddProviderInstanceDialog({
                   </div>
                   {/* WizardPanel already animates its height, so the fold opens without its own. */}
                   <CollapsiblePanel animate={false}>
-                    <div className="space-y-4 pt-4">
+                    <div className="space-y-2 pt-4">
                       <ProviderOptionGrid
                         options={moreDriverOptions}
                         value={driver}
@@ -508,20 +508,18 @@ export function AddProviderInstanceDialog({
                         aria-label="More providers"
                       />
                       {!acpRegistryAllowed ? null : (
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <div aria-hidden className="flex-1 border-t border-border/70" />
+                        <div className="flex items-center gap-2 text-meta text-ink-2">
                           <span>Or choose from ACP Registry</span>
-                          <div aria-hidden className="flex-1 border-t border-border/70" />
                         </div>
                       )}
                       {!acpRegistryAllowed ? null : isAcpRegistry && isManualAcpConfiguration ? (
-                        <div className="grid gap-4">
-                          <div className="flex items-start justify-between gap-3">
+                        <div className="grid gap-2">
+                          <div className="flex items-start justify-between gap-2">
                             <div>
-                              <h3 className="text-sm font-medium text-foreground">
+                              <h3 className="text-body font-medium text-ink-1">
                                 {isLocalAcp ? "Local ACP command" : "Enter manually"}
                               </h3>
-                              <p className="mt-0.5 text-xs text-muted-foreground">
+                              <p className="text-meta text-ink-2">
                                 {isLocalAcp
                                   ? `Run an installed ACP executable on ${environmentLabel}.`
                                   : "Enter an official registry ID and any local executable or auth override."}
@@ -538,7 +536,7 @@ export function AddProviderInstanceDialog({
                               Search registry
                             </Button>
                           </div>
-                          <SettingsGroup variant="plain">
+                          <SettingsGroup>
                             <ProviderSettingsForm
                               definition={driverOption}
                               value={configDraft}
@@ -557,7 +555,7 @@ export function AddProviderInstanceDialog({
                             ) : null}
                           </SettingsGroup>
                           {isAcpRegistry && hasAttemptedSubmit && acpSelectionError ? (
-                            <p className="text-2xs text-destructive">{acpSelectionError}</p>
+                            <p className="text-meta text-destructive">{acpSelectionError}</p>
                           ) : null}
                         </div>
                       ) : (
@@ -571,7 +569,7 @@ export function AddProviderInstanceDialog({
                             onLocalConfiguration={handleLocalAcpConfiguration}
                           />
                           {isAcpRegistry && hasAttemptedSubmit && acpSelectionError ? (
-                            <p className="mt-2 text-2xs text-destructive">{acpSelectionError}</p>
+                            <p className="mt-2 text-meta text-destructive">{acpSelectionError}</p>
                           ) : null}
                         </>
                       )}
@@ -581,20 +579,18 @@ export function AddProviderInstanceDialog({
               ) : null}
 
               {isAcpRegistry && wizardStep === 1 && selectedAcp ? (
-                <div className="mb-4 flex items-start justify-between gap-3 border-b border-border/70 pb-3">
+                <div className="mb-2 flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-foreground">
-                      {selectedAcp.name}
-                    </p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
+                    <p className="truncate text-body font-medium text-ink-1">{selectedAcp.name}</p>
+                    <p className="text-meta text-ink-2">
                       v{selectedAcp.version} · {selectedAcp.distribution}
                     </p>
                   </div>
-                  <div className="flex shrink-0 gap-2 text-2xs">
+                  <div className="flex shrink-0 gap-2 text-meta">
                     {selectedAcp.website ? (
                       <a
                         aria-label={`Open documentation for ${selectedAcp.name} (${selectedAcp.id})`}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-ink-2 hover:text-ink-1"
                         href={selectedAcp.website}
                         rel="noreferrer"
                         target="_blank"
@@ -605,7 +601,7 @@ export function AddProviderInstanceDialog({
                     {selectedAcp.repository ? (
                       <a
                         aria-label={`Open source for ${selectedAcp.name} (${selectedAcp.id})`}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-ink-2 hover:text-ink-1"
                         href={selectedAcp.repository}
                         rel="noreferrer"
                         target="_blank"
@@ -617,10 +613,7 @@ export function AddProviderInstanceDialog({
                 </div>
               ) : null}
 
-              <SettingsGroup
-                variant="plain"
-                className={cn(wizardStep !== identityStep && "hidden")}
-              >
+              <SettingsGroup className={cn(wizardStep !== identityStep && "hidden")}>
                 <SettingsRow
                   title={<label htmlFor="add-provider-label">Label</label>}
                   description={
@@ -690,7 +683,7 @@ export function AddProviderInstanceDialog({
               </SettingsGroup>
 
               {!isAcpRegistry && driverSettingsFields.length > 0 ? (
-                <SettingsGroup variant="plain" className={cn(wizardStep !== 2 && "hidden")}>
+                <SettingsGroup className={cn(wizardStep !== 2 && "hidden")}>
                   <ProviderSettingsForm
                     definition={driverOption}
                     value={configDraft}
@@ -705,7 +698,7 @@ export function AddProviderInstanceDialog({
                 </SettingsGroup>
               ) : !isAcpRegistry && wizardStep === 2 ? (
                 <div className="grid gap-2">
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body text-ink-2">
                     This driver has no required configuration. You can add the instance now.
                   </p>
                 </div>

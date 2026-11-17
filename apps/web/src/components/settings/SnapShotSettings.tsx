@@ -61,7 +61,7 @@ import {
   type CaptureSetupStep,
 } from "./SnapShotSetupDialog.logic";
 
-const soundOptionRowClassName = "grid grid-cols-[1fr_auto]";
+const soundOptionRowClassName = "grid grid-cols-(--grid-trail)";
 
 type ShortcutCheck =
   | { readonly status: "idle"; readonly availability: null }
@@ -472,7 +472,7 @@ export function SnapShotSettings() {
               />
               <SettingsRow
                 {...searchableSetting("snap-shot-sound")}
-                description="Choose the sound played when capture starts."
+                description="Played when capture starts."
                 control={
                   <Menu>
                     <MenuTrigger
@@ -485,7 +485,7 @@ export function SnapShotSettings() {
                         "Off"
                       ) : soundSelection === "soft-pop" ? (
                         <>
-                          Whoosh <span className="text-muted-foreground">(Default)</span>
+                          Whoosh <span className="text-ink-2">(Default)</span>
                         </>
                       ) : (
                         "Click"
@@ -503,7 +503,7 @@ export function SnapShotSettings() {
                         </MenuRadioItem>
                         <div className={soundOptionRowClassName}>
                           <MenuRadioItem closeOnClick value="soft-pop">
-                            Whoosh <span className="text-muted-foreground">(Default)</span>
+                            Whoosh <span className="text-ink-2">(Default)</span>
                           </MenuRadioItem>
                           <MenuItem
                             aria-label="Play Whoosh"
@@ -532,7 +532,7 @@ export function SnapShotSettings() {
               />
               <SettingsRow
                 {...searchableSetting("snap-shot-flash")}
-                description="Show a gentle cue on the captured window."
+                description="A gentle cue on the captured window."
                 status={feedbackUnavailable}
                 control={
                   <Switch
@@ -545,7 +545,7 @@ export function SnapShotSettings() {
               />
               <SettingsRow
                 {...searchableSetting("snap-shot-animations")}
-                description="Animate captured windows into your draft."
+                description="Captured windows move into your draft."
                 status={feedbackUnavailable}
                 control={
                   <Switch

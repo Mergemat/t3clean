@@ -66,11 +66,11 @@ export function ConnectDeviceApprovalSettings({
           <div key={request.id} className={ITEM_ROW_CLASSNAME}>
             <div className={ITEM_ROW_INNER_CLASSNAME}>
               <div className="min-w-0 flex-1 space-y-1">
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-body font-medium text-ink-1">
                   Waiting for approval ·{" "}
                   <span className="font-mono tabular-nums">{connectRequest.verificationCode}</span>
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-meta text-ink-2">
                   {describeConnectDeviceClient(connectRequest)}. Approve only if the device in front
                   of you shows this code.
                 </p>
@@ -116,10 +116,10 @@ export function ConnectDeviceApprovalSettings({
           <div key={device.proofKeyThumbprint} className={ITEM_ROW_CLASSNAME}>
             <div className={ITEM_ROW_INNER_CLASSNAME}>
               <div className="min-w-0 flex-1 space-y-1">
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-body font-medium text-ink-1">
                   {describeConnectDeviceClient(device)}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-meta text-ink-2">
                   <span className="font-mono tabular-nums">{device.verificationCode}</span>
                   <span aria-hidden> · </span>
                   Trusted since {formatAccessTimestamp(DateTime.formatIso(device.approvedAt))}
@@ -153,9 +153,7 @@ export function ConnectDeviceApprovalSettings({
       })}
       {devices.length === 0 && requests.length === 0 ? (
         <div className={ITEM_ROW_CLASSNAME}>
-          <p className="text-xs text-muted-foreground/60">
-            No device has connected through T3 Connect yet.
-          </p>
+          <p className="text-meta text-ink-3">No device has connected through T3 Connect yet.</p>
         </div>
       ) : null}
     </SettingsSection>

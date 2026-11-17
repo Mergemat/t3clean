@@ -5,9 +5,10 @@ import { RotateCcwIcon } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useSettingsRestore } from "../components/settings/SettingsPanels";
 
-import { AppRouteModal, AppRouteModalClose } from "../components/AppRouteModal";
 import { SettingsBreadcrumb } from "../components/settings/SettingsBreadcrumb";
-import { SettingsSidebarNav } from "../components/settings/SettingsSidebarNav";
+import { SidebarInset } from "../components/ui/sidebar";
+import { WorkspacePageHeader } from "../components/WorkspacePageHeader";
+import { isElectron } from "../env";
 import {
   SettingsScopeProvider,
   useSettingsScope,
@@ -36,7 +37,7 @@ function RestoreDeviceDefaultsButton({ onRestored }: { onRestored: () => void })
       disabled={changedSettingLabels.length === 0}
       onClick={() => void restoreDefaults()}
     >
-      <RotateCcwIcon className="mx-1 size-3.5" />
+      <RotateCcwIcon className="mx-1 size-4" />
       <span className="max-sm:sr-only">Restore device defaults</span>
     </Button>
   );
@@ -91,15 +92,13 @@ function SettingsScopeBoundary({ pathname, children }: { pathname: string; child
   if (scope.kind === "unavailable")
     return (
       <SettingsPageContainer>
-        <p className="text-sm text-muted-foreground">{scope.message}</p>
+        <p className="text-body text-ink-2">{scope.message}</p>
       </SettingsPageContainer>
     );
   if (scope.kind === "environment" && connectedEnvironments.length === 0) {
     return (
       <SettingsPageContainer>
-        <p className="text-sm text-muted-foreground">
-          Reconnect {scope.label} to change its settings.
-        </p>
+        <p className="text-body text-ink-2">Reconnect {scope.label} to change its settings.</p>
       </SettingsPageContainer>
     );
   }
@@ -117,29 +116,27 @@ function SettingsContentLayout() {
   const [restoreSignal, setRestoreSignal] = useState(0);
 
   return (
-    <AppRouteModal label="Settings">
-      <div className="relative flex min-h-0 flex-1">
-        <SettingsSidebarNav pathname={location.pathname} />
-        <div {...contentArea} className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <header className="flex h-12 shrink-0 items-center gap-3 border-b ps-5 pe-2">
-            <SettingsBreadcrumb pathname={location.pathname} />
-            <div className="ms-auto flex shrink-0 items-center gap-1">
-              {location.pathname === "/settings/general" ? (
-                <RestoreDeviceDefaultsButton
-                  onRestored={() => setRestoreSignal((value) => value + 1)}
-                />
-              ) : null}
-              <AppRouteModalClose />
-            </div>
-          </header>
-          <div key={`${contentScopeKey}:${restoreSignal}`} className="min-h-0 flex flex-1 flex-col">
-            <SettingsScopeBoundary pathname={location.pathname}>
-              <Outlet />
-            </SettingsScopeBoundary>
+    // A page of the app like any other: the sidebar holds the settings nav (AppSidebarLayout),
+    // and the page is the chat's header and pane.
+    <SidebarInset className="h-dvh min-h-0 overflow-hidden overscroll-y-none">
+      <div {...contentArea} className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <WorkspacePageHeader data-chat-header="" electron={isElectron} className="relative">
+          <SettingsBreadcrumb pathname={location.pathname} />
+          <div className="ms-auto flex shrink-0 items-center gap-1">
+            {location.pathname === "/settings/general" ? (
+              <RestoreDeviceDefaultsButton
+                onRestored={() => setRestoreSignal((value) => value + 1)}
+              />
+            ) : null}
           </div>
+        </WorkspacePageHeader>
+        <div key={`${contentScopeKey}:${restoreSignal}`} className="flex min-h-0 flex-1 flex-col">
+          <SettingsScopeBoundary pathname={location.pathname}>
+            <Outlet />
+          </SettingsScopeBoundary>
         </div>
       </div>
-    </AppRouteModal>
+    </SidebarInset>
   );
 }
 

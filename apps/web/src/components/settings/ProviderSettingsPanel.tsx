@@ -216,8 +216,7 @@ function providerEnvironmentDetail(environment: EnvironmentPresentation): string
   return environment.displayUrl ?? "Remote device";
 }
 
-const providerCardHeightClassName =
-  "@min-[48rem]/providers:h-[min(44rem,calc(100dvh-11rem))] @min-[48rem]/providers:min-h-[32rem]";
+const providerCardHeightClassName = "@min-[48rem]/providers:h-176";
 
 function ProviderSettingsPlaceholder({
   deviceTabs,
@@ -233,12 +232,11 @@ function ProviderSettingsPlaceholder({
   readonly children?: ReactNode;
 }) {
   return (
-    <SettingsSection {...searchableSetting("providers")} variant="plain">
+    <SettingsSection {...searchableSetting("providers")}>
       {deviceTabs ? (
-        <div className="flex min-h-11 min-w-0 items-center px-3 sm:px-4">{deviceTabs}</div>
+        <div className="flex min-h-12 min-w-0 items-center px-4">{deviceTabs}</div>
       ) : null}
       <SettingsGroup
-        divided={false}
         className={cn(
           providerCardHeightClassName,
           "scrollbar-gutter-both flex overflow-x-hidden overflow-y-auto",
@@ -292,7 +290,7 @@ function EnvironmentUnavailablePlaceholder({
         <ExpandableText
           key={environment.environmentId}
           text={error}
-          className="w-full text-left font-mono text-xs leading-relaxed text-muted-foreground"
+          className="w-full text-left font-mono text-meta leading-relaxed text-ink-2"
         />
       ) : null}
     </ProviderSettingsPlaceholder>
@@ -309,7 +307,7 @@ interface ProviderSettingsTarget {
 
 export function ProviderSettingsPanel(target: ProviderSettingsTarget) {
   return (
-    <SettingsPageContainer className="@container/providers gap-8">
+    <SettingsPageContainer className="@container/providers gap-6">
       <ProviderSettingsPanelContent
         key={`${target.environmentId ?? ""}:${target.instanceId ?? ""}`}
         {...target}
@@ -374,7 +372,7 @@ function ProviderSettingsPanelContent(target: ProviderSettingsTarget) {
     options.length === 1 && options[0]?.entry.target._tag === "PrimaryConnectionTarget";
   const deviceTabs =
     !target.scoped && !onlyPrimaryDevice && options.length > 0 ? (
-      <ScrollArea radius="none" hideScrollbars scrollFade className="h-11 min-w-0 flex-1">
+      <ScrollArea radius="none" hideScrollbars scrollFade className="h-12 min-w-0 flex-1">
         <ToggleGroup
           aria-label="Devices"
           variant="segmented"
@@ -396,7 +394,7 @@ function ProviderSettingsPanelContent(target: ProviderSettingsTarget) {
                     <Toggle value={environment.environmentId}>
                       <EnvironmentMachineIcon
                         kind={machine}
-                        className="size-3.5 shrink-0"
+                        className="size-4 shrink-0"
                         aria-hidden
                       />
                       <span className="max-w-40 truncate">{environment.label}</span>
@@ -976,7 +974,6 @@ export function EnvironmentProviderSettings({
     <>
       <SettingsSection
         {...searchableSetting("providers")}
-        variant="plain"
         titleAction={
           canAddProvider ? (
             <Tooltip>
@@ -1028,10 +1025,10 @@ export function EnvironmentProviderSettings({
         }
       >
         {deviceTabs ? (
-          <div className="flex min-h-11 min-w-0 items-center gap-2 px-3 sm:px-4">{deviceTabs}</div>
+          <div className="flex min-h-12 min-w-0 items-center gap-2 px-4">{deviceTabs}</div>
         ) : null}
         {readOnly ? (
-          <SettingsGroup divided={false} className="overflow-hidden">
+          <SettingsGroup className="overflow-hidden">
             <SettingsRow
               title="Limited permissions"
               description={`This session can view ${environmentLabel}'s providers but can't change their settings.`}
@@ -1039,24 +1036,23 @@ export function EnvironmentProviderSettings({
           </SettingsGroup>
         ) : null}
         <SettingsGroup
-          divided={false}
           className={cn(
             providerCardHeightClassName,
-            "overflow-hidden @min-[48rem]/providers:grid @min-[48rem]/providers:grid-cols-[17rem_minmax(0,1fr)]",
+            "overflow-hidden @min-[48rem]/providers:grid @min-[48rem]/providers:grid-cols-(--grid-lead)",
           )}
         >
-          <div className="border-b border-border/60 bg-muted/10 @min-[48rem]/providers:flex @min-[48rem]/providers:min-h-0 @min-[48rem]/providers:flex-col @min-[48rem]/providers:border-r @min-[48rem]/providers:border-b-0">
+          <div className="border-b border-border/60 bg-muted/10 @min-[48rem]/providers:flex @min-[48rem]/providers:w-68 @min-[48rem]/providers:min-h-0 @min-[48rem]/providers:flex-col @min-[48rem]/providers:border-r @min-[48rem]/providers:border-b-0">
             <ScrollArea
               scrollFade
               chainVerticalScroll
               className="@min-[48rem]/providers:min-h-0 @min-[48rem]/providers:flex-1"
             >
-              <div className="divide-y divide-border/50">
+              <div className="nest-box flex flex-col gap-1">
                 {rows.map((row) => renderProviderInstance(row, "list"))}
                 {canAddProvider ? (
                   <button
                     type="button"
-                    className="flex w-full cursor-pointer items-center gap-3 px-3 py-3 text-left text-sm text-muted-foreground transition-colors outline-none hover:bg-muted/25 hover:text-foreground focus-visible:bg-muted/25 focus-visible:text-foreground sm:px-4"
+                    className="nest-row flex h-8 w-full cursor-pointer items-center text-left text-body text-ink-2 transition-colors outline-none hover:bg-muted/25 hover:text-ink-1 focus-visible:bg-muted/25 focus-visible:text-ink-1"
                     onClick={() => setIsAddInstanceDialogOpen(true)}
                   >
                     <PlusIcon className="size-4 shrink-0" />
@@ -1076,7 +1072,7 @@ export function EnvironmentProviderSettings({
                 </div>
               </ScrollArea>
             ) : (
-              <div className="p-6 text-sm text-muted-foreground">
+              <div className="p-6 text-body text-ink-2">
                 {targetInstanceMissing
                   ? "This provider instance is no longer available on this device."
                   : "No providers configured."}
@@ -1109,7 +1105,7 @@ export function EnvironmentProviderSettings({
         <SettingsRow
           id={searchableSetting("provider-health-check-interval").id}
           title={
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               {searchableSetting("provider-health-check-interval").title}
               <PolicyTooltip>
                 This interval is configured here, then the shared Background activity policy decides
@@ -1165,7 +1161,7 @@ export function EnvironmentProviderSettings({
                   )
                 }
               />
-              <span className="text-xs text-muted-foreground">seconds</span>
+              <span className="text-meta text-ink-2">seconds</span>
             </div>
           }
         />

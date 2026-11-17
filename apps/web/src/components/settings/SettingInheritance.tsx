@@ -250,7 +250,7 @@ export function SettingInheritance({
             <PopoverTrigger
               render={
                 <Button
-                  size="icon-micro"
+                  size="icon-xs"
                   variant="ghost-muted"
                   aria-label={`${overrideSummary}. Show where this value comes from`}
                 />
@@ -269,44 +269,40 @@ export function SettingInheritance({
         <TooltipPopup side="top">{overrideSummary}</TooltipPopup>
       </Tooltip>
       <PopoverPopup align="start" width="md" padding="none">
-        <div className="divide-y divide-border/60">
+        <div className="flex flex-col gap-2 py-2">
           {groups.map((members) => {
             const first = members[0];
             if (!first) return null;
             const { id, target, machine, layers, winningLayer } = first;
             const chain = (
-              <ol role="list" className="text-sm">
+              <ol role="list" className="text-body">
                 {layers.map((layer) => (
                   <li
                     key={layer.key}
                     className={cn(
-                      "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 rounded-md px-2 py-1",
-                      layer.effective && "bg-foreground/[0.06]",
+                      "grid grid-cols-(--grid-trail) items-center gap-x-2 rounded-row px-2 py-1",
+                      layer.effective && "bg-foreground/6",
                     )}
                   >
                     <span
                       className={cn(
                         "min-w-0 truncate",
-                        layer.effective ? "font-medium text-foreground" : "text-muted-foreground",
+                        layer.effective ? "font-medium text-ink-1" : "text-ink-2",
                       )}
                     >
                       {layer.key === "environment" ? "Environment" : layer.label}
                     </span>
                     <span
                       className={cn(
-                        "flex items-center gap-1.5 tabular-nums",
-                        layer.effective
-                          ? "text-foreground"
-                          : layer.set
-                            ? "text-muted-foreground"
-                            : "text-muted-foreground/60",
+                        "flex items-center gap-2 tabular-nums",
+                        layer.effective ? "text-ink-1" : layer.set ? "text-ink-2" : "text-ink-3",
                       )}
                     >
                       <span className="max-w-32 truncate">{layer.value}</span>
                       {layer.effective ? (
-                        <CheckIcon aria-hidden className="size-3.5 shrink-0 text-primary" />
+                        <CheckIcon aria-hidden className="size-4 shrink-0 text-primary" />
                       ) : (
-                        <span aria-hidden className="size-3.5 shrink-0" />
+                        <span aria-hidden className="size-4 shrink-0" />
                       )}
                     </span>
                   </li>
@@ -314,13 +310,13 @@ export function SettingInheritance({
               </ol>
             );
             return (
-              <section key={id} className="px-3 py-2.5">
+              <section key={id} className="px-2">
                 {!hasMultipleEnvironments ? (
-                  <h4 className="flex items-center gap-1.5 pb-1.5 text-xs font-medium text-muted-foreground">
+                  <h4 className="flex items-center gap-2 pb-2 text-meta font-medium text-ink-2">
                     <EnvironmentMachineIcon
                       aria-hidden
                       kind={machine}
-                      className="size-3.5 shrink-0"
+                      className="size-4 shrink-0"
                     />
                     <span className="min-w-0 truncate">{target.label}</span>
                   </h4>
@@ -331,27 +327,28 @@ export function SettingInheritance({
                       render={
                         <Button
                           variant="ghost"
-                          size="sm-multiline"
+                          size="sm"
+                          wrap
                           className="w-full justify-start text-left"
                         />
                       }
                     >
                       <span className="flex w-full min-w-0 flex-col">
                         <span className="flex min-w-0 items-center gap-2">
-                          <span className="min-w-0 flex-1 truncate text-sm text-foreground tabular-nums">
+                          <span className="min-w-0 flex-1 truncate text-body text-ink-1 tabular-nums">
                             {winningLayer?.value}
                           </span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-meta text-ink-2">
                             {winningLayer?.key === "environment"
                               ? "Environment"
                               : winningLayer?.label}
                           </span>
                           <ChevronRightIcon
                             aria-hidden
-                            className="size-3 shrink-0 text-muted-foreground [[data-panel-open]_&]:rotate-90"
+                            className="size-3 shrink-0 text-ink-2 [[data-panel-open]_&]:rotate-90"
                           />
                         </span>
-                        <span className="flex min-w-0 flex-col gap-0.5 text-xs text-muted-foreground">
+                        <span className="flex min-w-0 flex-col text-meta text-ink-2">
                           {members.map((member) => (
                             <span
                               key={member.id}
@@ -369,16 +366,14 @@ export function SettingInheritance({
                       </span>
                     </CollapsibleTrigger>
                     <CollapsiblePanel>
-                      <div className="pt-1.5">{chain}</div>
+                      <div className="pt-2">{chain}</div>
                     </CollapsiblePanel>
                   </Collapsible>
                 ) : (
                   <>
                     {chain}
                     {hasMultipleEnvironments ? (
-                      <p className="px-2 pt-1.5 text-xs text-muted-foreground">
-                        Same on all machines
-                      </p>
+                      <p className="px-2 pt-2 text-meta text-ink-2">Same on all machines</p>
                     ) : null}
                   </>
                 )}
@@ -389,7 +384,7 @@ export function SettingInheritance({
                   if (overriding.length === 0) return null;
                   const foldOverrides = hasMultipleEnvironments && overriding.length > 3;
                   const header = (
-                    <div className="flex items-center justify-between gap-3 px-2 text-xs text-muted-foreground">
+                    <div className="flex items-center justify-between gap-2 px-2 text-meta text-ink-2">
                       {foldOverrides ? (
                         <CollapsibleTrigger render={<InlineButton tone="muted" />}>
                           <ChevronRightIcon
@@ -411,12 +406,12 @@ export function SettingInheritance({
                   const projects = (
                     <ul
                       role="list"
-                      className={cn("mt-0.5 text-sm", foldOverrides && "max-h-48 overflow-y-auto")}
+                      className={cn("text-body", foldOverrides && "max-h-48 overflow-y-auto")}
                     >
                       {overriding.map((project) => (
                         <li
                           key={`${project.environmentId}:${project.projectId}`}
-                          className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 px-2 py-1"
+                          className="grid grid-cols-(--grid-trail) items-center gap-x-2 px-2 py-1"
                         >
                           <span className="flex min-w-0 flex-col items-start">
                             <InlineButton
@@ -426,12 +421,12 @@ export function SettingInheritance({
                               <span className="truncate">{project.label}</span>
                             </InlineButton>
                             {hasMultipleEnvironments ? (
-                              <span className="max-w-full truncate text-xs text-muted-foreground">
+                              <span className="max-w-full truncate text-meta text-ink-2">
                                 {machineLabelFor(project.environmentId)}
                               </span>
                             ) : null}
                           </span>
-                          <span className="max-w-32 truncate text-muted-foreground tabular-nums">
+                          <span className="max-w-32 truncate text-ink-2 tabular-nums">
                             {isProjectScopedSettingKey(key)
                               ? formatValue(
                                   key,
@@ -447,7 +442,7 @@ export function SettingInheritance({
                     </ul>
                   );
                   return (
-                    <div className="mt-2 border-t border-border/60 pt-2">
+                    <div className="mt-2">
                       {foldOverrides ? (
                         <Collapsible>
                           {header}

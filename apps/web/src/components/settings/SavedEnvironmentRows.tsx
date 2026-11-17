@@ -272,7 +272,7 @@ export function SavedBackendListRow({
             type="button"
             aria-expanded={routesOpen}
             onClick={() => setRoutesOpen((open) => !open)}
-            className="inline-flex shrink-0 items-center gap-0.5 rounded-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
+            className="inline-flex shrink-0 items-center rounded-row text-ink-2 outline-none hover:text-ink-1 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
           >
             {routeCount === 1 ? "Routes" : `${routeCount} routes`}
             <ChevronRightIcon
@@ -291,7 +291,7 @@ export function SavedBackendListRow({
             aria-expanded={permissionsOpen}
             aria-controls={`remote-permissions-${environmentId}`}
             onClick={() => setPermissionsOpen((open) => !open)}
-            className="inline-flex shrink-0 items-center gap-0.5 rounded-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
+            className="inline-flex shrink-0 items-center rounded-row text-ink-2 outline-none hover:text-ink-1 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring"
           >
             Permissions
             <ChevronRightIcon
@@ -339,10 +339,7 @@ export function SavedBackendListRow({
             />
           )}
           {permissionsOpen && (
-            <div
-              id={`remote-permissions-${environmentId}`}
-              className="mt-2 border-t border-border/50"
-            >
+            <div id={`remote-permissions-${environmentId}`} className="mt-2">
               <SessionPermissions
                 environmentId={environmentId}
                 connected={isConnected}
@@ -404,7 +401,7 @@ export function SavedBackendListRow({
             />
           }
         >
-          <EllipsisIcon className="size-3.5" />
+          <EllipsisIcon className="size-4" />
         </MenuTrigger>
         <MenuPopup align="end">
           <EnvironmentIconMenu
@@ -499,7 +496,7 @@ function T3ConnectTunnelUsage({ tunnelLimit }: { readonly tunnelLimit: number | 
   return (
     <>
       {meter || showLimitAlert ? (
-        <div className="flex flex-col gap-3 pb-3">
+        <div className="flex flex-col gap-2 pb-2">
           {meter}
           {showLimitAlert ? (
             <TunnelLimitAlert
@@ -587,7 +584,7 @@ function ConfiguredCloudLinkRow({
           href={connectReachabilityHelpUrl(reachability.cause)}
           target="_blank"
           rel="noreferrer"
-          className="underline underline-offset-2"
+          className="text-ink-1 underline-offset-2 hover:underline"
         >
           More info
         </a>

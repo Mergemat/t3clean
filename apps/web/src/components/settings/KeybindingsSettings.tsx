@@ -41,7 +41,6 @@ import { formatShortcutLabel } from "../../keybindings";
 import { cn } from "../../lib/utils";
 import { serverEnvironment } from "../../state/server";
 import { useSettingsScope } from "./SettingsScopeContext";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group";
@@ -76,6 +75,7 @@ import { SettingsPageContainer, SettingsRow, SettingsSection } from "./settingsL
 import { keybindingSearchAnchorId, searchableSetting } from "./settingsSearch";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { useAtomCommand } from "../../state/use-atom-command";
+import { SettingsStatus } from "./settingsLayout";
 
 function KeybindingPill({ value }: { value: string }) {
   // Keys dedupe repeated parts; a literal "+" in a shortcut splits into empty strings.
@@ -120,9 +120,9 @@ function KeybindingsSearchInput({
   inputRef: RefObject<HTMLInputElement | null>;
 }) {
   return (
-    <InputGroup className="min-w-0 basis-full **:[input]:h-9 sm:basis-0 sm:flex-1 sm:**:[input]:h-8">
+    <InputGroup className="min-w-0 basis-full **:[input]:h-8 sm:basis-0 sm:flex-1 sm:**:[input]:h-8">
       <InputGroupAddon>
-        <SearchIcon aria-hidden className="size-3.5" />
+        <SearchIcon aria-hidden className="size-4" />
       </InputGroupAddon>
       <InputGroupInput
         ref={inputRef}
@@ -227,13 +227,13 @@ function WarningTooltipIcon({
             tabIndex={focusable ? 0 : undefined}
             aria-label={label}
             className={cn(
-              "inline-flex size-5 shrink-0 items-center justify-center rounded-sm text-warning outline-none transition-colors hover:bg-warning/10 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-warning/25",
+              "inline-flex size-5 shrink-0 items-center justify-center rounded-chip text-warning outline-none transition-colors hover:bg-warning/10 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-warning/25",
               className,
             )}
           />
         }
       >
-        <TriangleAlertIcon className="size-3.5" />
+        <TriangleAlertIcon className="size-4" />
       </TooltipTrigger>
       <TooltipPopup side="top">{children}</TooltipPopup>
     </Tooltip>
@@ -254,7 +254,7 @@ function UnknownWhenVariableWarning({
       : `Unknown conditions: ${identifiers.join(", ")}`;
 
   return (
-    <WarningTooltipIcon label={label} focusable={focusable} className="size-4.5">
+    <WarningTooltipIcon label={label} focusable={focusable} className="size-4">
       T3 Code does not recognize this condition yet. It can still be saved, but it may not match
       unless the runtime provides it.
     </WarningTooltipIcon>
@@ -292,7 +292,7 @@ function WhenVariableSelect({
 
   return (
     <Select value={value} onValueChange={(nextValue) => nextValue && onChange(nextValue)}>
-      <SelectTrigger size="compact" className="min-w-0 flex-1">
+      <SelectTrigger variant="ghost" size="compact" className="min-w-0 flex-1">
         <SelectValue placeholder="Condition" />
         {unknownIdentifiers && unknownIdentifiers.length > 0 ? (
           <UnknownWhenVariableWarning identifiers={unknownIdentifiers} focusable={false} />
@@ -327,13 +327,13 @@ function WhenExpressionRemoveButton({
             type="button"
             variant="ghost"
             size="icon-sm"
-            className={cn("size-7", className)}
+            className={cn("size-6", className)}
             aria-label={label}
             onClick={onRemove}
           />
         }
       >
-        <MinusIcon aria-hidden className="size-3.5" />
+        <MinusIcon aria-hidden className="size-4" />
       </TooltipTrigger>
       <TooltipPopup side="top">{label}</TooltipPopup>
     </Tooltip>
@@ -361,13 +361,13 @@ function WhenExpressionNodeEditor({
       : [condition.identifier];
 
     return (
-      <div className="flex items-center gap-2 rounded-md border border-border/70 bg-background/60 px-2 py-2">
+      <div className="flex items-center gap-2 rounded-row border border-border/70 bg-background/60 px-2 py-2">
         <Toggle
           pressed={condition.negated}
           onPressedChange={(pressed) => onChange(setConditionNegated(node, pressed))}
           aria-label={`Negate ${condition.identifier}`}
           variant="outline"
-          size="compact"
+          size="sm"
           className="min-w-10"
         >
           Not
@@ -392,7 +392,7 @@ function WhenExpressionNodeEditor({
     return (
       <div
         className={cn(
-          "space-y-2 rounded-lg border border-border/70 bg-muted/20 p-2",
+          "space-y-2 rounded-row border border-border/70 bg-muted/20 p-2",
           depth > 0 && "border-border/50 bg-background/50",
         )}
       >
@@ -402,7 +402,7 @@ function WhenExpressionNodeEditor({
             onPressedChange={(pressed) => onChange(pressed ? node : node.node)}
             aria-label="Negate group"
             variant="outline"
-            size="compact"
+            size="sm"
             className="min-w-10"
           >
             Not
@@ -416,8 +416,8 @@ function WhenExpressionNodeEditor({
           ) : null}
         </div>
         <div className="relative pl-4">
-          <span className="absolute top-0 bottom-0 left-1.5 w-px bg-border/70" aria-hidden />
-          <span className="absolute top-4 left-1.5 h-px w-2.5 bg-border/70" aria-hidden />
+          <span className="absolute top-0 bottom-0 left-2 w-px bg-border/70" aria-hidden />
+          <span className="absolute top-4 left-2 h-px w-3 bg-border/70" aria-hidden />
           <WhenExpressionNodeEditor
             node={node.node}
             variables={variables}
@@ -494,13 +494,13 @@ function WhenExpressionNodeEditor({
   return (
     <div
       className={cn(
-        "space-y-2 rounded-lg border border-border/60 bg-muted/10 p-2",
+        "space-y-2 rounded-row border border-border/60 bg-muted/10 p-2",
         depth > 0 && "border-border/70 bg-background/55",
       )}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Select value={operator} onValueChange={(value) => setOperator(value as BooleanOperator)}>
-          <SelectTrigger size="compact" className="w-24">
+          <SelectTrigger variant="ghost" size="compact">
             <SelectValue />
           </SelectTrigger>
           <SelectContent alignItemWithTrigger={false} matchTriggerWidth={false}>
@@ -508,12 +508,12 @@ function WhenExpressionNodeEditor({
             <SelectItem value="or">or</SelectItem>
           </SelectContent>
         </Select>
-        <Button type="button" variant="outline" size="compact" onClick={addCondition}>
-          <PlusIcon className="size-3.5" />
+        <Button type="button" variant="outline" size="sm" onClick={addCondition}>
+          <PlusIcon className="size-4" />
           Condition
         </Button>
-        <Button type="button" variant="outline" size="compact" onClick={addGroup}>
-          <PlusIcon className="size-3.5" />
+        <Button type="button" variant="outline" size="sm" onClick={addGroup}>
+          <PlusIcon className="size-4" />
           Group
         </Button>
         {onRemove ? (
@@ -529,14 +529,14 @@ function WhenExpressionNodeEditor({
           <div key={key} className="relative pl-4">
             <span
               className={cn(
-                "absolute top-0 bottom-0 left-1.5 w-px",
+                "absolute top-0 bottom-0 left-2 w-px",
                 depth === 0 ? "bg-border" : "bg-border/70",
               )}
               aria-hidden
             />
             <span
               className={cn(
-                "absolute top-4 left-1.5 h-px w-2.5",
+                "absolute top-4 left-2 h-px w-3",
                 depth === 0 ? "bg-border" : "bg-border/70",
               )}
               aria-hidden
@@ -605,24 +605,24 @@ function WhenExpressionBuilder({
   };
 
   return (
-    <div className="w-[min(34rem,calc(100vw-2rem))] space-y-3">
-      <div className="flex items-start justify-between gap-3">
+    <div className="w-136 max-w-(--viewport-inset) space-y-2">
+      <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <div className="text-sm font-medium text-foreground">When</div>
+          <div className="text-body font-medium text-ink-1">When</div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Button type="button" variant="outline" size="compact" onClick={addRootCondition}>
-            <PlusIcon className="size-3.5" />
+          <Button type="button" variant="outline" size="sm" onClick={addRootCondition}>
+            <PlusIcon className="size-4" />
             Condition
           </Button>
-          <Button type="button" variant="outline" size="compact" onClick={addRootGroup}>
-            <PlusIcon className="size-3.5" />
+          <Button type="button" variant="outline" size="sm" onClick={addRootGroup}>
+            <PlusIcon className="size-4" />
             Group
           </Button>
         </div>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <InputGroup>
           <InputGroupInput
             value={expressionDraft}
@@ -640,8 +640,8 @@ function WhenExpressionBuilder({
           ) : null}
         </InputGroup>
         {parseError ? (
-          <div className="flex items-center gap-1.5 text-2xs text-destructive">
-            <CircleXIcon className="size-3.5" />
+          <div className="flex items-center gap-2 text-meta text-destructive">
+            <CircleXIcon className="size-4" />
             {parseError}
           </div>
         ) : null}
@@ -656,21 +656,21 @@ function WhenExpressionBuilder({
             onRemove={() => updateExpressionValue(undefined)}
           />
         ) : (
-          <div className="rounded-md border border-dashed border-border/80 bg-muted/15 p-3">
+          <div className="rounded-row border border-dashed border-border/80 bg-muted/15 p-2">
             <div className="flex flex-wrap gap-2">
-              <Button type="button" size="compact" onClick={addRootCondition}>
-                <PlusIcon className="size-3.5" />
+              <Button type="button" size="sm" onClick={addRootCondition}>
+                <PlusIcon className="size-4" />
                 Condition
               </Button>
-              <Button type="button" variant="outline" size="compact" onClick={addRootGroup}>
-                <PlusIcon className="size-3.5" />
+              <Button type="button" variant="outline" size="sm" onClick={addRootGroup}>
+                <PlusIcon className="size-4" />
                 Group
               </Button>
             </div>
           </div>
         )}
         {parseError ? (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg border border-destructive/30 bg-background/75 p-4 text-center text-xs text-destructive backdrop-blur-xs">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-row border border-destructive/30 bg-background/75 p-4 text-center text-meta text-destructive backdrop-blur-xs">
             Fix the expression above to continue editing visually.
           </div>
         ) : null}
@@ -831,7 +831,7 @@ function KeybindingKeyControl({
           onClick={() => setDraft({ isRecording: true })}
           aria-label={`Edit shortcut for ${commandLabel(row.command)}: ${formatShortcutLabel(row.binding.shortcut)}`}
           className={cn(
-            "inline-flex h-8 cursor-pointer items-center rounded-md border border-transparent px-1.5 sm:h-7 outline-none transition-colors hover:border-border/70 hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/24",
+            "inline-flex h-8 cursor-pointer items-center rounded-row border border-transparent px-2 sm:h-6 outline-none transition-colors hover:border-border/70 hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/24",
             pillClassName,
           )}
         >
@@ -883,14 +883,14 @@ function WhenClauseControl({
         render={
           <Button
             variant={expression ? "ghost" : "ghost-muted"}
-            size="micro"
+            size="xs"
             className="min-w-0 shrink"
           />
         }
         aria-label={`Edit when clause for ${label}`}
       >
         <span className="truncate font-mono">{expression || "Always"}</span>
-        <ChevronDownIcon className="size-3.5 shrink-0 opacity-60" />
+        <ChevronDownIcon className="size-4 shrink-0 opacity-60" />
       </PopoverTrigger>
       <PopoverContent align="start" sideOffset={6}>
         <WhenExpressionBuilder
@@ -932,7 +932,7 @@ function KeybindingRowMenu({
           />
         }
       >
-        <EllipsisIcon className="size-3.5" />
+        <EllipsisIcon className="size-4" />
       </MenuTrigger>
       <MenuPopup align="end">
         {canReset ? (
@@ -953,9 +953,9 @@ function KeybindingRowMenu({
 function KeybindingSourceBadge({ source }: { source: KeybindingRow["source"] }) {
   if (source === "Default") return null;
   return (
-    <Badge variant="outline" size="sm">
+    <SettingsStatus variant="outline" size="sm">
       {source}
-    </Badge>
+    </SettingsStatus>
   );
 }
 
@@ -981,8 +981,8 @@ function KeybindingRowWhen({
   variables: ReadonlyArray<WhenVariableOption>;
 }) {
   return (
-    <span className="flex h-6 items-center gap-1.5">
-      <span className="text-xs leading-none text-muted-foreground/70">When</span>
+    <span className="flex h-6 items-center gap-2">
+      <span className="text-meta leading-none text-ink-2">When</span>
       <WhenClauseControl
         label={commandLabel(row.command)}
         expression={editor.whenDraftExpression}
@@ -1019,7 +1019,7 @@ function KeybindingSettingsRow(props: KeybindingRowProps) {
       title={<KeybindingRowTitle row={row} />}
       description={<KeybindingRowWhen row={row} editor={editor} variables={variables} />}
       control={
-        <div className="flex flex-wrap items-center justify-end gap-1.5">
+        <div className="flex flex-wrap items-center justify-end gap-2">
           <KeybindingConflictWarning labels={editor.conflictLabels} />
           <KeybindingHoverRowMenu
             row={row}
@@ -1031,7 +1031,7 @@ function KeybindingSettingsRow(props: KeybindingRowProps) {
             row={row}
             editor={editor}
             isSaving={isSaving}
-            pillClassName="-mr-1.5"
+            pillClassName="-mr-2"
           />
         </div>
       }
@@ -1130,7 +1130,7 @@ function NewKeybindingCommandSelect({
       value={draft.commandDraft}
       onValueChange={(value) => draft.setCommandDraft(value as KeybindingCommand)}
     >
-      <SelectTrigger size="sm" className={className}>
+      <SelectTrigger variant="ghost" size="sm" className={className}>
         <SelectValue placeholder="Command" />
       </SelectTrigger>
       <SelectContent alignItemWithTrigger={false} matchTriggerWidth={false} className="max-h-72">
@@ -1211,7 +1211,7 @@ function NewKeybindingCancelIcon({
           />
         }
       >
-        <XIcon className="size-3.5" />
+        <XIcon className="size-4" />
       </TooltipTrigger>
       <TooltipPopup side="top">Cancel</TooltipPopup>
     </Tooltip>
@@ -1227,8 +1227,8 @@ function NewKeybindingSettingsRow(props: NewKeybindingProps) {
       className="bg-muted/15"
       title="New keybinding"
       description={
-        <span className="flex h-6 items-center gap-1.5">
-          <span className="text-xs leading-none text-muted-foreground/70">When</span>
+        <span className="flex h-6 items-center gap-2">
+          <span className="text-meta leading-none text-ink-2">When</span>
           <NewKeybindingWhen draft={draft} variables={variables} />
         </span>
       }
@@ -1281,8 +1281,8 @@ function BrowserKeybindingNotice() {
       <TooltipTrigger
         delay={200}
         render={
-          <Button size="icon-micro" variant="ghost-muted" aria-label={message}>
-            <TriangleAlertIcon className="size-3.5 text-warning" />
+          <Button size="icon-xs" variant="ghost-muted" aria-label={message}>
+            <TriangleAlertIcon className="size-4 text-warning" />
           </Button>
         }
       />
@@ -1474,7 +1474,7 @@ export function KeybindingsSettingsPanel() {
         {...searchableSetting("keybindings")}
         headerAction={!isElectron ? <BrowserKeybindingNotice /> : null}
       >
-        <div className="flex flex-wrap items-center gap-2 px-3 py-3 sm:px-4">
+        <div className="flex flex-wrap items-center gap-2 px-4 py-2">
           <KeybindingsSearchInput query={query} onChange={setQuery} inputRef={searchInputRef} />
           <Button
             type="button"
@@ -1491,7 +1491,7 @@ export function KeybindingsSettingsPanel() {
                 <Button
                   type="button"
                   variant="outline"
-                  size="icon"
+                  size="icon-sm"
                   disabled={!keybindingsConfigPath || !canOpenKeybindingsFile}
                   onClick={openKeybindingsFile}
                   aria-label="Open keybindings.json"
@@ -1506,13 +1506,13 @@ export function KeybindingsSettingsPanel() {
       </SettingsSection>
 
       {!canWriteSettings ? (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-meta text-ink-2">
           {connectedEnvironments.length === 0
             ? "Connect an environment to change keybindings."
             : "This connection can view keybindings but cannot change them."}
         </p>
       ) : null}
-      <div inert={!canWriteSettings} className="flex flex-col gap-8">
+      <div inert={!canWriteSettings} className="flex flex-col gap-6">
         {isAddingBinding ? (
           <SettingsGroup>
             <NewKeybindingSettingsRow
@@ -1535,7 +1535,7 @@ export function KeybindingsSettingsPanel() {
           />
         ) : (
           <SettingsGroup>
-            <div className="px-4 py-12 text-center text-sm text-muted-foreground">
+            <div className="px-4 py-6 text-center text-body text-ink-2">
               No keybindings match your search.
             </div>
           </SettingsGroup>

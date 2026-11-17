@@ -43,7 +43,7 @@ export function SecretsSettingsPanel() {
       environment.serverConfig !== null &&
       environment.serverConfig.secretProviderSettings !== true ? (
         <SettingsSection {...searchableSetting("secret-providers")}>
-          <p className="px-4 py-3 text-sm text-muted-foreground">
+          <p className="px-4 py-2 text-body text-ink-2">
             Update T3 Code on {environment.label} to manage its secret providers.
           </p>
         </SettingsSection>
@@ -55,7 +55,7 @@ export function SecretsSettingsPanel() {
         />
       ) : (
         <SettingsSection {...searchableSetting("secret-providers")}>
-          <p className="px-4 py-3 text-sm text-muted-foreground">
+          <p className="px-4 py-2 text-body text-ink-2">
             Connect an environment to manage the secret providers its provider variables read from.
           </p>
         </SettingsSection>
@@ -109,7 +109,7 @@ function EnvironmentSecretProviders({
         }
       >
         {projectScoped ? (
-          <p className="px-4 pt-3 text-xs text-muted-foreground">
+          <p className="px-4 pt-2 text-meta text-ink-2">
             Environment-wide setting. Select an environment to change it.
           </p>
         ) : null}
@@ -130,9 +130,7 @@ function EnvironmentSecretProviders({
                 key={id}
                 title={
                   <span className="flex min-w-0 items-center gap-2">
-                    {kind ? (
-                      <kind.icon className="size-4.5 shrink-0 text-foreground/80" aria-hidden />
-                    ) : null}
+                    {kind ? <kind.icon className="size-4 shrink-0 text-ink-2" aria-hidden /> : null}
                     <span className="min-w-0 wrap-anywhere">{config.label}</span>
                   </span>
                 }
@@ -254,7 +252,7 @@ function SecretProviderUses({
       <AlertDialogDescription>
         These read from {label} and will be unset. The secrets themselves are untouched.
       </AlertDialogDescription>
-      <ul className="max-h-48 list-disc space-y-0.5 overflow-y-auto ps-5 text-sm wrap-anywhere">
+      <ul className="max-h-48 list-disc overflow-y-auto ps-4 text-body wrap-anywhere">
         {uses.map((use) => (
           <li key={use.id}>{use.label}</li>
         ))}

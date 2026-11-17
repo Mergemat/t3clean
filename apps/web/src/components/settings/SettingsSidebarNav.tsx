@@ -9,6 +9,7 @@ import {
 } from "react";
 import {
   ArchiveIcon,
+  ArrowLeftIcon,
   FlaskConicalIcon,
   BotIcon,
   createLucideIcon,
@@ -39,7 +40,6 @@ import { T, useGT, useMessages } from "gt-react";
 
 import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
-import { Kbd } from "../ui/kbd";
 import {
   SidebarContent,
   SidebarFooter,
@@ -61,6 +61,7 @@ import {
 import { useAvailableSettingsSearchItems } from "./useAvailableSettingsSearchItems";
 import { handleSettingsSectionKeyDown } from "./settingsSectionNavigation";
 import { workspaceAreaProps } from "../../lib/workspaceFocus";
+import { useCloseAppModal } from "../sidebar/mainAppLocation";
 
 const SnapShotIcon = createLucideIcon("snap-shot", [
   [
@@ -134,12 +135,11 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
   const m = useMessages();
   const navArea = workspaceAreaProps("settings-nav", 0, gt("Settings sections"));
   const navigate = useNavigate();
+  const closeSettings = useCloseAppModal();
   const currentHash = useLocation({ select: (location) => location.hash });
   const activePath = SETTINGS_DETAIL_PAGE_PARENTS[pathname] ?? pathname;
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
-  // Below md the nav is an icon rail; searching expands it over the page.
-  const [compactSearchOpen, setCompactSearchOpen] = useState(false);
   const [activeResultIndex, setActiveResultIndex] = useState(0);
   const searchableItems = useAvailableSettingsSearchItems();
   const results = searchSettings(query, searchableItems, m);
@@ -183,18 +183,12 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
       }
 
       event.preventDefault();
-      setCompactSearchOpen(true);
       searchInputRef.current?.focus();
       searchInputRef.current?.select();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- focuses the search input DOM node after the compact search opens
-  useEffect(() => {
-    if (compactSearchOpen) searchInputRef.current?.focus();
-  }, [compactSearchOpen]);
 
   const handleSectionClick = (to: SettingsPath) => {
     void navigate({
@@ -211,7 +205,6 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
   };
   const handleSearchResultClick = (item: SettingsSearchItem) => {
     clearSearch();
-    setCompactSearchOpen(false);
     const targetId = item.targetId ?? item.id;
     revealSettingsSearchTarget(targetId);
     if (pathname === item.to && currentHash.replace(/^#/, "") === targetId) {
@@ -254,25 +247,21 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
   };
 
   return (
-    <nav
-      {...navArea}
-      role="navigation"
-      className={cn(
-        "flex w-60 shrink-0 flex-col border-e bg-sidebar text-sidebar-foreground max-md:w-14",
-        compactSearchOpen &&
-          "max-md:absolute max-md:inset-y-0 max-md:start-0 max-md:z-10 max-md:w-full",
-      )}
-    >
+    // Lives in the app sidebar, below its header, in place of the thread list.
+    <nav {...navArea} role="navigation" className="flex min-h-0 flex-1 flex-col">
       <SidebarContent className="overflow-x-hidden">
         <SidebarGroup>
           <div className="flex flex-col gap-2">
-            <div
-              className={cn(
-                "flex h-8 items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-sidebar-muted-foreground hover:bg-sidebar-row-hover hover:text-sidebar-foreground",
-                !compactSearchOpen && "max-md:hidden",
-              )}
-            >
-              <SearchIcon className="size-4 shrink-0 text-sidebar-muted-foreground/80" />
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={() => void closeSettings()}>
+                  <ArrowLeftIcon />
+                  <span className="truncate">{gt("Back to threads")}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            <div className="flex h-8 items-center gap-2 rounded-row px-2 py-2 text-body font-medium text-ink-2 hover:bg-sidebar-row-hover hover:text-sidebar-foreground">
+              <SearchIcon className="size-4 shrink-0 text-ink-2" />
               {/* Native search inputs clear on Escape even during IME composition. */}
               <SidebarInput
                 ref={searchInputRef}
@@ -284,10 +273,6 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                   setActiveResultIndex(0);
                 }}
                 onKeyDown={handleSearchKeyDown}
-                onFocus={() => setCompactSearchOpen(true)}
-                onBlur={() => {
-                  if (!isSearching) setCompactSearchOpen(false);
-                }}
                 placeholder={gt("Search")}
                 aria-label={gt("Search settings")}
                 role="combobox"
@@ -304,7 +289,7 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
               {isSearching ? (
                 <Button
                   type="button"
-                  size="icon-micro"
+                  size="icon-xs"
                   variant="ghost-muted"
                   className="shrink-0"
                   aria-label={gt("Clear settings search")}
@@ -315,15 +300,10 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                 >
                   <XIcon className="size-3" />
                 </Button>
-              ) : (
-                <Kbd>/</Kbd>
-              )}
+              ) : null}
             </div>
             {isSearching && results.length === 0 ? (
-              <p
-                role="status"
-                className="px-2 py-6 text-center text-xs text-sidebar-muted-foreground"
-              >
+              <p role="status" className="px-2 py-6 text-center text-meta text-ink-2">
                 <T>No settings found</T>
               </p>
             ) : null}
@@ -352,10 +332,10 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                     >
                       <SettingsSectionIcon to={item.to} />
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-medium text-sidebar-foreground">
+                        <span className="block truncate text-body font-medium text-sidebar-foreground">
                           {m(item.title)}
                         </span>
-                        <span className="block truncate text-2xs text-sidebar-muted-foreground/75">
+                        <span className="block truncate text-meta text-ink-2">
                           {m(SETTINGS_SECTION_LABELS[item.to])}
                         </span>
                       </span>
@@ -364,30 +344,15 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                 ))}
               </SidebarMenu>
             ) : (
-              <div className="flex flex-col gap-4">
-                {compactSearchOpen ? null : (
-                  <SidebarMenu className="md:hidden">
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        aria-label={gt("Search settings")}
-                        onClick={() => setCompactSearchOpen(true)}
-                      >
-                        <SearchIcon />
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </SidebarMenu>
-                )}
-                <div onKeyDown={handleSettingsSectionKeyDown} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <div onKeyDown={handleSettingsSectionKeyDown} className="flex flex-col gap-2">
                   {SETTINGS_NAV_GROUPS.map((group, index) => (
-                    <div
-                      key={group.heading}
-                      className="flex flex-col gap-1 max-md:border-t max-md:border-sidebar-border max-md:pt-4 max-md:first:border-t-0 max-md:first:pt-0"
-                    >
+                    <div key={group.heading} className="flex flex-col gap-1">
                       <h3
                         id={`settings-nav-group-${index}`}
                         className={cn(
-                          "px-2 text-xs font-medium text-sidebar-muted-foreground/80",
-                          group.headingHidden ? "sr-only" : !compactSearchOpen && "max-md:sr-only",
+                          "px-2 text-meta font-medium text-ink-2",
+                          group.headingHidden && "sr-only",
                         )}
                       >
                         {m(group.heading)}
@@ -407,14 +372,7 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                                   onClick={() => handleSectionClick(to)}
                                 >
                                   <Icon />
-                                  <span
-                                    className={cn(
-                                      "truncate",
-                                      !compactSearchOpen && "max-md:sr-only",
-                                    )}
-                                  >
-                                    {m(SETTINGS_SECTION_LABELS[to])}
-                                  </span>
+                                  <span className="truncate">{m(SETTINGS_SECTION_LABELS[to])}</span>
                                 </SidebarMenuButton>
                               </SidebarMenuItem>
                             );
@@ -429,7 +387,7 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
           </div>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="max-md:hidden">
+      <SidebarFooter>
         <Suspense fallback={null}>
           <T3ConnectSidebarSignIn />
         </Suspense>

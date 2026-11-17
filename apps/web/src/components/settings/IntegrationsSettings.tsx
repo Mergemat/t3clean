@@ -62,7 +62,6 @@ import {
 } from "~/components/device/DeviceSetup";
 import { isElectron } from "../../env";
 
-import { Badge } from "../ui/badge";
 import {
   Menu,
   MenuGroup,
@@ -118,6 +117,7 @@ import { AdvancedSettings } from "./AdvancedSettings";
 import { useSettingsScope } from "./SettingsScopeContext";
 import { BrowserImportWizard, type WizardTarget } from "./BrowserImportWizard";
 import type { ImportOutcome } from "./browserImportWizard.logic";
+import { SettingsStatus } from "./settingsLayout";
 
 const FILL_VALUE = "fill";
 const RESPONSIVE_VALUE = "responsive";
@@ -387,8 +387,9 @@ function BrowserViewportSetting({ disabled }: { readonly disabled: boolean }) {
             disabled={disabled}
           >
             <SelectTrigger
+              variant="ghost"
               size="sm"
-              className="w-full min-w-0 sm:w-44"
+              className="min-w-0"
               aria-label="Default browser viewport"
             >
               <SelectValue>{viewportSelectLabel(viewport)}</SelectValue>
@@ -400,11 +401,9 @@ function BrowserViewportSetting({ disabled }: { readonly disabled: boolean }) {
                 <SelectGroupLabel>Standard</SelectGroupLabel>
                 {PREVIEW_VIEWPORT_PRESETS.map((preset) => (
                   <SelectItem key={preset.id} value={preset.id}>
-                    <span className="flex w-full items-center justify-between gap-5">
+                    <span className="flex w-full items-center justify-between gap-2">
                       <span>{preset.label}</span>
-                      <span className="text-xs tabular-nums text-muted-foreground">
-                        {preset.detail}
-                      </span>
+                      <span className="text-meta tabular-nums text-ink-2">{preset.detail}</span>
                     </span>
                   </SelectItem>
                 ))}
@@ -428,7 +427,7 @@ function BrowserViewportSetting({ disabled }: { readonly disabled: boolean }) {
                   <NumberFieldInput aria-label="Default viewport width" />
                 </NumberFieldGroup>
               </NumberField>
-              <span className="text-xs text-muted-foreground">×</span>
+              <span className="text-meta text-ink-2">×</span>
               <NumberField
                 value={presentedSize.height}
                 min={PREVIEW_VIEWPORT_MIN_DIMENSION}
@@ -479,7 +478,7 @@ function BrowserZoomSetting({ disabled }: { readonly disabled: boolean }) {
     <SettingsRow
       {...searchableSetting("browser-default-zoom")}
       devicePreference
-      description="Page zoom applied to new browser tabs."
+      description="For new browser tabs."
       resetAction={
         !disabled && zoomFactor !== DEFAULT_PREVIEW_ZOOM_FACTOR ? (
           <SettingResetButton
@@ -499,7 +498,12 @@ function BrowserZoomSetting({ disabled }: { readonly disabled: boolean }) {
             if (next !== undefined) updateSettings({ browserDefaultZoomFactor: next });
           }}
         >
-          <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Default browser zoom">
+          <SelectTrigger
+            variant="ghost"
+            size="sm"
+
+            aria-label="Default browser zoom"
+          >
             <SelectValue>{zoomLabel(zoomFactor)}</SelectValue>
           </SelectTrigger>
           <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -523,7 +527,7 @@ function BrowserAppearanceSetting({ disabled }: { readonly disabled: boolean }) 
     <SettingsRow
       {...searchableSetting("browser-default-appearance")}
       devicePreference
-      description="The color scheme pages are told to prefer. System follows your OS setting."
+      description="The color scheme pages are told to prefer."
       resetAction={
         !disabled && appearance !== DEFAULT_PREVIEW_APPEARANCE ? (
           <SettingResetButton
@@ -543,8 +547,9 @@ function BrowserAppearanceSetting({ disabled }: { readonly disabled: boolean }) 
           }}
         >
           <SelectTrigger
+            variant="ghost"
             size="sm"
-            className="w-full sm:w-40"
+
             aria-label="Default browser appearance"
           >
             <SelectValue>{APPEARANCE_LABELS[appearance]}</SelectValue>
@@ -571,7 +576,7 @@ function BrowserRecordingInputSettings({ disabled }: { readonly disabled: boolea
       <SettingsRow
         {...searchableSetting("browser-recording-key-presses")}
         devicePreference
-        description="Show pressed keys and shortcuts in new recordings. Password fields are excluded."
+        description="Password fields are excluded."
         control={
           <Switch
             disabled={disabled}
@@ -586,7 +591,7 @@ function BrowserRecordingInputSettings({ disabled }: { readonly disabled: boolea
       <SettingsRow
         {...searchableSetting("browser-recording-mouse-presses")}
         devicePreference
-        description="Highlight mouse presses and held buttons in new recordings."
+        description="Held buttons too."
         control={
           <Switch
             disabled={disabled}
@@ -610,7 +615,7 @@ function BrowserRecordingFrameRateSetting({ disabled }: { readonly disabled: boo
     <SettingsRow
       {...searchableSetting("browser-recording-frame-rate")}
       devicePreference
-      description="Maximum recording rate. 30 fps saves CPU and storage; 60 fps is smoother."
+      description="30 fps saves CPU and storage; 60 fps is smoother."
       resetAction={
         !disabled && frameRate !== DEFAULT_BROWSER_RECORDING_FRAME_RATE ? (
           <SettingResetButton
@@ -633,8 +638,9 @@ function BrowserRecordingFrameRateSetting({ disabled }: { readonly disabled: boo
           }}
         >
           <SelectTrigger
+            variant="ghost"
             size="sm"
-            className="w-full sm:w-40"
+
             aria-label="Browser recording frame rate"
           >
             <SelectValue>{frameRate} fps</SelectValue>
@@ -665,7 +671,7 @@ function BrowserLinkTargetSetting({ disabled }: { readonly disabled: boolean }) 
     <SettingsRow
       {...searchableSetting("browser-link-target")}
       devicePreference
-      description="Where links in the chat and terminal open. Hold ⌘ or Ctrl while clicking a link to open it in your default browser either way."
+      description="Links in the chat and terminal. Hold ⌘ or Ctrl while clicking to use your default browser either way."
       resetAction={
         !disabled && linkTarget !== DEFAULT_BROWSER_LINK_TARGET ? (
           <SettingResetButton
@@ -684,7 +690,12 @@ function BrowserLinkTargetSetting({ disabled }: { readonly disabled: boolean }) 
             }
           }}
         >
-          <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Open links in">
+          <SelectTrigger
+            variant="ghost"
+            size="sm"
+
+            aria-label="Open links in"
+          >
             <SelectValue>{LINK_TARGET_LABELS[linkTarget]}</SelectValue>
           </SelectTrigger>
           <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -744,7 +755,12 @@ function BrowserSearchEngineSetting() {
               }
             }}
           >
-            <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Search engine">
+            <SelectTrigger
+              variant="ghost"
+              size="sm"
+
+              aria-label="Search engine"
+            >
               <SelectValue>{SEARCH_ENGINE_LABELS[engine]}</SelectValue>
             </SelectTrigger>
             <SelectPopup align="end" alignItemWithTrigger={false}>
@@ -794,7 +810,7 @@ export function PullRequestLinksOpenInAppSetting() {
   return (
     <SettingsRow
       {...searchableSetting("pull-request-links-open-in-app")}
-      description="Clicking a pull request link opens it in T3 Code. Turn off to open pull request links like any other link, on your git host."
+      description="Off opens them on your git host, like any other link."
       resetAction={
         openInApp ? null : (
           <SettingResetButton
@@ -947,7 +963,7 @@ function DeviceIntegrationControls({
           ) : null}
         </div>
         {updateError?.tool === tool ? (
-          <p role="alert" className="text-xs text-destructive">
+          <p role="alert" className="text-meta text-destructive">
             {updateError.message}
           </p>
         ) : null}
@@ -1090,7 +1106,7 @@ function BrowserAutoShowFloatingPreviewSetting({ disabled }: { readonly disabled
     <SettingsRow
       {...searchableSetting("browser-auto-show-floating-preview")}
       devicePreference
-      description="Show the floating preview when an agent opens a browser or device unless the agent says otherwise."
+      description="When an agent opens a browser or device, unless it says otherwise."
       resetAction={
         !disabled && autoShow !== DEFAULT_BROWSER_AUTO_SHOW_FLOATING_PREVIEW ? (
           <SettingResetButton
@@ -1379,23 +1395,17 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
         </Menu>
       }
     >
-      <div className="mt-2 mb-2 overflow-hidden rounded-lg border border-border/60">
-        {listedProfiles.map((profile, index) => {
+      <div className="mt-2 mb-2 overflow-hidden rounded-row border border-border/60">
+        {listedProfiles.map((profile) => {
           const builtIn = isBuiltInBrowserProfileId(profile.id);
           const isDefault = profile.id === resolvedDefaultId;
           return (
-            <div
-              key={profile.id}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2",
-                index > 0 && "border-t border-border/60",
-              )}
-            >
+            <div key={profile.id} className="flex items-center gap-2 px-2 py-2">
               <span className="flex min-w-0 flex-1 items-center gap-2">
                 {builtIn ? (
                   <span
                     className={cn(
-                      "truncate text-sm text-foreground",
+                      "truncate text-body text-ink-1",
                       profileWritesDisabled && "opacity-64",
                     )}
                   >
@@ -1415,7 +1425,7 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
                 )}
                 {isDefault ? (
                   <span className={cn("flex", profileWritesDisabled && "opacity-64")}>
-                    <Badge>Default</Badge>
+                    <SettingsStatus>Default</SettingsStatus>
                   </span>
                 ) : null}
               </span>
@@ -1497,12 +1507,12 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
               open until you close them; server browser tabs close now.
             </AlertDialogDescription>
             {profileRemovalError ? (
-              <p aria-live="polite" className="text-sm text-destructive">
+              <p aria-live="polite" className="text-body text-destructive">
                 {profileRemovalError}
               </p>
             ) : null}
             {!removalAvailable ? (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body text-ink-2">
                 Connect to an environment to remove this profile and its data.
               </p>
             ) : null}

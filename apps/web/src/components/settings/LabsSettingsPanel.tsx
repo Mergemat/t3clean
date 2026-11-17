@@ -36,7 +36,7 @@ function BoringSidebarRow() {
   return (
     <SettingsRow
       {...searchableSetting("boring-sidebar")}
-      description="Group sidebar threads into project folders. Pinned threads stay on top, and Snoozed and Settled stay below the folders."
+      description="Pinned threads stay on top; Snoozed and Settled stay below the folders."
       control={
         <Switch
           checked={settings.boringSidebarEnabled}
@@ -46,7 +46,7 @@ function BoringSidebarRow() {
       }
     >
       {settings.boringSidebarEnabled ? (
-        <div className="mt-2 mb-2 border-l-2 border-border/60 ps-3">
+        <div className="mt-2 mb-2">
           <BoringSidebarMultilineRow />
         </div>
       ) : null}
@@ -60,8 +60,8 @@ function BoringSidebarMultilineRow() {
   return (
     <SettingsRow
       {...searchableSetting("boring-sidebar-multiline")}
-      className="px-0 py-2 sm:px-0"
-      description="Show folder threads on two lines: the title, then the branch, pull request, and agent."
+      className="px-0 py-2"
+      description="The title, then the branch, pull request, and agent."
       control={
         <Switch
           checked={settings.boringSidebarMultilineRows}
@@ -117,7 +117,7 @@ function GuestLinksRow() {
         <>
           Share a thread with a guest who watches it live in a browser and sends messages you
           approve. Needs T3 Connect: sign in and link this machine in{" "}
-          <Link to="/settings/access" className="underline underline-offset-2">
+          <Link to="/settings/access" className="text-ink-1 underline-offset-2 hover:underline">
             Sharing & access
           </Link>
           . Turning it off stops every guest link.
@@ -147,7 +147,10 @@ function LinkedEnvironmentsRow() {
         <>
           Let agents here work on your other machines, and theirs here. Turn it on for each machine,
           then link them in{" "}
-          <Link to="/settings/connections" className="underline underline-offset-2">
+          <Link
+            to="/settings/connections"
+            className="text-ink-1 underline-offset-2 hover:underline"
+          >
             Connections
           </Link>
           . While off, nothing new starts over a link; running tasks finish.
@@ -205,12 +208,12 @@ function SimlockHostsRow() {
             href="https://incubator.callstack.com/simlock/"
             target="_blank"
             rel="noreferrer"
-            className="underline underline-offset-2"
+            className="text-ink-1 underline-offset-2 hover:underline"
           >
             Simlock
           </a>{" "}
           pool, added in{" "}
-          <Link to="/settings/devices" className="underline underline-offset-2">
+          <Link to="/settings/devices" className="text-ink-1 underline-offset-2 hover:underline">
             Devices
           </Link>
           . An alpha that may change or break. T3 Code never installs Simlock.

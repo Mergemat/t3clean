@@ -75,7 +75,7 @@ export function ThemeCssEditor({
 
   return (
     <div className="space-y-2">
-      <div className="overflow-hidden rounded-lg border border-input bg-code text-foreground focus-within:border-ring focus-within:ring-3 focus-within:ring-inset focus-within:ring-ring/24">
+      <div className="overflow-hidden rounded-row border border-input bg-code text-ink-1 focus-within:border-ring focus-within:ring-3 focus-within:ring-inset focus-within:ring-ring/24">
         <textarea
           aria-label="Custom CSS"
           aria-describedby={hintId}
@@ -84,7 +84,7 @@ export function ThemeCssEditor({
           autoCorrect="off"
           spellCheck={false}
           wrap="off"
-          className="block h-52 w-full resize-none bg-transparent p-3 font-mono text-xs leading-5 outline-none"
+          className="block h-52 w-full resize-none bg-transparent p-2 font-mono text-meta leading-5 outline-none"
           value={value}
           onFocus={() => setTabIndents(true)}
           onChange={(event) => {
@@ -94,7 +94,7 @@ export function ThemeCssEditor({
           onSelect={(event) => updatePosition(event.currentTarget)}
           onKeyDown={handleKeyDown}
         />
-        <div className="flex items-center justify-between border-t border-input px-3 py-1 font-mono text-xs">
+        <div className="flex items-center justify-between border-t border-input px-2 py-1 font-mono text-meta">
           <span>CSS</span>
           <span>
             Ln {position.line}, Col {position.column}
@@ -102,7 +102,7 @@ export function ThemeCssEditor({
         </div>
       </div>
       <div className="flex items-start justify-between gap-2">
-        <p id={hintId} className="text-xs text-muted-foreground">
+        <p id={hintId} className="text-meta text-ink-2">
           {tabIndents
             ? "Tab indents. Shift+Tab unindents. Press Escape, then Tab to leave."
             : "Tab moves to the next control."}

@@ -52,7 +52,7 @@ export function MicrophoneOrderList(props: {
       <SortableContext items={keys} strategy={verticalListSortingStrategy}>
         <ol
           aria-label="Microphones, preferred first"
-          className="divide-y divide-border/60 rounded-lg border border-border/60"
+          className="rounded-row border border-border/60"
         >
           {order.map((entry, index) => {
             const key = microphoneEntryKey(entry);
@@ -107,32 +107,30 @@ function MicrophoneRow(props: {
       style={{ transform: CSS.Translate.toString(transform), transition }}
       className={cn(
         // Phones put the marker and controls on a second line so names stay readable.
-        "grid grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-2 py-1.5 ps-3 pe-1.5 @min-[32rem]/settings-row:grid-cols-[1rem_auto_minmax(0,1fr)_auto_auto]",
-        isDragging && "relative z-10 rounded-lg bg-background shadow-md",
+        "grid grid-cols-(--grid-lead-trail) items-center gap-x-2 py-2 ps-2 pe-2 @min-[32rem]/settings-row:flex",
+        isDragging && "relative z-10 rounded-row bg-background shadow-md",
       )}
     >
-      <span className="text-xs tabular-nums text-muted-foreground">{props.position}</span>
-      <span className="col-span-2 text-sm leading-5 break-words @min-[32rem]/settings-row:col-span-1">
+      <span className="w-4 shrink-0 text-meta tabular-nums text-ink-2">{props.position}</span>
+      <span className="col-span-2 text-body leading-5 break-words @min-[32rem]/settings-row:col-span-1">
         {name}
       </span>
-      <span className="col-start-2 flex @min-[32rem]/settings-row:col-start-auto">
+      <span className="col-start-2 flex flex-1 @min-[32rem]/settings-row:col-start-auto">
         {props.inUse ? (
-          <span className="rounded-sm bg-success/12 px-1 text-2xs text-success-foreground">
-            In use
-          </span>
+          <span className="text-meta text-success-foreground">In use</span>
         ) : props.notConnected ? (
-          <span className="text-2xs text-muted-foreground">Not connected</span>
+          <span className="text-meta text-ink-2">Not connected</span>
         ) : null}
       </span>
       <span
         ref={setActivatorNodeRef}
         {...listeners}
         aria-hidden
-        className="hidden size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded text-muted-foreground/70 hover:text-foreground active:cursor-grabbing @min-[32rem]/settings-row:flex"
+        className="hidden size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded-chip text-ink-2 hover:text-ink-1 active:cursor-grabbing @min-[32rem]/settings-row:flex"
       >
-        <GripVerticalIcon className="size-3.5" />
+        <GripVerticalIcon className="size-4" />
       </span>
-      <span className="flex items-center gap-0.5">
+      <span className="flex items-center">
         <Button
           type="button"
           size="icon-xs"
@@ -164,7 +162,7 @@ function MicrophoneRow(props: {
             <XIcon />
           </Button>
         ) : (
-          <span aria-hidden className="size-7 sm:size-6" />
+          <span aria-hidden className="size-6 sm:size-6" />
         )}
       </span>
     </li>

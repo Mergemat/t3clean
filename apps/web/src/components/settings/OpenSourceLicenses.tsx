@@ -75,28 +75,28 @@ function LicenseNoticeRow({
   return (
     <Collapsible open={open} onOpenChange={onOpenChange}>
       <article>
-        <div className="flex min-h-10 items-center hover:bg-muted/35 sm:min-h-9">
-          <CollapsibleTrigger className="group flex min-h-10 min-w-0 flex-1 items-center gap-2.5 px-3 text-left sm:min-h-9 sm:px-4">
+        <div className="flex min-h-10 items-center hover:bg-muted/35 sm:min-h-8">
+          <CollapsibleTrigger className="group flex min-h-10 min-w-0 flex-1 items-center gap-2 px-4 text-left sm:min-h-8">
             <ChevronRightIcon
               aria-hidden
-              className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 group-data-panel-open:rotate-90"
+              className="size-4 shrink-0 text-ink-2 transition-transform duration-200 group-data-panel-open:rotate-90"
             />
             <span className="flex min-w-0 flex-1 items-baseline gap-2">
-              <span className="truncate font-medium text-foreground">{entry.name}</span>
+              <span className="truncate font-medium text-ink-1">{entry.name}</span>
               {entry.version ? (
-                <code className="shrink-0 text-xs text-muted-foreground">{entry.version}</code>
+                <code className="shrink-0 text-meta text-ink-2">{entry.version}</code>
               ) : null}
             </span>
-            <span className="max-w-[42%] shrink-0 truncate text-xs text-muted-foreground">
+            <span className="max-w-2/5 shrink-0 truncate text-meta text-ink-2">
               {entry.license} · {formatLicenseBundles(entry.bundles)}
             </span>
           </CollapsibleTrigger>
           {entry.sourceUrl ? (
             <Button
               aria-label={`View project source for ${entry.name}`}
-              className="me-3 shrink-0 sm:me-4"
+              className="me-2 shrink-0 sm:me-2"
               render={<a href={entry.sourceUrl} rel="noreferrer noopener" target="_blank" />}
-              size="icon-micro"
+              size="icon-xs"
               title="Project source"
               variant="ghost-muted"
             >
@@ -106,8 +106,8 @@ function LicenseNoticeRow({
         </div>
         <CollapsiblePanel>
           {open ? (
-            <div className="px-9 pt-1 pb-4 sm:px-10">
-              <pre className="max-w-[76ch] whitespace-pre-wrap break-words font-mono text-xs/5 text-foreground/80">
+            <div className="px-6 pt-1 pb-4">
+              <pre className="max-w-xl whitespace-pre-wrap break-words font-mono text-meta text-ink-2">
                 {entry.noticeText}
               </pre>
             </div>
@@ -126,7 +126,7 @@ function LicenseCount({
   totalCount: number;
 }) {
   return (
-    <p className="whitespace-nowrap text-xs font-normal text-muted-foreground tabular-nums">
+    <p className="whitespace-nowrap text-meta font-normal text-ink-2 tabular-nums">
       {filteredCount === totalCount
         ? `${String(totalCount)} notices`
         : `${String(filteredCount)} of ${String(totalCount)}`}
@@ -151,7 +151,7 @@ function LicenseHeaderAction({
 }) {
   if (!searchOpen) {
     return (
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         <LicenseCount filteredCount={filteredCount} totalCount={totalCount} />
         <Tooltip>
           <TooltipTrigger
@@ -159,7 +159,7 @@ function LicenseHeaderAction({
               <Button
                 aria-label="Search open-source licenses"
                 onClick={() => onSearchOpenChange(true)}
-                size="icon-micro"
+                size="icon-xs"
                 type="button"
                 variant="ghost-muted"
               >
@@ -207,12 +207,10 @@ function LicenseHeaderAction({
 
 function LicenseManifestError({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div className="flex flex-col items-start gap-3 px-3 py-5 sm:px-4">
+    <div className="flex flex-col items-start gap-2 px-4 py-4">
       <div className="flex flex-col gap-1">
-        <h3 className="text-sm font-medium text-foreground">Open-source notices are unavailable</h3>
-        <p className="max-w-[70ch] text-pretty text-xs leading-normal text-muted-foreground/80">
-          {message}
-        </p>
+        <h3 className="text-body font-medium text-ink-1">Open-source notices are unavailable</h3>
+        <p className="max-w-prose text-pretty text-meta leading-normal text-ink-2">{message}</p>
       </div>
       <Button type="button" size="xs" variant="outline" onClick={onRetry}>
         Try again
@@ -256,7 +254,7 @@ export function OpenSourceLicensesPanel() {
         }
       >
         {manifest ? (
-          <div className="text-base sm:text-sm">
+          <div className="text-base sm:text-body">
             {filteredEntries.length > 0 ? (
               filteredEntries.map((entry) => {
                 const entryKey = thirdPartyLicenseEntryKey(entry);
@@ -270,7 +268,7 @@ export function OpenSourceLicensesPanel() {
                 );
               })
             ) : (
-              <p className="px-3 py-8 text-center text-sm/6 text-muted-foreground sm:px-4">
+              <p className="px-4 py-6 text-center text-body text-ink-2">
                 No licenses match that search.
               </p>
             )}
@@ -278,9 +276,7 @@ export function OpenSourceLicensesPanel() {
         ) : errorMessage !== null ? (
           <LicenseManifestError message={errorMessage} onRetry={retry} />
         ) : (
-          <p className="px-3 py-5 text-sm/6 text-muted-foreground sm:px-4">
-            Loading open-source notices…
-          </p>
+          <p className="px-4 py-4 text-body text-ink-2">Loading open-source notices…</p>
         )}
       </SettingsSection>
     </SettingsPageContainer>

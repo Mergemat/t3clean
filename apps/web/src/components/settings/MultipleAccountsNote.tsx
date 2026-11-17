@@ -39,7 +39,7 @@ export function MultipleAccountsNote({
             href={MULTIPLE_ACCOUNTS_FAQ_URL}
             target="_blank"
             rel="noreferrer"
-            className="underline underline-offset-2 hover:text-foreground"
+            className="text-ink-1 underline-offset-2 hover:underline"
           >
             More info
           </a>

@@ -47,19 +47,14 @@ export function readAntigravityAuthMethod(config: unknown): AntigravityAuthMetho
 
 export function ProviderSetupSection(props: ProviderSetupSectionProps) {
   return (
-    <section
-      aria-label="Antigravity setup"
-      className="@container/setup divide-y divide-border/50 text-xs [&_[data-slot=settings-row]]:rounded-none"
-    >
+    <section aria-label="Antigravity setup" className="@container/setup text-meta">
       <SettingsRow
-        className="@max-lg/setup:[&>div:first-child]:flex @max-lg/setup:[&>div:first-child]:items-stretch @max-lg/setup:[&>div:first-child]:gap-3"
+        className="@max-lg/setup:[&>div:first-child]:flex @max-lg/setup:[&>div:first-child]:items-stretch @max-lg/setup:[&>div:first-child]:gap-2"
         title="Environment"
         description="Device that runs this provider."
         control={
           <div className="flex min-w-0 flex-col gap-2 sm:items-end">
-            <span className="text-muted-foreground [overflow-wrap:anywhere]">
-              {props.environmentLabel}
-            </span>
+            <span className="text-ink-2 wrap-anywhere">{props.environmentLabel}</span>
             {!props.enabled && !props.readOnly ? (
               <Button size="sm" variant="outline" onClick={props.onEnable}>
                 Enable Antigravity
@@ -186,25 +181,23 @@ function ProviderSetupActions({
   }
 
   return (
-    <div className="divide-y divide-border/50">
-      {/* Keep the live region first so sibling divider rules do not add a divider after the last visible
-       * row. */}
+    <div>
       <p className="sr-only" role="status">
         {pendingLabel ? `${pendingLabel}.` : null}
       </p>
       <SettingsRow
         title="Runtime"
-        className="@max-lg/setup:[&>div:first-child]:flex @max-lg/setup:[&>div:first-child]:items-stretch @max-lg/setup:[&>div:first-child]:gap-3"
+        className="@max-lg/setup:[&>div:first-child]:flex @max-lg/setup:[&>div:first-child]:items-stretch @max-lg/setup:[&>div:first-child]:gap-2"
         description="Install and manage Antigravity."
         status={
           <div className="space-y-2">
             {usesCustomBinary ? (
-              <p className="text-muted-foreground">
+              <p className="text-ink-2">
                 Uses the custom binary path below. Installation keeps that path.
               </p>
             ) : null}
             {!installed && !provider.setup?.canInstall ? (
-              <p className="text-muted-foreground">
+              <p className="text-ink-2">
                 Automatic installation unavailable. Set a binary path or use another environment.
               </p>
             ) : null}
@@ -212,7 +205,7 @@ function ProviderSetupActions({
         }
         control={
           <div className="flex w-full min-w-0 flex-col gap-2 @min-[32rem]/settings-row:w-56 @min-[32rem]/settings-row:text-right">
-            <p role="status" className="min-h-4 text-muted-foreground tabular-nums">
+            <p role="status" className="min-h-4 text-ink-2 tabular-nums">
               {installationStatusMessage}
             </p>
             <div className="h-1">
@@ -234,12 +227,10 @@ function ProviderSetupActions({
             {!installActive &&
             installation?.message &&
             installation.message !== installationStatusMessage ? (
-              <p className="text-muted-foreground [overflow-wrap:anywhere]">
-                {installation.message}
-              </p>
+              <p className="text-ink-2 wrap-anywhere">{installation.message}</p>
             ) : null}
-            <div className="grid min-h-7 grid-cols-[1.75rem_minmax(0,1fr)] gap-2">
-              <div className="col-start-2 row-start-1 grid">
+            <div className="relative min-h-6 ps-8">
+              <div className="grid">
                 {installActive && installation.operationId ? (
                   <Button
                     size="sm"
@@ -284,14 +275,14 @@ function ProviderSetupActions({
                       <Button
                         size="icon-sm"
                         variant="ghost"
-                        className="col-start-1 row-start-1"
+                        className="absolute top-0 left-0"
                         aria-label="Remove downloaded runtime"
                         disabled={actionsDisabled || authActive}
                         onClick={() => void removeRuntime()}
                       />
                     }
                   >
-                    <Trash2Icon className="size-3.5" />
+                    <Trash2Icon className="size-4" />
                   </TooltipTrigger>
                   <TooltipPopup>Remove downloaded runtime</TooltipPopup>
                 </Tooltip>
@@ -310,8 +301,8 @@ function ProviderSetupActions({
       />
 
       {error || queryError ? (
-        <div className="grid gap-2 px-3 py-3 sm:px-4">
-          <p role="alert" className="text-destructive [overflow-wrap:anywhere]">
+        <div className="grid gap-2 px-4 py-2">
+          <p role="alert" className="text-destructive wrap-anywhere">
             {error ?? queryError}
           </p>
           {queryError ? (

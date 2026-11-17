@@ -112,7 +112,7 @@ function DeviceHostEditorForm({
         </DialogDescription>
       </DialogHeader>
       <DialogPanel>
-        <label className="block space-y-1.5 text-sm">
+        <label className="block space-y-2 text-body">
           <span>Name</span>
           <Input
             autoFocus
@@ -126,7 +126,7 @@ function DeviceHostEditorForm({
             placeholder="Mac mini"
           />
         </label>
-        <label className="block space-y-1.5 text-sm">
+        <label className="block space-y-2 text-body">
           <span>SSH target</span>
           <Input
             required
@@ -141,11 +141,11 @@ function DeviceHostEditorForm({
         </label>
         <details
           open={host.port !== undefined || host.identityFile !== undefined || undefined}
-          className="text-sm"
+          className="text-body"
         >
-          <summary className="cursor-pointer text-muted-foreground">SSH options</summary>
-          <div className="mt-3 grid grid-cols-[minmax(0,1fr)_7rem] gap-3">
-            <label className="block space-y-1.5">
+          <summary className="cursor-pointer text-ink-2">SSH options</summary>
+          <div className="mt-2 grid grid-cols-(--grid-trail) gap-2">
+            <label className="block space-y-2">
               <span>Identity file</span>
               <Input
                 value={draft.identityFile ?? ""}
@@ -160,7 +160,7 @@ function DeviceHostEditorForm({
                 placeholder="SSH config default"
               />
             </label>
-            <label className="block space-y-1.5">
+            <label className="block w-28 space-y-2">
               <span>Port</span>
               <Input
                 type="number"
@@ -179,22 +179,22 @@ function DeviceHostEditorForm({
               />
             </label>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-2 text-meta text-ink-2">
             Optional. Resolved separately on each environment.
           </p>
         </details>
         <Collapsible
           open={checksOpen}
           onOpenChange={(open) => setExpandedChecks({ key: connectionKey, open })}
-          render={<div className="rounded-lg border border-border/60" />}
+          render={<div className="rounded-row border border-border/60" />}
         >
-          <div className="flex items-center justify-between gap-3 px-3 py-2.5">
+          <div className="flex items-center justify-between gap-2 px-2 py-2">
             {targets.length === 1 ? (
-              <p role="status" className="text-xs text-muted-foreground">
+              <p role="status" className="text-meta text-ink-2">
                 {checkSummary}
               </p>
             ) : (
-              <div className="min-w-0 text-xs [--inline-button-white-space:normal]">
+              <div className="min-w-0 text-meta [&>button]:whitespace-normal">
                 <CollapsibleTrigger
                   disabled={!results}
                   aria-label={`${checkSummary}. Per-machine results`}
@@ -224,18 +224,16 @@ function DeviceHostEditorForm({
             </Button>
           </div>
           {results ? (
-            <CollapsiblePanel
-              render={<ul className="border-t border-border/60 divide-y divide-border/40" />}
-            >
+            <CollapsiblePanel render={<ul />}>
               {targets.map((target) => {
                 const result = results[target.environmentId];
                 if (!result) return null;
                 return (
-                  <li key={target.environmentId} className="px-3 py-2.5 text-xs">
-                    <div className="flex items-center justify-between gap-3">
+                  <li key={target.environmentId} className="px-2 py-2 text-meta">
+                    <div className="flex items-center justify-between gap-2">
                       <span className="truncate font-medium">{target.label}</span>
                       <span
-                        className={`flex shrink-0 items-center gap-1.5 ${result.status === "failed" ? "text-destructive" : "text-muted-foreground"}`}
+                        className={`flex shrink-0 items-center gap-2 ${result.status === "failed" ? "text-destructive" : "text-ink-2"}`}
                       >
                         {result.status === "pending" ? (
                           <>
@@ -257,12 +255,12 @@ function DeviceHostEditorForm({
                       </span>
                     </div>
                     {result.status === "connected" ? (
-                      <div className="mt-1.5">
+                      <div className="mt-2">
                         <DeviceHostAvailability platforms={result.platforms} />
                       </div>
                     ) : null}
                     {result.status === "failed" ? (
-                      <details className="mt-1.5 text-muted-foreground">
+                      <details className="mt-2 text-ink-2">
                         <summary className="cursor-pointer">Show error</summary>
                         <p className="mt-1 max-h-32 overflow-auto whitespace-pre-wrap break-words">
                           {result.error}

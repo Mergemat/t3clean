@@ -41,7 +41,6 @@ import { cn } from "../../lib/utils";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import { useStableCallback } from "../../hooks/useStableCallback";
 import { normalizeProviderAccentColor } from "../../providerInstances";
-import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { DraftInput } from "../ui/draft-input";
 import { SecretSourceInput, type SecretSource } from "./SecretSourceInput";
@@ -84,6 +83,7 @@ import {
   getProviderSummary,
   getProviderVersionLabel,
 } from "./providerStatus";
+import { SettingsStatus } from "./settingsLayout";
 
 const ENVIRONMENT_VARIABLE_NAME_PATTERN = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
 
@@ -338,7 +338,7 @@ function ProviderEnvironmentFieldRow(props: {
               onClick={() => props.onRemove(props.field)}
               aria-label={`Clear ${props.field.label}`}
             >
-              <XIcon className="size-3.5" />
+              <XIcon className="size-4" />
             </Button>
           ) : null}
         </div>
@@ -457,15 +457,15 @@ export function ProviderEnvironmentSection(props: {
       }
     >
       {rows.length > 0 ? (
-        <div className="mt-3 min-w-0 space-y-2 pb-2">
+        <div className="mt-2 min-w-0 space-y-2 pb-2">
           {rows.map((variable, index) => {
             if (props.managed?.names.has(variable.name)) {
               return (
-                <div key={variable.id} className="flex min-w-0 flex-wrap items-center gap-1.5">
-                  <code className="min-w-0 truncate text-xs sm:w-44 sm:shrink-0">
+                <div key={variable.id} className="flex min-w-0 flex-wrap items-center gap-2">
+                  <code className="min-w-0 truncate text-meta sm:w-44 sm:shrink-0">
                     {variable.name}
                   </code>
-                  <span className="text-xs text-muted-foreground">{props.managed.reason}</span>
+                  <span className="text-meta text-ink-2">{props.managed.reason}</span>
                 </div>
               );
             }
@@ -485,7 +485,7 @@ export function ProviderEnvironmentSection(props: {
             const removeButton = (
               <Button
                 type="button"
-                size="icon-micro"
+                size="icon-xs"
                 variant="ghost-destructive"
                 onClick={() => removeVariable(variable.id)}
                 aria-label={`Remove environment variable ${variable.name || index + 1}`}
@@ -500,7 +500,7 @@ export function ProviderEnvironmentSection(props: {
                     render={
                       <Button
                         type="button"
-                        size="icon-micro"
+                        size="icon-xs"
                         variant="ghost-muted"
                         disabled={variable.valueRedacted === true}
                         onClick={() => {
@@ -529,13 +529,13 @@ export function ProviderEnvironmentSection(props: {
                 </Tooltip>
               ) : null;
             const layout = (source: ReactNode, value: ReactNode) => (
-              <div className="flex min-w-0 flex-col gap-1.5 rounded-lg border p-2">
-                <div className="flex min-w-0 items-center gap-1.5">
+              <div className="flex min-w-0 flex-col gap-2 rounded-row border p-2">
+                <div className="flex min-w-0 items-center gap-2">
                   {nameInput}
                   {source}
                   {removeButton}
                 </div>
-                <div className="flex min-w-0 items-start gap-1.5">
+                <div className="flex min-w-0 items-start gap-2">
                   {value}
                   {sensitiveToggle}
                 </div>
@@ -583,7 +583,7 @@ export function ProviderEnvironmentSection(props: {
               </Fragment>
             );
           })}
-          <p className="text-xs text-muted-foreground">
+          <p className="text-meta text-ink-2">
             Sensitive values are stored separately and never returned to the app.
             {rows.some((row) => row.valueRedacted === true)
               ? " Enter a new value to rename a saved one or make it plain text."
@@ -614,7 +614,7 @@ function ProjectOverrideInheritance({
             <PopoverTrigger
               render={
                 <Button
-                  size="icon-micro"
+                  size="icon-xs"
                   variant="ghost-muted"
                   aria-label="Overridden for this project. Show where this value comes from"
                 />
@@ -627,34 +627,34 @@ function ProjectOverrideInheritance({
         <TooltipPopup side="top">Overridden for this project</TooltipPopup>
       </Tooltip>
       <PopoverPopup align="end" width="md" padding="none">
-        <ol role="list" className="px-3 py-2.5 text-sm">
+        <ol role="list" className="px-2 py-2 text-body">
           {layers.map((layer) => (
             <li
               key={layer.key}
               className={cn(
-                "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 rounded-md px-2 py-1",
-                layer.effective && "bg-foreground/[0.06]",
+                "grid grid-cols-(--grid-trail) items-center gap-x-2 rounded-row px-2 py-1",
+                layer.effective && "bg-foreground/6",
               )}
             >
               <span
                 className={cn(
                   "min-w-0 truncate",
-                  layer.effective ? "font-medium text-foreground" : "text-muted-foreground",
+                  layer.effective ? "font-medium text-ink-1" : "text-ink-2",
                 )}
               >
                 {layer.label}
               </span>
               <span
                 className={cn(
-                  "flex items-center gap-1.5",
-                  layer.effective ? "text-foreground" : "text-muted-foreground",
+                  "flex items-center gap-2",
+                  layer.effective ? "text-ink-1" : "text-ink-2",
                 )}
               >
                 {layer.enabled ? "On" : "Off"}
                 {layer.effective ? (
-                  <CheckIcon aria-hidden className="size-3.5 shrink-0 text-primary" />
+                  <CheckIcon aria-hidden className="size-4 shrink-0 text-primary" />
                 ) : (
-                  <span aria-hidden className="size-3.5 shrink-0" />
+                  <span aria-hidden className="size-4 shrink-0" />
                 )}
               </span>
             </li>
@@ -966,8 +966,8 @@ export function ProviderInstanceCard({
       }
       showBadge={Boolean(accentColor)}
       className="size-5"
-      iconClassName="size-4 text-foreground/80"
-      badgeClassName="right-[-0.125rem] bottom-[-0.125rem] h-3 min-w-3 px-0.5 text-5xs"
+      iconClassName="size-4 text-ink-2"
+      badgeClassName="-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta"
     />
   );
 
@@ -976,12 +976,12 @@ export function ProviderInstanceCard({
   ) : null;
 
   const versionCodeNode = versionLabel ? (
-    <code className="text-xs text-muted-foreground">{versionLabel}</code>
+    <code className="text-meta text-ink-2">{versionLabel}</code>
   ) : null;
 
   const statusDotNode =
     statusKey === "warning" || statusKey === "error" ? (
-      <span className={cn("size-1.5 shrink-0 rounded-full", statusStyle.dot)} aria-hidden />
+      <span className={cn("size-2 shrink-0 rounded-full", statusStyle.dot)} aria-hidden />
     ) : null;
   const needsAttention = statusKey === "warning" || statusKey === "error";
   const statusDiagnostic = hasCompatibilityWarning && needsAttention ? summary.detail : null;
@@ -1000,7 +1000,7 @@ export function ProviderInstanceCard({
         <ProviderAuthEmail email={authEmail} />
         {authLabel ? <span>· {authLabel}</span> : null}
         {inlineStatusDetail ? (
-          <span className="min-w-0 [overflow-wrap:anywhere]">· {inlineStatusDetail}</span>
+          <span className="min-w-0 wrap-anywhere">· {inlineStatusDetail}</span>
         ) : null}
       </>
     ) : (
@@ -1008,7 +1008,7 @@ export function ProviderInstanceCard({
         {statusDotNode}
         <span>{summary.headline}</span>
         {inlineStatusDetail ? (
-          <span className="min-w-0 [overflow-wrap:anywhere]">· {inlineStatusDetail}</span>
+          <span className="min-w-0 wrap-anywhere">· {inlineStatusDetail}</span>
         ) : null}
       </>
     );
@@ -1021,7 +1021,7 @@ export function ProviderInstanceCard({
               render={
                 <Button
                   type="button"
-                  size={mode === "list" ? "icon-micro" : "icon-xs"}
+                  size="icon-sm"
                   variant="ghost-muted"
                   className={mode === "list" ? "pointer-events-auto relative shrink-0" : undefined}
                   aria-label={`${updateProgress ? "Updating" : versionAdvisory.title}, view details`}
@@ -1031,7 +1031,7 @@ export function ProviderInstanceCard({
                   ) : (
                     <VersionAdvisoryIcon
                       className={cn(
-                        mode === "list" && "size-3.5",
+                        mode === "list" && "size-4",
                         hasCompatibilityWarning && "text-warning",
                       )}
                     />
@@ -1046,15 +1046,15 @@ export function ProviderInstanceCard({
         </TooltipPopup>
       </Tooltip>
       <PopoverPopup side="bottom" align="end" width="md" aria-label={versionAdvisory.title}>
-        <div className="grid min-w-0 gap-3">
-          <div className="grid gap-0.5">
-            <p className="text-sm font-semibold leading-tight text-foreground">
+        <div className="grid min-w-0 gap-2">
+          <div className="grid">
+            <p className="text-body font-semibold leading-tight text-ink-1">
               {versionAdvisory.title}
             </p>
             <p
               className={cn(
-                "text-xs leading-snug [overflow-wrap:anywhere]",
-                versionAdvisory.emphasis === "strong" ? "text-warning" : "text-muted-foreground",
+                "text-meta leading-snug wrap-anywhere",
+                versionAdvisory.emphasis === "strong" ? "text-warning" : "text-ink-2",
               )}
             >
               {versionAdvisory.detail}
@@ -1081,23 +1081,21 @@ export function ProviderInstanceCard({
             <p
               aria-live="polite"
               className={cn(
-                "text-xs leading-snug [overflow-wrap:anywhere]",
-                updateProblem ? "text-warning" : "text-muted-foreground",
+                "text-meta leading-snug wrap-anywhere",
+                updateProblem ? "text-warning" : "text-ink-2",
               )}
             >
               {updateProgress ?? updateProblem}
             </p>
           ) : null}
           {onRunVersionAction && updateCommand ? (
-            <div className="flex items-center gap-2 text-3xs font-medium uppercase tracking-wider text-muted-foreground">
-              <span aria-hidden className="h-px flex-1 bg-border" />
+            <div className="flex items-center gap-2 text-meta font-medium uppercase tracking-wider text-ink-2">
               or, update manually using
-              <span aria-hidden className="h-px flex-1 bg-border" />
             </div>
           ) : null}
           {updateCommand ? (
-            <div className="flex min-w-0 items-center gap-1 rounded-md border border-border/70 bg-muted/40 py-0.5 pr-0.5 pl-2">
-              <code className="min-w-0 flex-1 truncate font-mono text-2xs text-foreground">
+            <div className="flex min-w-0 items-center gap-1 rounded-row border border-border/70 bg-muted/40 py-1 pr-1 pl-2">
+              <code className="min-w-0 flex-1 truncate font-mono text-meta text-ink-1">
                 {updateCommand}
               </code>
               <Tooltip>
@@ -1129,19 +1127,19 @@ export function ProviderInstanceCard({
       <div
         data-slot="settings-row"
         className={cn(
-          "group relative flex min-h-18 items-center gap-3 px-3 py-3 transition-colors sm:px-4",
-          selected ? "bg-foreground/[0.06]" : "hover:bg-muted/25",
+          "nest-row group relative flex min-h-14 items-center py-2 transition-colors",
+          selected ? "bg-foreground/8" : "hover:bg-muted/25",
         )}
       >
         <div
           className={cn(
-            "pointer-events-none flex min-w-0 flex-1 items-start gap-3 rounded-md text-left transition-opacity",
+            "pointer-events-none flex min-w-0 flex-1 items-start gap-2 rounded-row text-left transition-opacity",
             !enabled && !selected && "opacity-60 group-hover:opacity-100",
           )}
         >
           <button
             type="button"
-            className="pointer-events-auto absolute inset-0 cursor-pointer rounded-md outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+            className="pointer-events-auto absolute inset-0 cursor-pointer rounded-row outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
             onClick={onSelect}
             aria-label={`Select ${displayName}`}
             aria-pressed={selected}
@@ -1149,23 +1147,23 @@ export function ProviderInstanceCard({
           {titleIconNode}
           <span className="min-w-0 flex-1">
             <span className="flex min-w-0 items-center gap-2">
-              <span className="truncate text-sm font-medium text-foreground">{displayName}</span>
+              <span className="truncate text-body font-medium text-ink-1">{displayName}</span>
               {versionLabel ? (
-                <code className="max-w-24 shrink-0 truncate text-xs text-muted-foreground">
+                <code className="max-w-24 shrink-0 truncate text-meta text-ink-2">
                   {versionLabel}
                 </code>
               ) : null}
               {versionAdvisoryNode}
             </span>
-            <span className="mt-0.5 flex items-start gap-1.5 text-xs leading-normal text-muted-foreground/80">
+            <span className="flex items-start gap-2 text-meta leading-normal text-ink-2">
               {statusDotNode && !updateProgress ? (
-                <span className="flex h-[1.45em] shrink-0 items-center">{statusDotNode}</span>
+                <span className="flex h-lh shrink-0 items-center">{statusDotNode}</span>
               ) : null}
               <ProviderStatusDiagnostic detail={statusDiagnostic}>
                 <span
                   tabIndex={statusDiagnostic ? 0 : undefined}
                   aria-live="polite"
-                  className="pointer-events-auto line-clamp-2 [overflow-wrap:anywhere]"
+                  className="pointer-events-auto line-clamp-2 wrap-anywhere"
                 >
                   {updateProgress ? (
                     `Updating · ${updateProgress}`
@@ -1210,11 +1208,11 @@ export function ProviderInstanceCard({
   }
 
   const editorHeaderAction = (
-    <div className="flex shrink-0 items-center gap-1.5">
+    <div className="flex shrink-0 items-center gap-2">
       {driverOption?.badgeLabel ? (
-        <Badge variant="warning" size="sm" className="shrink-0">
+        <SettingsStatus variant="warning" size="sm" className="shrink-0">
           {driverOption.badgeLabel}
-        </Badge>
+        </SettingsStatus>
       ) : null}
       {versionCodeNode}
       {versionAdvisoryNode}
@@ -1247,20 +1245,20 @@ export function ProviderInstanceCard({
       <ProviderStatusDiagnostic detail={statusDiagnostic}>
         <div
           tabIndex={statusDiagnostic ? 0 : undefined}
-          className="flex min-w-0 flex-wrap items-baseline gap-x-1.5"
+          className="flex min-w-0 flex-wrap items-baseline gap-x-2"
         >
           {editorStatusNode}
         </div>
       </ProviderStatusDiagnostic>
       {restartNotice ? (
-        <p aria-live="polite" className="text-xs leading-snug [overflow-wrap:anywhere]">
+        <p aria-live="polite" className="text-meta leading-snug wrap-anywhere">
           {restartNotice}
         </p>
       ) : null}
       {urlAuthAction && onAcceptUrlAuth ? (
-        <div className="grid max-w-xl gap-1.5 pt-1 text-xs">
+        <div className="grid max-w-xl gap-2 pt-1 text-meta">
           <p>{urlAuthAction.message}</p>
-          <code className="break-all text-2xs">{urlAuthAction.url}</code>
+          <code className="break-all text-meta">{urlAuthAction.url}</code>
           <Button
             render={
               <a
@@ -1298,8 +1296,8 @@ export function ProviderInstanceCard({
       title="Driver"
       description={
         <span>
-          This instance uses <code className="text-foreground">{String(instance.driver)}</code>,
-          which is not available in this build. Its configuration is preserved.
+          This instance uses <code className="text-ink-1">{String(instance.driver)}</code>, which is
+          not available in this build. Its configuration is preserved.
         </span>
       }
     />
@@ -1435,8 +1433,8 @@ export function ProviderInstanceCard({
 
       {driverOption !== undefined ? (
         <SettingsSection title="Models">
-          <div className="px-3 py-3 sm:px-4">
-            <p className="mb-3 text-xs text-muted-foreground">
+          <div className="px-4 py-2">
+            <p className="mb-2 text-meta text-ink-2">
               Model preferences and custom models are saved on the selected environment and shared
               across connected devices.
             </p>

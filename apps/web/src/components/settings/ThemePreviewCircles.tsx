@@ -1,4 +1,3 @@
-import { MoonIcon, SunIcon } from "lucide-react";
 import type { CSSProperties } from "react";
 import {
   STANDARD_THEME_PREVIEW_COLORS as SHARED_STANDARD_THEME_PREVIEW_COLORS,
@@ -65,13 +64,6 @@ export const STANDARD_THEME_CARDS: ReadonlyArray<ThemeCardDefinition> = [
     })),
   },
 ];
-
-export function previewColorsOf(
-  card: ThemeCardDefinition,
-  mode: ThemeAppearance,
-): ThemeCardPreviewColors | null {
-  return card.previews.find((preview) => preview.mode === mode)?.colors ?? null;
-}
 
 export function getThemeCardDefinition(theme: ThemeDefinition): ThemeCardDefinition {
   return {
@@ -160,7 +152,7 @@ export function ThemePreviewCircles({
   previews: ThemeCardDefinition["previews"];
 }) {
   return (
-    <div className="flex min-h-16 items-center justify-center gap-2.5 px-3 pt-3">
+    <div className="flex min-h-16 items-center justify-center gap-2 px-2 pt-2">
       {previews.map((preview) => {
         const mode = preview.mode;
         const isPicked = activeModes.includes(mode);
@@ -172,8 +164,10 @@ export function ThemePreviewCircles({
                   aria-label={`Use ${label} ${mode} mode`}
                   aria-pressed={isPicked}
                   className={cn(
-                    "relative flex size-[68px] shrink-0 transform-gpu cursor-pointer items-center justify-center rounded-full p-1.5 outline-none transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-5 focus-visible:outline-foreground/60",
+                    "relative flex size-16 shrink-0 transform-gpu cursor-pointer items-center justify-center rounded-full p-2 outline-none transition hover:scale-105 focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-5 focus-visible:outline-foreground/60",
                     isPicked && "hover:scale-100",
+                    // The variant in use is bright, the other dimmed: no ring or badge.
+                    activeModes.length > 0 && !isPicked && "opacity-40",
                   )}
                   onClick={(event) => {
                     event.stopPropagation();
@@ -182,25 +176,6 @@ export function ThemePreviewCircles({
                   type="button"
                 >
                   <ThemePreviewCircle colors={preview.colors} mode={mode} />
-                  {isPicked ? (
-                    <>
-                      <span
-                        aria-hidden
-                        className="pointer-events-none absolute inset-0 rounded-full"
-                        style={{ boxShadow: "inset 0 0 0 2px var(--ring)" }}
-                      />
-                      <span
-                        aria-hidden
-                        className="pointer-events-none absolute bottom-0.5 right-0.5 flex size-5 items-center justify-center rounded-full border border-border/70 bg-background text-foreground shadow-sm"
-                      >
-                        {mode === "light" ? (
-                          <SunIcon className="size-3" />
-                        ) : (
-                          <MoonIcon className="size-3" />
-                        )}
-                      </span>
-                    </>
-                  ) : null}
                 </button>
               }
             />
