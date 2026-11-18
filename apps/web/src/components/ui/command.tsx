@@ -114,15 +114,16 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof AutocompleteInput>) {
   return (
-    <div className="px-(--command-shell-inset) py-2 [&_[data-slot=autocomplete-start-addon]]:ps-(--command-shell-inset)">
+    // The menus' search field: a filled row one step in from the float's corner.
+    <div className="px-2 pt-2 pb-1">
       <AutocompleteInput
         autoFocus
         className={cn(
-          "border-transparent! bg-transparent! shadow-none before:hidden has-focus-visible:ring-0 placeholder:text-ink-3 *:data-[slot=autocomplete-input]:ps-8! sm:*:data-[slot=autocomplete-input]:ps-8!",
+          "rounded-row border-transparent! bg-foreground/6! shadow-none transition-colors before:hidden focus-within:bg-foreground/9! has-focus-visible:ring-0 placeholder:text-ink-3 *:data-[slot=autocomplete-input]:ps-8! sm:*:data-[slot=autocomplete-input]:ps-8!",
           className,
         )}
         placeholder={placeholder}
-        size="lg"
+        size="sm"
         startAddon={<SearchIcon className="text-ink-3" />}
         {...props}
       />
@@ -230,7 +231,8 @@ function CommandFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative flex items-center justify-between gap-2 rounded-b-inherit border-t border-foreground/7 bg-foreground/3 px-(--command-content-inset) py-2 font-medium text-body text-ink-2 [&_[data-slot=kbd-group]]:font-sans [&_[data-slot=kbd]]:bg-foreground/8 [&_[data-slot=kbd]]:text-ink-1 [&_[data-slot=kbd]]:ring-0",
+        // No band and no line: a quiet line of meta text on the rows' text edge.
+        "relative flex items-center justify-between gap-2 px-4 pt-1 pb-3 text-meta text-ink-2",
         className,
       )}
       data-slot="command-footer"

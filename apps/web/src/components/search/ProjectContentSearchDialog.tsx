@@ -82,7 +82,6 @@ function EmptyContentSearchDialog() {
   return (
     <CommandPaletteContent
       aria-label="Search project contents"
-      escapeLabel="Back"
       footerActionLabel="Open file"
       inputProps={{ disabled: true, placeholder: "Search project contents…" }}
       mode="none"
@@ -164,7 +163,6 @@ function OpenContentSearchDialog(props: {
   return (
     <CommandPaletteContent
       aria-label={`Search file contents in ${target.projectName}`}
-      escapeLabel="Back"
       footerActionLabel="Open file"
       inputAccessory={
         <div className="absolute inset-e-2.5 top-1/2 flex shrink-0 -translate-y-1/2 items-center rounded-row border bg-muted/30 p-1">

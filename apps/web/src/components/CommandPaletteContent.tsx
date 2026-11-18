@@ -1,8 +1,6 @@
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { type ComponentProps, type ReactNode, type RefObject } from "react";
 
 import { Command, CommandFooter, CommandInput, CommandPanel } from "./ui/command";
-import { Kbd, KbdGroup } from "./ui/kbd";
 
 /**
  * A view replacing another inside an open dialog mounts with focus on the body,
@@ -40,30 +38,27 @@ function restorePendingSelection(
 
 type CommandPaletteContentProps = Omit<ComponentProps<typeof Command>, "children"> & {
   readonly children: ReactNode;
-  readonly escapeLabel?: ReactNode;
   readonly footerActionLabel?: ReactNode;
   readonly footerTrailing?: ReactNode;
   readonly inputAccessory?: ReactNode;
   readonly inputProps: ComponentProps<typeof CommandInput>;
   readonly pendingSelectionRef?: RefObject<PendingInputSelection | null>;
   readonly panelSize?: "list" | "tall-list" | "fill";
-  readonly showBackHint?: boolean;
   readonly testId?: string;
 };
 
 export function CommandPaletteContent({
   children,
-  escapeLabel = "Close",
   footerActionLabel,
   footerTrailing,
   inputAccessory,
   inputProps,
   pendingSelectionRef,
   panelSize = "list",
-  showBackHint,
   testId,
   ...commandProps
 }: CommandPaletteContentProps) {
+  const showsEnter = footerActionLabel !== undefined && footerActionLabel !== "Select";
   return (
     <div className="contents" data-testid={testId}>
       <Command {...commandProps}>
@@ -90,36 +85,17 @@ export function CommandPaletteContent({
         >
           {children}
         </CommandPanel>
-        <CommandFooter className="max-sm:flex-col max-sm:items-start">
-          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-2">
-            <KbdGroup>
-              <Kbd>
-                <ArrowUpIcon />
-              </Kbd>
-              <Kbd>
-                <ArrowDownIcon />
-              </Kbd>
-              <span>Navigate</span>
-            </KbdGroup>
-            {footerActionLabel !== undefined ? (
-              <KbdGroup>
-                <Kbd>Enter</Kbd>
-                <span>{footerActionLabel}</span>
-              </KbdGroup>
-            ) : null}
-            {showBackHint ? (
-              <KbdGroup>
-                <Kbd>Backspace</Kbd>
-                <span>Back</span>
-              </KbdGroup>
-            ) : null}
-            <KbdGroup>
-              <Kbd>Esc</Kbd>
-              <span>{escapeLabel}</span>
-            </KbdGroup>
-          </div>
-          {footerTrailing}
-        </CommandFooter>
+        {/* Only what this step adds: navigating and closing work the same everywhere and the
+            search field's arrow already says Back, so the footer names Enter's action when it
+            isn't plain "Select", and any trailing action or status; with none, no footer. */}
+        {showsEnter || footerTrailing ? (
+          <CommandFooter className="max-sm:flex-col max-sm:items-start">
+            <span className="flex min-w-0 flex-wrap items-center gap-x-4">
+              {showsEnter ? <span>Enter to {footerActionLabel}</span> : null}
+            </span>
+            {footerTrailing}
+          </CommandFooter>
+        ) : null}
       </Command>
     </div>
   );

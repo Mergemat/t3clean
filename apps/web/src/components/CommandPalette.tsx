@@ -1114,13 +1114,13 @@ function OpenCommandPaletteDialog(props: {
             <TooltipTrigger
               render={
                 <Button
-                  variant="warning-outline"
+                  variant="ghost-muted"
                   size="xs"
                   onClick={() => {
                     openSourceControlSettings();
                   }}
                 >
-                  Setup Required
+                  Set up
                 </Button>
               }
             />
@@ -3031,7 +3031,6 @@ function OpenCommandPaletteDialog(props: {
       }}
       onValueChange={(nextQuery, { event }) => handleQueryChange(nextQuery, event.target)}
       pendingSelectionRef={remountSelectionRef}
-      showBackHint={isSubmenu}
       value={query}
     >
       {newProjectPathPreview !== null ? (
