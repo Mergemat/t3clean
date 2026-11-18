@@ -602,10 +602,9 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
     for (const instanceId of tabsWithLegacyRow) addRow(instanceId);
     return units;
   })();
-  // Floating, fit the tallest tab so switching tabs never resizes the popup and moves the rail
-  // under the cursor. Docked beside the effort column, the list is as tall as the tab it shows.
-  const tallestTabUnits = Math.max(0, ...unitsByTab.values());
-  const listUnits = props.docked ? (unitsByTab.get(selectedInstanceId) ?? 0) : tallestTabUnits;
+  // Fit the tallest tab, docked or floating, so switching tabs never resizes the popup and moves
+  // the strip or the footer under the cursor.
+  const listUnits = Math.max(0, ...unitsByTab.values());
   const lockedDisabledInstanceIds = (() => {
     if (!isLocked) {
       return undefined;
