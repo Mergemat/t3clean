@@ -1413,7 +1413,7 @@ export function VoiceSettingsPanel() {
                 <SelectPopup align="end" alignItemWithTrigger={false}>
                   <SelectItem value={OFF}>
                     <span className="flex items-center gap-2">
-                      <MicOffIcon aria-hidden className="size-3" />
+                      <MicOffIcon aria-hidden className="size-4" />
                       Off
                     </span>
                   </SelectItem>
@@ -1423,7 +1423,7 @@ export function VoiceSettingsPanel() {
                       {environmentChoices.map(({ environment, value }) => (
                         <SelectItem key={value} value={value}>
                           <span className="flex items-center gap-2">
-                            <MonitorIcon aria-hidden className="size-3" />
+                            <MonitorIcon aria-hidden className="size-4" />
                             {environment.label}
                           </span>
                         </SelectItem>

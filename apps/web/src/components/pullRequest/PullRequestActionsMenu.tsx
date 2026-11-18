@@ -267,12 +267,12 @@ export function PullRequestActionsMenu({
           </span>
         </MenuItem>
         <MenuItem disabled={handoff !== null || !canFixFindings} onClick={startFixFindings}>
-          <HammerIcon className="size-3" />
+          <HammerIcon className="size-4" />
           {handoff === "findings" ? "Preparing..." : handoffLabels.fixFindings}
         </MenuItem>
         {canWriteGuide ? (
           <MenuItem disabled={guideRunning} onClick={writeGuide}>
-            <ScrollTextIcon className="size-3" />
+            <ScrollTextIcon className="size-4" />
             {guideRunning ? "Writing guide..." : !guideWritten ? "Write guide" : "Rewrite guide"}
           </MenuItem>
         ) : null}
@@ -396,11 +396,11 @@ export function PullRequestActionsMenu({
           </>
         ) : null}
         <MenuItem onClick={() => void readLocalApi()?.shell.openExternal(detail.url)}>
-          <ArrowUpRightIcon className="size-3" />
+          <ArrowUpRightIcon className="size-4" />
           {openOnHostText}
         </MenuItem>
         <MenuItem onClick={() => copyReference(detail.url, `${terminology.shortLabel} link`)}>
-          <LinkIcon className="size-3" />
+          <LinkIcon className="size-4" />
           Copy link
           <MenuShortcut>
             {shortcutLabelForCommand(keybindings, "thread.copyReference")}
@@ -409,7 +409,7 @@ export function PullRequestActionsMenu({
         <MenuItem
           onClick={() => copyReference(`#${reference.number}`, `${terminology.shortLabel} number`)}
         >
-          <CopyIcon className="size-3" />
+          <CopyIcon className="size-4" />
           Copy {terminology.shortLabel} number
           <MenuShortcut>
             {shortcutLabelForCommand(keybindings, "pullRequest.copyNumber")}
@@ -449,7 +449,7 @@ export function PullRequestActionsMenu({
               disabled={actionPending}
               {...inlineConfirm.props("revert", () => void perform("revert"))}
             >
-              <RotateCcwIcon className="size-3" />
+              <RotateCcwIcon className="size-4" />
               {inlineConfirm.isArmed("revert") ? "Confirm revert?" : "Revert changes"}
             </MenuItem>
           </>

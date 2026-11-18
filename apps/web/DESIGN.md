@@ -72,8 +72,9 @@ Settled per component in review, in order. Each one applies to every later compo
    titlebar button is the `icon-sm` square.
 
 5. **Floats.** A menu separates its groups with one step of space and their labels, no lines.
-   Its rows are compact, like a native menu: 24 tall, meta text, 12px icons, at every window
-   size, in every menu part (menus, selects, comboboxes, the context menu). A
+   Its rows are shadcn's: 32 tall, body text (14), 16px icons, at every window size, in every
+   menu part (menus, selects, comboboxes, the context menu). A checkbox row keeps its check's
+   column when unchecked, so every label starts on one edge. A
    hover preview is an extension of its row: the row's corner (`corner="row"`), its top edge and
    its text line, and only what the row doesn't already show.
 

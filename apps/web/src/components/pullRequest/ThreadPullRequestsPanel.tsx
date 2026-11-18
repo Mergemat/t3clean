@@ -325,16 +325,16 @@ function LinkRowImpl({
             sideOffset={menuPosition ? 0 : 4}
           >
             <MenuItem onClick={() => void writeTextToClipboard(link.url, "link")}>
-              <LinkIcon className="size-3" />
+              <LinkIcon className="size-4" />
               Copy link
             </MenuItem>
             <MenuItem onClick={(event) => openPrLink(event, link.url, threadRef)}>
-              <ArrowUpRightIcon className="size-3" />
+              <ArrowUpRightIcon className="size-4" />
               Open
             </MenuItem>
             {onSetWatching !== null && open && (watching || canStartWatch) ? (
               <MenuItem onClick={() => onSetWatching(link, !watching)}>
-                {watching ? <EyeOffIcon className="size-3" /> : <EyeIcon className="size-3" />}
+                {watching ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
                 {watching ? "Stop watching" : "Watch for changes"}
               </MenuItem>
             ) : null}

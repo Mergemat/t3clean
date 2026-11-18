@@ -182,7 +182,7 @@ function createIconElement(name: string, tone: "neutral" | "destructive"): SVGSV
   svg.setAttribute("stroke-linejoin", "round");
   svg.setAttribute(
     "class",
-    tone === "destructive" ? "size-3 shrink-0" : "size-3 shrink-0 text-ink-2",
+    tone === "destructive" ? "size-4 shrink-0" : "size-4 shrink-0 text-ink-2",
   );
   for (const node of paths) {
     const child = document.createElementNS(SVG_NS, node.tag);
@@ -420,7 +420,7 @@ export function showContextMenuFallback<T extends string>(
 
         if (item.header === true) {
           const header = document.createElement("div");
-          header.className = "px-2 py-1 font-medium text-ink-2 text-meta";
+          header.className = "px-2 py-2 font-medium text-ink-2 text-meta";
           header.textContent = item.label;
           inner.appendChild(header);
           continue;
@@ -445,8 +445,8 @@ export function showContextMenuFallback<T extends string>(
             ? `${rowBase} text-destructive-foreground hover:bg-destructive/10 hover:text-destructive-foreground`
             : `${rowBase} text-ink-1 hover:bg-accent hover:text-accent-foreground`;
         button.style.cssText =
-          // The menu row's make (ui/menu): 24 tall, a row's corner and inset, the meta type.
-          "display:flex;width:100%;min-height:calc(var(--step) * 3);align-items:center;gap:var(--step);border:0;border-radius:var(--radius-row);background:transparent;padding:0 var(--step);color:var(--contrast-foreground);font-family:var(--font-sans,system-ui,sans-serif);font-size:var(--type-meta);line-height:var(--line-meta);text-align:left;cursor:default;";
+          // The menu row's make (ui/menu): 32 tall, a row's corner and inset, the body type.
+          "display:flex;width:100%;min-height:calc(var(--step) * 4);align-items:center;gap:var(--step);border:0;border-radius:var(--radius-row);background:transparent;padding:0 var(--step);color:var(--contrast-foreground);font-family:var(--font-sans,system-ui,sans-serif);font-size:var(--type-base);line-height:var(--line-base);text-align:left;cursor:default;";
         if (isLeafDestructive) {
           button.style.color = "var(--destructive-foreground)";
         }
@@ -464,9 +464,8 @@ export function showContextMenuFallback<T extends string>(
             button.appendChild(check);
           } else {
             const spacer = document.createElement("span");
-            spacer.className = "size-3 shrink-0";
-            spacer.style.cssText =
-              "display:inline-block;width:0.75rem;height:0.75rem;flex-shrink:0;";
+            spacer.className = "size-4 shrink-0";
+            spacer.style.cssText = "display:inline-block;width:1rem;height:1rem;flex-shrink:0;";
             spacer.setAttribute("aria-hidden", "true");
             button.appendChild(spacer);
           }
@@ -498,7 +497,7 @@ export function showContextMenuFallback<T extends string>(
           button.setAttribute("aria-expanded", "false");
           const chevron = createIconElement("chevron-right", "neutral");
           if (chevron) {
-            chevron.setAttribute("class", "ms-auto size-3 shrink-0 text-ink-2 opacity-80");
+            chevron.setAttribute("class", "ms-auto size-4 shrink-0 text-ink-2 opacity-80");
             chevron.setAttribute("aria-hidden", "true");
             chevron.dataset.contextMenuChevron = "true";
             button.appendChild(chevron);

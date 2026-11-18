@@ -61,7 +61,7 @@ export function ActOnEnvironmentPicker({
             <span className="flex min-w-0 items-center gap-2">
               <EnvironmentMachineIcon
                 kind={environment.machine ?? "server"}
-                className="size-3 shrink-0"
+                className="size-4 shrink-0"
               />
               <span className="truncate">{environment.label}</span>
             </span>
@@ -121,7 +121,7 @@ export function PullRequestCheckoutMenu({
       </Tooltip>
       <MenuPopup align="end" side="bottom">
         <MenuItem disabled={!canPrepareWorktree} onClick={() => onCheckout("worktree")}>
-          <GitBranchIcon className="mt-1 size-3 shrink-0 self-start" />
+          <GitBranchIcon className="mt-1 size-4 shrink-0 self-start" />
           <span className="flex min-w-0 flex-col">
             <span>In a separate worktree</span>
             <span className="text-meta text-ink-2">
@@ -130,7 +130,7 @@ export function PullRequestCheckoutMenu({
           </span>
         </MenuItem>
         <MenuItem disabled={!canCheckoutHere} onClick={() => onCheckout("local")}>
-          <FolderGit2Icon className="mt-1 size-3 shrink-0 self-start" />
+          <FolderGit2Icon className="mt-1 size-4 shrink-0 self-start" />
           <span className="flex min-w-0 flex-col">
             <span>In this repository</span>
             <span className="text-meta text-ink-2">Switches the branch you are working in.</span>
