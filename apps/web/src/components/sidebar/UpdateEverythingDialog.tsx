@@ -1,7 +1,6 @@
 import { useAtomValue } from "@effect/atom-react";
 import { EnvironmentId } from "@t3tools/contracts";
 import { Atom } from "effect/reactivity";
-import { ChevronRightIcon } from "lucide-react";
 import { Fragment, type RefObject, useRef } from "react";
 
 import { environmentThreadShells } from "~/state/threads";
@@ -15,7 +14,6 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
-import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "../ui/collapsible";
 import { MiddleTruncate } from "../ui/middle-truncate";
 import { ScrollArea } from "../ui/scroll-area";
 import type { RestartingMachine, UpdateEverythingRow } from "./updateEverything.logic";
@@ -43,7 +41,6 @@ interface UpdateEverythingDialogProps {
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
   readonly version: string | null;
-  readonly providerCount: number;
   readonly rows: ReadonlyArray<UpdateEverythingRow>;
   readonly restarts: ReadonlyArray<RestartingMachine>;
   readonly onConfirm: () => void;
@@ -94,7 +91,6 @@ const APP_LABELS = {
 
 function UpdateEverythingDialogContent({
   version,
-  providerCount,
   rows,
   restarts,
   onConfirm,
@@ -134,93 +130,72 @@ function UpdateEverythingDialogContent({
         <AlertDialogTitle>
           {title ?? `Update ${updating.length} ${updating.length === 1 ? "machine" : "machines"}?`}
         </AlertDialogTitle>
-        <AlertDialogDescription>
-          {version !== null ? (
-            <>
-              T3 Code <span className="font-mono text-meta">{version}</span>
-            </>
-          ) : null}
-          {version !== null && providerCount > 0 ? " · " : null}
-          {providerCount > 0
-            ? `${providerCount} provider ${providerCount === 1 ? "update" : "updates"}`
-            : null}
-          {checking
-            ? `${version !== null || providerCount > 0 ? " · " : ""}Checking for more…`
-            : null}
-        </AlertDialogDescription>
+        {/* Only what the rows don't say: which T3 Code version, and whether more may come. */}
+        {version !== null || checking ? (
+          <AlertDialogDescription>
+            {version !== null ? (
+              <>
+                T3 Code <span className="font-mono text-meta">{version}</span>
+              </>
+            ) : null}
+            {version !== null && checking ? " · " : null}
+            {checking ? "Checking for more…" : null}
+          </AlertDialogDescription>
+        ) : null}
       </AlertDialogHeader>
       <ScrollArea scrollFade>
-        <div className="flex flex-col gap-2 px-6 pb-4">
+        {/* A dialog body: rows one step in, their text on the title's edge (DESIGN.md 12). */}
+        <div className="flex flex-col gap-1 px-2 pb-2">
           {notes.map((note) => (
-            <p key={note} className="text-ink-2 text-body">
+            <p key={note} className="px-2 text-ink-2 text-meta">
               {note}
             </p>
           ))}
-          {/* Machine names truncate first. Provider lists wrap between names, never inside one. */}
-          <div role="table" className="grid gap-x-2 text-body" data-slot="update-everything-table">
+          {updating.map((row) => (
             <div
-              role="row"
-              className="col-span-full grid grid-cols-subgrid border-b pb-2 text-ink-2 text-meta"
+              key={row.environmentId ?? "this-app"}
+              className="flex min-h-8 items-center gap-6 rounded-row px-2 text-body"
             >
-              <span role="columnheader">Machine</span>
-              <span role="columnheader">T3 Code</span>
-              <span role="columnheader">Providers</span>
-              <span role="columnheader" />
+              <span className="min-w-0 flex-1">
+                <span className="sr-only">{row.label}</span>
+                <MiddleTruncate value={row.label} aria-hidden />
+              </span>
+              <span className="flex min-w-0 shrink-0 items-baseline gap-2 text-right text-ink-2">
+                {/* Provider names wrap between names, never inside one. */}
+                <span className="wrap-break-word">
+                  {[...(row.app !== null ? [APP_LABELS[row.app]] : []), ...row.providers].map(
+                    (name, index, names) => (
+                      <Fragment key={name}>
+                        <span className="whitespace-nowrap">{name}</span>
+                        {index < names.length - 1 ? ", " : null}
+                      </Fragment>
+                    ),
+                  )}
+                  {row.app === "this-app" ? ", restarts last" : null}
+                </span>
+                {row.environmentId !== null && restarting.has(row.environmentId) ? (
+                  <RunningThreads environmentId={row.environmentId} />
+                ) : null}
+              </span>
             </div>
-            {updating.map((row) => (
-              <div
-                key={row.environmentId ?? "this-app"}
-                role="row"
-                className="col-span-full grid grid-cols-subgrid border-b border-border/50 py-2 last:border-b-0"
-              >
-                <span role="cell" className="max-w-32 min-w-0">
-                  <span className="sr-only">{row.label}</span>
-                  <MiddleTruncate value={row.label} aria-hidden />
-                </span>
-                <span role="cell">
-                  {row.app !== null ? APP_LABELS[row.app] : null}
-                  {row.app === null && row.skipped !== null ? (
-                    <span className="text-ink-2">Skipped</span>
-                  ) : null}
-                  {row.app === "this-app" ? (
-                    <span className="block text-ink-2 text-meta">restarts last</span>
-                  ) : null}
-                </span>
-                <span role="cell">
-                  {row.providers.map((provider, index) => (
-                    <Fragment key={provider}>
-                      <span className="whitespace-nowrap">{provider}</span>
-                      {index < row.providers.length - 1 ? ", " : null}
-                    </Fragment>
-                  ))}
-                </span>
-                <span role="cell" className="text-right">
-                  {row.environmentId !== null && restarting.has(row.environmentId) ? (
-                    <RunningThreads environmentId={row.environmentId} />
-                  ) : null}
-                </span>
-              </div>
-            ))}
-          </div>
+          ))}
           {skipped.length > 0 ? (
-            <Collapsible>
-              <CollapsibleTrigger className="flex items-center gap-1 text-ink-2 text-meta hover:text-ink-1 data-panel-open:[&_svg]:rotate-90">
-                <ChevronRightIcon className="size-4 transition-transform" aria-hidden />
-                {skipped.length} skipped
-              </CollapsibleTrigger>
-              <CollapsiblePanel>
-                <div className="grid grid-cols-(--grid-lead) gap-x-2 pt-2 ps-4 text-ink-2 text-meta">
-                  {skipped.map((row) => (
-                    <Fragment key={row.environmentId ?? "this-app"}>
-                      <span className="max-w-32 min-w-0">
-                        <MiddleTruncate value={row.label} />
-                      </span>
-                      <span className="wrap-anywhere">{row.skipped}</span>
-                    </Fragment>
-                  ))}
+            <>
+              <div className="flex h-8 items-end px-2 pb-1 text-meta font-medium text-ink-2">
+                Skipped
+              </div>
+              {skipped.map((row) => (
+                <div
+                  key={row.environmentId ?? "this-app"}
+                  className="flex min-h-8 items-center gap-6 rounded-row px-2 text-body text-ink-2"
+                >
+                  <span className="min-w-0 flex-1">
+                    <MiddleTruncate value={row.label} />
+                  </span>
+                  <span className="wrap-anywhere text-right">{row.skipped}</span>
                 </div>
-              </CollapsiblePanel>
-            </Collapsible>
+              ))}
+            </>
           ) : null}
         </div>
       </ScrollArea>
