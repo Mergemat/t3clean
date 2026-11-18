@@ -841,14 +841,14 @@ export const ModelPickerContent = memo(function ModelPickerContent(props: {
         ref={pickerContentRef}
         className={cn(
           "relative flex w-screen max-w-90 flex-row overflow-hidden",
-          props.docked ? "max-sm:h-56 max-sm:w-full max-sm:max-w-none" : "max-h-86",
+          props.docked ? "max-sm:h-56 max-sm:w-full max-sm:max-w-none" : "max-h-80",
         )}
         style={
           isSearching
             ? { height: searchHeight }
             : {
                 [props.docked ? "height" : "minHeight"]:
-                  `max(calc(var(--spacing) * ${stripUnits}), min(calc(var(--spacing) * ${listUnits + LIST_CHROME_UNITS}), calc(var(--spacing) * 86)))`,
+                  `max(calc(var(--spacing) * ${stripUnits}), min(calc(var(--spacing) * ${listUnits + LIST_CHROME_UNITS}), calc(var(--spacing) * 80)))`,
               }
         }
         data-model-picker-content="true"
