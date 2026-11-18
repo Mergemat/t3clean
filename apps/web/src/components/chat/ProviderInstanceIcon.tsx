@@ -175,17 +175,20 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
       {isCustomEndpoint ? null : props.showBadge ? (
         <span
           className={cn(
-            "pointer-events-none absolute right-0 bottom-0 z-10 flex h-4 min-w-4 items-center justify-center rounded-full border px-1 text-meta font-semibold leading-none shadow-sm",
+            // One letter on the icon's corner, not over its face: the system's smallest type needs
+            // a 16px badge, and two letters would cover a 16px icon whole.
+            "pointer-events-none absolute -right-2 -bottom-2 z-10 flex size-4 items-center justify-center rounded-full border text-meta font-semibold leading-none shadow-sm",
             accentColor
               ? "bg-(--provider-accent) text-(--provider-accent-foreground)"
               : "bg-card text-ink-2",
-            props.size === "compact" && "-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta",
             props.badgeClassName,
           )}
           style={{ borderColor: indicatorBackground }}
           aria-hidden
         >
-          {badgeContent === "initials" ? providerInstanceInitials(props.displayName) : null}
+          {badgeContent === "initials"
+            ? Array.from(providerInstanceInitials(props.displayName))[0]
+            : null}
         </span>
       ) : null}
     </span>

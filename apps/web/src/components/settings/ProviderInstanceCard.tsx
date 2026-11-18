@@ -967,7 +967,6 @@ export function ProviderInstanceCard({
       showBadge={Boolean(accentColor)}
       className="size-5"
       iconClassName="size-4 text-ink-2"
-      badgeClassName="-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta"
     />
   );
 
