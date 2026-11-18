@@ -151,34 +151,47 @@ function UpdateEverythingDialogContent({
               {note}
             </p>
           ))}
-          {updating.map((row) => (
-            <div
-              key={row.environmentId ?? "this-app"}
-              className="flex min-h-8 items-center gap-6 rounded-row px-2 text-body"
-            >
-              <span className="min-w-0 flex-1">
-                <span className="sr-only">{row.label}</span>
-                <MiddleTruncate value={row.label} aria-hidden />
-              </span>
-              <span className="flex min-w-0 shrink-0 items-baseline gap-2 text-right text-ink-2">
-                {/* Provider names wrap between names, never inside one. */}
-                <span className="wrap-break-word">
-                  {[...(row.app !== null ? [APP_LABELS[row.app]] : []), ...row.providers].map(
-                    (name, index, names) => (
-                      <Fragment key={name}>
-                        <span className="whitespace-nowrap">{name}</span>
-                        {index < names.length - 1 ? ", " : null}
-                      </Fragment>
-                    ),
-                  )}
-                  {row.app === "this-app" ? ", restarts last" : null}
-                </span>
-                {row.environmentId !== null && restarting.has(row.environmentId) ? (
-                  <RunningThreads environmentId={row.environmentId} />
-                ) : null}
-              </span>
+          {/* Rows to the eye, a table to a screen reader: each value keeps its column. */}
+          <div role="table" aria-label="Machines to update" className="flex flex-col gap-1">
+            <div role="row" className="sr-only">
+              <span role="columnheader">Machine</span>
+              <span role="columnheader">T3 Code</span>
+              <span role="columnheader">Providers</span>
+              <span role="columnheader">Running threads</span>
             </div>
-          ))}
+            {updating.map((row) => (
+              <div
+                key={row.environmentId ?? "this-app"}
+                role="row"
+                className="flex min-h-8 items-center gap-6 rounded-row px-2 text-body"
+              >
+                <span role="cell" className="min-w-0 flex-1">
+                  <span className="sr-only">{row.label}</span>
+                  <MiddleTruncate value={row.label} aria-hidden />
+                </span>
+                <span className="flex min-w-0 shrink-0 flex-wrap items-baseline justify-end gap-x-2 text-right text-ink-2">
+                  <span role="cell" className="whitespace-nowrap empty:hidden">
+                    {row.app !== null ? APP_LABELS[row.app] : null}
+                    {row.app === "this-app" ? ", restarts last" : null}
+                  </span>
+                  {/* Provider names wrap between names, never inside one. */}
+                  <span role="cell" className="empty:hidden">
+                    {row.providers.map((provider, index) => (
+                      <Fragment key={provider}>
+                        <span className="whitespace-nowrap">{provider}</span>
+                        {index < row.providers.length - 1 ? ", " : null}
+                      </Fragment>
+                    ))}
+                  </span>
+                  <span role="cell" className="empty:hidden">
+                    {row.environmentId !== null && restarting.has(row.environmentId) ? (
+                      <RunningThreads environmentId={row.environmentId} />
+                    ) : null}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
           {skipped.length > 0 ? (
             <>
               <div className="flex h-8 items-end px-2 pb-1 text-meta font-medium text-ink-2">
