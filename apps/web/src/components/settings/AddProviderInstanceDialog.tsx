@@ -435,7 +435,7 @@ export function AddProviderInstanceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <WizardPopup size="wide">
+      <WizardPopup size="lg">
         <WizardHeader
           title="Add provider"
           description={<>Add an account or configure a provider on {environmentLabel}.</>}

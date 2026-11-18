@@ -47,9 +47,10 @@ export function NumberFieldDecrement({
   return (
     <NumberFieldPrimitive.Decrement
       className={cn(
-        "relative flex shrink-0 cursor-pointer items-center justify-center rounded-s-inherit in-data-[size=sm]:px-3 px-3 transition-colors pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent",
+        "relative flex w-9 shrink-0 cursor-pointer in-data-[size=sm]:w-8 in-data-[size=lg]:w-10 items-center justify-center rounded-s-inherit transition-colors pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent",
         className,
       )}
+      // Square steppers at every size: an icon button's footprint, so the digits keep the middle.
       data-slot="number-field-decrement"
       {...props}
     >
@@ -65,7 +66,7 @@ export function NumberFieldIncrement({
   return (
     <NumberFieldPrimitive.Increment
       className={cn(
-        "relative flex shrink-0 cursor-pointer items-center justify-center rounded-e-inherit in-data-[size=sm]:px-3 px-3 transition-colors pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent",
+        "relative flex w-9 shrink-0 cursor-pointer in-data-[size=sm]:w-8 in-data-[size=lg]:w-10 items-center justify-center rounded-e-inherit transition-colors pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 hover:bg-accent",
         className,
       )}
       data-slot="number-field-increment"
@@ -83,7 +84,7 @@ export function NumberFieldInput({
   return (
     <NumberFieldPrimitive.Input
       className={cn(
-        "-my-px h-9 in-data-[size=lg]:h-10 in-data-[size=sm]:h-8 w-full min-w-0 grow bg-transparent px-3 text-center tabular-nums in-data-[size=lg]:leading-10 in-data-[size=sm]:leading-8 leading-9 outline-none sm:h-8 sm:in-data-[size=lg]:h-9 sm:in-data-[size=sm]:h-7 sm:in-data-[size=lg]:leading-9 sm:in-data-[size=sm]:leading-7 sm:leading-8",
+        "-my-px h-9 in-data-[size=lg]:h-10 in-data-[size=sm]:h-8 w-full min-w-0 grow bg-transparent px-1 text-center tabular-nums in-data-[size=lg]:leading-10 in-data-[size=sm]:leading-8 leading-9 outline-none",
         className,
       )}
       data-slot="number-field-input"

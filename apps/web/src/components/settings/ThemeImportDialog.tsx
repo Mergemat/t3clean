@@ -170,7 +170,7 @@ export function ThemeImportDialog({
         else close();
       }}
     >
-      <DialogPopup className="max-w-3xl overflow-hidden">
+      <DialogPopup size="lg" className="overflow-hidden">
         <DialogHeader>
           <DialogTitle>Add a theme</DialogTitle>
         </DialogHeader>

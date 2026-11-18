@@ -1,7 +1,7 @@
 import type { PreviewMiniPlayerFrame } from "../preview/previewMiniPlayerLayout";
 import { DETAILS_CARD_CLEARANCE } from "./chatCanvasLayout";
 
-// With the window border, this puts the card 9px into the window's 18px corner: concentric with its 10px one.
+// A float (16) in the pane's 24 corner sits one step in: concentric.
 export const THREAD_DETAILS_CARD_GAP = 8;
 // Keep in sync with --thread-details-panel-width.
 const THREAD_DETAILS_CARD_WIDTH = 280;

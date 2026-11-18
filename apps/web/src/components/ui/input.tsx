@@ -19,12 +19,12 @@ function Input({
   ...props
 }: InputProps) {
   const inputClassName = cn(
-    "h-9 w-full min-w-0 rounded-inherit px-3 leading-9 outline-none placeholder:text-ink-3 sm:h-8 sm:leading-8",
+    "h-9 w-full min-w-0 rounded-inherit px-3 leading-9 outline-none placeholder:text-ink-3",
     // The control's border sits inside the field's height, so the whole control lands on the grid.
     !unstyled && "-m-px",
-    size === "compact" && "h-7 px-2 text-meta leading-7 sm:h-7 sm:leading-7",
-    size === "sm" && "h-8 leading-8 sm:h-7 sm:leading-7",
-    size === "lg" && "h-10 leading-10 sm:h-9 sm:leading-9",
+    size === "compact" && "h-6 px-2 text-meta leading-6",
+    size === "sm" && "h-8 leading-8",
+    size === "lg" && "h-10 leading-10",
     props.type === "search" &&
       "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none",
     props.type === "number" &&

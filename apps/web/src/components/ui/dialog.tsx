@@ -11,6 +11,11 @@ import {
   DIALOG_MEDIA_POPUP_CLASS,
   DIALOG_MOBILE_SHEET_CLASS,
   DIALOG_POPUP_CLASS,
+  DIALOG_SIZE_CLASS,
+  DIALOG_HEADER_CLASS,
+  DIALOG_FOOTER_CLASS,
+  DIALOG_TITLE_CLASS,
+  type DialogSize,
 } from "~/components/ui/dialog-styles";
 import { ScrollArea } from "~/components/ui/scroll-area";
 
@@ -104,9 +109,11 @@ function DialogPopup({
   showCloseButton = true,
   bottomStickOnMobile = true,
   variant = "default",
+  size = "md",
   mediaControlsPlacement = "outside",
   ...props
 }: DialogPrimitive.Popup.Props & {
+  size?: DialogSize;
   showCloseButton?: boolean;
   bottomStickOnMobile?: boolean;
   variant?: "default" | "media";
@@ -120,7 +127,7 @@ function DialogPopup({
         className={cn(
           variant === "media" ? DIALOG_MEDIA_POPUP_CLASS : DIALOG_POPUP_CLASS,
           "row-start-2 text-popover-foreground",
-          variant === "default" && "max-h-full max-w-lg",
+          variant === "default" && ["max-h-full", DIALOG_SIZE_CLASS[size]],
           bottomStickOnMobile && DIALOG_MOBILE_SHEET_CLASS,
           className,
         )}
@@ -175,44 +182,20 @@ function DialogAction(props: DialogActionProps) {
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-2 p-4 in-[[data-slot=dialog-popup]:has([data-slot=dialog-panel])]:pb-4",
-        className,
-      )}
-      data-slot="dialog-header"
-      {...props}
-    />
+    <div className={cn(DIALOG_HEADER_CLASS, className)} data-slot="dialog-header" {...props} />
   );
 }
 
-function DialogFooter({
-  className,
-  variant = "default",
-  ...props
-}: React.ComponentProps<"div"> & {
-  variant?: "default" | "bare";
-}) {
+function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      className={cn(
-        "flex flex-col-reverse gap-2 px-4 sm:flex-row sm:justify-end sm:rounded-b-inherit",
-        // The footer separates by its own surface, not a line.
-        variant === "default" && "bg-muted/72 py-4",
-        variant === "bare" && "py-4",
-        className,
-      )}
-      data-slot="dialog-footer"
-      data-variant={variant}
-      {...props}
-    />
+    <div className={cn(DIALOG_FOOTER_CLASS, className)} data-slot="dialog-footer" {...props} />
   );
 }
 
 function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
-      className={cn("wrap-anywhere font-semibold text-title leading-snug", className)}
+      className={cn(DIALOG_TITLE_CLASS, className)}
       data-slot="dialog-title"
       {...props}
     />
@@ -238,7 +221,8 @@ function DialogPanel({
     <ScrollArea scrollFade={scrollFade}>
       <div
         className={cn(
-          "space-y-2 p-4 in-[[data-slot=dialog-popup]:has([data-slot=dialog-header])]:pt-1 in-[[data-slot=dialog-popup]:has([data-slot=dialog-footer][data-variant=bare])]:pb-1",
+          // Rows and fields sit one step in; loose text takes the rows' text edge.
+          "flex flex-col gap-2 p-2 [&>p]:px-2",
           className,
         )}
         data-slot="dialog-panel"

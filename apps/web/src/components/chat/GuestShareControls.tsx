@@ -108,7 +108,7 @@ function GuestShareDialog({
         if (!open && state.status !== "creating") onClose();
       }}
     >
-      <DialogPopup className="max-w-lg">
+      <DialogPopup>
         <DialogHeader>
           <DialogTitle>Share with guest</DialogTitle>
           <DialogDescription>

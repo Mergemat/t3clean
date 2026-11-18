@@ -161,7 +161,7 @@ function ActiveSshPasswordPrompt({
         }
       }}
     >
-      <DialogPopup className="max-w-md" initialFocus={inputRef} showCloseButton={false}>
+      <DialogPopup size="sm" initialFocus={inputRef} showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>SSH verification required</DialogTitle>
           <DialogDescription>

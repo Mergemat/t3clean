@@ -112,7 +112,6 @@ import {
   PROVIDER_HEALTH_INTERVAL_STEP_SECONDS,
 } from "./SettingsPanels.logic";
 import {
-  PolicyTooltip,
   SettingResetButton,
   SettingsPageContainer,
   SettingsRow,
@@ -972,58 +971,7 @@ export function EnvironmentProviderSettings({
 
   return (
     <>
-      <SettingsSection
-        {...searchableSetting("providers")}
-        titleAction={
-          canAddProvider ? (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    size="icon-xs"
-                    variant="ghost-muted"
-                    onClick={() => setIsAddInstanceDialogOpen(true)}
-                    aria-label="Add provider"
-                  >
-                    <PlusIcon />
-                  </Button>
-                }
-              />
-              <TooltipPopup side="top">Add provider</TooltipPopup>
-            </Tooltip>
-          ) : null
-        }
-        headerAction={
-          // The ghost button's padding would inset its label, so pull the text to the card edge.
-          <div className="-me-2 flex min-w-0 items-center gap-2">
-            <ProviderUpdatesAction />
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <Button
-                    size="xs"
-                    variant="ghost-muted"
-                    disabled={isRefreshingProviders || !canRefreshProviders}
-                    aria-busy={isRefreshingProviders}
-                    onClick={() => void refreshProviders()}
-                  >
-                    <RefreshIcon refreshing={isRefreshingProviders} />
-                    <span className="sr-only">Refresh provider status</span>
-                    <span className="hidden min-w-0 truncate sm:inline">
-                      {isRefreshingProviders ? (
-                        "Refreshing providers"
-                      ) : (
-                        <ProviderLastChecked environmentId={environmentId} />
-                      )}
-                    </span>
-                  </Button>
-                }
-              />
-              <TooltipPopup side="top">Refresh provider status</TooltipPopup>
-            </Tooltip>
-          </div>
-        }
-      >
+      <SettingsSection {...searchableSetting("providers")} headerAction={<ProviderUpdatesAction />}>
         {deviceTabs ? (
           <div className="flex min-h-12 min-w-0 items-center gap-2 px-4">{deviceTabs}</div>
         ) : null}
@@ -1035,51 +983,66 @@ export function EnvironmentProviderSettings({
             />
           </SettingsGroup>
         ) : null}
-        <SettingsGroup
-          className={cn(
-            providerCardHeightClassName,
-            "overflow-hidden @min-[48rem]/providers:grid @min-[48rem]/providers:grid-cols-(--grid-lead)",
-          )}
-        >
-          <div className="border-b border-border/60 bg-muted/10 @min-[48rem]/providers:flex @min-[48rem]/providers:w-68 @min-[48rem]/providers:min-h-0 @min-[48rem]/providers:flex-col @min-[48rem]/providers:border-r @min-[48rem]/providers:border-b-0">
-            <ScrollArea
-              scrollFade
-              chainVerticalScroll
-              className="@min-[48rem]/providers:min-h-0 @min-[48rem]/providers:flex-1"
-            >
-              <div className="nest-box flex flex-col gap-1">
-                {rows.map((row) => renderProviderInstance(row, "list"))}
-                {canAddProvider ? (
-                  <button
-                    type="button"
-                    className="nest-row flex h-8 w-full cursor-pointer items-center text-left text-body text-ink-2 transition-colors outline-none hover:bg-muted/25 hover:text-ink-1 focus-visible:bg-muted/25 focus-visible:text-ink-1"
-                    onClick={() => setIsAddInstanceDialogOpen(true)}
+        {/* The model picker's provider strip beside the selected provider's settings; the page
+            scrolls as one. */}
+        <div className="flex items-start gap-4">
+          <div className="sticky top-2 flex shrink-0 flex-col gap-1">
+            {rows.map((row) => renderProviderInstance(row, "list"))}
+            {canAddProvider ? (
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      size="icon-sm"
+                      variant="ghost-muted"
+                      onClick={() => setIsAddInstanceDialogOpen(true)}
+                      aria-label="Add provider"
+                    >
+                      <PlusIcon />
+                    </Button>
+                  }
+                />
+                <TooltipPopup side="right">Add provider</TooltipPopup>
+              </Tooltip>
+            ) : null}
+            {/* Refreshes the strip's status dots, so it lives with them. */}
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    size="icon-sm"
+                    variant="ghost-muted"
+                    disabled={isRefreshingProviders || !canRefreshProviders}
+                    aria-busy={isRefreshingProviders}
+                    onClick={() => void refreshProviders()}
+                    aria-label="Refresh provider status"
                   >
-                    <PlusIcon className="size-4 shrink-0" />
-                    Add provider
-                  </button>
-                ) : null}
-              </div>
-            </ScrollArea>
+                    <RefreshIcon refreshing={isRefreshingProviders} />
+                  </Button>
+                }
+              />
+              <TooltipPopup side="right">
+                {isRefreshingProviders ? (
+                  "Refreshing providers"
+                ) : (
+                  <ProviderLastChecked environmentId={environmentId} />
+                )}
+              </TooltipPopup>
+            </Tooltip>
           </div>
 
-          <div data-provider-detail className="min-w-0 @min-[48rem]/providers:min-h-0">
+          <div data-provider-detail className="flex min-w-0 flex-1 flex-col gap-6">
             {selectedRow ? (
-              <ScrollArea scrollFade chainVerticalScroll className="@min-[48rem]/providers:h-full">
-                {/* Flat sections run dividers edge to edge and inset text like the list beside them. */}
-                <div className="space-y-6 py-4">
-                  {renderProviderInstance(selectedRow, "editor")}
-                </div>
-              </ScrollArea>
+              renderProviderInstance(selectedRow, "editor")
             ) : (
-              <div className="p-6 text-body text-ink-2">
+              <p className="px-2 py-2 text-body text-ink-2">
                 {targetInstanceMissing
                   ? "This provider instance is no longer available on this device."
                   : "No providers configured."}
-              </div>
+              </p>
             )}
           </div>
-        </SettingsGroup>
+        </div>
       </SettingsSection>
 
       <UsageProviderSettings
@@ -1104,17 +1067,8 @@ export function EnvironmentProviderSettings({
       <SettingsSection title="Advanced">
         <SettingsRow
           id={searchableSetting("provider-health-check-interval").id}
-          title={
-            <span className="inline-flex items-center gap-2">
-              {searchableSetting("provider-health-check-interval").title}
-              <PolicyTooltip>
-                This interval is configured here, then the shared Background activity policy decides
-                whether provider probes may run when the timer fires. Custom intervals appear as
-                Advanced in Maintenance settings.
-              </PolicyTooltip>
-            </span>
-          }
-          description="Refresh provider status, versions, and models in the background. Set to 0 to disable."
+          title={searchableSetting("provider-health-check-interval").title}
+          description="0 turns it off."
           resetAction={
             providerHealthRefreshIntervalSeconds !== defaultProviderHealthRefreshIntervalSeconds ? (
               <span

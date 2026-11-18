@@ -187,8 +187,9 @@ export function SettingsSearchTarget({
 }
 
 // Settings pickers reuse composer controls but match the bordered selects beside them.
+// A value button, like a ghost select: the picked model is a value, not a boxed control.
 export const SETTINGS_PICKER_TRIGGER_CLASSNAME =
-  "min-w-0 max-w-none shrink-0 border-input bg-background font-normal text-ink-1 shadow-xs/5 hover:bg-accent/50 dark:bg-input/32 [&_svg[data-composer-control-chevron]]:stroke-2 [&_svg[data-composer-control-chevron]]:opacity-70";
+  "min-w-0 max-w-none shrink-0 border-transparent bg-transparent font-normal text-ink-2 shadow-none dark:bg-transparent [:hover,[data-pressed]]:bg-accent [:hover,[data-pressed]]:text-ink-1 [&_svg[data-composer-control-chevron]]:stroke-2 [&_svg[data-composer-control-chevron]]:opacity-70";
 
 export function PolicyTooltip({ children }: { readonly children: string }) {
   return (
@@ -277,7 +278,11 @@ export function SettingsSection({
           data-settings-scroll-target
           // A group label, like a menu's: its text on the rows' text edge. Named like its page,
           // only its actions show.
-          className="flex min-h-8 flex-wrap items-center justify-between gap-x-2 gap-y-1 px-2"
+          className={cn(
+            "flex min-h-8 flex-wrap items-center justify-between gap-x-2 gap-y-1 px-2",
+            // Named like its page, the row only carries actions; none rendered, no row.
+            namedLikePage && "has-[[data-section-actions]:empty]:hidden",
+          )}
         >
           <div className="flex min-w-0 items-center gap-1">
             <h2
@@ -292,7 +297,9 @@ export function SettingsSection({
             {titleAction}
           </div>
           {headerAction ? (
-            <div className="flex min-h-6 min-w-8 items-center justify-end">{headerAction}</div>
+            <div data-section-actions className="flex min-h-6 min-w-8 items-center justify-end">
+              {headerAction}
+            </div>
           ) : null}
         </div>
       )}
@@ -303,22 +310,23 @@ export function SettingsSection({
   );
 }
 
+/** Rows that can't take effect here: dimmed, no box. The reason is one plain line, given once
+ *  per page by whichever group comes first (or by the page itself). */
 export function SettingsUnavailableGroup({
   children,
+  unavailable,
   message,
 }: {
   children: ReactNode;
+  unavailable: boolean;
   message?: ReactNode;
 }) {
-  if (message === undefined) return children;
+  if (!unavailable) return children;
 
   return (
-    <div className="bg-muted/20 py-2">
-      <div className="flex items-start gap-2 px-4 py-2 text-meta leading-relaxed text-ink-2">
-        <InfoIcon className="h-lh w-4 shrink-0 text-warning" />
-        <p>{message}</p>
-      </div>
-      <div className="[&_h3]:opacity-64 [&_p]:opacity-64">{children}</div>
+    <div className="flex flex-col gap-1">
+      {message ? <p className="px-2 text-meta text-ink-2">{message}</p> : null}
+      <div className="flex flex-col gap-1 [&_h3]:opacity-64 [&_p]:opacity-64">{children}</div>
     </div>
   );
 }
@@ -559,6 +567,13 @@ export function SettingsRow({
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex min-h-5 items-center gap-2">
             <h3 className="text-body text-ink-1">{title}</h3>
+            {/* The reset leads: the marker after it waits for hover, and its empty slot would
+                otherwise open a gap between the name and the reset. */}
+            {renderedReset ? (
+              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center">
+                {renderedReset}
+              </span>
+            ) : null}
             {renderedInheritance ? (
               <span
                 className={cn(
@@ -572,9 +587,6 @@ export function SettingsRow({
                 {renderedInheritance}
               </span>
             ) : null}
-            <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center">
-              {renderedReset}
-            </span>
           </div>
           {description ? (
             <p className="max-w-2xl text-pretty text-meta leading-normal text-ink-2">

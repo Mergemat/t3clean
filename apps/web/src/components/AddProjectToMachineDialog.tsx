@@ -52,6 +52,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
+import { Field } from "./ui/field";
 import { Label } from "./ui/label";
 import { MiddleTruncate } from "./ui/middle-truncate";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "./ui/select";
@@ -245,7 +246,7 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
         if (!open) close();
       }}
     >
-      <DialogPopup className="sm:max-w-xl">
+      <DialogPopup>
         <form
           className="flex min-h-0 flex-col"
           onSubmit={(event) => {
@@ -326,8 +327,10 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <Label>Clone over</Label>
+            <Field
+              label="Clone over"
+              hint={<span className="block truncate font-mono">{remoteUrl}</span>}
+            >
               {sshUrl && httpsUrl ? (
                 <ToggleGroup
                   aria-label="Clone protocol"
@@ -341,11 +344,13 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                   <Toggle value="https">HTTPS</Toggle>
                 </ToggleGroup>
               ) : null}
-              <span className="truncate font-mono text-ink-2 text-meta">{remoteUrl}</span>
-            </div>
+            </Field>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor={`${id}-path`}>Folder on {target?.label ?? "the other machine"}</Label>
+            <Field
+              label={`Folder on ${target?.label ?? "the other machine"}`}
+              htmlFor={`${id}-path`}
+              stacked
+            >
               <Input
                 id={`${id}-path`}
                 value={destinationPath}
@@ -355,12 +360,14 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                 spellCheck={false}
                 autoComplete="off"
               />
-            </div>
+            </Field>
 
             {canListFiles ? (
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Label className="flex-1">Copy ignored files</Label>
+                <div className="flex items-center gap-2 px-2">
+                  <Label variant="row" className="flex-1">
+                    Copy ignored files
+                  </Label>
                   {copyable.length > 0 ? (
                     <>
                       <span className="text-ink-2 text-meta">

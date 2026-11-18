@@ -575,6 +575,8 @@ function BrowserRecordingInputSettings({ disabled }: { readonly disabled: boolea
     <>
       <SettingsRow
         {...searchableSetting("browser-recording-key-presses")}
+        // The section already says Recordings; search keeps the full name.
+        title="Show key presses"
         devicePreference
         description="Password fields are excluded."
         control={
@@ -590,8 +592,8 @@ function BrowserRecordingInputSettings({ disabled }: { readonly disabled: boolea
       />
       <SettingsRow
         {...searchableSetting("browser-recording-mouse-presses")}
+        title="Show mouse presses"
         devicePreference
-        description="Held buttons too."
         control={
           <Switch
             disabled={disabled}
@@ -977,15 +979,16 @@ function DeviceIntegrationControls({
         {...searchableSetting("device-hub")}
         serverScoped
         settingKeys={["enableDeviceSupport"]}
-        description={
-          <>
-            Open simulators and emulators in the Device panel. Hub:{" "}
+        description="Open simulators and emulators in the Device panel."
+        status={
+          <span className="inline-flex items-center gap-1">
+            Device hub
             <DeviceToolVersions
               action={versionActions("hub")}
               kind="hub"
               tools={state.hosts.find((host) => host.kind === "local")?.tools}
             />
-          </>
+          </span>
         }
         control={
           <>
@@ -1016,15 +1019,16 @@ function DeviceIntegrationControls({
         {...searchableSetting("agent-device-access")}
         serverScoped
         settingKeys={["enableAgentDeviceAccess"]}
-        description={
-          <>
-            New agent sessions can open and drive these devices. agent-device:{" "}
+        description="New agent sessions can open and drive these devices."
+        status={
+          <span className="inline-flex items-center gap-1">
+            agent-device
             <DeviceToolVersions
               action={versionActions("agent")}
               kind="agent"
               tools={state.hosts.find((host) => host.kind === "local")?.tools}
             />
-          </>
+          </span>
         }
         control={
           <>
@@ -1335,8 +1339,8 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
           <MenuTrigger
             render={
               <Button
-                size="sm"
-                variant="outline"
+                size="xs"
+                variant="ghost-muted"
                 disabled={profileWritesDisabled || importInFlight}
               />
             }
@@ -1395,12 +1399,15 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
         </Menu>
       }
     >
-      <div className="mt-2 mb-2 overflow-hidden rounded-row border border-border/60">
+      <div className="flex flex-col gap-1 pt-1">
         {listedProfiles.map((profile) => {
           const builtIn = isBuiltInBrowserProfileId(profile.id);
           const isDefault = profile.id === resolvedDefaultId;
           return (
-            <div key={profile.id} className="flex items-center gap-2 px-2 py-2">
+            <div
+              key={profile.id}
+              className="group/profile flex min-h-8 items-center gap-2 rounded-row px-2 transition-colors hover:bg-foreground/4"
+            >
               <span className="flex min-w-0 flex-1 items-center gap-2">
                 {builtIn ? (
                   <span
@@ -1423,69 +1430,72 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
                     onCommit={(next) => renameProfile(profile.id, next)}
                   />
                 )}
-                {isDefault ? (
+                {/* The built-in profile is named Default; it needs no second "Default". */}
+                {isDefault && profile.name.toLowerCase() !== "default" ? (
                   <span className={cn("flex", profileWritesDisabled && "opacity-64")}>
                     <SettingsStatus>Default</SettingsStatus>
                   </span>
                 ) : null}
               </span>
-              <Menu>
-                <MenuTrigger
-                  render={
-                    <Button
-                      size="icon-xs"
-                      variant="ghost-muted"
-                      disabled={profileWritesDisabled || importInFlight}
-                      aria-label={`${profile.name} options`}
-                    />
-                  }
-                >
-                  <MoreVertical />
-                </MenuTrigger>
-                <MenuPopup align="end">
-                  <MenuItem
-                    disabled={!settingsHydrated || isDefault || defaultProfileReadOnly}
-                    onClick={() => {
-                      if (settingsHydrated) {
-                        updateDefaultProfile({ browserDefaultProfileId: profile.id });
-                      }
-                    }}
+              <span className="flex opacity-0 transition-opacity group-hover/profile:opacity-100 has-focus-visible:opacity-100 has-data-popup-open:opacity-100">
+                <Menu>
+                  <MenuTrigger
+                    render={
+                      <Button
+                        size="icon-xs"
+                        variant="ghost-muted"
+                        disabled={profileWritesDisabled || importInFlight}
+                        aria-label={`${profile.name} options`}
+                      />
+                    }
                   >
-                    Set as default
-                  </MenuItem>
-                  <MenuItem
-                    disabled={!settingsHydrated || !removalAvailable}
-                    onClick={() => {
-                      if (serverProfileData.environmentIds.length > 0) {
-                        setProfilePendingClear(profile);
-                      } else clearProfileData(profile.id, profile.name);
-                    }}
-                  >
-                    Clear cookies and cache
-                  </MenuItem>
-                  {builtIn ? null : (
+                    <MoreVertical />
+                  </MenuTrigger>
+                  <MenuPopup align="end">
                     <MenuItem
-                      variant="destructive"
-                      disabled={!settingsHydrated || !removalAvailable}
+                      disabled={!settingsHydrated || isDefault || defaultProfileReadOnly}
                       onClick={() => {
-                        if (settingsHydrated) setProfilePendingRemoval(profile);
+                        if (settingsHydrated) {
+                          updateDefaultProfile({ browserDefaultProfileId: profile.id });
+                        }
                       }}
                     >
-                      Remove profile and data
+                      Set as default
                     </MenuItem>
-                  )}
-                  {!removalAvailable ? (
-                    <>
-                      <MenuSeparator />
-                      <MenuItem disabled>
-                        {environmentsReady
-                          ? "Connect to an environment to clear profile data"
-                          : "Checking environments…"}
+                    <MenuItem
+                      disabled={!settingsHydrated || !removalAvailable}
+                      onClick={() => {
+                        if (serverProfileData.environmentIds.length > 0) {
+                          setProfilePendingClear(profile);
+                        } else clearProfileData(profile.id, profile.name);
+                      }}
+                    >
+                      Clear cookies and cache
+                    </MenuItem>
+                    {builtIn ? null : (
+                      <MenuItem
+                        variant="destructive"
+                        disabled={!settingsHydrated || !removalAvailable}
+                        onClick={() => {
+                          if (settingsHydrated) setProfilePendingRemoval(profile);
+                        }}
+                      >
+                        Remove profile and data
                       </MenuItem>
-                    </>
-                  ) : null}
-                </MenuPopup>
-              </Menu>
+                    )}
+                    {!removalAvailable ? (
+                      <>
+                        <MenuSeparator />
+                        <MenuItem disabled>
+                          {environmentsReady
+                            ? "Connect to an environment to clear profile data"
+                            : "Checking environments…"}
+                        </MenuItem>
+                      </>
+                    ) : null}
+                  </MenuPopup>
+                </Menu>
+              </span>
             </div>
           );
         })}
@@ -1603,15 +1613,20 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
 
 export function BrowserSettingsPanel() {
   const desktopOnly = !isElectron;
-  const desktopOnlyMessage = desktopOnly ? "Only available in the desktop app." : undefined;
 
   return (
     <SettingsPageContainer>
+      {/* Said once for the page; the groups below only dim. */}
+      {desktopOnly ? (
+        <p className="px-2 text-meta text-ink-2">
+          Browsing and recordings work in the desktop app.
+        </p>
+      ) : null}
       <SettingsSection id="browser-agent-access" title="Agent access">
         <AgentBrowserAccessSetting />
       </SettingsSection>
       <SettingsSection id="browser" title="Browsing">
-        <SettingsUnavailableGroup message={desktopOnlyMessage}>
+        <SettingsUnavailableGroup unavailable={desktopOnly}>
           <BrowserProfilesSetting disabled={desktopOnly} />
           <BrowserLinkTargetSetting disabled={desktopOnly} />
           <BrowserAutoShowFloatingPreviewSetting disabled={desktopOnly} />
@@ -1625,7 +1640,7 @@ export function BrowserSettingsPanel() {
             searchableSetting("browser-default-appearance").id,
           ]}
         >
-          <SettingsUnavailableGroup message={desktopOnlyMessage}>
+          <SettingsUnavailableGroup unavailable={desktopOnly}>
             <BrowserViewportSetting disabled={desktopOnly} />
             <BrowserZoomSetting disabled={desktopOnly} />
             <BrowserAppearanceSetting disabled={desktopOnly} />
@@ -1633,7 +1648,7 @@ export function BrowserSettingsPanel() {
         </AdvancedSettings>
       </SettingsSection>
       <SettingsSection id="browser-recordings" title="Recordings">
-        <SettingsUnavailableGroup message={desktopOnlyMessage}>
+        <SettingsUnavailableGroup unavailable={desktopOnly}>
           <BrowserRecordingFrameRateSetting disabled={desktopOnly} />
           <BrowserRecordingInputSettings disabled={desktopOnly} />
         </SettingsUnavailableGroup>

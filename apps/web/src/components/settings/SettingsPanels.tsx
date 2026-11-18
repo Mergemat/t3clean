@@ -1871,7 +1871,7 @@ export function ThreadsSettingsPanel() {
       <ProjectDefaultsSettings category="general" />
 
       {!isProjectScope ? (
-        <SettingsSection id="snooze" title="Snooze">
+        <SettingsSection id="snooze" title="Snooze" hideTitle>
           <SnoozePresetsRow />
         </SettingsSection>
       ) : null}

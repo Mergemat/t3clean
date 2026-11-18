@@ -60,7 +60,7 @@ export function ProjectIconPickerDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogPopup className="w-full sm:w-128">
+      <DialogPopup>
         {/* The popup mounts per open, so the draft below starts from `current` each time. */}
         <ProjectIconPickerBody
           current={current}

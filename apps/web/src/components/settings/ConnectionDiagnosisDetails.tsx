@@ -199,7 +199,7 @@ export function ConnectionDiagnosisPanel({
           Copy diagnostics
         </Button>
         {onAddRoute ? (
-          <Button type="button" size="xs" variant="outline" onClick={onAddRoute}>
+          <Button type="button" size="xs" variant="ghost-muted" onClick={onAddRoute}>
             Add direct route
           </Button>
         ) : null}

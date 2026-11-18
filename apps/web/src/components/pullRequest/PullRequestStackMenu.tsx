@@ -240,7 +240,7 @@ export function PullRequestStackMenu({
           if (!value) setConfirmation(null);
         }}
       >
-        <DialogPopup className="max-w-md">
+        <DialogPopup size="sm">
           <DialogHeader>
             <DialogTitle>
               {confirmation === "merge"

@@ -15,7 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { sourceIdFromUrl } from "./AddUsageLimitSourceDialog.logic";
 import { SecretSourceInput, useSecretSources } from "./SecretSourceInput";
-import { Label } from "../ui/label";
+import { Field } from "../ui/field";
 
 /** Send the management key once to server secret storage; settings retain only a redaction marker. */
 export function AddUsageLimitSourceDialog({
@@ -75,7 +75,7 @@ export function AddUsageLimitSourceDialog({
         onOpenChange(next);
       }}
     >
-      <DialogPopup className="max-w-md">
+      <DialogPopup size="sm">
         <DialogHeader>
           <DialogTitle>Add a CLIProxyAPI hub</DialogTitle>
           <DialogDescription>
@@ -92,8 +92,7 @@ export function AddUsageLimitSourceDialog({
               save();
             }}
           >
-            <div className="grid gap-2">
-              <Label htmlFor="usage-source-url">Hub URL</Label>
+            <Field label="Hub URL" htmlFor="usage-source-url" stacked>
               <Input
                 id="usage-source-url"
                 placeholder="https://hub.example.ts.net:8318"
@@ -101,9 +100,8 @@ export function AddUsageLimitSourceDialog({
                 onChange={(event) => setUrl(event.target.value)}
                 autoFocus
               />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="usage-source-key">Management key</Label>
+            </Field>
+            <Field label="Management key" htmlFor="usage-source-key" stacked>
               <SecretSourceInput
                 id="usage-source-key"
                 aria-label="Management key"
@@ -114,19 +112,18 @@ export function AddUsageLimitSourceDialog({
                 onSecretChange={(secret) => setKeyDraft(secret ?? "")}
                 onValidityChange={setKeyValid}
               />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="usage-source-label">Label (optional)</Label>
+            </Field>
+            <Field label="Label (optional)" htmlFor="usage-source-label" stacked>
               <Input
                 id="usage-source-label"
                 placeholder="Defaults to the hub's host name"
                 value={label}
                 onChange={(event) => setLabel(event.target.value)}
               />
-            </div>
+            </Field>
           </form>
         </DialogPanel>
-        <DialogFooter variant="bare">
+        <DialogFooter>
           <Button
             variant="outline"
             onClick={() => {

@@ -242,8 +242,8 @@ function ProviderCommandArguments({
       control={
         <Button
           type="button"
-          size="sm"
-          variant="outline"
+          size="xs"
+          variant="ghost-muted"
           onClick={() => updateArguments([...rows, makeCommandArgumentDraftRow("")])}
         >
           <PlusIcon />

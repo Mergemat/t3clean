@@ -13,8 +13,8 @@ import { Calendar } from "./ui/calendar";
 import { weekStartsOn } from "../timestampFormat";
 import { useNowMinute } from "../hooks/useNowMinute";
 import { Popover, PopoverTrigger, PopoverPopup } from "./ui/popover";
+import { Field } from "./ui/field";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import { Toggle, ToggleGroup } from "./ui/toggle-group";
 import { Select, SelectTrigger, SelectValue, SelectPopup, SelectItem } from "./ui/select";
 import {
@@ -85,7 +85,7 @@ function CustomSnoozeDialog() {
         if (!open) finish(null);
       }}
     >
-      <DialogPopup className="sm:max-w-md">
+      <DialogPopup size="sm">
         <form
           className="flex min-h-0 flex-col"
           onSubmit={(event) => {
@@ -121,107 +121,94 @@ function CustomSnoozeDialog() {
                 <Toggle value="date">Date and time</Toggle>
                 <Toggle value="duration">Duration</Toggle>
               </ToggleGroup>
-              <div className="flex flex-col gap-2">
-                {mode === "date" ? (
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <div className="flex min-w-0 flex-col gap-2">
-                      <Label htmlFor={`${id}-date`}>Date</Label>
-                      <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-                        <PopoverTrigger
-                          render={
-                            <Button
-                              id={`${id}-date`}
-                              variant="outline"
-                              className="w-full justify-between"
-                            />
-                          }
-                        >
-                          {date.toLocaleDateString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                          <CalendarIcon className="size-4 text-ink-2" />
-                        </PopoverTrigger>
-                        <PopoverPopup align="start" aria-label="Choose snooze date">
-                          <Calendar
-                            mode="single"
-                            required
-                            selected={date}
-                            defaultMonth={date}
-                            {...(weekStartsOn === undefined ? {} : { weekStartsOn })}
-                            disabled={{ before: today }}
-                            onSelect={(selected) => {
-                              setDate(selected);
-                              setCalendarOpen(false);
-                              setError(null);
-                            }}
-                          />
-                        </PopoverPopup>
-                      </Popover>
-                    </div>
-                    <Label className="flex min-w-0 flex-col items-stretch" htmlFor={`${id}-time`}>
-                      Time
-                      <Input
-                        nativeInput
-                        id={`${id}-time`}
-                        className="h-8 sm:h-8"
-                        type="time"
-                        required
-                        value={time}
-                        onChange={(event) => {
-                          setTime(event.target.value);
-                          setError(null);
-                        }}
-                      />
-                    </Label>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <NumberField
-                      id={`${id}-amount`}
-                      min={0}
-                      step="any"
-                      value={amount === "" ? null : Number(amount)}
-                      onValueChange={(value) => {
-                        setAmount(value === null ? "" : String(value));
+              {/* Fields are rows: the name on the left, its control on the right. */}
+              {mode === "date" ? (
+                <>
+                  <Field label="Date" htmlFor={`${id}-date`}>
+                    <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                      <PopoverTrigger
+                        render={<Button id={`${id}-date`} variant="outline" className="w-40" />}
+                      >
+                        {date.toLocaleDateString(undefined, {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                        <CalendarIcon className="ms-auto size-4 text-ink-2" />
+                      </PopoverTrigger>
+                      <PopoverPopup align="end" aria-label="Choose snooze date">
+                        <Calendar
+                          mode="single"
+                          required
+                          selected={date}
+                          defaultMonth={date}
+                          {...(weekStartsOn === undefined ? {} : { weekStartsOn })}
+                          disabled={{ before: today }}
+                          onSelect={(selected) => {
+                            setDate(selected);
+                            setCalendarOpen(false);
+                            setError(null);
+                          }}
+                        />
+                      </PopoverPopup>
+                    </Popover>
+                  </Field>
+                  <Field label="Time" htmlFor={`${id}-time`}>
+                    <Input
+                      nativeInput
+                      id={`${id}-time`}
+                      className="w-40"
+                      type="time"
+                      required
+                      value={time}
+                      onChange={(event) => {
+                        setTime(event.target.value);
                         setError(null);
                       }}
-                    >
-                      <Label htmlFor={`${id}-amount`}>Snooze for</Label>
-                      <NumberFieldGroup>
-                        <NumberFieldDecrement aria-label="Decrease duration" />
-                        <NumberFieldInput required />
-                        <NumberFieldIncrement aria-label="Increase duration" />
-                      </NumberFieldGroup>
-                    </NumberField>
-                    <Label className="flex min-w-0 flex-col items-stretch" htmlFor={`${id}-unit`}>
-                      Unit
-                      <Select
-                        value={unit}
-                        items={{ minutes: "Minutes", hours: "Hours", days: "Days" }}
-                        onValueChange={(value) => {
-                          if (value === "minutes" || value === "hours" || value === "days")
-                            setUnit(value);
-                          setError(null);
-                        }}
-                      >
-                        <SelectTrigger id={`${id}-unit`} className="min-w-0">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectPopup>
-                          <SelectItem value="minutes">Minutes</SelectItem>
-                          <SelectItem value="hours">Hours</SelectItem>
-                          <SelectItem value="days">Days</SelectItem>
-                        </SelectPopup>
-                      </Select>
-                    </Label>
-                  </div>
-                )}
-              </div>
+                    />
+                  </Field>
+                </>
+              ) : (
+                <Field label="Snooze for" htmlFor={`${id}-amount`}>
+                  <NumberField
+                    className="w-28"
+                    min={0}
+                    step="any"
+                    value={amount === "" ? null : Number(amount)}
+                    onValueChange={(value) => {
+                      setAmount(value === null ? "" : String(value));
+                      setError(null);
+                    }}
+                  >
+                    <NumberFieldGroup>
+                      <NumberFieldDecrement aria-label="Decrease duration" />
+                      <NumberFieldInput id={`${id}-amount`} required />
+                      <NumberFieldIncrement aria-label="Increase duration" />
+                    </NumberFieldGroup>
+                  </NumberField>
+                  <Select
+                    value={unit}
+                    items={{ minutes: "Minutes", hours: "Hours", days: "Days" }}
+                    onValueChange={(value) => {
+                      if (value === "minutes" || value === "hours" || value === "days")
+                        setUnit(value);
+                      setError(null);
+                    }}
+                  >
+                    <SelectTrigger aria-label="Unit" className="w-28 min-w-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectPopup>
+                      <SelectItem value="minutes">Minutes</SelectItem>
+                      <SelectItem value="hours">Hours</SelectItem>
+                      <SelectItem value="days">Days</SelectItem>
+                    </SelectPopup>
+                  </Select>
+                </Field>
+              )}
             </div>
             {error && (
-              <p role="alert" className="text-destructive">
+              <p role="alert" className="text-meta text-destructive">
                 {error}
               </p>
             )}

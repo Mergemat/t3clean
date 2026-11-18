@@ -283,7 +283,7 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
           </Button>
         }
       />
-      <DialogPopup className="max-w-md">
+      <DialogPopup size="sm">
         <DialogHeader>
           <DialogTitle>Link an environment</DialogTitle>
           <DialogDescription>
@@ -364,7 +364,7 @@ function LinkEnvironmentAction({ environmentId }: { readonly environmentId: Envi
             <LinkAccessPicker value={access} onChange={setAccess} disabled={busy} />
           </form>
         </DialogPanel>
-        <DialogFooter variant="bare">
+        <DialogFooter>
           <DialogClose disabled={busy} render={<Button variant="outline" type="button" />}>
             Cancel
           </DialogClose>

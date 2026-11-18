@@ -1,7 +1,7 @@
-import { ChevronRightIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
 
-import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "../ui/collapsible";
+import { Collapsible, CollapsiblePanel } from "../ui/collapsible";
+import { SettingsFoldTrigger } from "./FoldedSettingsSection";
 import { useSettingsSearchTargetId } from "./settingsLayout";
 
 /**
@@ -25,13 +25,9 @@ export function AdvancedSettings({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="group flex min-h-10 w-full items-center gap-2 rounded-b-box px-4 text-left text-meta font-medium text-ink-2 outline-none transition-colors hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-panel-open:rounded-none">
-        <ChevronRightIcon
-          aria-hidden
-          className="size-4 shrink-0 transition-transform duration-150 group-data-panel-open:rotate-90 motion-reduce:transition-none"
-        />
-        Advanced
-      </CollapsibleTrigger>
+      <div className="flex min-h-8 items-center px-2">
+        <SettingsFoldTrigger>Advanced</SettingsFoldTrigger>
+      </div>
       <CollapsiblePanel>{children}</CollapsiblePanel>
     </Collapsible>
   );

@@ -6,11 +6,7 @@ import {
   SnoozePresetDay,
   type SnoozePresetSetting,
 } from "@t3tools/contracts/settings";
-import {
-  resolveSnoozePreset,
-  resolveSnoozePresets,
-  snoozePresetId,
-} from "@t3tools/client-runtime/state/thread-settled";
+import { resolveSnoozePreset, snoozePresetId } from "@t3tools/client-runtime/state/thread-settled";
 import * as Equal from "effect/Equal";
 import * as Schema from "effect/Schema";
 import { PlusIcon, XIcon } from "lucide-react";
@@ -20,6 +16,8 @@ import { reconcileSnoozeDraft, sortSnoozeRows } from "./SnoozePresetsSettings.lo
 import { formatShortTimestamp } from "../../timestampFormat";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Popover, PopoverPopup, PopoverTrigger } from "../ui/popover";
+import { cn } from "~/lib/utils";
 import {
   NumberField,
   NumberFieldDecrement,
@@ -28,6 +26,7 @@ import {
   NumberFieldInput,
 } from "../ui/number-field";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
+import { Toggle, ToggleGroup } from "../ui/toggle-group";
 import { SettingResetButton, SettingsRow } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import {
@@ -49,8 +48,7 @@ const SINGULAR_UNIT_LABELS: Record<DurationUnit, string> = {
   days: "day",
 };
 
-const WHEN_LABELS: Record<"after" | SnoozePresetDay, string> = {
-  after: "In",
+const WHEN_LABELS: Record<SnoozePresetDay, string> = {
   today: "Today",
   tomorrow: "Tomorrow",
   monday: "Monday",
@@ -61,7 +59,6 @@ const WHEN_LABELS: Record<"after" | SnoozePresetDay, string> = {
   saturday: "Saturday",
   sunday: "Sunday",
 };
-const WHEN_VALUES = ["after", ...SnoozePresetDay.literals] as const;
 
 // Offered in order when adding, skipping any already in the list.
 const ADD_CANDIDATES: ReadonlyArray<SnoozePresetSetting> = [
@@ -105,6 +102,7 @@ const isSnoozePresetDay = Schema.is(SnoozePresetDay);
 interface KindMemory {
   readonly minutes: number;
   readonly time: string;
+  readonly day: SnoozePresetDay;
 }
 
 function withWhen(
@@ -186,7 +184,17 @@ export function SnoozePresetsRow() {
       serverScoped
       settingKeys={["snoozePresets"]}
       {...searchableSetting("snooze-options")}
-      description="Choices in every snooze menu, listed soonest first. Weekdays mean the next one after today."
+      control={
+        <Button
+          variant="ghost-muted"
+          size="xs"
+          disabled={presets.length >= MAX_SNOOZE_PRESETS}
+          onClick={() => save([...presets, nextCandidate(presets)], [...keys, ...freshKeys(1)])}
+        >
+          <PlusIcon />
+          Add option
+        </Button>
+      }
       resetAction={
         !mixed && sameSnoozePresets(presets, DEFAULT_SNOOZE_PRESETS) ? null : (
           <SettingResetButton
@@ -214,7 +222,6 @@ export function SnoozePresetsRow() {
             keys.filter((_, candidate) => candidate !== index),
           )
         }
-        onAdd={() => save([...presets, nextCandidate(presets)], [...keys, ...freshKeys(1)])}
         onSettle={() => setRows((current) => sortSnoozeRows(current.presets, current.keys, now))}
       />
     </SettingsRow>
@@ -227,7 +234,6 @@ function SnoozePresetList(props: {
   timestampFormat: Parameters<typeof formatShortTimestamp>[1];
   onChange: (index: number, preset: SnoozePresetSetting) => void;
   onRemove: (index: number) => void;
-  onAdd: () => void;
   onSettle: () => void;
 }) {
   const nowMinute = useNowMinute();
@@ -250,134 +256,145 @@ function SnoozePresetList(props: {
     return { tone: "menu", label: resolved.label, when: resolved.whenLabel } as const;
   });
 
-  const menuPresets = resolveSnoozePresets(now, { presets: props.presets, formatTime });
-  const repeatedLabels = new Set(
-    menuPresets
-      .map((preset) => preset.label)
-      .filter((label, index, labels) => labels.indexOf(label) !== index),
-  );
-  const menuOrder = menuPresets.map((preset) =>
-    repeatedLabels.has(preset.label) ? `${preset.label} ${preset.whenLabel}` : preset.label,
-  );
-
+  // The rows are the snooze menu as it reads now: its label and when it wakes. Each opens its
+  // fields in a float, and the list re-sorts once that closes, never under the pointer.
   return (
-    <div
-      className="flex flex-col gap-2 pt-2 pb-2"
-      onBlur={(event) => {
-        const list = event.currentTarget;
-        const next = event.relatedTarget;
-        if (list.contains(next)) return;
-        // Select popups portal out of the list, so focus moving into one is not leaving it.
-        if (next instanceof Element && next.closest('[data-slot="select-popup"]')) return;
-        // Waits for the amount field's blur commit, and skips its Enter blur-and-refocus.
-        queueMicrotask(() => {
-          if (!list.contains(document.activeElement)) props.onSettle();
-        });
-      }}
-    >
+    <div className="flex flex-col gap-1 pt-1">
+      {props.presets.length === 0 ? (
+        <p className="px-2 text-meta text-ink-2">Menus offer only Custom…</p>
+      ) : null}
       {props.presets.map((preset, index) => {
         const preview = previews[index]!;
+        const label = preview.tone === "menu" ? preview.label : describeSnoozePreset(preset);
         return (
           <div
             key={props.keys[index]}
-            role="group"
-            aria-label={`Snooze option ${index + 1}`}
-            className="flex flex-wrap items-center gap-2"
+            className="group/snooze relative flex h-8 items-center gap-2 rounded-row px-2 transition-colors hover:bg-foreground/4 has-data-popup-open:bg-foreground/8"
           >
-            <SnoozePresetFields preset={preset} onChange={(next) => props.onChange(index, next)} />
-            <div className="ml-auto flex min-w-0 items-center gap-2 text-meta text-ink-2">
-              {preview.tone === "menu" ? (
-                <span className="truncate">
-                  <span className="text-ink-1">{preview.label}</span>
-                  <span className="ps-2 tabular-nums">{preview.when}</span>
-                </span>
-              ) : (
-                <span className="truncate">{preview.text}</span>
+            <Popover
+              onOpenChange={(open) => {
+                // Waits for the amount field's blur commit before the list moves.
+                if (!open) queueMicrotask(props.onSettle);
+              }}
+            >
+              <PopoverTrigger
+                aria-label={`Edit snooze option ${label}`}
+                render={
+                  <button
+                    type="button"
+                    className="absolute inset-0 rounded-inherit outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                  />
+                }
+              />
+              <PopoverPopup side="bottom" align="start" padding="none">
+                <SnoozePresetFields
+                  preset={preset}
+                  onChange={(next) => props.onChange(index, next)}
+                />
+              </PopoverPopup>
+            </Popover>
+            <span
+              className={cn(
+                "pointer-events-none truncate text-body",
+                preview.tone === "menu" ? "text-ink-1" : "text-ink-3",
               )}
+            >
+              {label}
+            </span>
+            <span className="pointer-events-none ms-auto shrink-0 text-meta text-ink-2 tabular-nums">
+              {preview.tone === "menu" ? preview.when : preview.text}
+            </span>
+            <span className="relative flex opacity-0 transition-opacity group-hover/snooze:opacity-100 has-focus-visible:opacity-100">
               <Button
                 variant="ghost-muted"
-                size="icon-sm"
+                size="icon-xs"
                 aria-label={`Remove snooze option ${index + 1}`}
                 onClick={() => props.onRemove(index)}
               >
                 <XIcon />
               </Button>
-            </div>
+            </span>
           </div>
         );
       })}
-      <p className="text-meta text-ink-2">
-        {menuOrder.length === 0 ? "Menus offer only Custom…" : `Menu now: ${menuOrder.join(" · ")}`}
-      </p>
-      <div>
-        <Button
-          variant="ghost-muted"
-          size="sm"
-          disabled={props.presets.length >= MAX_SNOOZE_PRESETS}
-          onClick={props.onAdd}
-        >
-          <PlusIcon />
-          Add option
-        </Button>
-        {props.presets.length >= MAX_SNOOZE_PRESETS ? (
-          <span className="ps-2 text-meta text-ink-2">Up to {MAX_SNOOZE_PRESETS} options</span>
-        ) : null}
-      </div>
     </div>
   );
 }
 
+function describeSnoozePreset(preset: SnoozePresetSetting): string {
+  if (preset.kind === "at") return `${WHEN_LABELS[preset.day]} at ${preset.time}`;
+  const { amount, unit } = splitMinutes(preset.minutes);
+  return `In ${amount} ${(amount === 1 ? SINGULAR_UNIT_LABELS : UNIT_LABELS)[unit]}`;
+}
+
+const DAY_VALUES = SnoozePresetDay.literals;
+
+/** One option's float: In or At, then its amount or its day and time. The row it edits stays in
+ *  view above it and says when it wakes. */
 function SnoozePresetFields(props: {
   preset: SnoozePresetSetting;
   onChange: (preset: SnoozePresetSetting) => void;
 }) {
   const { preset, onChange } = props;
-  const when = preset.kind === "after" ? "after" : preset.day;
-  // Switching between a duration and a set time keeps the other kind's last value, so a
-  // misclick on "When" can be undone without retyping it.
-  const [memory, setMemory] = useState<KindMemory>({ minutes: 60, time: "09:00" });
+  // Switching between In and At keeps the other kind's last value, so a misclick can be undone
+  // without retyping it.
+  const [memory, setMemory] = useState<KindMemory>({ minutes: 60, time: "09:00", day: "tomorrow" });
+  const switchKind = (kind: "after" | "at") => {
+    if (kind === preset.kind) return;
+    const next = withWhen(preset, kind === "after" ? "after" : memory.day, memory);
+    if (!next) return;
+    setMemory(
+      preset.kind === "after"
+        ? { ...memory, minutes: preset.minutes }
+        : { ...memory, time: preset.time, day: preset.day },
+    );
+    onChange(next);
+  };
   return (
-    <div className="flex min-w-0 flex-wrap items-center gap-2">
-      <Select
-        value={when}
-        items={WHEN_LABELS}
-        onValueChange={(value) => {
-          const next = value === null ? null : withWhen(preset, value, memory);
-          if (!next) return;
-          if (next.kind !== preset.kind) {
-            setMemory(
-              preset.kind === "after"
-                ? { ...memory, minutes: preset.minutes }
-                : { ...memory, time: preset.time },
-            );
-          }
-          onChange(next);
+    <div className="flex w-72 flex-col gap-2 p-2">
+      <ToggleGroup
+        aria-label="When"
+        // Every line of the float runs edge to edge, so its controls share one right edge.
+        className="w-full *:flex-1"
+        value={[preset.kind]}
+        onValueChange={(next) => {
+          const kind = next[0];
+          if (kind === "after" || kind === "at") switchKind(kind);
         }}
       >
-        <SelectTrigger variant="ghost" size="sm" aria-label="When">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectPopup>
-          {WHEN_VALUES.map((value) => (
-            <SelectItem hideIndicator key={value} value={value}>
-              {WHEN_LABELS[value]}
-            </SelectItem>
-          ))}
-        </SelectPopup>
-      </Select>
+        <Toggle value="after">In</Toggle>
+        <Toggle value="at">At</Toggle>
+      </ToggleGroup>
       {preset.kind === "after" ? (
         <DurationFields
           minutes={preset.minutes}
           onChange={(minutes) => onChange({ ...preset, minutes })}
         />
       ) : (
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className="text-meta text-ink-2">at</span>
+        <div className="flex items-center gap-2">
+          <Select
+            value={preset.day}
+            items={WHEN_LABELS}
+            onValueChange={(value) => {
+              if (isSnoozePresetDay(value)) onChange({ ...preset, day: value });
+            }}
+          >
+            <SelectTrigger size="sm" aria-label="Day">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectPopup>
+              {DAY_VALUES.map((value) => (
+                <SelectItem hideIndicator key={value} value={value}>
+                  {WHEN_LABELS[value]}
+                </SelectItem>
+              ))}
+            </SelectPopup>
+          </Select>
           <Input
             nativeInput
             size="sm"
             type="time"
-            className="w-32"
+            className="w-28 shrink-0"
             aria-label="Time"
             value={preset.time}
             onChange={(event) => {
@@ -408,10 +425,10 @@ function DurationFields(props: { minutes: number; onChange: (minutes: number) =>
     setDraft(amount);
   }
   return (
-    <div className="flex min-w-0 flex-wrap items-center gap-2">
+    <div className="flex items-center gap-2">
       <NumberField
         size="sm"
-        className="w-32"
+        className="w-28"
         min={1}
         max={maxAmount}
         step={1}
@@ -442,27 +459,22 @@ function DurationFields(props: { minutes: number; onChange: (minutes: number) =>
           <NumberFieldIncrement aria-label="Increase" />
         </NumberFieldGroup>
       </NumberField>
-      <Select
-        value={unit}
-        items={amount === 1 ? SINGULAR_UNIT_LABELS : UNIT_LABELS}
-        onValueChange={(value) => {
+      <ToggleGroup
+        aria-label="Unit"
+        className="flex-1 *:flex-1"
+        value={[unit]}
+        onValueChange={(next) => {
+          const value = next[0];
           if (value === "minutes" || value === "hours" || value === "days") {
             setChosenUnit(value);
             props.onChange(Math.min(amount * UNIT_MINUTES[value], MAX_SNOOZE_PRESET_MINUTES));
           }
         }}
       >
-        <SelectTrigger variant="ghost" size="sm" aria-label="Unit">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectPopup>
-          {(Object.keys(UNIT_LABELS) as DurationUnit[]).map((value) => (
-            <SelectItem hideIndicator key={value} value={value}>
-              {(amount === 1 ? SINGULAR_UNIT_LABELS : UNIT_LABELS)[value]}
-            </SelectItem>
-          ))}
-        </SelectPopup>
-      </Select>
+        <Toggle value="minutes">min</Toggle>
+        <Toggle value="hours">{amount === 1 ? "hour" : "hours"}</Toggle>
+        <Toggle value="days">{amount === 1 ? "day" : "days"}</Toggle>
+      </ToggleGroup>
     </div>
   );
 }

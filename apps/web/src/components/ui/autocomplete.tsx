@@ -124,7 +124,7 @@ function AutocompleteItem({ className, children, ...props }: AutocompletePrimiti
   return (
     <AutocompletePrimitive.Item
       className={cn(
-        "nest-row flex min-h-8 items-center cursor-default select-none py-1 text-base outline-none hover:bg-foreground/9 data-disabled:pointer-events-none data-selected:bg-foreground/8 data-selected:text-ink-1 data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground [&[data-highlighted][data-selected]]:bg-accent [&[data-highlighted][data-selected]]:text-accent-foreground data-disabled:opacity-64 sm:text-body [&_svg:not([class*='text-'])]:text-ink-2",
+        "nest-row flex min-h-6 items-center cursor-default select-none py-1 text-meta outline-none hover:bg-foreground/9 data-disabled:pointer-events-none data-selected:bg-foreground/8 data-selected:text-ink-1 data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground [&[data-highlighted][data-selected]]:bg-accent [&[data-highlighted][data-selected]]:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='text-'])]:text-ink-2",
         className,
       )}
       data-slot="autocomplete-item"

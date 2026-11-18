@@ -182,7 +182,7 @@ function createIconElement(name: string, tone: "neutral" | "destructive"): SVGSV
   svg.setAttribute("stroke-linejoin", "round");
   svg.setAttribute(
     "class",
-    tone === "destructive" ? "size-4 shrink-0 sm:size-4" : "size-4 shrink-0 text-ink-2 sm:size-4",
+    tone === "destructive" ? "size-3 shrink-0" : "size-3 shrink-0 text-ink-2",
   );
   for (const node of paths) {
     const child = document.createElementNS(SVG_NS, node.tag);
@@ -368,6 +368,13 @@ export function showContextMenuFallback<T extends string>(
     };
 
     const closeMenusFromLevel = (level: number) => {
+      // Removing a focused item drops focus out of the menu, and the next focus move anywhere
+      // then reads as leaving it and closes the whole menu. Hand focus to the item that opened
+      // the first closing menu, as Escape does.
+      const opener = submenuTriggerStack[level];
+      if (opener && isNodeWithinMenuStack(document.activeElement, menuStack.slice(level))) {
+        opener.focus({ preventScroll: true });
+      }
       while (menuStack.length > level) {
         submenuTriggerStack.pop()?.setAttribute("aria-expanded", "false");
         menuStack.pop()?.remove();
@@ -387,7 +394,7 @@ export function showContextMenuFallback<T extends string>(
       menu.className =
         "dropdown-glass fixed z-10000 min-w-32 max-w-sm overflow-hidden rounded-row bg-clip-padding text-popover-foreground outline-none";
       menu.style.cssText =
-        "position:fixed;z-index:10000;min-width:8rem;max-width:24rem;overflow:hidden;border-radius:var(--radius-lg);background-clip:padding-box;color:var(--contrast-popover-foreground);outline:none;pointer-events:auto;";
+        "position:fixed;z-index:10000;min-width:8rem;max-width:24rem;overflow:hidden;border-radius:var(--radius-box);background-clip:padding-box;color:var(--contrast-popover-foreground);outline:none;pointer-events:auto;";
       menu.style.left = `${preferredLeft}px`;
       menu.style.top = `${preferredTop}px`;
       menu.dataset.level = String(level);
@@ -399,14 +406,13 @@ export function showContextMenuFallback<T extends string>(
       const inner = document.createElement("div");
       inner.className = "max-h-dvh min-w-0 max-w-sm overflow-y-auto overflow-x-hidden p-1";
       inner.style.cssText =
-        "max-height:calc(100vh - 0.5rem);min-width:0;max-width:24rem;overflow-x:hidden;overflow-y:auto;padding:0.25rem;";
+        "max-height:calc(100vh - 0.5rem);min-width:0;max-width:24rem;overflow-x:hidden;overflow-y:auto;padding:var(--step);";
 
       for (const item of entries) {
+        // Groups part by a step of space, not a line (DESIGN.md: one character, no lines).
         if (item.separatorBefore === true && inner.children.length > 0) {
           const separator = document.createElement("div");
-          separator.className = "mx-2 my-1 h-px bg-border";
-          separator.style.cssText =
-            "height:1px;margin:0.25rem 0.5rem;background:var(--contrast-border);";
+          separator.style.cssText = "height:var(--step);";
           separator.dataset.contextMenuSeparator = "true";
           separator.setAttribute("role", "separator");
           inner.appendChild(separator);
@@ -414,7 +420,7 @@ export function showContextMenuFallback<T extends string>(
 
         if (item.header === true) {
           const header = document.createElement("div");
-          header.className = "px-2 py-2 font-medium text-ink-2 text-meta";
+          header.className = "px-2 py-1 font-medium text-ink-2 text-meta";
           header.textContent = item.label;
           inner.appendChild(header);
           continue;
@@ -439,7 +445,8 @@ export function showContextMenuFallback<T extends string>(
             ? `${rowBase} text-destructive-foreground hover:bg-destructive/10 hover:text-destructive-foreground`
             : `${rowBase} text-ink-1 hover:bg-accent hover:text-accent-foreground`;
         button.style.cssText =
-          "display:flex;width:100%;min-height:1.75rem;align-items:center;gap:0.5rem;border:0;border-radius:var(--radius-sm);background:transparent;padding:0.25rem 0.5rem;color:var(--contrast-foreground);font-family:var(--font-sans,system-ui,sans-serif);font-size:0.875rem;line-height:1.25rem;text-align:left;cursor:default;";
+          // The menu row's make (ui/menu): 24 tall, a row's corner and inset, the meta type.
+          "display:flex;width:100%;min-height:calc(var(--step) * 3);align-items:center;gap:var(--step);border:0;border-radius:var(--radius-row);background:transparent;padding:0 var(--step);color:var(--contrast-foreground);font-family:var(--font-sans,system-ui,sans-serif);font-size:var(--type-meta);line-height:var(--line-meta);text-align:left;cursor:default;";
         if (isLeafDestructive) {
           button.style.color = "var(--destructive-foreground)";
         }
@@ -457,8 +464,9 @@ export function showContextMenuFallback<T extends string>(
             button.appendChild(check);
           } else {
             const spacer = document.createElement("span");
-            spacer.className = "size-4 shrink-0 sm:size-4";
-            spacer.style.cssText = "display:inline-block;width:1rem;height:1rem;flex-shrink:0;";
+            spacer.className = "size-3 shrink-0";
+            spacer.style.cssText =
+              "display:inline-block;width:0.75rem;height:0.75rem;flex-shrink:0;";
             spacer.setAttribute("aria-hidden", "true");
             button.appendChild(spacer);
           }
@@ -490,10 +498,7 @@ export function showContextMenuFallback<T extends string>(
           button.setAttribute("aria-expanded", "false");
           const chevron = createIconElement("chevron-right", "neutral");
           if (chevron) {
-            chevron.setAttribute(
-              "class",
-              "ms-auto size-4 shrink-0 text-ink-2 opacity-80 sm:size-4",
-            );
+            chevron.setAttribute("class", "ms-auto size-3 shrink-0 text-ink-2 opacity-80");
             chevron.setAttribute("aria-hidden", "true");
             chevron.dataset.contextMenuChevron = "true";
             button.appendChild(chevron);

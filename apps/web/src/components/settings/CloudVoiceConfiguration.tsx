@@ -62,6 +62,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
+import { Field } from "../ui/field";
 import { Label } from "../ui/label";
 import { SecretInput } from "./SecretInput";
 import { SecretSourceSelect } from "./SecretSourceInput";
@@ -316,7 +317,7 @@ export function CloudVoiceConfiguration({
         if (!open && !busy) close();
       }}
     >
-      <DialogPopup className="max-w-md" showCloseButton={!busy}>
+      <DialogPopup size="sm" showCloseButton={!busy}>
         <DialogHeader>
           <DialogTitle>
             {remove
@@ -359,8 +360,7 @@ export function CloudVoiceConfiguration({
                   submit();
                 }}
               >
-                <div className="grid gap-2">
-                  <Label htmlFor="voice-cloud-model">Model</Label>
+                <Field label="Model" htmlFor="voice-cloud-model" stacked>
                   {listedModels ? (
                     <ModelPicker
                       models={listedModels}
@@ -378,7 +378,7 @@ export function CloudVoiceConfiguration({
                       Loading transcription models…
                     </p>
                   )}
-                </div>
+                </Field>
                 {editingKey ? (
                   <div className="grid gap-2">{keyField}</div>
                 ) : !saved ? (

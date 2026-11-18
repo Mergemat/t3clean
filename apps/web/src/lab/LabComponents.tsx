@@ -437,7 +437,7 @@ export function LabComponents() {
         <Row>
           <Dialog>
             <DialogTrigger render={<Button variant="outline" />}>Dialog</DialogTrigger>
-            <DialogPopup className="max-w-md">
+            <DialogPopup size="sm">
               <DialogHeader>
                 <DialogTitle>Dialog title</DialogTitle>
                 <DialogDescription>Dialogs float above every card.</DialogDescription>

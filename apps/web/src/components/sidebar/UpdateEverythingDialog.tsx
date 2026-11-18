@@ -76,7 +76,7 @@ export function UpdateEverythingDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       {/* Refocusing the trigger after a pointer close shows its focus ring and opens its tooltip. */}
       <AlertDialogPopup
-        className="sm:max-w-xl"
+        size="md"
         initialFocus={cancelRef}
         finalFocus={(closeType) => closeType === "keyboard"}
       >

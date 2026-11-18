@@ -239,7 +239,7 @@ export const ProposedPlanCard = memo(function ProposedPlanCard({
           }
         }}
       >
-        <DialogPopup className="max-w-xl">
+        <DialogPopup>
           <SavePlanToWorkspaceForm
             initialPath={lastSavePath || downloadFilename}
             placeholder={downloadFilename}

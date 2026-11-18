@@ -121,7 +121,7 @@ export function DevReplayHost() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogPopup className="sm:max-w-sm">
+      <DialogPopup size="sm">
         <DialogHeader>
           <DialogTitle>
             {project === undefined ? "Replay a recorded turn" : `Replay in ${project.title}`}

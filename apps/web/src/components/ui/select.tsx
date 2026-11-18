@@ -26,10 +26,10 @@ const selectTriggerVariants = cva(
       size: {
         compact:
           "h-7 gap-1 rounded-row px-2 text-meta before:rounded-inherit [&_svg:not([class*='size-'])]:size-4",
-        default: "min-h-9 px-3 sm:min-h-8",
-        lg: "min-h-10 px-3 sm:min-h-9",
+        default: "min-h-9 px-3",
+        lg: "min-h-10 px-3",
         sm: "min-h-8 gap-2 px-3",
-        xs: "h-7 gap-1 rounded-row px-2 text-body before:rounded-inherit sm:h-6 sm:text-meta [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4",
+        xs: "h-6 gap-1 rounded-row px-2 text-meta before:rounded-inherit [&_svg:not([class*='size-'])]:size-3",
       },
     },
   },
@@ -175,7 +175,7 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "nest-row flex min-h-8 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-base outline-none data-selected:bg-foreground/8 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground data-disabled:opacity-64 sm:text-body [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "nest-row flex min-h-6 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-meta outline-none data-selected:bg-foreground/8 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       data-slot="select-item"

@@ -450,8 +450,8 @@ export function ProviderEnvironmentSection(props: {
       title="Variables"
       description="API keys, base URLs, and other per-instance CLI settings."
       control={
-        <Button type="button" size="sm" variant="outline" onClick={addVariable}>
-          <PlusIcon className="size-3" />
+        <Button type="button" size="xs" variant="ghost-muted" onClick={addVariable}>
+          <PlusIcon />
           Add variable
         </Button>
       }
@@ -1122,88 +1122,63 @@ export function ProviderInstanceCard({
     </Popover>
   ) : null;
 
-  if (mode === "list") {
-    return (
-      <div
-        data-slot="settings-row"
-        className={cn(
-          "nest-row group relative flex min-h-14 items-center py-2 transition-colors",
-          selected ? "bg-foreground/8" : "hover:bg-muted/25",
-        )}
-      >
-        <div
-          className={cn(
-            "pointer-events-none flex min-w-0 flex-1 items-start gap-2 rounded-row text-left transition-opacity",
-            !enabled && !selected && "opacity-60 group-hover:opacity-100",
-          )}
-        >
-          <button
-            type="button"
-            className="pointer-events-auto absolute inset-0 cursor-pointer rounded-row outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
-            onClick={onSelect}
-            aria-label={`Select ${displayName}`}
-            aria-pressed={selected}
+  // The provider's switch, with its project override: the first row of its settings.
+  const enableControl = (
+    <span className="flex shrink-0 items-center gap-1">
+      {projectOverride?.value !== undefined ? (
+        <span className="flex items-center">
+          <ProjectOverrideInheritance
+            projectEnabled={projectOverride.value}
+            deviceEnabled={resolveProviderInstanceEnabled(instance)}
           />
-          {titleIconNode}
-          <span className="min-w-0 flex-1">
-            <span className="flex min-w-0 items-center gap-2">
-              <span className="truncate text-body font-medium text-ink-1">{displayName}</span>
-              {versionLabel ? (
-                <code className="max-w-24 shrink-0 truncate text-meta text-ink-2">
-                  {versionLabel}
-                </code>
-              ) : null}
-              {versionAdvisoryNode}
-            </span>
-            <span className="flex items-start gap-2 text-meta leading-normal text-ink-2">
-              {statusDotNode && !updateProgress ? (
-                <span className="flex h-lh shrink-0 items-center">{statusDotNode}</span>
-              ) : null}
-              <ProviderStatusDiagnostic detail={statusDiagnostic}>
-                <span
-                  tabIndex={statusDiagnostic ? 0 : undefined}
-                  aria-live="polite"
-                  className="pointer-events-auto line-clamp-2 wrap-anywhere"
-                >
-                  {updateProgress ? (
-                    `Updating · ${updateProgress}`
-                  ) : (
-                    <>
-                      {summary.headline}
-                      {needsAttention && inlineStatusDetail ? ` · ${inlineStatusDetail}` : null}
-                    </>
-                  )}
-                </span>
-              </ProviderStatusDiagnostic>
-            </span>
-          </span>
-        </div>
-        <span className="pointer-events-none relative flex h-5 shrink-0 items-center gap-1 *:pointer-events-auto">
-          {projectOverride?.value !== undefined ? (
-            <span className="flex items-center">
-              <ProjectOverrideInheritance
-                projectEnabled={projectOverride.value}
-                deviceEnabled={resolveProviderInstanceEnabled(instance)}
-              />
-              <SettingResetButton
-                label={`${displayName} enablement`}
-                tooltip="Reset to the device setting"
-                disabled={readOnly || !canWriteSettings}
-                onClick={projectOverride.onReset}
-              />
-            </span>
-          ) : null}
-          {/* The policy refuses switching it on; switching it off stays the user's call. */}
-          <ManagedControl reason={enabled ? undefined : managedDriverReason}>
-            <Switch
-              checked={enabled}
-              disabled={readOnly || (projectOverride !== undefined && !canWriteSettings)}
-              onCheckedChange={(checked) => updateEnabled(Boolean(checked))}
-              aria-label={`Enable ${displayName}`}
-            />
-          </ManagedControl>
+          <SettingResetButton
+            label={`${displayName} enablement`}
+            tooltip="Reset to the device setting"
+            disabled={readOnly || !canWriteSettings}
+            onClick={projectOverride.onReset}
+          />
         </span>
-      </div>
+      ) : null}
+      {/* The policy refuses switching it on; switching it off stays the user's call. */}
+      <ManagedControl reason={enabled ? undefined : managedDriverReason}>
+        <Switch
+          checked={enabled}
+          disabled={readOnly || (projectOverride !== undefined && !canWriteSettings)}
+          onCheckedChange={(checked) => updateEnabled(Boolean(checked))}
+          aria-label={`Enable ${displayName}`}
+        />
+      </ManagedControl>
+    </span>
+  );
+
+  if (mode === "list") {
+    // The model picker's provider strip: the icon, a dot for on or off, filled when selected.
+    return (
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              className="relative isolate flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-row transition-colors outline-none hover:bg-foreground/9 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring aria-pressed:bg-foreground/8"
+              onClick={onSelect}
+              aria-label={`Select ${displayName}`}
+              aria-pressed={selected}
+            />
+          }
+        >
+          {titleIconNode}
+          <span
+            aria-hidden
+            className={cn(
+              "absolute right-1 bottom-1 size-2 rounded-full ring-2 ring-background",
+              enabled ? "bg-success" : "bg-ink-3",
+            )}
+          />
+        </TooltipTrigger>
+        <TooltipPopup side="right">
+          {displayName} · {updateProgress ? `Updating · ${updateProgress}` : summary.headline}
+        </TooltipPopup>
+      </Tooltip>
     );
   }
 
@@ -1305,8 +1280,23 @@ export function ProviderInstanceCard({
 
   return (
     <>
-      <SettingsSection title={displayName} icon={titleIconNode} headerAction={editorHeaderAction}>
-        <SettingsRow title="Status" status={statusContent} />
+      <SettingsSection title={displayName} hideTitle>
+        {/* The strip shows only the icon, so the first row names the provider: its status and switch. */}
+        <SettingsRow
+          title={
+            <span className="flex items-center gap-2">
+              {titleIconNode}
+              {displayName}
+            </span>
+          }
+          status={statusContent}
+          control={
+            <span className="flex items-center gap-2">
+              {editorHeaderAction}
+              {enableControl}
+            </span>
+          }
+        />
         <SettingsRow
           title="Display name"
           control={
@@ -1318,12 +1308,21 @@ export function ProviderInstanceCard({
                 readOnly && "opacity-50 select-none",
               )}
             >
-              <ProviderAccentColorPicker
-                layout="inline"
-                displayName={displayName}
-                value={accentColor}
-                onCommit={updateAccentColor}
-              />
+              {/* Unset, the accent is an option, not a value: it waits for the row you point at. */}
+              <span
+                className={cn(
+                  "flex",
+                  !accentColor &&
+                    "opacity-0 transition-opacity group-hover/settings-row:opacity-100 has-focus-visible:opacity-100 has-data-popup-open:opacity-100",
+                )}
+              >
+                <ProviderAccentColorPicker
+                  layout="inline"
+                  displayName={displayName}
+                  value={accentColor}
+                  onCommit={updateAccentColor}
+                />
+              </span>
               <DraftInput
                 id={`provider-instance-${instanceId}-display-name`}
                 size="sm"
@@ -1371,56 +1370,71 @@ export function ProviderInstanceCard({
         </SettingsSection>
       ) : null}
 
-      {instance.driver === "codex" && readCodexSetupMode(instance.config) === "managed" ? (
-        <div
-          inert={readOnly}
-          aria-disabled={readOnly || undefined}
-          className={readOnly ? "opacity-50 select-none" : undefined}
-        >
-          <FoldedSettingsSection
-            key={instanceId}
-            id={`provider-instance-${instanceId}-runtime`}
-            title="Runtime"
-            headerPlacement="outside"
-          >
-            {runtime ?? runtimeFields}
-          </FoldedSettingsSection>
-        </div>
-      ) : !driverOption || deriveProviderSettingsFields(driverOption).length > 0 ? (
-        <SettingsSection
-          title="Runtime"
-          inert={readOnly}
-          aria-disabled={readOnly || undefined}
-          className={readOnly ? "opacity-50 select-none" : undefined}
-        >
-          {runtimeFields}
+      {driverOption !== undefined ? (
+        <SettingsSection title="Models" hideTitle>
+          <ProviderModelsSection
+            canManageCustomModels={!readOnly}
+            canWritePreferences={canWriteSettings}
+            instanceId={instanceId}
+            driverKind={driverKind}
+            models={modelsForDisplay}
+            customModels={customModels}
+            hiddenModels={hiddenModels}
+            favoriteModels={favoriteModels}
+            modelOrder={modelOrder}
+            onChange={updateCustomModels}
+            onHiddenModelsChange={onHiddenModelsChange}
+            onFavoriteModelsChange={onFavoriteModelsChange}
+            onToggleFavorite={onToggleFavorite}
+            onModelOrderChange={onModelOrderChange}
+          />
         </SettingsSection>
       ) : null}
-
-      <SettingsSection
-        title="Environment"
-        inert={readOnly || instanceLocks?.wholeEnvironment}
-        aria-disabled={readOnly || instanceLocks?.wholeEnvironment || undefined}
-        className={readOnly ? "opacity-50 select-none" : undefined}
+      {/* Paths, arguments and variables are set once; the models are what people come back for. */}
+      <FoldedSettingsSection
+        key={instanceId}
+        id={`provider-instance-${instanceId}-advanced`}
+        title="Runtime and environment"
+        headerPlacement="outside"
       >
-        {instanceLocks?.wholeEnvironment ? (
-          <ManagedNotice>{instanceLocks.reason}</ManagedNotice>
+        {(instance.driver === "codex" && readCodexSetupMode(instance.config) === "managed") ||
+        !driverOption ||
+        deriveProviderSettingsFields(driverOption).length > 0 ? (
+          <SettingsSection
+            title="Runtime"
+            inert={readOnly}
+            aria-disabled={readOnly || undefined}
+            className={readOnly ? "opacity-50 select-none" : undefined}
+          >
+            {runtime ?? runtimeFields}
+          </SettingsSection>
         ) : null}
-        <div className={instanceLocks?.wholeEnvironment ? "opacity-50" : undefined}>
-          <ProviderEnvironmentSection
-            environment={genericEnvironment}
-            onChange={updateGenericEnvironment}
-            secretSources={secretSources}
-            environmentId={environmentId}
-            managed={
-              instanceLocks && {
-                names: instanceLocks.environmentNames,
-                reason: instanceLocks.reason,
+
+        <SettingsSection
+          title="Environment"
+          inert={readOnly || instanceLocks?.wholeEnvironment}
+          aria-disabled={readOnly || instanceLocks?.wholeEnvironment || undefined}
+          className={readOnly ? "opacity-50 select-none" : undefined}
+        >
+          {instanceLocks?.wholeEnvironment ? (
+            <ManagedNotice>{instanceLocks.reason}</ManagedNotice>
+          ) : null}
+          <div className={instanceLocks?.wholeEnvironment ? "opacity-50" : undefined}>
+            <ProviderEnvironmentSection
+              environment={genericEnvironment}
+              onChange={updateGenericEnvironment}
+              secretSources={secretSources}
+              environmentId={environmentId}
+              managed={
+                instanceLocks && {
+                  names: instanceLocks.environmentNames,
+                  reason: instanceLocks.reason,
+                }
               }
-            }
-          />
-        </div>
-      </SettingsSection>
+            />
+          </div>
+        </SettingsSection>
+      </FoldedSettingsSection>
       {environmentId !== undefined && liveProvider?.driver === "acpRegistry" ? (
         <AcpSessionManagementSection
           environmentId={environmentId}
@@ -1429,33 +1443,6 @@ export function ProviderInstanceCard({
           projects={acpProjects}
           readOnly={readOnly}
         />
-      ) : null}
-
-      {driverOption !== undefined ? (
-        <SettingsSection title="Models">
-          <div className="px-4 py-2">
-            <p className="mb-2 text-meta text-ink-2">
-              Model preferences and custom models are saved on the selected environment and shared
-              across connected devices.
-            </p>
-            <ProviderModelsSection
-              canManageCustomModels={!readOnly}
-              canWritePreferences={canWriteSettings}
-              instanceId={instanceId}
-              driverKind={driverKind}
-              models={modelsForDisplay}
-              customModels={customModels}
-              hiddenModels={hiddenModels}
-              favoriteModels={favoriteModels}
-              modelOrder={modelOrder}
-              onChange={updateCustomModels}
-              onHiddenModelsChange={onHiddenModelsChange}
-              onFavoriteModelsChange={onFavoriteModelsChange}
-              onToggleFavorite={onToggleFavorite}
-              onModelOrderChange={onModelOrderChange}
-            />
-          </div>
-        </SettingsSection>
       ) : null}
     </>
   );

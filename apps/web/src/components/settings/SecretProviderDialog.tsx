@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Field } from "../ui/field";
 import {
   draftFromSecretProvider,
   secretProviderFromDraft,
@@ -64,7 +64,7 @@ export function SecretProviderDialog({
         if (!next) onClose();
       }}
     >
-      <DialogPopup className="max-w-md">
+      <DialogPopup size="sm">
         <DialogHeader>
           <DialogTitle>
             {existing ? `Edit ${existing.config.label}` : "Add a 1Password provider"}
@@ -83,8 +83,7 @@ export function SecretProviderDialog({
               save();
             }}
           >
-            <div className="grid gap-2">
-              <Label htmlFor="secret-provider-name">Name</Label>
+            <Field label="Name" htmlFor="secret-provider-name" stacked>
               <Input
                 id="secret-provider-name"
                 placeholder="Personal"
@@ -106,9 +105,8 @@ export function SecretProviderDialog({
                   {nameError}
                 </p>
               ) : null}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="secret-provider-account">Account</Label>
+            </Field>
+            <Field label="Account" htmlFor="secret-provider-account" stacked>
               <Input
                 id="secret-provider-account"
                 placeholder="my.1password.com"
@@ -134,10 +132,10 @@ export function SecretProviderDialog({
                 The account shorthand, sign-in address without https://, or ID that op account list
                 shows.
               </p>
-            </div>
+            </Field>
           </form>
         </DialogPanel>
-        <DialogFooter variant="bare">
+        <DialogFooter>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>

@@ -14,7 +14,7 @@ import {
   type SimlockDeviceHostConfig,
   type SshDeviceHostConfig,
 } from "@t3tools/contracts";
-import { ChevronDownIcon, MoreVertical, PlusIcon } from "lucide-react";
+import { MoreVertical, PlusIcon } from "lucide-react";
 
 import { cn, randomUUID } from "../../lib/utils";
 import { deviceEnvironment } from "../../state/device";
@@ -522,10 +522,9 @@ export function DeviceSourcesSettings(props: {
   const addMenu = (
     <Menu>
       <MenuTrigger
-        render={<Button size="sm" variant="outline" disabled={disabled || editing !== null} />}
+        render={<Button size="xs" variant="ghost-muted" disabled={disabled || editing !== null} />}
       >
-        <PlusIcon className="size-4" /> Add source
-        <ChevronDownIcon className="size-4" />
+        <PlusIcon /> Add source
       </MenuTrigger>
       <MenuPopup align="end">
         <MenuItem
@@ -750,15 +749,12 @@ function DeviceSourceRow(props: { row: SourceRow }) {
   const problems = issues.filter((environment) => environment.status.tone !== "pending");
   const pending = issues.find((environment) => environment.status.tone === "pending");
   return (
-    <div className="flex items-center gap-2 px-4 py-2">
+    // A settings row: same inset and type, so sources line up with the rows above them.
+    <div className="flex items-center gap-2 rounded-row px-2 py-2">
       <div className="min-w-0 flex-1">
-        <div className="flex min-w-0 items-center gap-2">
-          <p className="truncate text-body font-medium">{row.title}</p>
-          {row.kind ? (
-            <span className="shrink-0 rounded-chip border border-border px-1 text-meta uppercase tracking-wide text-ink-2">
-              {row.kind}
-            </span>
-          ) : null}
+        <div className="flex min-w-0 items-baseline gap-2">
+          <p className="truncate text-body text-ink-1">{row.title}</p>
+          {row.kind ? <span className="shrink-0 text-meta text-ink-2">{row.kind}</span> : null}
         </div>
         <p className="truncate text-meta text-ink-2">{row.description}</p>
         {problems.map((environment) => (

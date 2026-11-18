@@ -159,11 +159,11 @@ export function ProjectActionsSettings() {
             ) : null}
             <Button
               size="xs"
-              variant="outline"
+              variant="ghost-muted"
               disabled={saving || !canWriteSettings || targets.length === 0}
               onClick={() => setRequest({ scriptId: null, initial: EMPTY_PROJECT_SCRIPT_INPUT })}
             >
-              <PlusIcon className="size-4" />
+              <PlusIcon />
               Add action
             </Button>
           </div>

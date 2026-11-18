@@ -55,7 +55,7 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../ui/menu";
-import { Label } from "../ui/label";
+import { Field } from "../ui/field";
 import { Spinner } from "../ui/spinner";
 import { Switch } from "../ui/switch";
 import { WizardFooter, WizardHeader, WizardPanel, WizardPopup, WizardSteps } from "../ui/wizard";
@@ -96,18 +96,18 @@ export function TextGeneratorsSettings({
         {...searchableSetting("text-generators")}
         headerAction={
           !readOnly ? (
-            <Button size="xs" variant="outline" onClick={() => setEditing("new")}>
-              <PlusIcon className="size-3" aria-hidden />
+            <Button size="xs" variant="ghost-muted" onClick={() => setEditing("new")}>
+              <PlusIcon aria-hidden />
               Add generator
             </Button>
           ) : null
         }
       >
         {generators.length === 0 ? (
-          <SettingsRow
-            title="No text generators yet"
-            description="Add a model API to write thread titles, commit messages, and other short text without starting a coding agent."
-          />
+          <p className="px-2 text-meta text-ink-2">
+            A model API that writes thread titles and commit messages without starting a coding
+            agent.
+          </p>
         ) : null}
         {generators.map(([id, config]) => {
           const name = textGeneratorDisplayName(config);
@@ -390,8 +390,7 @@ function TextGeneratorWizard({
                   </div>
                 ) : null}
                 {showBaseUrl ? (
-                  <div className="grid gap-2">
-                    <Label htmlFor="text-generator-url">Base URL</Label>
+                  <Field label="Base URL" htmlFor="text-generator-url" stacked>
                     <Input
                       id="text-generator-url"
                       placeholder="http://localhost:11434/v1"
@@ -403,12 +402,13 @@ function TextGeneratorWizard({
                       spellCheck={false}
                       autoFocus={existing === null && preset.id === "custom"}
                     />
-                  </div>
+                  </Field>
                 ) : null}
-                <div className="grid gap-2">
-                  <Label htmlFor="text-generator-key">
-                    {keyRequired ? "API key" : "API key (optional)"}
-                  </Label>
+                <Field
+                  label={keyRequired ? "API key" : "API key (optional)"}
+                  htmlFor="text-generator-key"
+                  stacked
+                >
                   <SecretSourceInput
                     id="text-generator-key"
                     aria-label="API key"
@@ -423,9 +423,8 @@ function TextGeneratorWizard({
                     autoFocus={existing === null && preset.id !== "custom"}
                     onValidityChange={setKeyValid}
                   />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="text-generator-label">Name (optional)</Label>
+                </Field>
+                <Field label="Name (optional)" htmlFor="text-generator-label" stacked>
                   <Input
                     id="text-generator-label"
                     placeholder={
@@ -438,7 +437,7 @@ function TextGeneratorWizard({
                     value={label}
                     onChange={(event) => setLabel(event.target.value)}
                   />
-                </div>
+                </Field>
                 {checkError ? (
                   <p role="alert" className="text-body text-destructive">
                     {checkError}
@@ -712,7 +711,7 @@ function TextGeneratorModelsDialog({
         if (!open) onClose();
       }}
     >
-      <DialogPopup className="max-w-md">
+      <DialogPopup size="sm">
         <DialogHeader>
           <DialogTitle>{name} models</DialogTitle>
           <DialogDescription>
@@ -734,7 +733,7 @@ function TextGeneratorModelsDialog({
             <TextGeneratorModelList models={models} />
           )}
         </DialogPanel>
-        <DialogFooter variant="bare">
+        <DialogFooter>
           <Button
             variant="outline"
             aria-busy={refreshing}

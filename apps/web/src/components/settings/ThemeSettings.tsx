@@ -782,7 +782,7 @@ export function ThemeLibrary({
           <div className="flex flex-wrap items-center justify-end gap-1">
             <Button
               size="xs"
-              variant="ghost"
+              variant="ghost-muted"
               onClick={() =>
                 openThemeEditor({
                   editingThemeId: null,
@@ -795,7 +795,7 @@ export function ThemeLibrary({
               <PaintbrushIcon />
               Create theme
             </Button>
-            <Button size="xs" variant="ghost" onClick={() => onImportOpenChange(true)}>
+            <Button size="xs" variant="ghost-muted" onClick={() => onImportOpenChange(true)}>
               <PlusIcon />
               Add theme
             </Button>

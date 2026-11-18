@@ -351,7 +351,10 @@ export function SnapShotSettings() {
   return (
     <SettingsPageContainer>
       <SettingsSection id="snap-shot" title="SnapShots">
-        <SettingsUnavailableGroup message={unavailableMessage}>
+        <SettingsUnavailableGroup
+          unavailable={unavailableMessage !== undefined}
+          message={unavailableMessage}
+        >
           <SettingsRow
             {...searchableSetting("snap-shot-enabled")}
             description={snapShotDescription(state)}

@@ -53,7 +53,7 @@ function createAppRouter(initialPath: string) {
 }
 
 describe("useShownThreadRouteTarget", () => {
-  it("keeps the thread that opened Settings or Usage shown until the user leaves for another page", async () => {
+  it("keeps the thread that opened Usage shown until the user leaves for another page", async () => {
     const router = createAppRouter("/env-1/thread-a");
     await router.load();
     // The hook reads thread params and modal paths from real routes, which the default router lacks.
@@ -61,11 +61,12 @@ describe("useShownThreadRouteTarget", () => {
     const shown = screen.getByRole("status");
     await expect.element(shown).toHaveTextContent("thread-a");
 
-    await act(() => router.navigate({ to: "/settings/general" }));
-    await expect.element(shown).toHaveTextContent("thread-a");
-
     await act(() => router.navigate({ to: "/usage" }));
     await expect.element(shown).toHaveTextContent("thread-a");
+
+    // Settings is a page of the app, not an overlay, so it shows no thread behind it.
+    await act(() => router.navigate({ to: "/settings/general" }));
+    await expect.element(shown).toHaveTextContent("none");
 
     await act(() => router.navigate({ href: "/env-1/thread-b" }));
     await expect.element(shown).toHaveTextContent("thread-b");
@@ -73,15 +74,15 @@ describe("useShownThreadRouteTarget", () => {
     await act(() => router.navigate({ to: "/new" }));
     await expect.element(shown).toHaveTextContent("none");
 
-    await act(() => router.navigate({ to: "/settings/general" }));
+    await act(() => router.navigate({ to: "/usage" }));
     await expect.element(shown).toHaveTextContent("none");
   });
 
-  it("shows the thread behind Settings when it mounts while Settings is already open", async () => {
+  it("shows the thread behind Usage when it mounts while Usage is already open", async () => {
     const router = createAppRouter("/env-1/thread-a");
     await router.load();
     using _tracking = { [Symbol.dispose]: startMainAppLocationTracking(router) };
-    await router.navigate({ to: "/settings/general" });
+    await router.navigate({ to: "/usage" });
 
     // The hook reads thread params and modal paths from real routes, which the default router lacks.
     await using screen = await render(<RouterProvider router={router} />, { router: false });

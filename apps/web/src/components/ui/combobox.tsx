@@ -200,7 +200,7 @@ function ComboboxItem({
   return (
     <ComboboxPrimitive.Item
       className={cn(
-        "nest-row flex min-h-8 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-base outline-none not-data-disabled:hover:bg-foreground/9 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-selected:text-ink-1 data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground [&[data-highlighted][data-selected]]:bg-foreground/9 [&[data-highlighted][data-selected]]:text-accent-foreground data-disabled:opacity-64 sm:text-body [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "nest-row flex min-h-6 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-meta outline-none not-data-disabled:hover:bg-foreground/9 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-selected:text-ink-1 data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground [&[data-highlighted][data-selected]]:bg-foreground/9 [&[data-highlighted][data-selected]]:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         selectedFill && "data-selected:bg-foreground/8",
         className,
       )}

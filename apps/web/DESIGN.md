@@ -40,6 +40,9 @@ Settled per component in review, in order. Each one applies to every later compo
    composer control) is an icon size, never a text size with an icon in it. Actions in one group
    share one variant. Long labels use `wrap`, not a size. No separate mobile heights; touch gets
    a larger hit area instead.
+   Fields stand on the same ladder: an input, select or number field of a size is exactly as
+   tall as a button of that size (`default` 36, `sm` 32, `lg` 40, `compact`/`xs` 24), so a field
+   and its button line up.
 
 2. **Row.** Lines share one rhythm: each sits in a 20px slot, one step (8) apart, and the row's
    height comes from its lines (two lines 64, three 92), never a fixed height. An icon or chip
@@ -69,7 +72,8 @@ Settled per component in review, in order. Each one applies to every later compo
    titlebar button is the `icon-sm` square.
 
 5. **Floats.** A menu separates its groups with one step of space and their labels, no lines.
-   Its rows are 32 like every row, at every window size. A
+   Its rows are compact, like a native menu: 24 tall, meta text, 12px icons, at every window
+   size, in every menu part (menus, selects, comboboxes, the context menu). A
    hover preview is an extension of its row: the row's corner (`corner="row"`), its top edge and
    its text line, and only what the row doesn't already show.
 
@@ -113,6 +117,29 @@ Settled per component in review, in order. Each one applies to every later compo
 10. **Fields and buttons are filled, not boxed.** Every text field, number field, textarea, select
     field and outline button is a filled row (`bg-foreground/6`, no border, no edge shadow),
     like the search field; focus keeps its ring.
+    Adding to a list is one make everywhere: an `xs` `ghost-muted` button with a plus, on the
+    list's label or title row ("Add option", "Add hub"). A filled button is a form's own action.
+
+11. **A long list scrolls in place.** A list that can outgrow the page (a provider's models) sits
+    in a `ScrollArea` capped so a row is cut in half: the cut and the edge fade say there is more.
+    The scrollbar overlays, so the rows' controls stay on the column edge. The page shows what
+    people come back for first; set-once configuration (paths, arguments, variables) folds under
+    a closed label that opens like any section label.
+    A list where some items are set aside (models hidden from the picker) has no control column:
+    the set-aside ones sit under their own label, and the move is a word ("Hide", "Show") that
+    appears on the row you point at. A column of switches puts the page's weight on one edge.
+    A list of things that each take a few fields (snooze options) reads as it does where it is
+    used: each row is what the menu says and when. Its fields open in a float on click, a small
+    form of the parts at one height (32), each line edge to edge; the row stays in view and
+    updates, so the float never repeats it.
+
+12. **Every modal is one make.** A dialog is a float (16): what it holds (rows, fields, buttons)
+    sits one step in (8), text sits on its rows' text edge (16), and the footer is the actions in
+    the corner, no band. Three widths: `sm` a question, `md` a form, `lg` content to read. The
+    title is `text-heading`, left-aligned, the same in alerts. A form is fields from `ui/field`:
+    a row (name left, control right) or, for long free text, the name above the control; groups
+    of fields sit under section labels. No stacked bold labels, no paragraph saying what the
+    title already says.
 
 ## Mechanics
 

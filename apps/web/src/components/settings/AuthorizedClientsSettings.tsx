@@ -322,7 +322,7 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
                 {shareablePairingUrl ? "Show link" : "Show code"}
               </DialogTrigger>
             )}
-            <DialogPopup className="max-w-md">
+            <DialogPopup size="sm">
               <DialogHeader>
                 <DialogTitle>
                   {isRevealValueUrl
@@ -359,7 +359,7 @@ const PairingLinkListRow = memo(function PairingLinkListRow({
                   </div>
                 ) : null}
               </DialogPanel>
-              <DialogFooter variant="bare">
+              <DialogFooter>
                 <Button variant="outline" onClick={() => setIsRevealDialogOpen(false)}>
                   Done
                 </Button>
@@ -663,7 +663,7 @@ export const AuthorizedClientsHeaderAction = memo(function AuthorizedClientsHead
             }
           />
         ) : null}
-        <DialogPopup className="max-w-md">
+        <DialogPopup size="sm">
           <DialogHeader>
             <DialogTitle>Create pairing link</DialogTitle>
             <DialogDescription>
@@ -756,7 +756,7 @@ export const AuthorizedClientsHeaderAction = memo(function AuthorizedClientsHead
               ) : null}
             </section>
           </DialogPanel>
-          <DialogFooter variant="bare">
+          <DialogFooter>
             <Button
               variant="outline"
               disabled={isCreatingPairingLink}

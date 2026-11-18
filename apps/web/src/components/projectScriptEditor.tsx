@@ -49,7 +49,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Field } from "./ui/field";
 import { Popover, PopoverPopup, PopoverTrigger } from "./ui/popover";
 import { Switch } from "./ui/switch";
 import { Textarea } from "./ui/textarea";
@@ -413,8 +413,7 @@ function ProjectScriptEditorForm({
       <DialogPanel>
         <form id={formId} onSubmit={submit}>
           <fieldset className="space-y-2" disabled={isSaving || !canEditActions}>
-            <div className="space-y-2">
-              <Label htmlFor="script-name">Name</Label>
+            <Field label="Name" htmlFor="script-name" stacked>
               <div className="flex items-center gap-2">
                 <Popover onOpenChange={setIconPickerOpen} open={iconPickerOpen}>
                   <PopoverTrigger
@@ -463,9 +462,8 @@ function ProjectScriptEditorForm({
                   onChange={(event) => setName(event.target.value)}
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="script-keybinding">Keybinding</Label>
+            </Field>
+            <Field label="Keybinding" htmlFor="script-keybinding" stacked>
               <Input
                 disabled={!canWriteSettings}
                 id="script-keybinding"
@@ -478,18 +476,16 @@ function ProjectScriptEditorForm({
                 Press a shortcut. Use <code>Backspace</code> to clear. Shortcuts are
                 environment-wide. Projects using the same action share its shortcut.
               </p>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="script-command">Command</Label>
+            </Field>
+            <Field label="Command" htmlFor="script-command" stacked>
               <Textarea
                 id="script-command"
                 placeholder="bun test"
                 value={command}
                 onChange={(event) => setCommand(event.target.value)}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="script-preview-url">Preview URL (optional)</Label>
+            </Field>
+            <Field label="Preview URL (optional)" htmlFor="script-preview-url" stacked>
               <Input
                 id="script-preview-url"
                 placeholder="http://localhost:5173"
@@ -499,7 +495,7 @@ function ProjectScriptEditorForm({
               <p className="text-meta text-ink-2">
                 Open this URL in the in-app preview when this action runs.
               </p>
-            </div>
+            </Field>
             <label className="flex items-center justify-between gap-2 rounded-row border border-border/70 px-2 py-2 text-body dark:border-transparent dark:bg-white/4">
               <span>Run automatically on worktree creation</span>
               <Switch
@@ -549,7 +545,7 @@ function ProjectScriptEditorForm({
           </fieldset>
         </form>
       </DialogPanel>
-      <DialogFooter variant="bare">
+      <DialogFooter>
         {isEditing && (
           <Button
             type="button"

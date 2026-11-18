@@ -8,13 +8,10 @@ import { ScrollArea } from "./scroll-area";
 
 export function WizardPopup({
   children,
-  size = "default",
   ...props
-}: Omit<ComponentProps<typeof DialogPopup>, "className" | "style"> & {
-  readonly size?: "default" | "wide";
-}) {
+}: Omit<ComponentProps<typeof DialogPopup>, "className" | "style">) {
   return (
-    <DialogPopup {...props} className={size === "wide" ? "max-w-3xl" : "max-w-xl"}>
+    <DialogPopup {...props}>
       <ScrollArea className="*:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2">
         <div className="flex min-h-0 flex-col">{children}</div>
       </ScrollArea>
@@ -51,7 +48,7 @@ export function WizardFooter({
   readonly leading?: ReactNode;
 }) {
   return (
-    <DialogFooter variant="bare" className={leading ? "sm:justify-between" : undefined}>
+    <DialogFooter className={leading ? "sm:justify-between" : undefined}>
       {leading}
       {leading ? (
         <div className="flex flex-col-reverse gap-2 sm:flex-row">{children}</div>

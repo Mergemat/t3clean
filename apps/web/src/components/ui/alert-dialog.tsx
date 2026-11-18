@@ -6,6 +6,11 @@ import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_MOBILE_SHEET_CLASS,
   DIALOG_POPUP_CLASS,
+  DIALOG_SIZE_CLASS,
+  DIALOG_HEADER_CLASS,
+  DIALOG_FOOTER_CLASS,
+  DIALOG_TITLE_CLASS,
+  type DialogSize,
 } from "~/components/ui/dialog-styles";
 import {
   ControlledOpenContext,
@@ -52,8 +57,10 @@ function AlertDialogPopup({
   className,
   bottomStickOnMobile = true,
   portalContainer,
+  size = "sm",
   ...props
 }: AlertDialogPrimitive.Popup.Props & {
+  size?: DialogSize;
   bottomStickOnMobile?: boolean;
   portalContainer?: AlertDialogPrimitive.Portal.Props["container"];
 }) {
@@ -64,7 +71,8 @@ function AlertDialogPopup({
       <AlertDialogPrimitive.Popup
         className={cn(
           DIALOG_POPUP_CLASS,
-          "row-start-2 max-h-full max-w-lg text-popover-foreground",
+          "row-start-2 max-h-full text-popover-foreground",
+          DIALOG_SIZE_CLASS[size],
           bottomStickOnMobile && DIALOG_MOBILE_SHEET_CLASS,
           className,
         )}
@@ -92,29 +100,17 @@ function AlertDialogPopup({
 function AlertDialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex min-h-0 flex-col gap-2 p-4 text-center sm:text-left", className)}
+      className={cn("min-h-0", DIALOG_HEADER_CLASS, className)}
       data-slot="alert-dialog-header"
       {...props}
     />
   );
 }
 
-function AlertDialogFooter({
-  className,
-  variant = "default",
-  ...props
-}: React.ComponentProps<"div"> & {
-  variant?: "default" | "bare";
-}) {
+function AlertDialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "flex flex-col-reverse gap-2 px-4 sm:flex-row sm:justify-end sm:rounded-b-inherit",
-        // The footer separates by its own surface, not a line.
-        variant === "default" && "bg-muted/72 py-4",
-        variant === "bare" && "pb-6",
-        className,
-      )}
+      className={cn(DIALOG_FOOTER_CLASS, className)}
       data-slot="alert-dialog-footer"
       {...props}
     />
@@ -124,7 +120,7 @@ function AlertDialogFooter({
 function AlertDialogTitle({ className, ...props }: AlertDialogPrimitive.Title.Props) {
   return (
     <AlertDialogPrimitive.Title
-      className={cn("wrap-anywhere shrink-0 font-semibold text-title leading-snug", className)}
+      className={cn("shrink-0", DIALOG_TITLE_CLASS, className)}
       data-slot="alert-dialog-title"
       {...props}
     />

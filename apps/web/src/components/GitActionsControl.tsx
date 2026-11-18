@@ -1883,7 +1883,7 @@ export default function GitActionsControl({
               />
             </div>
           </DialogPanel>
-          <DialogFooter variant="bare">
+          <DialogFooter>
             <Button
               variant="outline"
               size="sm"
@@ -1933,7 +1933,7 @@ export default function GitActionsControl({
           if (!open) setPendingDefaultBranchAction(null);
         }}
       >
-        <DialogPopup className="max-w-xl">
+        <DialogPopup>
           <DialogHeader>
             <DialogTitle>
               {pendingDefaultBranchActionCopy?.title ?? "Run action on default branch?"}
@@ -1943,7 +1943,7 @@ export default function GitActionsControl({
               <p className="text-meta text-ink-2">{featureBranchUnavailableReason}</p>
             )}
           </DialogHeader>
-          <DialogFooter variant="bare" className="sm:flex-wrap sm:items-center">
+          <DialogFooter className="sm:flex-wrap sm:items-center">
             <Button
               className="w-full sm:mr-auto sm:w-auto"
               variant="outline"

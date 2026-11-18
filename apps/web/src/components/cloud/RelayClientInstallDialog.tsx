@@ -60,7 +60,7 @@ export function RelayClientInstallDialog() {
         }
       }}
     >
-      <DialogPopup className="max-w-md" showCloseButton={isConfirming}>
+      <DialogPopup size="sm" showCloseButton={isConfirming}>
         <DialogHeader>
           <div className="flex size-8 items-center justify-center rounded-row border border-border/70 bg-muted/60">
             <DownloadIcon aria-hidden className="size-4 text-ink-2" />

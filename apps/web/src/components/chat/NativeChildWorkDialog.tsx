@@ -38,7 +38,7 @@ export function NativeChildWorkDialog(props: {
         <ListTreeIcon />
         <span className="@max-[420px]/composer-surface:sr-only">Subagent work</span>
       </Button>
-      <DialogPopup className="max-w-2xl">
+      <DialogPopup>
         <DialogHeader>
           <DialogTitle>Subagent work</DialogTitle>
           <DialogDescription>Read only. These subagents cannot take messages.</DialogDescription>
@@ -75,7 +75,7 @@ function NativeChildWorkContent(props: {
           children.map((child) => <NativeChild key={child.conversationId} child={child} />)
         )}
       </DialogPanel>
-      <DialogFooter variant="bare">
+      <DialogFooter>
         <Button size="sm" variant="outline" disabled={query.isPending} onClick={query.refresh}>
           Refresh
         </Button>

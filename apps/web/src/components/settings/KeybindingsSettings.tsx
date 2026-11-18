@@ -1477,12 +1477,13 @@ export function KeybindingsSettingsPanel() {
         <div className="flex flex-wrap items-center gap-2 px-4 py-2">
           <KeybindingsSearchInput query={query} onChange={setQuery} inputRef={searchInputRef} />
           <Button
+            size="xs"
             type="button"
-            variant="outline"
+            variant="ghost-muted"
             disabled={isAddingBinding || !canWriteSettings}
             onClick={() => setIsAddingBinding(true)}
           >
-            <PlusIcon aria-hidden className="size-4" />
+            <PlusIcon aria-hidden />
             Add keybinding
           </Button>
           <Tooltip>

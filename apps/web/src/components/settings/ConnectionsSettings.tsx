@@ -1592,7 +1592,7 @@ function ConnectionsSettingsContent({
               if (!open) setPendingTailscaleServeEndpoint(null);
             }}
           >
-            <DialogPopup className="max-w-md">
+            <DialogPopup size="sm">
               <DialogHeader>
                 <DialogTitle>Set up Tailscale HTTPS?</DialogTitle>
                 <DialogDescription>

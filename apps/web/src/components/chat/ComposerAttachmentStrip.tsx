@@ -546,8 +546,9 @@ export function ComposerFilePreviewDialog({
       }}
     >
       <DialogPopup
+        size="lg"
         {...composerFloatingLayerProps}
-        className="h-208 max-w-4xl overflow-hidden"
+        className="h-208 overflow-hidden"
         showCloseButton={false}
       >
         <DialogTitle className="sr-only">{file.name}</DialogTitle>

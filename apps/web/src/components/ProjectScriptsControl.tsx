@@ -164,10 +164,10 @@ export default function ProjectScriptsControl({
             key={`${fileScript.name} ${fileScript.command}`}
             onClick={() => void importFileScript(fileScript)}
           >
-            <ScriptIcon icon={fileScript.icon ?? "play"} className="size-4" />
+            <ScriptIcon icon={fileScript.icon ?? "play"} className="size-3" />
             <MenuItemLabel>{fileScript.name}</MenuItemLabel>
             <MenuShortcut>
-              <DownloadIcon className="size-4" aria-label="Import" />
+              <DownloadIcon className="size-3" aria-label="Import" />
             </MenuShortcut>
           </MenuItem>
         ))}
@@ -229,7 +229,7 @@ export default function ProjectScriptsControl({
       })}
       {importMenuItems}
       <MenuItem density={presentation === "menu" ? "touch" : "default"} onClick={openAddDialog}>
-        <PlusIcon className="size-4" />
+        <PlusIcon className="size-3" />
         <MenuItemLabel>{isPanel ? "Add project script" : "Add action"}</MenuItemLabel>
       </MenuItem>
     </>
@@ -245,7 +245,7 @@ export default function ProjectScriptsControl({
               disabled={!onRunScript}
               onClick={() => onRunScript?.(primaryScript)}
             >
-              <ScriptIcon icon={primaryScript.icon} className="size-4" />
+              <ScriptIcon icon={primaryScript.icon} className="size-3" />
               <MenuItemLabel>Run {primaryScript.name}</MenuItemLabel>
               <MenuShortcut>
                 {shortcutLabelForCommand(keybindings, commandForProjectScript(primaryScript.id))}
@@ -260,7 +260,7 @@ export default function ProjectScriptsControl({
               }
             >
               <MenuSubTrigger density="touch">
-                <ScriptIcon icon="play" className="size-4" />
+                <ScriptIcon icon="play" className="size-3" />
                 <MenuItemLabel>Project actions</MenuItemLabel>
               </MenuSubTrigger>
               <MenuSubPopup>{scriptItems}</MenuSubPopup>
@@ -270,7 +270,7 @@ export default function ProjectScriptsControl({
               density={presentation === "menu" ? "touch" : "default"}
               onClick={openAddDialog}
             >
-              <PlusIcon className="size-4" />
+              <PlusIcon className="size-3" />
               <MenuItemLabel>Add project action…</MenuItemLabel>
             </MenuItem>
           )}

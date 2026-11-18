@@ -10,6 +10,7 @@ import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Logger from "effect/Logger";
 import * as Path from "effect/Path";
+import * as Schema from "effect/Schema";
 import { Command, Flag } from "effect/cli";
 
 const ROOT = "apps/web/src";
@@ -486,6 +487,14 @@ function rewriteCss(source: string): string {
     .join("");
 }
 
+class OffGridClassesError extends Schema.TaggedError<OffGridClassesError>()("OffGridClassesError", {
+  changed: Schema.Number,
+}) {
+  override get message() {
+    return `${this.changed} classes are off the grid; run pnpm tokens`;
+  }
+}
+
 const tokenizeClasses = Command.make("tokenize-classes", {
   check: Flag.Boolean("check").pipe(
     Flag.withDescription("Report what would change without writing."),
@@ -524,8 +533,7 @@ const tokenizeClasses = Command.make("tokenize-classes", {
           lines.push(`  ${count}\t${token}`);
       }
       yield* Effect.log(lines.join("\n"));
-      if (check && changed > 0)
-        return yield* Effect.fail(new Error("classes are off the grid; run pnpm tokens"));
+      if (check && changed > 0) return yield* new OffGridClassesError({ changed });
     }),
   ),
 );

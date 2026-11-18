@@ -101,8 +101,8 @@ function EnvironmentSecretProviders({
         {...searchableSetting("secret-providers")}
         headerAction={
           !readOnly ? (
-            <Button size="xs" variant="outline" onClick={() => setDialog({ mode: "add" })}>
-              <PlusIcon className="size-3" aria-hidden />
+            <Button size="xs" variant="ghost-muted" onClick={() => setDialog({ mode: "add" })}>
+              <PlusIcon aria-hidden />
               Add provider
             </Button>
           ) : null

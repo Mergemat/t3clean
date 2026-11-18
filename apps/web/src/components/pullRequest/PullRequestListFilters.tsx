@@ -300,7 +300,7 @@ function PullRequestAuthorChoices({
       <MenuRadioGroup value={selected?.actor.login ?? value ?? ""} onValueChange={select}>
         <MenuRadioItem value="">
           <span className="flex min-w-0 items-center gap-2">
-            <LayersIcon aria-hidden className="size-4" />
+            <LayersIcon aria-hidden className="size-3" />
             Anyone
           </span>
         </MenuRadioItem>
@@ -341,7 +341,7 @@ function PullRequestAuthorFilter({
   return (
     <MenuSub>
       <MenuSubTrigger>
-        <UserRoundIcon aria-hidden className="size-4" />
+        <UserRoundIcon aria-hidden className="size-3" />
         <span className="flex-1">Author</span>
         <span className="min-w-0 max-w-32 truncate text-meta text-ink-2">{value ?? "Anyone"}</span>
       </MenuSubTrigger>
@@ -440,7 +440,7 @@ function PullRequestLabelFilter({
   return (
     <MenuSub>
       <MenuSubTrigger>
-        <TagIcon aria-hidden className="size-4" />
+        <TagIcon aria-hidden className="size-3" />
         <span className="flex-1">Labels</span>
         <span className="text-meta text-ink-2">
           {value.length === 0 ? "Any" : `${value.length} selected`}

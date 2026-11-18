@@ -1,4 +1,5 @@
 import { expect, it } from "vite-plus/test";
+import { userEvent } from "vite-plus/test/browser";
 import {
   dismissContextMenu,
   isContextMenuOpen,
@@ -115,4 +116,25 @@ it("takes thumb Back and Forward presses so the app router stays put", () => {
     expect(event.defaultPrevented).toBe(true);
   }
   expect(isContextMenuOpen()).toBe(true);
+});
+
+it("keeps the menu open when the pointer leaves a submenu for the menu that opened it", async () => {
+  using _fixture = setup();
+  const result = showContextMenuFallback(items);
+  const button = (text: string) =>
+    [...document.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')].find(
+      (candidate) => candidate.textContent === text,
+    )!;
+  await userEvent.hover(button("Copy"));
+  await userEvent.hover(button("Path"));
+  expect(label()).toBe("Path");
+  // Back over the first menu's edge, not an item: the submenu closes under the focused item.
+  // Focus must stay in the menu, or the app's next focus move reads as leaving it and closes all.
+  const [firstMenu] = document.querySelectorAll<HTMLElement>('[role="menu"]');
+  await userEvent.hover(firstMenu!, { position: { x: 2, y: 2 } });
+  expect(document.querySelectorAll('[role="menu"]')).toHaveLength(1);
+  expect(label()).toBe("Copy");
+  expect(isContextMenuOpen()).toBe(true);
+  dismissContextMenu();
+  await expect(result).resolves.toBeNull();
 });

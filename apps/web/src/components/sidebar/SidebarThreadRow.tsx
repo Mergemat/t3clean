@@ -116,7 +116,7 @@ import { ProviderInstanceIcon } from "../chat/ProviderInstanceIcon";
 import { getTriggerDisplayModelName } from "../chat/providerIconUtils";
 import { shouldShowInstanceBadge, type ProviderInstanceEntry } from "../../providerInstances";
 import { useThreadRunningTerminalIds } from "../../state/terminalSessions";
-import { Button, InlineButton } from "../ui/button";
+import { InlineButton } from "../ui/button";
 import { Kbd } from "../ui/kbd";
 import { Menu, MenuItem, MenuItemDetail, MenuPopup, MenuSeparator, MenuTrigger } from "../ui/menu";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
@@ -381,18 +381,19 @@ function SnoozeMenuButton(props: {
           render={
             <MenuTrigger
               render={
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
+                // The same inline make as Settle and Discard beside it, so the actions share a line.
+                <button
+                  type="button"
                   aria-label="Snooze thread"
                   onClick={(event) => event.stopPropagation()}
                   onDoubleClick={(event) => event.stopPropagation()}
+                  className="inline-flex cursor-pointer items-center rounded-row bg-transparent px-2 text-ink-2 hover:text-ink-1"
                 />
               }
             />
           }
         >
-          <ClockIcon />
+          <ClockIcon className="size-4" />
         </TooltipTrigger>
         <TooltipPopup>Snooze thread</TooltipPopup>
       </Tooltip>

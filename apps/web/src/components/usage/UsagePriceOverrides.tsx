@@ -280,7 +280,7 @@ export function UsagePriceOverrides({
         if (!pending) onOpenChange(open);
       }}
     >
-      <DialogPopup className="max-w-4xl">
+      <DialogPopup size="lg">
         <DialogHeader>
           <DialogTitle>Custom model prices</DialogTitle>
           <DialogDescription>
@@ -589,7 +589,7 @@ export function UsagePriceOverrides({
             </div>
           ) : null}
         </DialogPanel>
-        <DialogFooter variant="bare" className="items-center sm:justify-between">
+        <DialogFooter className="items-center sm:justify-between">
           <span className="text-meta text-ink-2">
             {hasChanges ? `Changes apply to ${destinationLabel}` : ""}
           </span>

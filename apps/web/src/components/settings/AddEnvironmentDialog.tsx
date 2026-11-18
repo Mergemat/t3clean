@@ -630,7 +630,7 @@ export function AddEnvironmentDialog({
         />
         <TooltipPopup side="top">Add environment</TooltipPopup>
       </Tooltip>
-      <DialogPopup className="sm:max-w-3xl">
+      <DialogPopup size="lg">
         <DialogHeader>
           <DialogTitle>
             {routeTarget ? `Add a route to ${routeTarget.label}` : "Add Environment"}

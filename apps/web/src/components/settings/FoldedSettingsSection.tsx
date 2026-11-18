@@ -6,6 +6,20 @@ import { cn } from "~/lib/utils";
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "../ui/collapsible";
 import { useSettingsSearchTarget, useSettingsSearchTargetId } from "./settingsLayout";
 
+/** A section label that opens: the label's type and place, its chevron after it. Every settings
+ *  fold uses it, so folded rows read as one more section. */
+export function SettingsFoldTrigger({ children }: { readonly children: ReactNode }) {
+  return (
+    <CollapsibleTrigger className="group/fold flex min-h-6 items-center gap-1 rounded-chip text-meta font-medium text-ink-2 outline-none hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+      {children}
+      <ChevronRightIcon
+        aria-hidden
+        className="size-3 shrink-0 transition-transform duration-150 group-data-panel-open/fold:rotate-90 motion-reduce:transition-none"
+      />
+    </CollapsibleTrigger>
+  );
+}
+
 export function FoldedSettingsSection({
   id,
   title,
@@ -38,27 +52,19 @@ export function FoldedSettingsSection({
     return (
       <section id={id} ref={targetRef} tabIndex={-1} className="outline-none">
         <Collapsible open={open} onOpenChange={setOpen}>
-          <div className="space-y-2">
+          <div className="flex flex-col gap-6">
+            {/* A section label that opens: same place and type as SettingsSection's. */}
             <div
               data-settings-scroll-target
-              className="flex min-h-6 items-start justify-between gap-2 px-4"
+              className="flex min-h-8 items-center justify-between gap-2 px-2"
             >
               <h2>
-                <CollapsibleTrigger className="flex min-h-6 items-center gap-2 rounded-row text-body font-normal text-ink-2 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
-                  {title}
-                  <ChevronRightIcon
-                    aria-hidden
-                    className={cn(
-                      "size-4 shrink-0 transition-transform duration-150 motion-reduce:transition-none",
-                      open && "rotate-90",
-                    )}
-                  />
-                </CollapsibleTrigger>
+                <SettingsFoldTrigger>{title}</SettingsFoldTrigger>
               </h2>
               {control}
             </div>
             <CollapsiblePanel>
-              <SettingsGroup>{children}</SettingsGroup>
+              <div className="flex flex-col gap-6">{children}</div>
             </CollapsiblePanel>
           </div>
         </Collapsible>

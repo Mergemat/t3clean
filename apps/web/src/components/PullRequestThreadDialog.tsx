@@ -200,7 +200,6 @@ export function PullRequestThreadDialog({
       }}
     >
       <DialogPopup
-        className="max-w-xl"
         initialFocus={() => {
           referenceInputRef.current?.focus();
           referenceInputRef.current?.select();

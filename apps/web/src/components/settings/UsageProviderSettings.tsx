@@ -38,40 +38,37 @@ export function UsageProviderSettings({
         {...searchableSetting("usage-providers")}
         headerAction={
           !readOnly ? (
-            <Button size="xs" variant="outline" onClick={() => setAdding(true)}>
-              <PlusIcon className="size-3" aria-hidden />
+            <Button size="xs" variant="ghost-muted" onClick={() => setAdding(true)}>
+              <PlusIcon aria-hidden />
               Add hub
             </Button>
           ) : null
         }
       >
-        {entries.length === 0 ? (
-          <SettingsRow title="No hubs configured." />
-        ) : (
-          entries.map(([id, source]) => {
-            const label = source.label?.trim() || source.url;
-            return (
-              <SettingsRow
-                key={id}
-                title={label}
-                description={
-                  <span className="break-all">
-                    CLI Proxy{source.enabled ? "" : " · Disabled"}
-                    {label !== source.url ? ` · ${source.url}` : ""}
-                  </span>
-                }
-                control={
-                  !readOnly ? (
-                    <RemoveUsageProviderButton
-                      label={label}
-                      onConfirm={() => updateSettings({ usageLimitSources: { [id]: null } })}
-                    />
-                  ) : null
-                }
-              />
-            );
-          })
-        )}
+        {/* Empty, the label and its Add action say it all. */}
+        {entries.map(([id, source]) => {
+          const label = source.label?.trim() || source.url;
+          return (
+            <SettingsRow
+              key={id}
+              title={label}
+              description={
+                <span className="break-all">
+                  CLI Proxy{source.enabled ? "" : " · Disabled"}
+                  {label !== source.url ? ` · ${source.url}` : ""}
+                </span>
+              }
+              control={
+                !readOnly ? (
+                  <RemoveUsageProviderButton
+                    label={label}
+                    onConfirm={() => updateSettings({ usageLimitSources: { [id]: null } })}
+                  />
+                ) : null
+              }
+            />
+          );
+        })}
       </SettingsSection>
       {adding && !readOnly ? (
         <AddUsageLimitSourceDialog

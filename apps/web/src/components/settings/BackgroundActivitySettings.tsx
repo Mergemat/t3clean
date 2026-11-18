@@ -114,7 +114,7 @@ function BackgroundActivityAdvancedDialog({
 
   return (
     <Dialog open={open && canWriteSettings} onOpenChange={onOpenChange}>
-      <DialogPopup className="max-w-xl">
+      <DialogPopup>
         <DialogHeader>
           <DialogTitle>Background Activity</DialogTitle>
           <DialogDescription>
