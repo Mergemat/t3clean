@@ -33,6 +33,7 @@ import {
 } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
 import { AdvancedSettings } from "./AdvancedSettings";
+import { BackdropSettings } from "./BackdropSettings";
 import { PanelAnimationsPreview } from "./PanelAnimationsPreview";
 import { TypographySection } from "./TypographySettings";
 import { ThreadDetailsItemsRow } from "./ThreadDetailsItemsRow";
@@ -162,6 +163,8 @@ export function AppearanceSettingsPanel() {
         </div>
       </SettingsSection>
 
+      <BackdropSettings />
+
       <SettingsSection id="appearance-interface" title="Interface">
         <SettingsRow
           {...searchableSetting("setting-appearance-contrast")}
@@ -269,29 +272,22 @@ export function AppearanceSettingsPanel() {
             ) : null
           }
           control={
-            <div className="w-full sm:w-40">
-              <Select
-                value={settings.chatWidth}
-                onValueChange={(value) => {
-                  if (value === "comfortable" || value === "wide" || value === "full")
-                    updateSettings({ chatWidth: value });
-                }}
-              >
-                <SelectTrigger
-                  variant="ghost"
-                  size="sm"
-                  className="min-w-0"
-                  aria-label="Chat width"
-                >
-                  <SelectValue>{CHAT_WIDTH_LABELS[settings.chatWidth]}</SelectValue>
-                </SelectTrigger>
-                <SelectPopup align="end" alignItemWithTrigger={false}>
-                  <SelectItem value="comfortable">Comfortable (default)</SelectItem>
-                  <SelectItem value="wide">Wide</SelectItem>
-                  <SelectItem value="full">Full</SelectItem>
-                </SelectPopup>
-              </Select>
-            </div>
+            <Select
+              value={settings.chatWidth}
+              onValueChange={(value) => {
+                if (value === "comfortable" || value === "wide" || value === "full")
+                  updateSettings({ chatWidth: value });
+              }}
+            >
+              <SelectTrigger variant="ghost" size="sm" className="min-w-0" aria-label="Chat width">
+                <SelectValue>{CHAT_WIDTH_LABELS[settings.chatWidth]}</SelectValue>
+              </SelectTrigger>
+              <SelectPopup align="end" alignItemWithTrigger={false}>
+                <SelectItem value="comfortable">Comfortable (default)</SelectItem>
+                <SelectItem value="wide">Wide</SelectItem>
+                <SelectItem value="full">Full</SelectItem>
+              </SelectPopup>
+            </Select>
           }
         />
         <ThreadDetailsItemsRow />
@@ -309,28 +305,25 @@ export function AppearanceSettingsPanel() {
             ) : null
           }
           control={
-            <div className="w-full sm:w-40">
-              <Select
-                value={settings.effortDisplay}
-                onValueChange={(value) => {
-                  if (value === "bars" || value === "label")
-                    updateSettings({ effortDisplay: value });
-                }}
+            <Select
+              value={settings.effortDisplay}
+              onValueChange={(value) => {
+                if (value === "bars" || value === "label") updateSettings({ effortDisplay: value });
+              }}
+            >
+              <SelectTrigger
+                variant="ghost"
+                size="sm"
+                className="min-w-0"
+                aria-label="Effort display"
               >
-                <SelectTrigger
-                  variant="ghost"
-                  size="sm"
-                  className="min-w-0"
-                  aria-label="Effort display"
-                >
-                  <SelectValue>{EFFORT_DISPLAY_LABELS[settings.effortDisplay]}</SelectValue>
-                </SelectTrigger>
-                <SelectPopup align="end" alignItemWithTrigger={false}>
-                  <SelectItem value="label">Word (default)</SelectItem>
-                  <SelectItem value="bars">Bars</SelectItem>
-                </SelectPopup>
-              </Select>
-            </div>
+                <SelectValue>{EFFORT_DISPLAY_LABELS[settings.effortDisplay]}</SelectValue>
+              </SelectTrigger>
+              <SelectPopup align="end" alignItemWithTrigger={false}>
+                <SelectItem value="label">Word (default)</SelectItem>
+                <SelectItem value="bars">Bars</SelectItem>
+              </SelectPopup>
+            </Select>
           }
         />
         <SettingsRow
@@ -355,31 +348,6 @@ export function AppearanceSettingsPanel() {
                 updateSettings({ mathRenderingEnabled: Boolean(checked) })
               }
               aria-label="Render math"
-            />
-          }
-        />
-        <SettingsRow
-          {...searchableSetting("dither-backdrop")}
-          description="An animated aurora behind the chat; still when the system asks for reduced motion."
-          resetAction={
-            settings.ditherBackdropEnabled !== DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled ? (
-              <SettingResetButton
-                label="dither backdrop"
-                onClick={() =>
-                  updateSettings({
-                    ditherBackdropEnabled: DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled,
-                  })
-                }
-              />
-            ) : null
-          }
-          control={
-            <Switch
-              checked={settings.ditherBackdropEnabled}
-              onCheckedChange={(checked) =>
-                updateSettings({ ditherBackdropEnabled: Boolean(checked) })
-              }
-              aria-label="Dither backdrop"
             />
           }
         />

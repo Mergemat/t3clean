@@ -369,9 +369,11 @@ export const SETTINGS_SEARCH_ITEMS = [
   },
   {
     id: "dither-backdrop",
-    title: "Dither backdrop",
+    title: "Backdrop",
     to: "/settings/appearance",
-    searchTerms: ["dithercn aurora background animation shader webgl"],
+    searchTerms: [
+      "dithercn dither aurora mesh gradient noise waves stars starfield silk smoke flow background animation shader webgl",
+    ],
   },
   {
     id: "panel-animations",

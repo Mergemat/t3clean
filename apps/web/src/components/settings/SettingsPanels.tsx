@@ -475,8 +475,9 @@ export function useSettingsRestore(onRestored?: () => void) {
     ...(settings.mathRenderingEnabled !== DEFAULT_UNIFIED_SETTINGS.mathRenderingEnabled
       ? ["Render math"]
       : []),
-    ...(settings.ditherBackdropEnabled !== DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled
-      ? ["Dither backdrop"]
+    ...(settings.ditherBackdropEnabled !== DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled ||
+    settings.ditherBackdrop !== DEFAULT_UNIFIED_SETTINGS.ditherBackdrop
+      ? ["Backdrop"]
       : []),
     ...(settings.panelAnimationDurationMs !== DEFAULT_UNIFIED_SETTINGS.panelAnimationDurationMs
       ? ["Panel animations"]
@@ -663,6 +664,7 @@ export function useSettingsRestore(onRestored?: () => void) {
       effortDisplay: DEFAULT_UNIFIED_SETTINGS.effortDisplay,
       mathRenderingEnabled: DEFAULT_UNIFIED_SETTINGS.mathRenderingEnabled,
       ditherBackdropEnabled: DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled,
+      ditherBackdrop: DEFAULT_UNIFIED_SETTINGS.ditherBackdrop,
       language: DEFAULT_UNIFIED_SETTINGS.language,
       timestampFormat: DEFAULT_UNIFIED_SETTINGS.timestampFormat,
       notificationMode: DEFAULT_UNIFIED_SETTINGS.notificationMode,
@@ -1495,36 +1497,34 @@ function DiffColorsSettingsRow() {
         ) : null
       }
       control={
-        <div className="w-full sm:w-40">
-          <Select
-            value={settings.diffColorScheme}
-            onValueChange={(value) => {
-              if (value === "red-green" || value === "blue-orange")
-                updateSettings({ diffColorScheme: value });
-            }}
-          >
-            <SelectTrigger variant="ghost" size="sm" className="min-w-0" aria-label="Diff colors">
-              <span
-                aria-hidden="true"
-                className={
-                  settings.diffColorScheme === "blue-orange"
-                    ? "flex shrink-0 flex-row-reverse gap-1"
-                    : "flex shrink-0 gap-1"
-                }
-              >
-                <span className="size-2 rounded-full bg-diff-deletion" />
-                <span className="size-2 rounded-full bg-diff-addition" />
-              </span>
-              <SelectValue>
-                {settings.diffColorScheme === "blue-orange" ? "Blue & orange" : "Red & green"}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectPopup align="end" alignItemWithTrigger={false}>
-              <SelectItem value="red-green">Red & green (default)</SelectItem>
-              <SelectItem value="blue-orange">Blue & orange</SelectItem>
-            </SelectPopup>
-          </Select>
-        </div>
+        <Select
+          value={settings.diffColorScheme}
+          onValueChange={(value) => {
+            if (value === "red-green" || value === "blue-orange")
+              updateSettings({ diffColorScheme: value });
+          }}
+        >
+          <SelectTrigger variant="ghost" size="sm" className="min-w-0" aria-label="Diff colors">
+            <span
+              aria-hidden="true"
+              className={
+                settings.diffColorScheme === "blue-orange"
+                  ? "flex shrink-0 flex-row-reverse gap-1"
+                  : "flex shrink-0 gap-1"
+              }
+            >
+              <span className="size-2 rounded-full bg-diff-deletion" />
+              <span className="size-2 rounded-full bg-diff-addition" />
+            </span>
+            <SelectValue>
+              {settings.diffColorScheme === "blue-orange" ? "Blue & orange" : "Red & green"}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectPopup align="end" alignItemWithTrigger={false}>
+            <SelectItem value="red-green">Red & green (default)</SelectItem>
+            <SelectItem value="blue-orange">Blue & orange</SelectItem>
+          </SelectPopup>
+        </Select>
       }
     />
   );

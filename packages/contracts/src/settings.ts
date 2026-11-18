@@ -69,6 +69,18 @@ export type TimestampFormat = typeof TimestampFormat.Type;
 const DEFAULT_TIMESTAMP_FORMAT: TimestampFormat = "locale";
 
 export const DiffLayout = Schema.Literals(["stacked", "split"]);
+// Fork: which dithercn background runs behind the chat while the backdrop is on.
+export const DitherBackdrop = Schema.Literals([
+  "aurora",
+  "mesh-gradient",
+  "noise-field",
+  "waves",
+  "starfield",
+  "silk",
+  "smoke",
+  "flow-field",
+]);
+export type DitherBackdrop = typeof DitherBackdrop.Type;
 export type DiffLayout = typeof DiffLayout.Type;
 const DEFAULT_DIFF_LAYOUT: DiffLayout = "stacked";
 
@@ -600,6 +612,9 @@ export const ClientSettingsSchema = Schema.Struct({
   mathRenderingEnabled: Schema.Boolean.pipe(Schema.withDecodingDefault(Effect.succeed(false))),
   // Fork: animated dithered aurora behind the chat. Web and desktop only.
   ditherBackdropEnabled: Schema.Boolean.pipe(Schema.withDecodingDefault(Effect.succeed(true))),
+  ditherBackdrop: DitherBackdrop.pipe(
+    Schema.withDecodingDefault(Effect.succeed("aurora" as const)),
+  ),
 });
 export type ClientSettings = typeof ClientSettingsSchema.Type;
 
@@ -2122,5 +2137,6 @@ export const ClientSettingsPatch = Schema.Struct({
   wordWrap: Schema.optionalKey(Schema.Boolean),
   mathRenderingEnabled: Schema.optionalKey(Schema.Boolean),
   ditherBackdropEnabled: Schema.optionalKey(Schema.Boolean),
+  ditherBackdrop: Schema.optionalKey(DitherBackdrop),
 });
 export type ClientSettingsPatch = typeof ClientSettingsPatch.Type;
