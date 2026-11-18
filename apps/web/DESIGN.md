@@ -147,7 +147,9 @@ Settled per component in review, in order. Each one applies to every later compo
     - **Flat**, part of the plane: a tint, no shading. Panes, rows, fields, tracks, unchecked
       boxes, ghost buttons. A field is a place you put things, not something you press.
     - **Raised**, a thing you press: light on top, a dark rim, a small shadow (`bump`). Filled
-      buttons, triggers, a switch's thumb, the chosen segment or toggle.
+      buttons, triggers, the chosen segment or toggle. A switch's knob is raised with a soft
+      shadow only: at its size a rim reads as an outline. It is the same knob on and off; only
+      the track changes.
     - **Floating**, above everything: solid and a shade lighter than the panes, a double edge
       (a light line inside, a dark one outside), a deep shadow. Menus, popovers, dialogs,
       toasts, tooltips, the details card. No highlight.

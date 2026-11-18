@@ -450,6 +450,9 @@ html[data-show-grid] .nest-text {
   /* Raised (see Height in :root). Read through variables so light and dark differ, and through
      Tailwind's shadow slots so a focus ring adds to them instead of replacing them. */
   --shadow-bump: var(--bump-shadow);
+  /* A switch's knob is raised too, but at its size the dark rim reads as an outline, so it only
+     casts a soft shadow. */
+  --shadow-knob: 0 1px 2px rgb(0 0 0 / 45%), 0 0 1px rgb(0 0 0 / 30%);
   --inset-shadow-bump: var(--bump-inset);
   /* Motion. out replaces Tailwind's ease-out with a stronger curve: entering UI moves most in its
      first frames, so it reads as immediate. drawer is the decelerating curve for surfaces that
