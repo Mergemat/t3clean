@@ -2994,12 +2994,14 @@ code {
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
+    /* Stronger than the mock it came from: floats are glass, and the backdrop showing through
+       swallows a faint light. */
     --float-light: linear-gradient(
-      color-mix(in srgb, var(--foreground) 5%, transparent),
+      color-mix(in srgb, var(--foreground) 9%, transparent),
       transparent calc(var(--step) * 6)
     );
     --float-shadow:
-      inset 0 1px color-mix(in srgb, var(--foreground) 14%, transparent),
+      inset 0 1px color-mix(in srgb, var(--foreground) 22%, transparent),
       0 0 0 1px rgb(0 0 0 / 60%), 0 24px 56px -18px rgb(0 0 0 / 90%);
     --bump-sheen: linear-gradient(rgb(255 255 255 / 6%), rgb(0 0 0 / 6%));
     --bump-inset: inset 0 1px rgb(255 255 255 / 12%);
