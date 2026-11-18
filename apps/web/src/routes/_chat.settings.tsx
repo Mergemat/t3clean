@@ -8,7 +8,6 @@ import { useSettingsRestore } from "../components/settings/SettingsPanels";
 import { SettingsBreadcrumb } from "../components/settings/SettingsBreadcrumb";
 import { SidebarInset } from "../components/ui/sidebar";
 import { WorkspacePageHeader } from "../components/WorkspacePageHeader";
-import { ConversationBackdrop } from "../components/chat/ConversationBackdrop";
 import { isElectron } from "../env";
 import {
   SettingsScopeProvider,
@@ -132,8 +131,6 @@ function SettingsContentLayout() {
           </div>
         </WorkspacePageHeader>
         <div key={`${contentScopeKey}:${restoreSignal}`} className="flex min-h-0 flex-1 flex-col">
-          {/* The same sky as the chat's pane, so moving between them changes only the content. */}
-          <ConversationBackdrop />
           <SettingsScopeBoundary pathname={location.pathname}>
             <Outlet />
           </SettingsScopeBoundary>

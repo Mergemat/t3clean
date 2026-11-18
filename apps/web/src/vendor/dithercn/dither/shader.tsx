@@ -481,11 +481,11 @@ const useContextSlot = (ref: RefObject<Element | null>): boolean => {
     const nearObserver = new IntersectionObserver(
       ([entry]) => {
         slot.near = entry?.isIntersecting ?? false;
+        // T3: leaving keeps the context until an on-screen shader needs it (requestContext takes
+        // it then), so a pane hidden behind Settings comes back drawn instead of fading in again.
         if (slot.near) {
           slot.lastSeen = performance.now();
           requestContext(slot);
-        } else {
-          releaseContext(slot);
         }
       },
       { rootMargin: "200px" }
@@ -749,6 +749,10 @@ export const DitherShader = ({
       const style = getComputedStyle(root);
       const width = Number.parseFloat(style.width) || root.offsetWidth;
       const height = Number.parseFloat(style.height) || root.offsetHeight;
+      // T3: a hidden pane has no size; keep its grid so it comes back drawn at full size.
+      if (width === 0 || height === 0) {
+        return;
+      }
       const columns = Math.max(1, Math.ceil(width / snapped));
       const rows = Math.max(1, Math.ceil(height / snapped));
       sizeRef.current = { columns, rows };
