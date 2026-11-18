@@ -2943,7 +2943,8 @@ code {
   /* A region: the details card (a box, 16) floats one step inside it and runs parallel. */
   --window-radius: var(--radius-region);
   --window-corner: max(var(--radius-chip), calc(var(--app-corner) - var(--window-gap) - 2px));
-  --window-shade: inset 0 1px 2px rgb(0 0 0 / 45%), inset 0 10px 24px -14px rgb(0 0 0 / 70%);
+  /* A hint of depth under the pane's top edge, not a groove. */
+  --window-shade: inset 0 1px 1px rgb(0 0 0 / 22%), inset 0 6px 12px -10px rgb(0 0 0 / 35%);
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {

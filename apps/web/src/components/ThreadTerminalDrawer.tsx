@@ -1241,7 +1241,7 @@ function TerminalActionButton({ label, onClick, children, disabled }: TerminalAc
         render={
           <Button
             size="icon-xs"
-            variant="ghost"
+            variant="ghost-muted"
             onClick={disabled ? undefined : onClick}
             aria-label={label}
             aria-disabled={disabled}
@@ -1803,7 +1803,7 @@ export default function ThreadTerminalDrawer({
       data-thread-terminal-drawer
       data-terminal-owner={isPanel ? "right-panel" : "drawer"}
       className={cn(
-        "relative flex min-w-0 flex-col overflow-hidden bg-background",
+        "group/terminal-drawer relative flex min-w-0 flex-col overflow-hidden bg-background",
         isPanel ? "h-full flex-1" : "z-45 shrink-0 border-t border-border/80",
       )}
       style={isPanel ? undefined : { height: `var(${DRAG_HEIGHT_PROPERTY}, ${drawerHeight}px)` }}
@@ -1811,8 +1811,10 @@ export default function ThreadTerminalDrawer({
       {resizeHandle}
 
       {!hasTerminalSidebar && (
-        <div className="pointer-events-none absolute right-2 top-2 z-20">
-          <div className="pointer-events-auto inline-flex items-center overflow-hidden rounded-row border border-border/80 bg-background shadow-xs">
+        // The pane's corner controls, as a pane-bar places them (24 − 8 = 16 in), bare and shown
+        // on the terminal you point at.
+        <div className="pointer-events-none absolute right-4 top-4 z-20 opacity-0 transition-opacity group-hover/terminal-drawer:opacity-100 has-focus-visible:opacity-100 has-data-popup-open:opacity-100">
+          <div className="pointer-events-auto inline-flex items-center gap-1">
             <TerminalActionButton
               disabled={!canOperateTerminal || hasReachedSplitLimit}
               onClick={onSplitTerminalAction}
