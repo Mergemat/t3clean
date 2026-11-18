@@ -1,5 +1,5 @@
 import { DEFAULT_UNIFIED_SETTINGS } from "@t3tools/contracts/settings";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { cn } from "~/lib/utils";
 import { BACKDROP_STYLE, BACKDROPS } from "../chat/backdrops";
@@ -14,6 +14,17 @@ const previewClock = () => (performance.now() / 1000) * SPEED;
 /** The background behind the chat, as a gallery: each tile runs its effect in the theme. */
 export function BackdropSettings() {
   const settings = useScopedSettings();
+  // Each preview compiles a shader. Starting one per idle moment after the page has painted keeps
+  // opening Appearance instant and leaves room for input between them.
+  const [previewsStarted, setPreviewsStarted] = useState(0);
+  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- paces work to the browser's idle time, outside React
+  useEffect(() => {
+    if (previewsStarted >= BACKDROPS.length) return;
+    const id = requestIdleCallback(() => setPreviewsStarted((count) => count + 1), {
+      timeout: 500,
+    });
+    return () => cancelIdleCallback(id);
+  }, [previewsStarted]);
   const updateSettings = useUpdateScopedSettings();
   const current = settings.ditherBackdropEnabled ? settings.ditherBackdrop : null;
   const isDefault =
@@ -49,7 +60,7 @@ export function BackdropSettings() {
           selected={current === null}
           onSelect={() => updateSettings({ ditherBackdropEnabled: false })}
         />
-        {BACKDROPS.map((backdrop) => (
+        {BACKDROPS.map((backdrop, index) => (
           <BackdropTile
             key={backdrop.id}
             label={backdrop.label}
@@ -59,7 +70,9 @@ export function BackdropSettings() {
             }
           >
             {/* Stronger than behind the chat (15%), so the effect reads at tile size. */}
-            {backdrop.render({ clock: previewClock, className: "absolute inset-0 opacity-40" })}
+            {index < previewsStarted
+              ? backdrop.render({ clock: previewClock, className: "absolute inset-0 opacity-40" })
+              : null}
           </BackdropTile>
         ))}
       </div>

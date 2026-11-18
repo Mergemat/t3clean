@@ -1,6 +1,7 @@
 import { useAtomValue } from "@effect/atom-react";
 import * as Schema from "effect/Schema";
 import {
+  Activity,
   useEffect,
   useState,
   useSyncExternalStore,
@@ -494,9 +495,12 @@ export function AppSidebarLayout({
                   <SidebarChromeHeader isElectron={isElectron} />
                   <SettingsSidebarNav pathname={pathname} />
                 </>
-              ) : (
+              ) : null}
+              {/* Kept mounted, hidden, while Settings shows: rebuilding the thread list on the way
+                  back is the slow part of leaving Settings. */}
+              <Activity mode={isSettingsPage(pathname) ? "hidden" : "visible"}>
                 <ThreadSidebar routeReveal={sidebarRouteReveal} />
-              )}
+              </Activity>
               <SidebarRail onDoubleClick={resetSidebarWidth} />
             </Sidebar>
           </>

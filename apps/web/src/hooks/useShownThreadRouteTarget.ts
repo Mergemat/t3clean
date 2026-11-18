@@ -9,7 +9,7 @@ import {
 import type { ThreadRouteTarget } from "../threadRoutes";
 import { useThreadRouteTarget } from "./useThreadRouteTarget";
 
-function threadRouteTargetKey(target: ThreadRouteTarget | null) {
+export function threadRouteTargetKey(target: ThreadRouteTarget | null) {
   if (!target) return null;
   return target.kind === "server" ? scopedThreadKey(target.threadRef) : target.draftId;
 }
