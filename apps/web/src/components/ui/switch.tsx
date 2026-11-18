@@ -11,7 +11,7 @@ function Switch({
   return (
     <SwitchPrimitive.Root
       className={cn(
-        "inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 outline-none transition duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:dent data-disabled:cursor-not-allowed data-disabled:opacity-64 data-[mixed]:dent",
+        "inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 outline-none transition duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:bg-foreground/10 data-disabled:cursor-not-allowed data-disabled:opacity-64 data-[mixed]:bg-foreground/10",
         className,
       )}
       data-size={size}

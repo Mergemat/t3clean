@@ -447,12 +447,10 @@ html[data-show-grid] .nest-text {
   --text-4xs--line-height: 1;
   --text-5xs: 0.4375rem;
   --text-5xs--line-height: 1;
-  /* The soft bump (see :root). Read through variables so light and dark differ, and through
+  /* Raised (see Height in :root). Read through variables so light and dark differ, and through
      Tailwind's shadow slots so a focus ring adds to them instead of replacing them. */
   --shadow-bump: var(--bump-shadow);
   --inset-shadow-bump: var(--bump-inset);
-  --shadow-dent: var(--dent-shadow);
-  --inset-shadow-dent: var(--dent-inset);
   /* Motion. out replaces Tailwind's ease-out with a stronger curve: entering UI moves most in its
      first frames, so it reads as immediate. drawer is the decelerating curve for surfaces that
      slide or pop in (composer context, pills, sheets). */
@@ -681,22 +679,18 @@ html[data-show-grid] .nest-text {
   );
 }
 
-/* A raised control (buttons, triggers, a switch's thumb): a soft bump. Pressed, or on, it sinks. */
+/* Raised (Height): a thing you press. Pressing lowers it to flat, while held or while its popup
+   is open. A chosen toggle or segment raises with this too (data-pressed:bump), so data-pressed
+   is not a press here. */
 @utility bump {
   background-image: var(--bump-sheen);
   @apply shadow-bump inset-shadow-bump;
 
   &:active:not(:disabled, [aria-haspopup]),
-  &[data-pressed] {
+  &[data-popup-open] {
     background-image: none;
-    @apply shadow-dent inset-shadow-dent;
+    @apply shadow-none inset-shadow-none;
   }
-}
-
-/* A field (inputs, a switch's track, an unchecked box): pressed into the surface. */
-@utility dent {
-  background-color: var(--dent-fill);
-  @apply shadow-dent inset-shadow-dent;
 }
 
 @utility dialog-glass {
@@ -2951,14 +2945,10 @@ code {
   --float-fill: var(--popover);
   --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
 
-  /* Controls are a soft bump: shading, no drawn line. A raised part catches light on top, sits in a
-     dark rim and casts a little shadow; a field sinks into the surface. */
+  /* Height: one light from above. Raised: light on top, a dark rim, a little shadow. */
   --bump-sheen: linear-gradient(rgb(255 255 255 / 30%), rgb(0 0 0 / 3%));
   --bump-inset: inset 0 1px rgb(255 255 255 / 70%);
   --bump-shadow: 0 0 0 1px rgb(0 0 0 / 10%), 0 1px 2px rgb(0 0 0 / 8%);
-  --dent-fill: color-mix(in srgb, var(--foreground) 5%, transparent);
-  --dent-inset: inset 0 1px 2px rgb(0 0 0 / 12%);
-  --dent-shadow: 0 1px rgb(255 255 255 / 70%);
 
   --surface-fill: var(--background);
 
@@ -2971,8 +2961,6 @@ code {
   /* A region: the details card (a box, 16) floats one step inside it and runs parallel. */
   --window-radius: var(--radius-region);
   --window-corner: max(var(--radius-chip), calc(var(--app-corner) - var(--window-gap) - 2px));
-  /* A hint of depth under the pane's top edge, not a groove. */
-  --window-shade: inset 0 1px 1px rgb(0 0 0 / 22%), inset 0 6px 12px -10px rgb(0 0 0 / 35%);
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
@@ -2981,11 +2969,6 @@ code {
     --bump-sheen: linear-gradient(rgb(255 255 255 / 6%), rgb(0 0 0 / 6%));
     --bump-inset: inset 0 1px rgb(255 255 255 / 12%);
     --bump-shadow: 0 0 0 1px rgb(0 0 0 / 45%), 0 1px 2px rgb(0 0 0 / 40%);
-    /* Lighter than the surface, not darker: the app's darkest surfaces leave no room below them,
-       so the inner shadow alone says "pressed in". */
-    --dent-fill: color-mix(in srgb, var(--foreground) 5%, transparent);
-    --dent-inset: inset 0 1px 3px rgb(0 0 0 / 60%);
-    --dent-shadow: 0 1px color-mix(in srgb, var(--foreground) 8%, transparent);
   }
 }
 
@@ -3058,19 +3041,6 @@ html.electron-windows {
    the window's instead of the theme's separate terminal colour. */
 [data-thread-terminal-drawer] {
   --terminal-background: var(--window-fill);
-}
-
-/* Painted over the content, since the content's own backgrounds would cover an inset shadow. */
-[data-chat-header] + div::after,
-[data-right-panel-surface-content]::after,
-[data-thread-terminal-drawer]:not([data-terminal-owner="right-panel"])::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 100;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: var(--window-shade);
 }
 
 /* Inside the chat window everything sits on the aurora, so content shares the window's glass:

@@ -30,9 +30,9 @@ const toggleVariants = cva(
         pill: "border-0 px-3 font-normal text-ink-2 data-pressed:text-ink-1",
         ghost:
           "border-0 text-ink-1 shadow-none [:disabled,:active,[data-pressed]]:shadow-none before:shadow-none data-pressed:bg-accent data-pressed:text-accent-foreground disabled:opacity-100 disabled:text-ink-2 disabled:[&_svg]:opacity-100",
-        outline: "bump bg-foreground/6 border-transparent",
+        outline: "bg-foreground/6 border-transparent data-pressed:bump",
         segmented:
-          "border-0 text-ink-2 shadow-none transition-colors before:shadow-none hover:bg-background/55 hover:text-ink-1 not-data-pressed:data-highlighted:bg-background/55 data-highlighted:text-ink-1 data-pressed:bg-background data-pressed:text-ink-1 data-pressed:shadow-xs/10 dark:hover:bg-input/32 dark:not-data-pressed:data-highlighted:bg-input/32 dark:data-pressed:bg-input/72",
+          "border-0 text-ink-2 shadow-none transition-colors before:shadow-none hover:bg-background/55 hover:text-ink-1 not-data-pressed:data-highlighted:bg-background/55 data-highlighted:text-ink-1 data-pressed:bump data-pressed:bg-foreground/8 data-pressed:text-ink-1 dark:hover:bg-input/32 dark:not-data-pressed:data-highlighted:bg-input/32",
       },
     },
   },
