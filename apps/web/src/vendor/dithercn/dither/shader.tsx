@@ -399,7 +399,9 @@ const createRenderer = (
  * scrolling doesn't flip visible shaders between canvas and fallback;
  * it waits instead, and gets the next context freed.
  */
-export const MAX_LIVE_CONTEXTS = 8;
+// T3: 12, not 8, so Appearance can run the sky and all eight backdrop tiles at once, still under
+// Chrome's 16.
+export const MAX_LIVE_CONTEXTS = 12;
 
 interface ContextSlot {
   near: boolean;

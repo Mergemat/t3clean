@@ -1,6 +1,7 @@
 import type { DitherBackdrop } from "@t3tools/contracts/settings";
 import type { CSSProperties, ReactNode } from "react";
 
+import { cn } from "~/lib/utils";
 import { Aurora } from "../../vendor/dithercn/aurora";
 import { FlowField } from "../../vendor/dithercn/flow-field";
 import { MeshGradient } from "../../vendor/dithercn/mesh-gradient";
@@ -25,9 +26,17 @@ export const BACKDROP_STYLE = {
 
 type BackdropProps = {
   readonly clock?: () => number;
-  readonly fadeIn?: boolean;
+  readonly cell?: number;
   readonly className?: string;
 };
+
+// Each effect's own fallback is a blurred CSS imitation of it, shown until the shader draws its
+// first frame, which on a reload can take a while. The plain sky shows instead, and the dither
+// fades in over it.
+const skyUntilDrawn = (props: BackdropProps) => ({
+  ...props,
+  className: cn("[&>[data-dither-fallback]]:hidden", props.className),
+});
 
 /** The calm set: low contrast and slow, so text over them stays readable. */
 export const BACKDROPS: ReadonlyArray<{
@@ -52,17 +61,25 @@ export const BACKDROPS: ReadonlyArray<{
         length={0.7}
         tilt={-6}
         drift={0.5}
-        {...props}
+        {...skyUntilDrawn(props)}
       />
     ),
   },
-  { id: "mesh-gradient", label: "Mesh", render: (props) => <MeshGradient {...props} /> },
-  { id: "noise-field", label: "Noise", render: (props) => <NoiseField {...props} /> },
-  { id: "waves", label: "Waves", render: (props) => <Waves {...props} /> },
-  { id: "starfield", label: "Stars", render: (props) => <Starfield {...props} /> },
-  { id: "silk", label: "Silk", render: (props) => <Silk {...props} /> },
-  { id: "smoke", label: "Smoke", render: (props) => <Smoke {...props} /> },
-  { id: "flow-field", label: "Flow", render: (props) => <FlowField {...props} /> },
+  {
+    id: "mesh-gradient",
+    label: "Mesh",
+    render: (props) => <MeshGradient {...skyUntilDrawn(props)} />,
+  },
+  {
+    id: "noise-field",
+    label: "Noise",
+    render: (props) => <NoiseField {...skyUntilDrawn(props)} />,
+  },
+  { id: "waves", label: "Waves", render: (props) => <Waves {...skyUntilDrawn(props)} /> },
+  { id: "starfield", label: "Stars", render: (props) => <Starfield {...skyUntilDrawn(props)} /> },
+  { id: "silk", label: "Silk", render: (props) => <Silk {...skyUntilDrawn(props)} /> },
+  { id: "smoke", label: "Smoke", render: (props) => <Smoke {...skyUntilDrawn(props)} /> },
+  { id: "flow-field", label: "Flow", render: (props) => <FlowField {...skyUntilDrawn(props)} /> },
 ];
 
 export const backdropById = (id: DitherBackdrop) =>

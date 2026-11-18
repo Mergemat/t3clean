@@ -10,6 +10,9 @@ import { useScopedSettings, useUpdateScopedSettings } from "./useScopedSettings"
 const SPEED = 0.4;
 // The previews share one clock, so they move together like the one behind the chat.
 const previewClock = () => (performance.now() / 1000) * SPEED;
+// A tile is about a sixth of the pane and the sky's cell is 3px, so a tile that looks like the sky
+// shrunk down needs half a pixel: one device pixel on a retina screen, the smallest the shader draws.
+const PREVIEW_CELL = 0.5;
 
 /** The background behind the chat, as a gallery: each tile runs its effect in the theme. */
 export function BackdropSettings() {
@@ -69,9 +72,12 @@ export function BackdropSettings() {
               updateSettings({ ditherBackdropEnabled: true, ditherBackdrop: backdrop.id })
             }
           >
-            {/* Stronger than behind the chat (15%), so the effect reads at tile size. */}
             {index < previewsStarted
-              ? backdrop.render({ clock: previewClock, className: "absolute inset-0 opacity-40" })
+              ? backdrop.render({
+                  clock: previewClock,
+                  cell: PREVIEW_CELL,
+                  className: "absolute inset-0 opacity-15",
+                })
               : null}
           </BackdropTile>
         ))}
