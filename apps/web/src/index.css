@@ -701,7 +701,7 @@ html[data-show-grid] .nest-text {
 
 @utility dialog-glass {
   /* Level 2 (see Levels): a dialog is a float. Dialogs set their own border width. */
-  background: var(--float-sheen), var(--float-fill);
+  background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border-color: var(--level-line);
@@ -726,7 +726,7 @@ html[data-show-grid] .nest-text {
 
 @utility dropdown-glass {
   /* Level 2 (see Levels). Dividers inside a float draw its outline. */
-  background: var(--float-sheen), var(--float-fill);
+  background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border: 1px solid var(--level-line);
@@ -2962,9 +2962,8 @@ code {
     var(--popover) 18%,
     color-mix(in srgb, var(--popover) var(--glass-opacity), transparent)
   );
-  /* A float's own look: light from its top corner, a double edge (its light line inside, a dark
-     one outside) and a deep shadow, so it reads as above everything. */
-  --float-sheen: radial-gradient(120% 80% at 0 0, rgb(255 255 255 / 50%), transparent 60%);
+  /* A float's own look: a double edge (its light line inside, a dark one outside) and a deep
+     shadow, so it reads as above everything. */
   --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
 
   /* Controls are a soft bump: shading, no drawn line. A raised part catches light on top, sits in a
@@ -2992,11 +2991,6 @@ code {
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
-    --float-sheen: radial-gradient(
-      120% 80% at 0 0,
-      color-mix(in srgb, var(--foreground) 8%, transparent),
-      transparent 60%
-    );
     --float-shadow: 0 0 0 1px rgb(0 0 0 / 60%), 0 24px 56px -18px rgb(0 0 0 / 90%);
     --bump-sheen: linear-gradient(rgb(255 255 255 / 6%), rgb(0 0 0 / 6%));
     --bump-inset: inset 0 1px rgb(255 255 255 / 12%);

@@ -142,13 +142,13 @@ Settled per component in review, in order. Each one applies to every later compo
     of fields sit under section labels. No stacked bold labels, no paragraph saying what the
     title already says.
 
-13. **Controls are a soft bump; floats are lit.** The flat theme gets depth from shading, never
-    from a drawn line. A raised part (button, trigger, toggle, a switch's thumb) catches light on
+13. **Controls are a soft bump; floats have a double edge.** The flat theme gets depth from
+    shading, never from a drawn line. A raised part (button, trigger, toggle, a switch's thumb) catches light on
     top, sits in a dark rim and casts a little shadow (`bump`); pressed or on, it sinks. A field
     (input, textarea, search, a switch's track, an unchecked box) is pressed into the surface
-    (`dent`). Ghost parts stay flat. A float (menu, popover, dialog, toast) has its own look:
-    light from its top corner and a double edge, a light line inside and a dark one outside,
-    over a deep shadow.
+    (`dent`). Ghost parts stay flat. A float (menu, popover, dialog, toast) has its own look: a
+    double edge, a light line inside and a dark one outside, over a deep shadow. No light falls
+    on a float's face.
 
 ## Mechanics
 
