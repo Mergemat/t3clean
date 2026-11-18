@@ -351,7 +351,9 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                       <h3
                         id={`settings-nav-group-${index}`}
                         className={cn(
-                          "px-2 text-meta font-medium text-ink-2",
+                          // A section label's make: a row whose text sits at its foot, so the
+                          // space above it parts this group from the one before.
+                          "flex h-8 items-end px-2 pb-1 text-meta font-medium text-ink-2",
                           group.headingHidden && "sr-only",
                         )}
                       >
