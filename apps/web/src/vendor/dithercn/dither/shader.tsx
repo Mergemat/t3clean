@@ -503,6 +503,14 @@ const useContextSlot = (ref: RefObject<Element | null>): boolean => {
     });
     nearObserver.observe(el);
     screenObserver.observe(el);
+    // T3: a shader mounted on screen asks now, not when the observers first report, which waits
+    // behind whatever else the page is rendering (on a reload, the whole thread).
+    const box = el.getBoundingClientRect();
+    if (box.width > 0 && box.bottom > 0 && box.top < window.innerHeight) {
+      slot.near = slot.onScreen = true;
+      slot.lastSeen = performance.now();
+      requestContext(slot);
+    }
     return () => {
       nearObserver.disconnect();
       screenObserver.disconnect();

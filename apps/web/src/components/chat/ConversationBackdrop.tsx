@@ -27,6 +27,8 @@ function skyHost() {
 function Sky({ chosen }: { readonly chosen: DitherBackdrop }) {
   return backdropById(chosen).render({
     clock: skyClock,
+    // At once, not faded in: on a reload a fade only adds to the wait.
+    fadeIn: false,
     // Faded into the sky so text over the brightest parts stays readable.
     className: "absolute inset-0 opacity-15",
   });

@@ -27,12 +27,12 @@ export const BACKDROP_STYLE = {
 type BackdropProps = {
   readonly clock?: () => number;
   readonly cell?: number;
+  readonly fadeIn?: boolean;
   readonly className?: string;
 };
 
 // Each effect's own fallback is a blurred CSS imitation of it, shown until the shader draws its
-// first frame, which on a reload can take a while. The plain sky shows instead, and the dither
-// fades in over it.
+// first frame, which on a reload can take a while. The plain sky shows instead.
 const skyUntilDrawn = (props: BackdropProps) => ({
   ...props,
   className: cn("[&>[data-dither-fallback]]:hidden", props.className),
