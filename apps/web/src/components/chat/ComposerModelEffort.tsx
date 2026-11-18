@@ -626,7 +626,9 @@ export function ComposerPickerFooter(props: {
   onRuntimeModeChange: (mode: RuntimeMode) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 p-2">
+    // The float's inset on the sides and bottom keeps its corners concentric; a step more on top
+    // parts these settings from the list they apply to.
+    <div className="flex flex-wrap items-center gap-2 p-2 pt-4">
       {props.traits ? <SpeedControl traits={props.traits} /> : null}
       {props.traits ? <UltracodeControl traits={props.traits} /> : null}
       <PermissionsMenu
