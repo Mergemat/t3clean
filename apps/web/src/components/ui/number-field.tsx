@@ -31,7 +31,7 @@ export function NumberFieldGroup({
   return (
     <NumberFieldPrimitive.Group
       className={cn(
-        "relative flex w-full justify-between rounded-row border border-transparent bg-foreground/6 text-base text-ink-1 ring-ring/24 transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit focus-within:border-ring focus-within:ring-3 focus-within:ring-inset has-aria-invalid:border-destructive/36 has-autofill:bg-foreground/4 focus-within:has-aria-invalid:border-destructive/64 focus-within:has-aria-invalid:ring-destructive/48 data-disabled:pointer-events-none data-disabled:opacity-64 sm:text-body dark:has-autofill:bg-foreground/8 dark:has-aria-invalid:ring-destructive/24 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [[data-disabled],:focus-within,[aria-invalid]]:shadow-none",
+        "relative flex w-full justify-between rounded-row border border-transparent dent text-base text-ink-1 ring-ring/24 transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit focus-within:border-ring focus-within:ring-3 focus-within:ring-inset has-aria-invalid:border-destructive/36 has-autofill:bg-foreground/4 focus-within:has-aria-invalid:border-destructive/64 focus-within:has-aria-invalid:ring-destructive/48 data-disabled:pointer-events-none data-disabled:opacity-64 sm:text-body dark:has-autofill:bg-foreground/8 dark:has-aria-invalid:ring-destructive/24 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [[data-disabled],:focus-within,[aria-invalid]]:shadow-none",
         className,
       )}
       data-slot="number-field-group"

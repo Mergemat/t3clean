@@ -11,7 +11,7 @@ function Switch({
   return (
     <SwitchPrimitive.Root
       className={cn(
-        "inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 outline-none transition duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:bg-input data-disabled:cursor-not-allowed data-disabled:opacity-64 data-[mixed]:bg-input",
+        "inline-flex shrink-0 cursor-pointer items-center rounded-full p-1 outline-none transition duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:dent data-disabled:cursor-not-allowed data-disabled:opacity-64 data-[mixed]:dent",
         className,
       )}
       data-size={size}
@@ -23,7 +23,7 @@ function Switch({
     >
       <SwitchPrimitive.Thumb
         className={cn(
-          "pointer-events-none block shrink-0 origin-left in-[[role=switch]:active,[data-slot=label]:active,[data-slot=field-label]:active]:not-data-disabled:scale-x-110 bg-background shadow-sm/5 dark:data-unchecked:bg-muted-foreground data-checked:bg-white data-checked:origin-right",
+          "pointer-events-none block shrink-0 origin-left in-[[role=switch]:active,[data-slot=label]:active,[data-slot=field-label]:active]:not-data-disabled:scale-x-110 bump bg-background dark:data-unchecked:bg-muted-foreground data-checked:bg-white data-checked:origin-right",
           mixed && "opacity-70",
         )}
         data-slot="switch-thumb"

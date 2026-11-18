@@ -447,8 +447,12 @@ html[data-show-grid] .nest-text {
   --text-4xs--line-height: 1;
   --text-5xs: 0.4375rem;
   --text-5xs--line-height: 1;
-  --inset-shadow-control-highlight: 0 1px rgb(255 255 255 / 16%);
-  --inset-shadow-control-pressed: 0 1px rgb(0 0 0 / 8%);
+  /* The soft bump (see :root). Read through variables so light and dark differ, and through
+     Tailwind's shadow slots so a focus ring adds to them instead of replacing them. */
+  --shadow-bump: var(--bump-shadow);
+  --inset-shadow-bump: var(--bump-inset);
+  --shadow-dent: var(--dent-shadow);
+  --inset-shadow-dent: var(--dent-inset);
   /* Motion. out replaces Tailwind's ease-out with a stronger curve: entering UI moves most in its
      first frames, so it reads as immediate. drawer is the decelerating curve for surfaces that
      slide or pop in (composer context, pills, sheets). */
@@ -677,9 +681,27 @@ html[data-show-grid] .nest-text {
   );
 }
 
+/* A raised control (buttons, triggers, a switch's thumb): a soft bump. Pressed, or on, it sinks. */
+@utility bump {
+  background-image: var(--bump-sheen);
+  @apply shadow-bump inset-shadow-bump;
+
+  &:active:not(:disabled, [aria-haspopup]),
+  &[data-pressed] {
+    background-image: none;
+    @apply shadow-dent inset-shadow-dent;
+  }
+}
+
+/* A field (inputs, a switch's track, an unchecked box): pressed into the surface. */
+@utility dent {
+  background-color: var(--dent-fill);
+  @apply shadow-dent inset-shadow-dent;
+}
+
 @utility dialog-glass {
   /* Level 2 (see Levels): a dialog is a float. Dialogs set their own border width. */
-  background: var(--float-fill);
+  background: var(--float-sheen), var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border-color: var(--level-line);
@@ -704,7 +726,7 @@ html[data-show-grid] .nest-text {
 
 @utility dropdown-glass {
   /* Level 2 (see Levels). Dividers inside a float draw its outline. */
-  background: var(--float-fill);
+  background: var(--float-sheen), var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border: 1px solid var(--level-line);
@@ -2940,7 +2962,19 @@ code {
     var(--popover) 18%,
     color-mix(in srgb, var(--popover) var(--glass-opacity), transparent)
   );
-  --float-shadow: 0 16px 40px -18px rgb(0 0 0 / 55%);
+  /* A float's own look: light from its top corner, a double edge (its light line inside, a dark
+     one outside) and a deep shadow, so it reads as above everything. */
+  --float-sheen: radial-gradient(120% 80% at 0 0, rgb(255 255 255 / 50%), transparent 60%);
+  --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
+
+  /* Controls are a soft bump: shading, no drawn line. A raised part catches light on top, sits in a
+     dark rim and casts a little shadow; a field sinks into the surface. */
+  --bump-sheen: linear-gradient(rgb(255 255 255 / 30%), rgb(0 0 0 / 3%));
+  --bump-inset: inset 0 1px rgb(255 255 255 / 70%);
+  --bump-shadow: 0 0 0 1px rgb(0 0 0 / 10%), 0 1px 2px rgb(0 0 0 / 8%);
+  --dent-fill: color-mix(in srgb, var(--foreground) 5%, transparent);
+  --dent-inset: inset 0 1px 2px rgb(0 0 0 / 12%);
+  --dent-shadow: 0 1px rgb(255 255 255 / 70%);
 
   --surface-fill: var(--background);
 
@@ -2958,7 +2992,20 @@ code {
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
-    --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
+    --float-sheen: radial-gradient(
+      120% 80% at 0 0,
+      color-mix(in srgb, var(--foreground) 8%, transparent),
+      transparent 60%
+    );
+    --float-shadow: 0 0 0 1px rgb(0 0 0 / 60%), 0 24px 56px -18px rgb(0 0 0 / 90%);
+    --bump-sheen: linear-gradient(rgb(255 255 255 / 6%), rgb(0 0 0 / 6%));
+    --bump-inset: inset 0 1px rgb(255 255 255 / 12%);
+    --bump-shadow: 0 0 0 1px rgb(0 0 0 / 45%), 0 1px 2px rgb(0 0 0 / 40%);
+    /* Lighter than the surface, not darker: the app's darkest surfaces leave no room below them,
+       so the inner shadow alone says "pressed in". */
+    --dent-fill: color-mix(in srgb, var(--foreground) 5%, transparent);
+    --dent-inset: inset 0 1px 3px rgb(0 0 0 / 60%);
+    --dent-shadow: 0 1px color-mix(in srgb, var(--foreground) 8%, transparent);
   }
 }
 

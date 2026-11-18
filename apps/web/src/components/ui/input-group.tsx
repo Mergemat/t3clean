@@ -18,7 +18,7 @@ const inputGroupVariants = cva(
       },
       variant: {
         default:
-          "border-transparent bg-foreground/6 before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit",
+          "border-transparent dent before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit",
         popover:
           "dropdown-glass rounded-box has-[input:focus-visible,textarea:focus-visible]:ring-0 has-[input:focus-visible,textarea:focus-visible]:border-foreground/18",
         ghost:

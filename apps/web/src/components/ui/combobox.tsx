@@ -108,7 +108,7 @@ function ComboboxSearchInput(props: React.ComponentProps<typeof ComboboxInput>) 
   return (
     // The field is a row of the list: its edges where the items' fills are, its icon on theirs.
     <div className="min-w-0 shrink-0 px-2 pt-2">
-      <div className="relative rounded-row bg-foreground/6 px-2 transition-colors focus-within:bg-foreground/9">
+      <div className="relative rounded-row dent px-2 transition-colors focus-within:bg-foreground/9">
         <SearchIcon
           aria-hidden="true"
           className="pointer-events-none absolute top-2 left-2 size-4 shrink-0 text-ink-3"

@@ -35,11 +35,11 @@ const buttonVariants = cva(
       },
       variant: {
         default:
-          "not-disabled:inset-shadow-control-highlight border-primary bg-primary text-primary-foreground shadow-primary/24 shadow-xs [:active,[data-pressed]]:inset-shadow-control-pressed [:disabled,:active,[data-pressed]]:shadow-none [:hover,[data-pressed]]:bg-primary/90",
+          "bump border-primary bg-primary text-primary-foreground [:hover,[data-pressed]]:bg-primary/90",
         destructive:
-          "not-disabled:inset-shadow-control-highlight border-destructive bg-destructive text-white shadow-destructive/24 shadow-xs [:active,[data-pressed]]:inset-shadow-control-pressed [:disabled,:active,[data-pressed]]:shadow-none [:hover,[data-pressed]]:bg-destructive/90",
+          "bump border-destructive bg-destructive text-white [:hover,[data-pressed]]:bg-destructive/90",
         "destructive-outline":
-          "bg-foreground/6 [:hover,[data-pressed]]:bg-foreground/9 border-transparent text-destructive-foreground [:disabled,:active,[data-pressed]]:shadow-none",
+          "bump bg-foreground/6 [:hover,[data-pressed]]:bg-foreground/9 border-transparent text-destructive-foreground",
         ghost: "border-0 text-ink-1 data-pressed:bg-accent [:hover,[data-pressed]]:bg-accent",
         "ghost-muted":
           "border-0 text-ink-2 data-pressed:bg-accent [:hover,[data-pressed]]:bg-accent [:hover,[data-pressed]]:text-ink-1",
@@ -53,10 +53,10 @@ const buttonVariants = cva(
         "media-navigation":
           "absolute top-1/2 z-20 -translate-y-1/2 border-0 text-white/90 [:hover,[data-pressed]]:bg-white/10 [:hover,[data-pressed]]:text-white focus-visible:ring-white focus-visible:ring-offset-transparent",
         outline:
-          "bg-foreground/6 [:hover,[data-pressed]]:bg-foreground/9 border-transparent text-ink-1 [:disabled,:active,[data-pressed]]:shadow-none",
+          "bump bg-foreground/6 [:hover,[data-pressed]]:bg-foreground/9 border-transparent text-ink-1",
         overlay: "border-0 bg-black/70 text-white/65 [:hover,[data-pressed]]:bg-black/90",
         secondary:
-          "border-0 bg-secondary text-secondary-foreground [:active,[data-pressed]]:bg-secondary/80 [:hover,[data-pressed]]:bg-secondary/90",
+          "bump border-0 bg-secondary text-secondary-foreground [:hover,[data-pressed]]:bg-secondary/90",
         "warning-outline":
           "border-warning/32 bg-warning-surface text-warning-foreground shadow-xs/5 [:disabled,:active,[data-pressed]]:shadow-none [:hover,[data-pressed]]:border-warning/40 [:hover,[data-pressed]]:bg-warning/16 dark:[:hover,[data-pressed]]:bg-warning/24",
       },

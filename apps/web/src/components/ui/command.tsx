@@ -119,7 +119,7 @@ function CommandInput({
       <AutocompleteInput
         autoFocus
         className={cn(
-          "rounded-row border-transparent! bg-foreground/6! shadow-none transition-colors before:hidden focus-within:bg-foreground/9! has-focus-visible:ring-0 placeholder:text-ink-3 *:data-[slot=autocomplete-input]:ps-8! sm:*:data-[slot=autocomplete-input]:ps-8!",
+          "rounded-row border-transparent! transition-colors before:hidden has-focus-visible:ring-0 placeholder:text-ink-3 *:data-[slot=autocomplete-input]:ps-8! sm:*:data-[slot=autocomplete-input]:ps-8!",
           className,
         )}
         placeholder={placeholder}
