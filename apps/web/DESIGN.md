@@ -147,8 +147,8 @@ Settled per component in review, in order. Each one applies to every later compo
     top, sits in a dark rim and casts a little shadow (`bump`); pressed or on, it sinks. A field
     (input, textarea, search, a switch's track, an unchecked box) is pressed into the surface
     (`dent`). Ghost parts stay flat. A float (menu, popover, dialog, toast) has its own look: a
-    double edge, a light line inside and a dark one outside, over a deep shadow. No light falls
-    on a float's face.
+    double edge, a light line inside and a dark one outside, over a deep shadow. It is the bump at
+    float size: light along its top edge and the top of its face, never from a corner.
 
 ## Mechanics
 
