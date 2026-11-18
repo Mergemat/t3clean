@@ -504,7 +504,8 @@ export function describeUpdateCapsule(
   if (failed.length > 0) {
     return {
       tone: "failed",
-      label: failed.length === 1 ? `${failed[0]!.machine.label} failed` : `${failed.length} failed`,
+      // What failed, not where: the machines are named in the capsule's popover.
+      label: failed.length === 1 ? "Update failed" : `Update failed on ${failed.length}`,
       action:
         !run.trackSwitch && failed.some(({ machine }) => machine.server !== null)
           ? "retry"

@@ -5,6 +5,7 @@ import { cn } from "~/lib/utils";
 import { environmentIdsKey } from "~/state/environmentAtomList";
 import { environmentUpdateStatesAtom } from "~/state/server";
 import { useServerUpdate } from "../ServerUpdateAction";
+import { XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Popover, PopoverPopup, PopoverTrigger } from "../ui/popover";
 import {
@@ -89,8 +90,6 @@ export function SidebarUpdateCapsule({
       <div
         className={cn(
           "relative flex h-8 flex-1 items-center rounded-row bg-sidebar-control-surface text-sidebar-foreground",
-          view.tone === "slow" && "ring-1 ring-warning/40 ring-inset",
-          view.tone === "failed" && "ring-1 ring-destructive/40 ring-inset",
         )}
       >
         <PopoverTrigger
@@ -112,14 +111,21 @@ export function SidebarUpdateCapsule({
             <span className="text-warning tabular-nums"> {view.slow.elapsed}</span>
           ) : null}
         </span>
-        {view.action !== null ? (
-          <button
-            type="button"
-            className="relative shrink-0 cursor-pointer pr-2 pl-2 text-meta underline decoration-muted-foreground/60 underline-offset-3 hover:decoration-current"
+        {/* The tone is the label's colour, not a ring; the action is a button, not a link. */}
+        {view.action === "dismiss" ? (
+          <Button
+            size="icon-xs"
+            variant="ghost-muted"
+            className="relative me-1"
+            aria-label="Dismiss"
             onClick={runAction}
           >
+            <XIcon />
+          </Button>
+        ) : view.action !== null ? (
+          <Button size="xs" variant="ghost-muted" className="relative me-1" onClick={runAction}>
             {actionLabel}
-          </button>
+          </Button>
         ) : (
           <span className="pointer-events-none relative grid size-8 shrink-0 place-items-center">
             {icon}
