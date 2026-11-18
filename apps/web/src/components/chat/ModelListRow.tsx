@@ -22,8 +22,6 @@ export const ModelListRow = memo(function ModelListRow(props: {
   acpRegistryAgentId?: string | undefined;
   acpRegistryIconUrl?: string | undefined;
   isFavorite: boolean;
-  /** In Favorites every row is starred, so the star shows only on hover. */
-  favoriteStarOnHover?: boolean;
   isSelected: boolean;
   /** Marks this instance apart from another of the same provider. */
   showInstanceBadge: boolean;
@@ -62,9 +60,8 @@ export const ModelListRow = memo(function ModelListRow(props: {
         className="size-4"
         iconClassName="size-4"
         indicatorBackground="var(--popover)"
-        badgeClassName="-right-1 -bottom-1 h-3 min-w-3 px-1 text-meta"
       />
-      <div className="flex min-w-0 flex-1 items-center gap-2 text-left">
+      <div className="flex min-w-0 flex-1 items-center gap-2 text-left group-hover:fade-under-end group-data-highlighted:fade-under-end">
         <div
           className="min-w-0 truncate text-body font-normal leading-snug"
           // Names the row in full on hover only when it is cut off.
@@ -95,7 +92,9 @@ export const ModelListRow = memo(function ModelListRow(props: {
         ) : null}
       </div>
 
-      <div className="flex shrink-0 items-center gap-2">
+      {/* Over the row's end, not beside it: the name keeps the full width until you point at
+          the row, then fades under these. */}
+      <div className="absolute inset-y-0 end-2 flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100 group-data-highlighted:opacity-100 has-focus-visible:opacity-100 pointer-coarse:opacity-100">
         <Tooltip>
           <TooltipTrigger
             render={
@@ -116,8 +115,6 @@ export const ModelListRow = memo(function ModelListRow(props: {
                   className={cn(
                     "size-4 sm:size-3",
                     props.isFavorite && "fill-current text-warning",
-                    (!props.isFavorite || props.favoriteStarOnHover) &&
-                      "opacity-0 group-hover:opacity-100 group-data-highlighted:opacity-100 in-focus-visible:opacity-100 pointer-coarse:opacity-100",
                   )}
                 />
               </Button>
@@ -128,11 +125,7 @@ export const ModelListRow = memo(function ModelListRow(props: {
           </TooltipPopup>
         </Tooltip>
         {/* A hint, not a key chip: it shows on the row you are about to pick. */}
-        {props.jumpLabel ? (
-          <span className="text-meta text-ink-3 opacity-0 group-hover:opacity-100 group-data-highlighted:opacity-100">
-            {props.jumpLabel}
-          </span>
-        ) : null}
+        {props.jumpLabel ? <span className="text-meta text-ink-3">{props.jumpLabel}</span> : null}
       </div>
     </ComboboxItem>
   );

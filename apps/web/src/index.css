@@ -395,6 +395,16 @@ html[data-show-grid] .nest-text {
 }
 /* An icon or chip beside text centres on the text's x-height, not its line box: lowercase reads by
    its x-height, which sits (cap - x) / 2 below the box centre, 0.09em in Inter. */
+/* A row's text fades out under controls that float over its end on hover (the star and key
+   hint in the model list), so the text keeps the full width until you point at the row. */
+@utility fade-under-end {
+  mask-image: linear-gradient(
+    to left,
+    transparent calc(var(--step) * 8),
+    black calc(var(--step) * 11)
+  );
+}
+
 @utility optical-centre {
   translate: 0 0.09em;
 }
