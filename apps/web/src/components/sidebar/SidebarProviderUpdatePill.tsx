@@ -21,16 +21,17 @@ const PROVIDER_UPDATE_PILL_STYLES = {
     "bg-sidebar-control-surface text-sidebar-foreground group-has-[button[data-provider-update-main]:hover]/provider-update:bg-sidebar-row-hover",
   success:
     "bg-sidebar-control-surface text-sidebar-foreground group-has-[button[data-provider-update-main]:hover]/provider-update:bg-sidebar-row-hover",
+  // The fill stays the sidebar's control surface in every tone; a status is coloured text.
   warning:
-    "bg-warning/12 text-warning group-has-[button[data-provider-update-main]:hover]/provider-update:bg-warning/18",
+    "bg-sidebar-control-surface text-warning group-has-[button[data-provider-update-main]:hover]/provider-update:bg-sidebar-row-hover",
   error:
-    "bg-destructive/12 text-destructive group-has-[button[data-provider-update-main]:hover]/provider-update:bg-destructive/18",
+    "bg-sidebar-control-surface text-destructive group-has-[button[data-provider-update-main]:hover]/provider-update:bg-sidebar-row-hover",
 } as const;
 
 const PROVIDER_UPDATE_PILL_PROGRESS_STYLES = {
   success: "bg-foreground/8",
-  warning: "bg-warning/14",
-  error: "bg-destructive/14",
+  warning: "bg-foreground/8",
+  error: "bg-foreground/8",
 } as const;
 
 function latestProviderCheckedAt(

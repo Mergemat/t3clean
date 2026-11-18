@@ -74,8 +74,6 @@ export function SidebarUpdateCapsule({
   const now = useNow(run.phase === "countdown" ? 1_000 : hasActiveMachine ? 30_000 : null);
   const view = describeUpdateCapsule(run, machines, local, now);
   const updateServer = useServerUpdate();
-  const failed = machines.some(({ status }) => status === "failed");
-  const settled = !hasActiveMachine && run.localVersion === null;
 
   const actionLabel =
     view.action === "later" ? "Later" : view.action === "retry" ? "Retry" : "Dismiss";
@@ -142,7 +140,7 @@ export function SidebarUpdateCapsule({
           ) : onRestart ? (
             <div className="flex items-center justify-between gap-2">
               <span>This app</span>
-              <Button size="xs" variant="outline" onClick={() => void onRestart()}>
+              <Button size="xs" variant="ghost-muted" onClick={() => void onRestart()}>
                 Restart to update
               </Button>
             </div>
@@ -164,22 +162,15 @@ export function SidebarUpdateCapsule({
                 </span>
               </div>
               {machine.failure !== null ? (
-                <span className="break-words text-ink-2">{machine.failure}</span>
+                // The row above already names the machine; the server's message often repeats it.
+                <span className="break-words text-ink-2">
+                  {machine.failure.startsWith(`${machine.label} · `)
+                    ? machine.failure.slice(machine.label.length + 3)
+                    : machine.failure}
+                </span>
               ) : null}
             </div>
           ))}
-          {settled && failed ? (
-            <div className="mt-1 flex justify-end gap-1">
-              {view.action === "retry" ? (
-                <Button size="xs" variant="outline" onClick={runAction}>
-                  Retry
-                </Button>
-              ) : null}
-              <Button size="xs" variant="ghost" onClick={dismissSettledUpdateRunMachines}>
-                Dismiss
-              </Button>
-            </div>
-          ) : null}
         </div>
       </PopoverPopup>
     </Popover>
