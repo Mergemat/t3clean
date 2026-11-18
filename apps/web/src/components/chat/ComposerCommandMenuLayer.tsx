@@ -37,8 +37,6 @@ export function ComposerCommandMenuLayer(props: {
         '[data-chat-composer-main-surface="true"]',
       );
       const rect = (mainSurface ?? form ?? anchor).getBoundingClientRect();
-      const rootFontSizePx =
-        Number.parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
       // Registered as a <length> in index.css, so the computed value is already in px.
       const drawerInset =
         Number.parseFloat(
@@ -49,8 +47,8 @@ export function ComposerCommandMenuLayer(props: {
         setPosition(null);
         return;
       }
-      const composerOverlap = rootFontSizePx + 1;
-      const spaceAbove = rect.top + composerOverlap;
+      // The drawer stands on the composer's top edge.
+      const spaceAbove = rect.top;
       const bottom = window.innerHeight - spaceAbove;
       const floorHeight = Math.max(96, spaceAbove - 24);
       const maxHeight = canOverflowTop ? floorHeight : Math.min(floorHeight, window.innerHeight);

@@ -10,8 +10,9 @@ import { ScrollArea } from "../ui/scroll-area";
 export type ComposerBannerVariant = "default" | "error" | "info" | "success" | "warning";
 
 /**
- * An attached surface tucks its bottom under the card below it. A detached one is a whole card
- * of its own, for a notice that sits apart from the composer.
+ * A drawer: an attached surface stands on the composer's top edge, behind the composer, so it is a
+ * shade darker and has no bottom edge of its own. A detached one is a whole float of its own, for
+ * a notice that sits apart from the composer.
  */
 function Surface({
   variant = "default",
@@ -27,16 +28,10 @@ function Surface({
       data-composer-banner-surface={detached ? "detached" : "attached"}
       data-variant={variant}
       className={cn(
-        "relative isolate border-0 bg-transparent shadow-none",
+        "relative isolate",
         detached
-          ? "before:rounded-box"
-          : "before:rounded-t-box before:mask-t-from-transparent before:mask-t-from-4 before:mask-t-to-black before:mask-t-to-4",
-        "before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:border before:border-(--chat-composer-attached-outline)",
-        "before:bg-(--chat-composer-attached-surface)/(--glass-opacity) before:bg-linear-to-b before:from-(--chat-composer-attached-tint) before:to-(--chat-composer-attached-tint) before:backdrop-blur-(--glass-blur) before:backdrop-saturate-(--glass-saturation)",
-        "before:shadow-composer dark:before:shadow-composer-dark",
-        !detached &&
-          "dark:supports-[(backdrop-filter:blur(1px))_or_(-webkit-backdrop-filter:blur(1px))]:before:bg-composer-seam-above",
-        "not-supports-[((backdrop-filter:blur(1px))_or_(-webkit-backdrop-filter:blur(1px)))]:before:bg-(--chat-composer-attached-surface)",
+          ? "dropdown-glass rounded-box"
+          : "rounded-t-box border border-b-0 border-(--level-line) bg-(--drawer-fill) backdrop-blur-(--glass-blur) backdrop-saturate-(--glass-saturation)",
         className,
       )}
       {...props}
@@ -96,20 +91,10 @@ function Root({
   return (
     <Surface
       className={cn(
-        "min-w-0 px-1 py-1 after:block after:h-(--chat-composer-attachment-overlap) text-meta",
+        "min-w-0 px-1 py-1 text-meta",
         density === "comfortable" && "py-2",
         density === "spacious" && "px-2 py-2",
         width === "content" ? "w-fit max-w-full flex-none" : "@container",
-        // A corner button nests inside the banner's radius only when the padding
-        // is tight; spacious padding already leaves the default radius concentric.
-        // Joined cards have a square top, and only detached cards round the bottom.
-        density !== "spacious" && [
-          "[&>[data-composer-banner-row]:first-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-se-(--composer-banner-corner-top)",
-          "[&>[data-composer-banner-row]:first-child>[data-slot=composer-banner-actions]>:last-child>[data-slot=button]:last-of-type]:rounded-se-(--composer-banner-corner-top)",
-          "[&>:first-child>[data-composer-banner-row]:first-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-se-(--composer-banner-corner-top)",
-          "data-[composer-banner-surface=detached]:[&>[data-composer-banner-row]:only-child>[data-slot=composer-banner-actions]>[data-slot=button]:last-child]:rounded-ee-box",
-          "data-[composer-banner-surface=detached]:[&>[data-composer-banner-row]:only-child>[data-slot=composer-banner-actions]>:last-child>[data-slot=button]:last-of-type]:rounded-ee-box",
-        ],
         className,
       )}
       data-slot="composer-banner"

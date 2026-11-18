@@ -463,28 +463,6 @@ html[data-show-grid] .nest-text {
      by the composer, its context strip and attached banners. */
   --shadow-composer: 0 1px 2px rgb(0 0 0 / 5%);
   --shadow-composer-dark: 0 14px 32px -18px rgb(0 0 0 / 75%);
-  /* Overlap the lower toolbar backdrop by one pixel to cover the composer seam. */
-  --spacing-composer-seam: calc(var(--spacing) * 4 - 1px);
-  /* Dark-mode shade where an attached surface meets the composer: 10px of
-     shadow fading away from the seam. Inline, so the offsets resolve on the
-     element. below: the context strip under the composer (1rem seam, faint
-     white fill). above: an attached banner over it (its tint on top). */
-  --background-image-composer-seam-below:
-    linear-gradient(
-      to bottom,
-      transparent 0 1rem,
-      rgb(0 0 0 / 18%) 1rem,
-      transparent calc(1rem + 10px)
-    ),
-    linear-gradient(rgb(255 255 255 / 1%), rgb(255 255 255 / 1%));
-  --background-image-composer-seam-above:
-    linear-gradient(var(--chat-composer-attached-tint), var(--chat-composer-attached-tint)),
-    linear-gradient(
-      to top,
-      transparent 0 var(--chat-composer-attachment-overlap),
-      var(--chat-composer-attached-seam, rgb(0 0 0 / 18%)) var(--chat-composer-attachment-overlap),
-      transparent calc(var(--chat-composer-attachment-overlap) + 10px)
-    );
   --color-zinc-25: oklch(99.2% 0 0);
   --animate-skeleton: skeleton 2.4s infinite;
   /* Duty-cycled indicator animations: long holds with stepped ramps, so the
@@ -699,10 +677,16 @@ html[data-show-grid] .nest-text {
 @utility dialog-glass {
   /* Level 2 (see Levels): a dialog is a float. Dialogs set their own border width. */
   background: var(--float-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border-color: var(--level-line);
   box-shadow: var(--float-shadow);
   --border: var(--level-line);
   --contrast-border: var(--level-line);
+
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    background: var(--float-tone) !important;
+  }
 }
 
 @utility dialog-backdrop {
@@ -718,10 +702,16 @@ html[data-show-grid] .nest-text {
 @utility dropdown-glass {
   /* Level 2 (see Levels). Dividers inside a float draw its outline. */
   background: var(--float-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border: 1px solid var(--level-line);
   box-shadow: var(--float-shadow);
   --border: var(--level-line);
   --contrast-border: var(--level-line);
+
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    background: var(--float-tone) !important;
+  }
 }
 
 @utility topbar-scroll-fade {
@@ -2942,10 +2932,22 @@ code {
 :root {
   --level-line: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
 
-  /* A float's own look: solid, and a tone lighter than the panes, because higher is lighter.
-     Nothing shows through it. A double edge (its light line inside, a dark one outside) and a deep
-     shadow lift it. */
-  --float-fill: var(--popover);
+  /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
+     through as the Glass opacity setting says (never below 18%, so text on it stays readable). A
+     double edge (its light line inside, a dark one outside) and a deep shadow lift it. A drawer is
+     behind its float, so it is the same glass a shade darker. */
+  --float-tone: var(--popover);
+  --drawer-tone: color-mix(in srgb, var(--foreground) 3%, var(--popover));
+  --float-fill: color-mix(
+    in srgb,
+    var(--float-tone) 18%,
+    color-mix(in srgb, var(--float-tone) var(--glass-opacity), transparent)
+  );
+  --drawer-fill: color-mix(
+    in srgb,
+    var(--drawer-tone) 18%,
+    color-mix(in srgb, var(--drawer-tone) var(--glass-opacity), transparent)
+  );
   --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
 
   /* Height: one light from above. Raised: light on top, a dark rim, a little shadow. */
@@ -2967,7 +2969,8 @@ code {
   --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
-    --float-fill: color-mix(in srgb, var(--foreground) 3%, var(--card));
+    --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
+    --drawer-tone: color-mix(in srgb, var(--foreground) 1%, var(--card));
     --float-shadow: 0 0 0 1px rgb(0 0 0 / 55%), 0 24px 56px -18px rgb(0 0 0 / 90%);
     --bump-sheen: linear-gradient(rgb(255 255 255 / 6%), rgb(0 0 0 / 6%));
     --bump-inset: inset 0 1px rgb(255 255 255 / 12%);
@@ -3078,14 +3081,6 @@ html.electron-windows {
   background: none !important;
   /* Sits 1px inside the card, so its corners follow the card's. */
   border-radius: inherit !important;
-}
-
-[data-chat-header] + div [data-slot="composer-shell"] {
-  --chat-composer-glass-surface: var(--card);
-}
-
-[data-chat-header] + div [data-slot="composer-host"] {
-  --chat-composer-outline: var(--level-line);
 }
 
 /* A window's left edge is what the neighbouring resize handle moves, so the handle lights that
@@ -3398,107 +3393,16 @@ html.electron-windows {
     transform: translateY(calc(var(--toast-swipe-movement-y) - 100% - var(--toast-inset)));
   }
 
+  /* The composer is a float (see Height). Its drawers stand on its top edge one corner in, where
+     the edge runs straight, so nothing tucks under it. A drawer is behind the composer, so it is a
+     shade darker. */
   [data-slot="composer-shell"] {
-    --chat-composer-drawer-inset: --spacing(6);
-    --chat-composer-glass-surface: var(--card);
-    --chat-composer-outline: rgb(0 0 0 / 8%);
-
-    @variant dark {
-      --chat-composer-glass-surface: var(--surface-raised);
-      --chat-composer-highlight: rgb(255 255 255 / 3%);
-      --chat-composer-outline: color-mix(in srgb, var(--color-white) 5%, transparent);
-    }
-  }
-
-  html[data-theme-id] [data-slot="composer-shell"] {
-    --chat-composer-glass-surface: var(--app-theme-surface-raised);
-    --chat-composer-outline: var(--app-theme-toolbar-border);
-  }
-
-  html[data-theme-id]:not([data-theme-id="t3-chat"]) [data-slot="composer-shell"] {
-    @variant dark {
-      --chat-composer-highlight: color-mix(in srgb, var(--app-theme-input) 12%, transparent);
-      --chat-composer-outline: color-mix(in srgb, var(--app-theme-input) 30%, var(--background));
-    }
-  }
-
-  html[data-theme-id="t3-chat"] [data-slot="composer-shell"] {
-    @variant dark {
-      --chat-composer-highlight: color-mix(in srgb, #432d48 12%, transparent);
-      --chat-composer-outline: #241e28;
-    }
-  }
-
-  [data-composer-banner-surface] {
-    --chat-composer-attached-surface: var(--chat-composer-glass-surface, var(--card));
-    --chat-composer-attached-tint: transparent;
-
-    @variant dark {
-      --chat-composer-attached-surface: var(--chat-composer-glass-surface, var(--surface-raised));
-    }
-  }
-
-  html[data-theme-id] [data-composer-banner-surface] {
-    --chat-composer-attached-surface: var(--app-theme-surface-raised);
-  }
-
-  /* Bleeds 1px past the seam to cover Chromium's fractional-pixel backdrop loss. */
-  [data-composer-banner-surface="attached"] {
-    --chat-composer-attachment-overlap: calc(--spacing(4) + 1px);
-  }
-
-  [data-composer-banner-surface="detached"] {
-    --chat-composer-attachment-overlap: 0px;
-  }
-
-  [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
-    --chat-composer-attached-outline: var(
-      --chat-composer-outline,
-      color-mix(in srgb, var(--contrast-foreground) 8%, transparent)
-    );
-
-    @variant dark {
-      --chat-composer-attached-outline: var(
-        --chat-composer-outline,
-        color-mix(in srgb, var(--color-white) 5%, transparent)
-      );
-    }
-  }
-
-  html[data-theme-id]
-    [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
-    --chat-composer-attached-outline: var(--chat-composer-outline, var(--app-theme-toolbar-border));
-  }
-
-  html[data-theme-id]:not([data-theme-id="t3-chat"])
-    [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
-    @variant dark {
-      --chat-composer-attached-outline: var(
-        --chat-composer-outline,
-        color-mix(in srgb, var(--app-theme-input) 30%, var(--background))
-      );
-    }
-  }
-
-  html[data-theme-id="t3-chat"]
-    [data-composer-banner-surface]:not([data-variant="error"], [data-variant="warning"]) {
-    @variant dark {
-      --chat-composer-attached-outline: #241e28;
-    }
-  }
-
-  [data-composer-banner-surface][data-variant="error"] {
-    --chat-composer-attached-outline: color-mix(in srgb, var(--error) 32%, transparent);
-    --chat-composer-attached-tint: color-mix(in srgb, var(--error) 8%, transparent);
-  }
-
-  [data-composer-banner-surface][data-variant="warning"] {
-    --chat-composer-attached-outline: color-mix(in srgb, var(--warning) 28%, transparent);
-    --chat-composer-attached-tint: color-mix(in srgb, var(--warning) 8%, transparent);
+    --chat-composer-drawer-inset: var(--radius-box);
+    /* Controls that cut through to the composer's face read its fill here. */
+    --chat-composer-glass-surface: var(--float-fill);
   }
 
   [data-slot="composer-banner"] {
-    --composer-banner-corner-top: var(--radius-box);
     --composer-banner-icon-column: --spacing(7);
 
     @variant sm {
@@ -3508,27 +3412,6 @@ html.electron-windows {
 
   [data-composer-banner-layout="wrap-actions"] > [data-slot="composer-banner-content"] {
     max-width: calc(100% - var(--composer-banner-icon-column) - --spacing(1));
-  }
-
-  [data-slot="composer-banner-attachment"] {
-    margin-bottom: calc((--spacing(4) + 1px) * -1);
-  }
-
-  /* Only the banner touching the composer gets the dark seam shade; stacked ones would band. */
-  [data-slot="composer-banner-attachment"]:has(+ [data-slot="composer-banner-attachment"]) {
-    --chat-composer-attached-seam: transparent;
-  }
-
-  [data-slot="composer-banner-attachment"]
-    + [data-slot="composer-banner-attachment"]
-    [data-composer-banner-surface="attached"] {
-    --composer-banner-corner-top: var(--radius-row);
-  }
-
-  [data-slot="composer-shell"]:has([data-composer-banner-surface="attached"])
-    [data-chat-composer-main-surface]
-    [data-chat-composer-mobile-collapsed="true"] {
-    min-height: calc(--spacing(4) + 1px);
   }
 
   .composer-tiptap {

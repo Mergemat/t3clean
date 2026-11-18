@@ -150,9 +150,11 @@ Settled per component in review, in order. Each one applies to every later compo
       buttons, triggers, the chosen segment or toggle. A switch's knob is raised with a soft
       shadow only: at its size a rim reads as an outline. It is the same knob on and off; only
       the track changes.
-    - **Floating**, above everything: solid and a shade lighter than the panes, a double edge
-      (a light line inside, a dark one outside), a deep shadow. Menus, popovers, dialogs,
-      toasts, tooltips, the details card. No highlight.
+    - **Floating**, above everything: glass a shade lighter than the panes, as see-through as the
+      Glass opacity setting says, a double edge (a light line inside, a dark one outside), a deep
+      shadow. Menus, popovers, dialogs, toasts, tooltips, the details card, the composer. No
+      highlight. A float's drawer (the composer's notices, stash, queue) stands on its top edge
+      one corner in, behind it: the same glass a shade darker.
 
     Nothing sits below the plane: the darkest surfaces leave no room under them. Pressing lowers
     a thing one height, while held or while its popup is open; choosing raises one.

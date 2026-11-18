@@ -139,7 +139,7 @@ export const ComposerCommandMenu = memo(function ComposerCommandMenu(props: {
     >
       <ComposerBanner.Surface
         ref={listRef}
-        className="flex min-h-0 w-full flex-col overflow-hidden pb-(--chat-composer-attachment-overlap) **:data-[slot=command-item]:rounded-row **:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2"
+        className="flex min-h-0 w-full flex-col overflow-hidden **:data-[slot=command-item]:rounded-row **:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2"
         data-composer-command-drawer="true"
       >
         {props.items.length > 0 ? (
