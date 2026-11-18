@@ -1814,7 +1814,8 @@ export default function ThreadTerminalDrawer({
         // The pane's corner controls, as a pane-bar places them (24 − 8 = 16 in), bare and shown
         // on the terminal you point at.
         <div className="pointer-events-none absolute right-4 top-4 z-20 opacity-0 transition-opacity group-hover/terminal-drawer:opacity-100 has-focus-visible:opacity-100 has-data-popup-open:opacity-100">
-          <div className="pointer-events-auto inline-flex items-center gap-1">
+          {/* The terminal's own fill, no edge: text runs under the controls instead of through them. */}
+          <div className="pointer-events-auto inline-flex items-center gap-1 rounded-row bg-(--terminal-background)">
             <TerminalActionButton
               disabled={!canOperateTerminal || hasReachedSplitLimit}
               onClick={onSplitTerminalAction}
