@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://t3.codes">
-    <img src="./assets/prod/t3-black-web-icon-192x192.png" width="80" height="80" alt="T3 Code logo" />
+    <img src="./assets/prod/t3-black-web-icon-192x192.png" width="80" height="80" alt="T3 Clean logo" />
   </a>
 </p>
 
-<h1 align="center">T3 Code</h1>
+<h1 align="center">T3 Clean</h1>
 
-<p align="center">The open-source control plane for coding agents.</p>
+<p align="center">A fork of <a href="https://github.com/pingdotgg/t3code">T3 Code</a>, the open-source control plane for coding agents, rebuilt on one design system.</p>
 
 <p align="center">
   <a href="https://t3.codes/download"><strong>Download</strong></a> ·
@@ -19,7 +19,7 @@
 
 <p align="center">
   <a href="https://t3.codes">
-    <img src="./.github/readme/hero.webp" width="100%" alt="T3 Code on desktop: a finished thread over the dithered Silk backdrop, with the thread details card beside it" />
+    <img src="./.github/readme/hero.webp" width="100%" alt="T3 Clean on desktop: a finished thread over the dithered Silk backdrop, with the thread details card beside it" />
   </a>
 </p>
 
