@@ -13,7 +13,7 @@ export function isSettingsPage(pathname: string) {
   return pathname === "/settings" || pathname.startsWith("/settings/");
 }
 
-/** Usage opens over the view that opened it; Settings is a page of the app itself. */
+/** Usage keeps the thread that opened it as the current one; Settings does not. */
 export function isOverlayPage(pathname: string) {
   return pathname === "/usage";
 }

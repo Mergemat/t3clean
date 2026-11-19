@@ -11,7 +11,7 @@ import {
   remainingPercent,
   type ResetCreditChoice,
 } from "@t3tools/shared/usageLimits";
-import { T, useGT, useMessages } from "gt-react";
+import { T, useGT, useMessages, Var } from "gt-react";
 import type { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { normalizeProviderAccentColor } from "@t3tools/client-runtime/state/provider-instance-display";
 import { AlertTriangleIcon, ExternalLinkIcon, TicketIcon } from "lucide-react";
@@ -45,6 +45,8 @@ import {
   formatResetsIn,
   resetCreditChoices,
 } from "@t3tools/shared/usageLimitsCopy";
+import { PageSection } from "../WindowPage";
+import { UsageRow } from "./UsageRow";
 
 function accountInitials(email: string): string {
   const [local = "", domain = ""] = email.split("@");
@@ -596,31 +598,23 @@ function PoolWindowCard({
 }) {
   const nextRefill = pool.resets.find((reset) => reset.restoresPercent > 0);
   return (
-    <div className="grid items-center gap-x-6 gap-y-2 rounded-box border border-border/60 p-4 md:grid-cols-(--grid-lead)">
-      <div className="flex flex-col gap-1 md:w-44">
-        {label !== null ? (
-          <span className="text-body font-medium text-ink-1">{label ?? pool.label}</span>
-        ) : null}
-        <span className="flex items-baseline gap-2">
-          <span className="text-3xl font-semibold text-ink-1 tabular-nums">
-            {pool.remainingPercent}%
-          </span>
-          <span className="inline-flex items-center gap-2 text-body text-ink-2">
-            <span>
-              <T context="remaining usage percentage">left</T>
-            </span>
-            {pool.pace ? <PaceIcon pace={pool.pace} /> : null}
-          </span>
+    <UsageRow
+      title={label === null ? pool.label : (label ?? pool.label)}
+      detail={description}
+      value={
+        <span className="inline-flex items-center gap-2">
+          {pool.pace ? <PaceIcon pace={pool.pace} /> : null}
+          <T context="remaining usage percentage">
+            <Var>{pool.remainingPercent}</Var>% left
+          </T>
         </span>
-        {nextRefill && pool.columns.length > 1 ? (
-          <span className="text-meta font-medium text-ink-1 tabular-nums">
-            ↻ +{nextRefill.restoresPercent}%
-          </span>
-        ) : null}
-      </div>
+      }
+      valueDetail={
+        nextRefill && pool.columns.length > 1 ? `↻ +${nextRefill.restoresPercent}%` : undefined
+      }
+    >
       <PoolBar pool={pool} color={color} now={now} />
-      {description ? <p className="text-meta text-ink-2 md:col-span-2">{description}</p> : null}
-    </div>
+    </UsageRow>
   );
 }
 
@@ -630,17 +624,20 @@ function PoolSection({ pool, now }: { readonly pool: LimitPool; readonly now: nu
   const windows = displayLimitWindows(pool);
   const m = useMessages();
   return (
-    <section className="flex flex-col gap-2">
-      <h2 className="flex items-center gap-2 text-body font-medium text-ink-1">
-        <ProviderInstanceIcon
-          driverKind={pool.driver}
-          displayName={label}
-          indicatorBackground="var(--background)"
-          className="size-5"
-          iconClassName="size-4 text-ink-2"
-        />
-        {label}
-      </h2>
+    <PageSection
+      title={
+        <>
+          <ProviderInstanceIcon
+            driverKind={pool.driver}
+            displayName={label}
+            indicatorBackground="var(--background)"
+            className="size-4"
+            iconClassName="size-4 text-ink-2"
+          />
+          {label}
+        </>
+      }
+    >
       {windows.map((window) => {
         const details =
           pool.driver === "cursor" ? cursorUsageWindowDetails(window.id, pool, m) : undefined;
@@ -655,7 +652,7 @@ function PoolSection({ pool, now }: { readonly pool: LimitPool; readonly now: nu
           />
         );
       })}
-    </section>
+    </PageSection>
   );
 }
 
@@ -676,7 +673,7 @@ export function UsageLimitsPooled({
   return (
     <div className="flex flex-col gap-6">
       {pools.length === 0 && notices.length === 0 && externalLinks.length === 0 ? (
-        <p className="text-body text-ink-2">
+        <p className="px-2 text-body text-ink-2">
           <T>No provider on the selected environments reports subscription limits.</T>
         </p>
       ) : null}
@@ -701,10 +698,7 @@ export function UsageLimitsPooled({
         }
       </Popover>
       {externalLinks.map((link) => (
-        <section
-          key={link.url}
-          className="flex flex-wrap items-center justify-between gap-2 rounded-box border p-4"
-        >
+        <div key={link.url} className="flex flex-wrap items-center justify-between gap-2 px-2">
           <div className="flex min-w-0 flex-1 items-center gap-2">
             {link.url === CHATGPT_USAGE_URL ? (
               <OpenAI className="size-5 shrink-0" aria-hidden="true" />
@@ -723,13 +717,13 @@ export function UsageLimitsPooled({
           </div>
           <Button
             variant="ghost-muted"
-            size="xs"
+            size="sm"
             onClick={() => void ensureLocalApi().shell.openExternal(link.url)}
           >
             {gt("Manage usage")}
-            <ExternalLinkIcon className="size-4" aria-hidden="true" />
+            <ExternalLinkIcon aria-hidden="true" />
           </Button>
-        </section>
+        </div>
       ))}
       <LimitNotices notices={notices} />
     </div>

@@ -169,7 +169,11 @@ Settled per component in review, in order. Each one applies to every later compo
     the title, the key and one word of state), and the open item fills the window like a thread,
     its crumbs and actions in the frame header at the header's height (`ListPageWindow`,
     `BarContext`). No tabs, no columns of controls on the page. Usage, a thing you glance at, is a
-    float from its icon (`UsageGlance`); the full cost and tokens open from it.
+    float from its icon (`UsageGlance`); the full cost and tokens open from it as a page.
+    A page that is not a thread is solid, as Settings is: no sky, no glass, Settings' container,
+    parts labelled the way Settings labels its groups (`WindowPage`, `PageSection`). Figures are
+    rows like Settings rows: name and detail left, value and detail right (`UsageRow`), in the
+    four type sizes. No tables, no custom figure sizes.
 
 ## Mechanics
 

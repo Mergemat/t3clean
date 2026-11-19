@@ -2,7 +2,8 @@ import { formatPercent } from "@t3tools/shared/usageFormat";
 import { useMessages } from "gt-react";
 import type { ReactNode } from "react";
 
-import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
+import { PageSection } from "../WindowPage";
+import { UsageDot, UsageRow } from "./UsageRow";
 
 export interface ShareSegment {
   readonly label: string;
@@ -10,6 +11,7 @@ export interface ShareSegment {
   readonly color: string;
 }
 
+/** How a total splits: one track cut into its parts, then a row per part. */
 export function UsageShareBar({
   label,
   segments,
@@ -27,43 +29,28 @@ export function UsageShareBar({
   if (total <= 0) return null;
 
   return (
-    <div className="flex min-w-0 flex-col gap-2">
-      <div className="flex items-baseline justify-between gap-2">
-        <h3 className="text-body font-medium text-ink-1">{label}</h3>
-        {aside}
-      </div>
-      {/* The legend below carries every figure; the bar's tooltips are pointer-only. */}
-      <div aria-hidden className="flex h-2">
-        {visible.map((segment) => (
-          <Tooltip key={segment.label}>
-            <TooltipTrigger
-              render={
-                <div
-                  className="h-full min-w-1 rounded-chip first:rounded-l-full last:rounded-r-full"
-                  style={{ flex: `${segment.value} 1 0`, backgroundColor: segment.color }}
-                />
-              }
+    <PageSection title={label} actions={aside}>
+      {/* The rows carry every figure; the track only shows the proportions. */}
+      <div aria-hidden className="px-2 py-2">
+        <div className="flex h-2 gap-0.5 overflow-hidden rounded-full">
+          {visible.map((segment) => (
+            <div
+              key={segment.label}
+              className="h-full min-w-0.5"
+              style={{ flex: `${segment.value} 1 0`, backgroundColor: segment.color }}
             />
-            <TooltipPopup>
-              {m(segment.label)} · {format(segment.value)} · {formatPercent(segment.value / total)}
-            </TooltipPopup>
-          </Tooltip>
-        ))}
+          ))}
+        </div>
       </div>
-      <ul aria-label={label} className="flex flex-wrap gap-x-2 gap-y-1 text-meta">
-        {visible.map((segment) => (
-          <li key={segment.label} className="flex items-center gap-2">
-            <span
-              aria-hidden
-              className="size-2 rounded-chip"
-              style={{ backgroundColor: segment.color }}
-            />
-            <span className="text-ink-2">{m(segment.label)}</span>{" "}
-            <span className="text-ink-1 tabular-nums">{format(segment.value)}</span>
-            <span className="sr-only">, {formatPercent(segment.value / total)}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+      {visible.map((segment) => (
+        <UsageRow
+          key={segment.label}
+          lead={<UsageDot color={segment.color} />}
+          title={m(segment.label)}
+          value={format(segment.value)}
+          valueDetail={formatPercent(segment.value / total)}
+        />
+      ))}
+    </PageSection>
   );
 }

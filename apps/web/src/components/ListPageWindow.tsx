@@ -1,7 +1,6 @@
 import { createContext, useState, type ReactNode } from "react";
 
 import { isElectron } from "~/env";
-import { ConversationBackdrop } from "./chat/ConversationBackdrop";
 import { WorkspaceBreadcrumb, WorkspaceBreadcrumbItem } from "./WorkspaceBreadcrumb";
 import { WorkspacePageHeader } from "./WorkspacePageHeader";
 
@@ -10,8 +9,8 @@ import { WorkspacePageHeader } from "./WorkspacePageHeader";
 export const WindowHeaderSlotContext = createContext<HTMLElement | null>(null);
 
 /**
- * The window of a page whose list lives in the sidebar: the open item fills it like a thread,
- * and with nothing open it is the empty sky.
+ * The window of a page whose list lives in the sidebar: the open item fills it like a thread.
+ * Solid, as Settings is.
  */
 export function ListPageWindow({
   title,
@@ -48,8 +47,7 @@ export function ListPageWindow({
           <div className="relative flex min-h-0 flex-1 flex-col">{children}</div>
         </WindowHeaderSlotContext>
       ) : (
-        <div className="relative isolate flex min-h-0 flex-1 flex-col items-center justify-center">
-          <ConversationBackdrop />
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center">
           <p className="text-body text-ink-2">{emptyText}</p>
         </div>
       )}

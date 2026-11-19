@@ -1683,7 +1683,13 @@ export function PullRequestDetailPanel({
   );
 
   return (
-    <div className="relative flex h-full min-h-0 w-full flex-col bg-background">
+    <div
+      className={cn(
+        "relative flex h-full min-h-0 w-full flex-col",
+        // In the window it takes the window's own fill, as Settings does.
+        !frameHeader && "bg-background",
+      )}
+    >
       {threadPickerOpen && detail ? (
         <PullRequestThreadLinks
           key={`${environmentId}:${detail.url}`}

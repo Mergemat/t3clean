@@ -18,7 +18,6 @@ import {
 } from "@t3tools/contracts";
 
 import { act, render, stubGlobal } from "../../test/render";
-import { AppRouteModal } from "../components/AppRouteModal";
 import { GlobalVoiceInputIndicator } from "../components/chat/GlobalVoiceInputIndicator";
 import { VoiceInputSetup } from "../components/chat/VoiceInputSetup";
 import type { createBrowserVoiceInputPlatform } from "./browserVoiceInput";
@@ -436,7 +435,7 @@ it.each([
   expect(mocks.committed).not.toHaveBeenCalled();
 });
 
-it("finishes an off-screen recording with the keyboard while Settings is open", async () => {
+it("finishes an off-screen recording from the global indicator on another page", async () => {
   setup({ destination: "env-a" });
   mocks.storedDraft = "Earlier text";
   await using screen = await render(
@@ -448,15 +447,11 @@ it("finishes an off-screen recording with the keyboard while Settings is open", 
   await act(() => mocks.voice.start());
   await screen.rerender(
     <>
-      <AppRouteModal label="Settings">
-        <button type="button">Settings control</button>
-      </AppRouteModal>
-      <GlobalVoiceInputIndicator hidden />
+      <button type="button">Settings control</button>
+      <GlobalVoiceInputIndicator />
     </>,
   );
-  await expect.element(page.getByRole("dialog", { name: "Settings" })).toHaveFocus();
-  await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
-  await expect.element(page.getByRole("button", { name: "Finish voice input" })).toHaveFocus();
+  page.getByRole("button", { name: "Finish voice input" }).element().focus();
   await userEvent.keyboard("{Enter}");
   await vi.waitFor(() => expect(mocks.storedDraft).toBe("Earlier text dictated"));
 });

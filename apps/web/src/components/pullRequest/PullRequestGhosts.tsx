@@ -10,7 +10,10 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { msg, T, useGT, useMessages, Var } from "gt-react";
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { BarContext, barControlSize } from "../barSize";
+import { WindowHeaderSlotContext } from "../ListPageWindow";
 import {
   sourceControlClients,
   type ChangeRequestTerminology,
@@ -106,6 +109,8 @@ export function PullRequestDetailGhost({
   onCheckoutError?: ((error: Error) => void) | undefined;
 }) {
   const gt = useGT();
+  const frameHeader = useContext(WindowHeaderSlotContext);
+  const controlSize = barControlSize(frameHeader ? "frame" : "panel");
   const resolve = useMessages();
   const tabs = requestedTabs ?? resolveFilterOptions(DEFAULT_DETAIL_TABS, resolve);
   const seed = summary
@@ -135,6 +140,80 @@ export function PullRequestDetailGhost({
   const selectedTab =
     tabs.find((item) => item.value === activeTab)?.value ?? tabs[0]?.value ?? "summary";
 
+  const headerRow = (
+    <>
+      <div className={cn("grid h-6 min-w-0 items-center overflow-hidden", !frameHeader && "pl-4")}>
+        <div className="flex min-w-0 items-center gap-1 text-body text-ink-2 sm:text-meta">
+          {onBack ? (
+            <Button
+              size={controlSize.icon}
+              variant="ghost-muted"
+              className="-ml-2"
+              onClick={onBack}
+              aria-label={gt("Back to this thread's pull requests")}
+            >
+              <ArrowLeftIcon aria-hidden className="size-4" />
+            </Button>
+          ) : null}
+          {seed ? (
+            <>
+              <span className="min-w-0 truncate font-medium">{seed.repository}</span>
+              <InlineButton
+                onClick={() => void readLocalApi()?.shell.openExternal(seed.url)}
+                aria-label={gt(
+                  "Open {term, select, mr {merge request} cr {change request} other {pull request}} #{number} on host",
+                  {
+                    term: changeRequestTermKind(terminology),
+                    number: seed.number,
+                  },
+                )}
+              >
+                <span className={statePresentation?.toneClassName}>#{seed.number}</span>
+                <ExternalLinkIcon aria-hidden className="size-3" />
+              </InlineButton>
+            </>
+          ) : (
+            <>
+              <GhostBar className="w-24" />
+              <span className="shrink-0 text-meta text-ink-2">#{number ?? "…"}</span>
+            </>
+          )}
+        </div>
+      </div>
+      <div
+        className={cn("flex h-6 shrink-0 items-center justify-end gap-1", !frameHeader && "mr-2")}
+      >
+        {actions ?? <GhostBar className="h-6 w-16 rounded-row" />}
+        <Button
+          size={controlSize.icon}
+          variant="ghost"
+          disabled
+          aria-label={gt(
+            "{term, select, mr {Merge request} cr {Change request} other {Pull request}} actions loading",
+            {
+              term: changeRequestTermKind(terminology),
+            },
+          )}
+        >
+          <EllipsisIcon aria-hidden className="size-4" />
+        </Button>
+        {onClose ? (
+          <Button
+            size={controlSize.icon}
+            variant="ghost"
+            aria-label={gt(
+              "Collapse {term, select, mr {merge request} cr {change request} other {pull request}} panel",
+              { term: changeRequestTermKind(terminology) },
+            )}
+            onClick={onClose}
+          >
+            <PanelRightIcon aria-hidden className="size-4" />
+          </Button>
+        ) : null}
+      </div>
+    </>
+  );
+
   return (
     <div
       role="status"
@@ -143,78 +222,16 @@ export function PullRequestDetailGhost({
         { term: changeRequestTermKind(terminology) },
       )}
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden bg-background",
+        "flex h-full min-h-0 flex-col overflow-hidden",
+        !frameHeader && "bg-background",
         !seed && "motion-safe:animate-skeleton",
       )}
     >
       <div className="@container/pr-header grid min-w-0 shrink-0 grid-cols-(--grid-trail) items-start gap-x-2 border-b border-border/60">
-        <div className="pl-4 grid h-6 min-w-0 items-center overflow-hidden">
-          <div className="flex min-w-0 items-center gap-1 text-body text-ink-2 sm:text-meta">
-            {onBack ? (
-              <Button
-                size="icon-xs"
-                variant="ghost-muted"
-                className="-ml-2"
-                onClick={onBack}
-                aria-label={gt("Back to this thread's pull requests")}
-              >
-                <ArrowLeftIcon aria-hidden className="size-4" />
-              </Button>
-            ) : null}
-            {seed ? (
-              <>
-                <span className="min-w-0 truncate font-medium">{seed.repository}</span>
-                <InlineButton
-                  onClick={() => void readLocalApi()?.shell.openExternal(seed.url)}
-                  aria-label={gt(
-                    "Open {term, select, mr {merge request} cr {change request} other {pull request}} #{number} on host",
-                    {
-                      term: changeRequestTermKind(terminology),
-                      number: seed.number,
-                    },
-                  )}
-                >
-                  <span className={statePresentation?.toneClassName}>#{seed.number}</span>
-                  <ExternalLinkIcon aria-hidden className="size-3" />
-                </InlineButton>
-              </>
-            ) : (
-              <>
-                <GhostBar className="w-24" />
-                <span className="shrink-0 text-meta text-ink-2">#{number ?? "…"}</span>
-              </>
-            )}
-          </div>
-        </div>
-        <div className="mr-2 flex h-6 shrink-0 items-center justify-end gap-1">
-          {actions ?? <GhostBar className="h-6 w-16 rounded-row" />}
-          <Button
-            size="icon-xs"
-            variant="ghost"
-            disabled
-            aria-label={gt(
-              "{term, select, mr {Merge request} cr {Change request} other {Pull request}} actions loading",
-              {
-                term: changeRequestTermKind(terminology),
-              },
-            )}
-          >
-            <EllipsisIcon aria-hidden className="size-4" />
-          </Button>
-          {onClose ? (
-            <Button
-              size="icon-xs"
-              variant="ghost"
-              aria-label={gt(
-                "Collapse {term, select, mr {merge request} cr {change request} other {pull request}} panel",
-                { term: changeRequestTermKind(terminology) },
-              )}
-              onClick={onClose}
-            >
-              <PanelRightIcon aria-hidden className="size-4" />
-            </Button>
-          ) : null}
-        </div>
+        {/* In the window the crumbs and actions sit in the frame header, as the loaded panel's do. */}
+        {frameHeader
+          ? createPortal(<BarContext value="frame">{headerRow}</BarContext>, frameHeader)
+          : headerRow}
 
         <div className="col-span-2 grid grid-rows-(--grid-open)">
           <div className="min-h-0 overflow-hidden">

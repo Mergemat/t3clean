@@ -118,7 +118,7 @@ export function UsageModelDialog({
               hour12={chartWindow.hour12}
             />
 
-            <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
+            <div className="flex flex-col gap-6">
               {costUnknown ? null : (
                 <UsageShareBar
                   label={gt("Cost by type")}
