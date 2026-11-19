@@ -1455,9 +1455,10 @@ html[data-show-grid] .nest-text {
     /* The canvas is true black, matching the sidebar. Raised surfaces keep the tone they had
        over neutral-950, so cards, popovers, and the composer still lift. Borders and hover
        states provide separation without milky gray fills. */
-    --background: #000;
-    /* The frame sits a shade above black so the window, below it, can be black. */
-    --app-chrome-background: color-mix(in srgb, var(--color-neutral-950) 99%, var(--color-white));
+    /* The frame tops the level ladder: at the anchor, so the levels below it step down from it
+       without reaching black (see Levels). */
+    --background: oklch(0.17 0 0);
+    --app-chrome-background: var(--background);
     --surface-raised: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
     --foreground: var(--color-neutral-100);
     --card: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
@@ -1485,12 +1486,12 @@ html[data-show-grid] .nest-text {
     --warning-foreground: var(--color-amber-400);
     --warning-surface: color-mix(in srgb, var(--warning) 16%, transparent);
     --update-foreground: var(--color-blue-400);
-    --sidebar: var(--card);
+    --sidebar: var(--app-chrome-background);
     --sidebar-control-surface: var(--muted);
     --sidebar-row-hover: var(--accent);
     --sidebar-row-active: var(--accent);
     --sidebar-row-selected: var(--muted);
-    --sidebar-stage-fade: var(--card);
+    --sidebar-stage-fade: var(--app-chrome-background);
     --terminal-cursor: rgb(180 203 255);
     --terminal-selection-background: rgb(180 203 255 / 25%);
   }
@@ -1591,8 +1592,9 @@ html[data-show-grid] .nest-text {
 /* The non-empty marker adds enough specificity to outrank the generated root
    dark variant without reintroducing raw `.dark` selectors. */
 html[data-theme-id]:not([data-theme-id=""]) {
-  --background: var(--app-theme-canvas);
-  --app-chrome-background: var(--app-theme-chrome);
+  /* The frame tops the level ladder, so it is never darker than the anchor (see Levels). */
+  --background: oklch(from var(--app-theme-canvas) max(l, var(--frame-min-l)) c h);
+  --app-chrome-background: oklch(from var(--app-theme-chrome) max(l, var(--frame-min-l)) c h);
   --toolbar-background: var(--app-theme-toolbar);
   --toolbar-foreground: var(--app-theme-toolbar-foreground);
   --toolbar-border: var(--app-theme-toolbar-border);
@@ -1639,7 +1641,7 @@ html[data-theme-id]:not([data-theme-id=""]) {
   --border: var(--app-theme-border);
   --input: var(--app-theme-input);
   --ring: var(--app-theme-focus);
-  --sidebar: var(--app-theme-sidebar);
+  --sidebar: oklch(from var(--app-theme-sidebar) max(l, var(--frame-min-l)) c h);
   --sidebar-foreground: var(--app-theme-sidebar-foreground);
   --sidebar-muted-foreground: var(--app-theme-sidebar-muted-foreground);
   --sidebar-control-surface: var(--app-theme-sidebar-control-surface);
@@ -2943,10 +2945,16 @@ code {
 
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
      through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
-     light edge and a soft shadow lift it. A drawer is behind the composer, so it is the composer's
-     glass a shade darker: halfway to the frame. */
-  --float-tone: var(--popover);
-  --drawer-tone: color-mix(in srgb, var(--app-chrome-background) 50%, var(--card));
+     light edge and a soft shadow lift it. */
+  /* Lower is darker: every level is the frame's colour, a fixed lightness step up or down. A float
+     is a step above the frame, chat a step below, the floor two; a drawer, behind the composer,
+     halfway from chat to the floor. In dark themes the frame is never below the anchor, so the
+     floor never reaches black. */
+  --frame-min-l: 0;
+  --level-step: 0.03;
+  --float-tone: oklch(from var(--app-chrome-background) calc(l + var(--level-step)) c h);
+  --chat-tone: oklch(from var(--app-chrome-background) calc(l - var(--level-step)) c h);
+  --drawer-tone: oklch(from var(--app-chrome-background) calc(l - var(--level-step) * 1.5) c h);
   --float-fill: color-mix(
     in srgb,
     var(--float-tone) 18%,
@@ -2970,9 +2978,8 @@ code {
 
   --surface-fill: var(--background);
 
-  /* The bottom of the bowl, seen when the sky is off: a step below the frame around it, because
-     higher is lighter. Chat glass and floats lift off it in turn. */
-  --window-fill: color-mix(in oklab, var(--app-chrome-background) 96%, black);
+  /* The bottom of the bowl, seen when the sky is off. */
+  --window-fill: oklch(from var(--app-chrome-background) calc(l - var(--level-step) * 2) c h);
   /* The OS window corner, measured: 16px on macOS 26, 8px on Windows 11. The page can't read it.
      A window corner that sits in the OS corner is concentric with it: it takes the gap and the OS
      edge (2px) off. Every other window corner takes the scale. */
@@ -2981,11 +2988,10 @@ code {
   /* A region: the details card (a box, 16) floats one step inside it and runs parallel. */
   --window-radius: var(--radius-region);
   --window-corner: max(var(--radius-chip), calc(var(--app-corner) - var(--window-gap) - 2px));
-  --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
+  --window-content-fill: color-mix(in srgb, var(--chat-tone) var(--glass-opacity), transparent);
 
   @variant dark {
-    --window-fill: color-mix(in oklab, var(--app-chrome-background) 60%, black);
-    --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
+    --frame-min-l: 0.17;
     --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
 }
