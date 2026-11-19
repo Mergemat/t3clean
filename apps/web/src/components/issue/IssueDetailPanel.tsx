@@ -75,6 +75,7 @@ import { issueTrackerPresentation, issueStatePresentation } from "./issuePresent
 import { createPortal } from "react-dom";
 import { BarContext, barControlSize } from "../barSize";
 import { WindowHeaderSlotContext } from "../ListPageWindow";
+import { MessageCard } from "../MessageCard";
 
 function IssueReactionBar({
   reactions,
@@ -648,7 +649,7 @@ export function IssueDetailPanel({
             </form>
           ) : (
             <PullRequestDetailTitleRow className="group mt-1 gap-1">
-              <h2 className="min-w-0 flex-1 text-base font-semibold leading-snug">
+              <h2 className="min-w-0 flex-1 text-title font-semibold leading-snug">
                 {detail.title}
               </h2>
               {canEdit ? (
@@ -663,7 +664,7 @@ export function IssueDetailPanel({
             </PullRequestDetailTitleRow>
           )}
 
-          <PullRequestMetaLine className="mt-2 min-h-5 text-meta text-ink-2">
+          <PullRequestMetaLine className="mt-1 min-h-5 text-meta text-ink-2">
             <PullRequestActorLabel actor={detail.author} />
             <span>
               <T>
@@ -684,7 +685,8 @@ export function IssueDetailPanel({
             )}
           </PullRequestMetaLine>
 
-          <div className="mt-4 space-y-2">
+          {/* Properties in one quiet line under the title, not a stack of rows. */}
+          <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1">
             <PullRequestMetaRow icon={<TagIcon className="size-4" />} label={gt("Labels")}>
               <span className="flex min-w-0 flex-wrap items-center gap-1">
                 {detail.labels.length === 0 ? (
@@ -741,19 +743,20 @@ export function IssueDetailPanel({
           </div>
         </div>
 
-        <PullRequestSection
-          key={`description:${detail.url}`}
-          title={gt("Description")}
-          keepMounted
-          actions={
-            canEdit && editing !== "body" ? (
-              <PullRequestEditButton
-                aria-label={gt("Edit description")}
-                onClick={() => setEditing("body")}
-              />
-            ) : null
-          }
-        >
+        {/* The description is the author's message: on chat glass, as in a thread. */}
+        <MessageCard key={`description:${detail.url}`} className="mx-4 mt-4 mb-2">
+          <PullRequestMetaLine className="min-h-6 text-meta text-ink-2">
+            <PullRequestActorLabel actor={detail.author} />
+            <span>{formatRelativeTimeLabel(detail.createdAt, undefined, messages)}</span>
+            {canEdit && editing !== "body" ? (
+              <span className="ms-auto">
+                <PullRequestEditButton
+                  aria-label={gt("Edit description")}
+                  onClick={() => setEditing("body")}
+                />
+              </span>
+            ) : null}
+          </PullRequestMetaLine>
           <div className="flex flex-col gap-2">
             {editing === "body" ? (
               <PullRequestMarkdownEditor
@@ -787,7 +790,7 @@ export function IssueDetailPanel({
               />
             ) : null}
           </div>
-        </PullRequestSection>
+        </MessageCard>
 
         {detail.linkedPullRequests.length > 0 ? (
           <PullRequestSection key={`linked:${detail.url}`} title={gt("Linked pull requests")}>
@@ -841,10 +844,7 @@ export function IssueDetailPanel({
             ) : null}
             {timeline.map((item) =>
               item.kind === "comment" ? (
-                <article
-                  key={`c:${item.comment.id}`}
-                  className="flex flex-col gap-2 rounded-row border border-border/60 p-4"
-                >
+                <MessageCard key={`c:${item.comment.id}`}>
                   <PullRequestMetaLine className="text-meta text-ink-2">
                     <PullRequestActorLabel actor={item.comment.author} />
                     {item.comment.url ? (
@@ -877,11 +877,11 @@ export function IssueDetailPanel({
                       reference={reference}
                     />
                   ) : null}
-                </article>
+                </MessageCard>
               ) : (
                 <PullRequestMetaLine
                   key={`e:${item.event.id}`}
-                  className="px-1 text-meta text-ink-2"
+                  className="px-4 text-meta text-ink-3"
                 >
                   <PullRequestActorLabel actor={item.event.actor} />
                   <span>{issueEventSentence(item.event, messages)}</span>

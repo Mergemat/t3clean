@@ -90,7 +90,7 @@ import { SidebarInset } from "../ui/sidebar";
 import { isElectron } from "~/env";
 import { SpeedPremium, UsageModelDialog } from "./UsageModelDialog";
 import { UsageShareBar } from "./UsageShareBar";
-import { UsageDot, UsageRow } from "./UsageRow";
+import { UsageDot, UsageRow, UsageShareTrack } from "./UsageRow";
 import {
   costTypeSegments,
   modelShare,
@@ -604,6 +604,7 @@ export function UsagePage() {
               refreshingUsage={refreshingUsage}
               showChatGptSharing={showChatGptSharing}
               onSelectModel={selectUsageModel}
+              windowLabel={windowLabel}
             />
           )}
         </WindowPage>
@@ -651,6 +652,7 @@ function UsageOverview({
   refreshingUsage,
   showChatGptSharing,
   onSelectModel,
+  windowLabel,
 }: {
   readonly merged: MergedUsage;
   readonly shownWindow: UsageSummaryInput;
@@ -664,6 +666,7 @@ function UsageOverview({
   readonly refreshingUsage: boolean;
   readonly showChatGptSharing: boolean;
   readonly onSelectModel: (key: string) => void;
+  readonly windowLabel: string;
 }) {
   const gt = useGT();
   const locale = useLocale();
@@ -742,6 +745,7 @@ function UsageOverview({
           <span className="inline-flex items-center gap-1 text-meta text-ink-2">
             <span className={figureClass(loadingPartial)}>{sessionsLabel(merged.sessions)}</span>
             {metric === "cost" ? <span>· {gt("API estimate")}</span> : null}
+            <span>· {windowLabel}</span>
             {metric === "cost" && merged.costQuality.unpricedShare > 0 ? (
               <Popover>
                 <PopoverTrigger
@@ -795,7 +799,11 @@ function UsageOverview({
               }
               valueDetail={awaitingData ? null : formatPercent(share)}
               dimmed={providerLoading}
-            />
+            >
+              {awaitingData ? null : (
+                <UsageShareTrack share={share} color={PROVIDER_PRESENTATION[provider].color} />
+              )}
+            </UsageRow>
           );
         })}
         {showChatGptSharing ? (
@@ -803,33 +811,33 @@ function UsageOverview({
         ) : null}
       </PageSection>
 
-      <PageSection title={<T>Totals</T>}>
-        <UsageRow
-          title={gt("Processed tokens")}
-          value={formatTokens(merged.totalTokens)}
-          dimmed={loadingPartial}
-        />
-        <UsageRow
-          title={gt("Cached input")}
-          value={formatTokens(merged.cachedInputTokens)}
-          dimmed={loadingPartial}
-        />
-        <UsageRow
-          title={gt("Uncached input")}
-          value={formatTokens(merged.uncachedInputTokens)}
-          dimmed={loadingPartial}
-        />
-        <UsageRow
-          title={gt("Output", { $context: "output tokens" })}
-          value={formatTokens(merged.outputTokens)}
-          dimmed={loadingPartial}
-        />
-        <UsageRow
-          title={gt("Cache savings")}
-          value={formatUsd(merged.costQuality.cacheSavingsUsd, locale)}
-          dimmed={loadingPartial}
-        />
-      </PageSection>
+      {/* The totals as one strip of figures, read across, not a column of rows. */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-4 px-2 sm:grid-cols-4">
+        {[
+          { label: gt("Processed tokens"), value: formatTokens(merged.totalTokens) },
+          { label: gt("Cached input"), value: formatTokens(merged.cachedInputTokens) },
+          {
+            label: gt("Output", { $context: "output tokens" }),
+            value: formatTokens(merged.outputTokens),
+          },
+          {
+            label: gt("Cache savings"),
+            value: formatUsd(merged.costQuality.cacheSavingsUsd, locale),
+          },
+        ].map((figure) => (
+          <div key={figure.label} className="flex min-w-0 flex-col gap-1">
+            <span className="truncate text-meta text-ink-2">{figure.label}</span>
+            <span
+              className={cn(
+                "text-heading font-semibold text-ink-1 tabular-nums",
+                figureClass(loadingPartial),
+              )}
+            >
+              {figure.value}
+            </span>
+          </div>
+        ))}
+      </div>
 
       {merged.totalTokens > 0 ? (
         metric === "tokens" ? (
@@ -906,7 +914,14 @@ function UsageOverview({
                   valueDetail={share === null ? null : formatPercent(share)}
                   dimmed={loadingProviders.has(model.provider)}
                   onClick={() => onSelectModel(key)}
-                />
+                >
+                  {share === null ? null : (
+                    <UsageShareTrack
+                      share={share}
+                      color={PROVIDER_PRESENTATION[model.provider].color}
+                    />
+                  )}
+                </UsageRow>
               );
             })
           )

@@ -180,6 +180,10 @@ Settled per component in review, in order. Each one applies to every later compo
     parts labelled the way Settings labels its groups (`WindowPage`, `PageSection`). Figures are
     rows like Settings rows: name and detail left, value and detail right (`UsageRow`), in the
     four type sizes. No tables, no custom figure sizes.
+    An item page (an issue, a pull request) reads like a thread: one `text-title` line, the title,
+    with one meta line under it and its properties in one quiet line; what people wrote (the
+    description, comments) on chat glass (`MessageCard`); events as single `text-meta` lines.
+    Markdown headings stay on the scale (heading size), below the page's one title.
 
 ## Mechanics
 

@@ -2171,28 +2171,16 @@ code {
 :is(.chat-markdown, .composer-tiptap) h4,
 :is(.chat-markdown, .composer-tiptap) h5,
 :is(.chat-markdown, .composer-tiptap) h6 {
-  margin: --spacing(5) 0 --spacing(2);
+  /* On the type scale: a heading in a message stays below the page's one title. */
+  margin: --spacing(4) 0 --spacing(2);
   font-weight: 600;
   line-height: 1.3;
   color: var(--contrast-foreground);
+  font-size: var(--text-body);
 }
 
-:is(.chat-markdown, .composer-tiptap) h1 {
-  font-size: var(--text-xl);
-}
-
-:is(.chat-markdown, .composer-tiptap) h2 {
-  font-size: var(--text-lg);
-}
-
-:is(.chat-markdown, .composer-tiptap) h3 {
-  font-size: var(--text-base);
-}
-
-:is(.chat-markdown, .composer-tiptap) h4,
-:is(.chat-markdown, .composer-tiptap) h5,
-:is(.chat-markdown, .composer-tiptap) h6 {
-  font-size: var(--text-sm);
+:is(.chat-markdown, .composer-tiptap) :is(h1, h2, h3) {
+  font-size: var(--text-heading);
 }
 
 :is(.chat-markdown, .composer-tiptap) h6 {

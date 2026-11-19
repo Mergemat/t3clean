@@ -27,35 +27,32 @@ export function PullRequestDetailHeaderBody({
   diffStat: ReactNode;
 }) {
   const gt = useGT();
+  // The title is the page's one large line; everything about it is one quiet meta line under it.
   return (
     <div className="col-span-2 mt-1 min-w-0 px-4 pb-4">
       {title}
-      <div className="mt-2 flex min-h-5 min-w-0 items-center gap-2 text-meta text-ink-2">
+      <div className="mt-1 flex min-h-5 min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-meta text-ink-2">
         <PullRequestMetaLine className="min-w-0 whitespace-nowrap">
           {author}
           {updated}
         </PullRequestMetaLine>
-        {checkout}
-      </div>
-      <div className="mt-2 flex min-h-5 min-w-0 items-center gap-2 text-meta text-ink-2">
-        <span className="flex min-w-0 flex-1 items-center gap-2 font-mono text-meta text-ink-2">
+        <span className="flex min-w-0 items-center gap-2 font-mono">
           {base}
           <ArrowLeftIcon
             aria-label={gt("receives changes from", {
               $context:
                 "screen reader label for an arrow between the base branch, read before it, and the head branch, read after it",
             })}
-            className="size-4 shrink-0 opacity-60"
+            className="size-3 shrink-0 opacity-60"
           />
           {head}
         </span>
-        <span className="ml-auto inline-flex shrink-0 items-baseline justify-end gap-2">
-          <span className="inline-flex min-w-16 items-baseline justify-end gap-2 tabular-nums">
-            <FileDiffIcon aria-hidden className="size-4 self-center" />
-            {files}
-          </span>
+        <span className="inline-flex shrink-0 items-baseline gap-2 tabular-nums">
+          <FileDiffIcon aria-hidden className="size-3 self-center" />
+          {files}
           {diffStat}
         </span>
+        {checkout ? <span className="ms-auto">{checkout}</span> : null}
       </div>
     </div>
   );

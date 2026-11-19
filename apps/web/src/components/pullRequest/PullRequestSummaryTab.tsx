@@ -103,6 +103,7 @@ import { PullRequestConversationGhost } from "./PullRequestGhosts";
 import { sectionCollapseAnchorScrollTop } from "./pullRequestSummaryScroll.logic";
 
 import { changeRequestTermKind } from "./changeRequestTerm";
+import { MessageCard } from "../MessageCard";
 
 function reviewerKey(login: string): string {
   return login.toLowerCase();
@@ -310,8 +311,8 @@ function CollapsedComment({
   const statusTriggerRef = useRef<HTMLButtonElement>(null);
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <article className="group rounded-row border border-border/60 contain-intrinsic-block-11 content-visibility-auto">
-        <div className="p-2">
+      <MessageCard className="group gap-0 contain-intrinsic-block-11 content-visibility-auto">
+        <div>
           <div className="flex flex-wrap items-baseline gap-2">
             <CommentIdentity comment={comment} detail={detail} />
             {replyCount > 0 ? (
@@ -323,7 +324,7 @@ function CollapsedComment({
             ) : null}
             <CollapsibleTrigger
               ref={statusTriggerRef}
-              className="flex shrink-0 items-center gap-2 rounded-row px-2 py-1 text-meta text-ink-2 hover:bg-muted hover:text-ink-1"
+              className="flex shrink-0 items-center gap-2 rounded-row px-2 py-1 text-meta text-ink-2 hover:bg-tint-2 hover:text-ink-1"
             >
               {label}
               <ChevronDownIcon
@@ -348,7 +349,7 @@ function CollapsedComment({
         </div>
         <CollapsiblePanel>
           {open ? (
-            <div className="px-2 pb-2">
+            <div>
               {body === null && !editing.canEdit(comment) ? null : (
                 <CommentBody className="mt-2" comment={comment} editing={editing} />
               )}
@@ -356,8 +357,8 @@ function CollapsedComment({
             </div>
           ) : null}
         </CollapsiblePanel>
-        {moreReplies ? <div className="px-2 pb-2">{moreReplies}</div> : null}
-      </article>
+        {moreReplies ? <div className="mt-2">{moreReplies}</div> : null}
+      </MessageCard>
     </Collapsible>
   );
 }
@@ -372,8 +373,8 @@ export function PullRequestMetaRow({
   children: ReactNode;
 }) {
   return (
-    <div className="grid min-h-6 min-w-0 grid-cols-(--grid-lead) items-center gap-2 text-meta sm:min-h-6">
-      <span className="flex w-24 items-center gap-2 text-ink-2">
+    <div className="flex min-h-6 min-w-0 items-center gap-2 text-meta">
+      <span className="flex shrink-0 items-center gap-2 text-ink-2">
         {icon}
         {label}
       </span>
@@ -768,11 +769,11 @@ export function PullRequestSummaryTab({
     // A reply goes with its conversation, from the card that heads it.
     const chat = reply ? null : chatSubject(comment, thread);
     return (
-      <article
+      <MessageCard
         key={`${detail.url}:${comment.id}`}
-        className="group rounded-row border border-border/60 bg-(--pane-fill) contain-intrinsic-block-40 content-visibility-auto"
+        className="group contain-intrinsic-block-40 content-visibility-auto"
       >
-        <div className="flex flex-wrap items-baseline gap-2 rounded-t-row bg-muted/25 px-2 py-2">
+        <div className="flex flex-wrap items-baseline gap-2">
           <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-2 text-meta text-ink-2">
             <CommentIdentity comment={comment} detail={detail} />
             {outcome ? (
@@ -805,15 +806,11 @@ export function PullRequestSummaryTab({
           ) : null}
           {reactionBarFor(comment)}
         </div>
-        {reply ? null : (
-          <div className="px-2">
-            <CommentLocation comment={comment} thread={thread} />
-          </div>
-        )}
+        {reply ? null : <CommentLocation comment={comment} thread={thread} />}
         {body === null && !commentEditing.canEdit(comment) ? null : (
-          <CommentBody className="px-2 py-2" comment={comment} editing={commentEditing} />
+          <CommentBody comment={comment} editing={commentEditing} />
         )}
-      </article>
+      </MessageCard>
     );
   };
 
@@ -872,7 +869,8 @@ export function PullRequestSummaryTab({
       data-pull-request-summary-scroll
     >
       <section className="px-4 pt-2 pb-1">
-        <div className="space-y-2">
+        {/* Properties in one quiet line, not a stack of rows. */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <PullRequestMetaRow icon={<UsersIcon className="size-4" />} label={gt("Reviewers")}>
             <span className="flex min-w-0 flex-wrap items-center gap-2">
               {reviewerEntries.length === 0 ? (
@@ -986,7 +984,8 @@ export function PullRequestSummaryTab({
         keepMounted
         revealCount={descriptionReveals}
       >
-        <div className="group">
+        {/* The description is the author's message: on chat glass, as in a thread. */}
+        <MessageCard className="group">
           {editingDescription ? (
             <PullRequestMarkdownEditor
               allowEmpty
@@ -1027,7 +1026,7 @@ export function PullRequestSummaryTab({
               ) : null}
             </div>
           )}
-        </div>
+        </MessageCard>
       </PullRequestSection>
 
       <PullRequestSection

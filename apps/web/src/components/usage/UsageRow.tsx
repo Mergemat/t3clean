@@ -74,3 +74,15 @@ export function UsageDot({ color }: { color: string }) {
     <span aria-hidden className="size-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
   );
 }
+
+/** A row's share of the whole, as a thin track under it; the figures beside it say it exactly. */
+export function UsageShareTrack({ share, color }: { share: number; color: string }) {
+  return (
+    <div aria-hidden className="h-1 overflow-hidden rounded-full bg-tint-1">
+      <div
+        className="h-full rounded-full"
+        style={{ width: `${Math.max(0, Math.min(1, share)) * 100}%`, backgroundColor: color }}
+      />
+    </div>
+  );
+}
