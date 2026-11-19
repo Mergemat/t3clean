@@ -44,7 +44,7 @@ export function PullRequestCompactFilterMenu<Value extends string>({
         title={iconOnly ? gt("{label}: {value}", { label, value: current.label }) : undefined}
         render={
           outlined ? (
-            <Button variant="outline" size={iconOnly ? "icon-sm" : "default"} />
+            <Button variant="outline" size={iconOnly ? "icon-sm" : "sm"} />
           ) : (
             <Button variant="ghost-muted" size="sm" />
           )

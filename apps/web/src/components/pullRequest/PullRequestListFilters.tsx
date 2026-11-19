@@ -599,7 +599,7 @@ export function PullRequestFiltersMenu({
   ];
   return (
     <Menu onOpenChange={onOpenChange}>
-      <MenuTrigger render={<Button variant="outline" />}>
+      <MenuTrigger render={<Button variant="outline" size="sm" />}>
         <ListFilterIcon className="size-4" />
         <span>
           <T>Filters</T>

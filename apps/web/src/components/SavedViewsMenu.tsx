@@ -145,7 +145,10 @@ export function SavedViewsMenu<Preferences extends Stored, Stored, Encoded>({
         <Tooltip>
           <TooltipTrigger
             render={
-              <MenuTrigger render={<Button variant="outline" />} aria-label={savedViewsLabel} />
+              <MenuTrigger
+                render={<Button variant="outline" size="sm" />}
+                aria-label={savedViewsLabel}
+              />
             }
           >
             <BookmarkIcon aria-hidden className="size-4" />
