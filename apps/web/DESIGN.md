@@ -142,27 +142,26 @@ Settled per component in review, in order. Each one applies to every later compo
     of fields sit under section labels. No stacked bold labels, no paragraph saying what the
     title already says.
 
-13. **Height.** One light from above, and depth is said only by how high a thing sits. Each
-    height has one make:
-    - **Flat**, part of the plane: a tint, no shading. Panes, rows, fields, tracks, unchecked
-      boxes, ghost buttons. A field is a place you put things, not something you press.
-    - **Raised**, a thing you press: light on top and a soft shadow, no rim (`bump`; `raised`
-      adds the ladder's face). Filled buttons, triggers, the chosen segment or toggle, a switch's
-      knob. The knob is the same white on and off; only the track changes.
+13. **Height.** Depth is said by how high a thing sits, and only floats are shaded. Each height
+    has one make:
+    - **Flat**, part of the plane: a tint. Panes, rows, fields, tracks, unchecked boxes, ghost
+      buttons. A field is a place you put things, not something you press.
+    - **Raised**, a thing you press: a lighter tint, no shading (`raised`). Outline buttons,
+      triggers, the chosen segment or toggle. Filled buttons keep their own colour. A switch's
+      knob is the one thing sitting on another, so it alone casts a soft shadow; it is the same
+      white on and off, and only the track changes.
     - **Floating**, above everything: glass a shade lighter than the panes, as see-through as the
       Glass opacity setting says, a double edge (a light line inside, a dark one outside), a deep
       shadow. Menus, popovers, dialogs, toasts, tooltips, the details card, the composer. No
       highlight. A float's drawer (the composer's notices, stash, queue) stands on its top edge
       one corner in, behind it: the same glass a shade darker.
 
-    Nothing sits below the plane: the darkest surfaces leave no room under them. Pressing lowers
-    a thing one height, while held or while its popup is open; choosing raises one.
-
-    Higher is lighter, in fixed steps, so tone says height too. Three tints and nothing between:
-    `tint-1` (a field, a track, a selected row), `tint-2` (hover, a highlighted row, an off switch
-    or box) and the raised face, two steps above its track. Hover is a step up from where you
-    are; a lowered thing lands on `tint-2`. In light themes places step darker and the raised face
-    is white. `t3code/no-off-ladder-tints` holds `components/ui` to the ladder.
+    Higher is lighter, in fixed steps. Three tints and nothing between: `tint-1` (a field, a
+    track, a selected row), `tint-2` (hover, a highlighted row, an off switch or box) and the
+    raised face, two steps above its track. Hover is a step up from where you are. Pressing lowers
+    a thing to `tint-2` while held or while its popup is open; choosing raises one. In light
+    themes the same mixes step darker. `t3code/no-off-ladder-tints` holds `components/ui` to the
+    ladder.
 
 ## Mechanics
 

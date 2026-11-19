@@ -175,7 +175,7 @@ function MenuCheckboxItem({
             keepMounted
           >
             <span
-              className="pointer-events-none block in-[[data-slot=menu-checkbox-item]:active]:not-data-disabled:scale-x-110 bg-white shadow-bump inset-shadow-bump dark:in-data-unchecked:bg-foreground/80"
+              className="pointer-events-none block in-[[data-slot=menu-checkbox-item]:active]:not-data-disabled:scale-x-110 bg-white shadow-knob dark:in-data-unchecked:bg-foreground/80"
               data-slot="menu-checkbox-item-switch-thumb"
             />
           </MenuPrimitive.CheckboxItemIndicator>

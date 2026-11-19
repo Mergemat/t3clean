@@ -6,12 +6,12 @@ import { extendTailwindMerge } from "tailwind-merge";
 import { DraftId } from "../composerDraftStore";
 
 // Register extra font sizes and shadows so tailwind-merge does not treat text-meta or
-// shadow-bump as colors.
+// shadow-knob as colors.
 const twMerge = extendTailwindMerge({
   extend: {
     theme: {
       text: ["2xs", "3xs", "4xs", "5xs", "title", "heading", "body", "meta"],
-      shadow: ["edge-light", "edge-dark", "edge-dark-faint", "bump"],
+      shadow: ["edge-light", "edge-dark", "edge-dark-faint", "knob"],
       radius: ["inherit", "chip", "row", "box", "region"],
     },
   },

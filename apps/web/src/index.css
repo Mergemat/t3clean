@@ -449,8 +449,8 @@ html[data-show-grid] .nest-text {
   --text-5xs--line-height: 1;
   /* Raised (see Height in :root). Read through variables so light and dark differ, and through
      Tailwind's shadow slots so a focus ring adds to them instead of replacing them. */
-  --shadow-bump: var(--bump-shadow);
-  --inset-shadow-bump: var(--bump-inset);
+  /* A switch's knob is the one thing that sits on another, so it alone casts a soft shadow. */
+  --shadow-knob: 0 1px 2px rgb(0 0 0 / 45%), 0 0 1px rgb(0 0 0 / 30%);
   /* The tone ladder (see Height in :root). */
   --color-tint-1: var(--tint-1);
   --color-tint-2: var(--tint-2);
@@ -660,21 +660,10 @@ html[data-show-grid] .nest-text {
   );
 }
 
-/* Raised (Height): a thing you press. Pressing lowers it to flat, while held or while its popup
-   is open. bump is the shading alone, for parts with a colour of their own (primary, destructive);
-   raised adds the ladder's face for the rest. A chosen toggle or segment raises too
-   (data-pressed:raised), so data-pressed is not a press here. */
-@utility bump {
-  @apply shadow-bump inset-shadow-bump;
-
-  &:active:not(:disabled, [aria-haspopup]),
-  &[data-popup-open] {
-    @apply shadow-none inset-shadow-none;
-  }
-}
-
+/* Raised (Height): a thing you press, said by tone alone. Pressing lowers it to tint 2, while
+   held or while its popup is open. A chosen toggle or segment raises too (data-pressed:raised), so
+   data-pressed is not a press here. */
 @utility raised {
-  @apply bump;
   background-color: var(--raised-face);
 
   &:hover:not(:disabled, [data-disabled]) {
@@ -1291,7 +1280,7 @@ html[data-show-grid] .nest-text {
     border-radius: 9999px;
     /* The switch's knob: white and raised. */
     background: white;
-    box-shadow: var(--bump-inset), var(--bump-shadow);
+    box-shadow: var(--shadow-knob);
     transition:
       transform 120ms ease,
       box-shadow 120ms ease;
@@ -2964,17 +2953,14 @@ code {
   );
   --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
 
-  /* Height: one light from above, and higher is lighter, in fixed steps. Flat places take tint 1
-     (fields, tracks) or tint 2 (hover, a highlighted row, an off switch); a selected row is tint
-     1 so its hover is still a step up. A raised face is two steps above its track, lit on top with
-     a soft shadow and no rim. In light themes places step darker and a raised face is white, so a
-     hairline in its shadow gives it the edge white on white lacks. */
+  /* Height: higher is lighter, in fixed steps, and tone alone says it: nothing is shaded. Flat
+     places take tint 1 (fields, tracks) or tint 2 (hover, a highlighted row, an off switch); a
+     selected row is tint 1 so its hover is still a step up. A raised face is two steps above its
+     track. In light themes the same mixes step darker. */
   --tint-1: color-mix(in srgb, var(--foreground) 6%, transparent);
   --tint-2: color-mix(in srgb, var(--foreground) 10%, transparent);
-  --raised-face: white;
-  --raised-hover: color-mix(in srgb, var(--foreground) 4%, white);
-  --bump-inset: inset 0 1px rgb(255 255 255 / 70%);
-  --bump-shadow: 0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px rgb(0 0 0 / 10%);
+  --raised-face: color-mix(in srgb, var(--foreground) 15%, transparent);
+  --raised-hover: color-mix(in srgb, var(--foreground) 20%, transparent);
 
   --surface-fill: var(--background);
 
@@ -2993,10 +2979,6 @@ code {
     --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
     --drawer-tone: color-mix(in srgb, var(--foreground) 1%, var(--card));
     --float-shadow: 0 0 0 1px rgb(0 0 0 / 55%), 0 24px 56px -18px rgb(0 0 0 / 90%);
-    --raised-face: color-mix(in srgb, var(--foreground) 15%, transparent);
-    --raised-hover: color-mix(in srgb, var(--foreground) 20%, transparent);
-    --bump-inset: inset 0 1px rgb(255 255 255 / 12%);
-    --bump-shadow: 0 1px 2px rgb(0 0 0 / 45%);
   }
 }
 

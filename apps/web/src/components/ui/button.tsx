@@ -35,9 +35,9 @@ const buttonVariants = cva(
       },
       variant: {
         default:
-          "bump border-primary bg-primary text-primary-foreground [:hover,[data-pressed]]:bg-primary/90",
+          "border-primary bg-primary text-primary-foreground [:hover,[data-pressed]]:bg-primary/90",
         destructive:
-          "bump border-destructive bg-destructive text-white [:hover,[data-pressed]]:bg-destructive/90",
+          "border-destructive bg-destructive text-white [:hover,[data-pressed]]:bg-destructive/90",
         "destructive-outline": "raised border-transparent text-destructive-foreground",
         ghost: "border-0 text-ink-1 [:hover,[data-pressed]]:bg-tint-2",
         "ghost-muted":
@@ -54,7 +54,7 @@ const buttonVariants = cva(
         outline: "raised border-transparent text-ink-1",
         overlay: "border-0 bg-black/70 text-white/65 [:hover,[data-pressed]]:bg-black/90",
         secondary:
-          "bump border-0 bg-secondary text-secondary-foreground [:hover,[data-pressed]]:bg-secondary/90",
+          "border-0 bg-secondary text-secondary-foreground [:hover,[data-pressed]]:bg-secondary/90",
         "warning-outline":
           "border-warning/32 bg-warning-surface text-warning-foreground shadow-xs/5 [:disabled,:active,[data-pressed]]:shadow-none [:hover,[data-pressed]]:border-warning/40 [:hover,[data-pressed]]:bg-warning/16 dark:[:hover,[data-pressed]]:bg-warning/24",
       },

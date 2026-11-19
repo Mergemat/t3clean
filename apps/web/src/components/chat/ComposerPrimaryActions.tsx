@@ -150,7 +150,7 @@ function StopGenerationButton({
           <button
             type="button"
             className={cn(
-              "flex shrink-0 cursor-pointer items-center justify-center bump rounded-full bg-destructive/90 text-white transition-colors duration-150 hover:bg-destructive disabled:cursor-default disabled:opacity-64 disabled:hover:bg-destructive/90 [&_svg]:pointer-events-none",
+              "flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-destructive/90 text-white transition-colors duration-150 hover:bg-destructive disabled:cursor-default disabled:opacity-64 disabled:hover:bg-destructive/90 [&_svg]:pointer-events-none",
               insidePendingAction ? "size-8 sm:size-6" : "size-8 sm:h-8 sm:w-8",
             )}
             onPointerDown={preserveComposerFocusOnPointerDown ? preventPointerFocus : undefined}
@@ -398,7 +398,7 @@ export const ComposerPrimaryActions = memo(function ComposerPrimaryActions({
     <button
       type={showResume ? "button" : "submit"}
       className={cn(
-        "relative isolate flex h-8 w-8 items-center justify-center overflow-hidden rounded-full transition-all duration-150 enabled:cursor-pointer enabled:bump hover:scale-105 disabled:pointer-events-none disabled:hover:scale-100 sm:h-8 sm:w-8 [&_svg]:pointer-events-none",
+        "relative isolate flex h-8 w-8 items-center justify-center overflow-hidden rounded-full transition-all duration-150 enabled:cursor-pointer hover:scale-105 disabled:pointer-events-none disabled:hover:scale-100 sm:h-8 sm:w-8 [&_svg]:pointer-events-none",
         stageBackdropVariant
           ? "bg-transparent text-white enabled:hover:brightness-110 disabled:opacity-64"
           : "bg-message-action text-message-action-foreground hover:bg-message-action-hover disabled:bg-foreground/12 disabled:text-ink-2",
