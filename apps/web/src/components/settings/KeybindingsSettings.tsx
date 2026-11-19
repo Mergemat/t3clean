@@ -889,7 +889,7 @@ function KeybindingKeyControl({
               : formatShortcutLabel(row.binding.shortcut),
           })}
           className={cn(
-            "inline-flex h-8 cursor-pointer items-center rounded-row border border-transparent px-2 sm:h-6 outline-none transition-colors hover:border-border/70 hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/24",
+            "inline-flex h-8 cursor-pointer items-center rounded-row border border-transparent px-2 outline-none transition-colors hover:border-border/70 hover:bg-tint-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/24",
             pillClassName,
           )}
         >
@@ -1620,7 +1620,7 @@ export function KeybindingsSettingsPanel() {
         <div className="flex flex-wrap items-center gap-2 px-4 py-2">
           <KeybindingsSearchInput query={query} onChange={setQuery} inputRef={searchInputRef} />
           <Button
-            size="xs"
+            size="sm"
             type="button"
             variant="ghost-muted"
             disabled={isAddingBinding || !canWriteSettings}

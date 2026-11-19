@@ -215,7 +215,9 @@ export function LabComponents() {
             <TrashIcon />
           </Button>
           <Group>
-            <Button variant="outline">Commit</Button>
+            <Button variant="outline" size="sm">
+              Commit
+            </Button>
             <GroupSeparator />
             <Button variant="outline" size="icon-sm" aria-label="More">
               <ChevronRightIcon />

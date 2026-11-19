@@ -1060,7 +1060,7 @@ export function ProviderInstanceCard({
               render={
                 <Button
                   type="button"
-                  size="icon-sm"
+                  size="icon-xs"
                   variant="ghost-muted"
                   className={mode === "list" ? "pointer-events-auto relative shrink-0" : undefined}
                   aria-label={gt("{status}, view details", {

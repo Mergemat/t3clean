@@ -90,7 +90,7 @@ export function IssueFiltersMenu(props: {
   const scopes = open ? props.scopes : [];
   return (
     <Menu onOpenChange={setOpen}>
-      <MenuTrigger render={<Button variant="outline" />}>
+      <MenuTrigger render={<Button variant="outline" size="sm" />}>
         <ListFilterIcon className="size-4" />
         <span>
           <T>Filters</T>

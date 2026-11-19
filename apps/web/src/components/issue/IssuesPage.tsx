@@ -726,7 +726,7 @@ export function IssuesPage() {
                   />
                 ) : null}
                 <Button
-                  size="icon"
+                  size="icon-sm"
                   variant="outline"
                   aria-label={gt("Refresh issues")}
                   onClick={list.refresh}
@@ -860,7 +860,10 @@ function FilterMenu<Value extends string>({
   if (!current) return null;
   return (
     <Menu>
-      <MenuTrigger aria-label={`${label}: ${current.label}`} render={<Button variant="outline" />}>
+      <MenuTrigger
+        aria-label={`${label}: ${current.label}`}
+        render={<Button variant="outline" size="sm" />}
+      >
         <PullRequestFilterOptionIcon option={current} />
         <span className="truncate">{current.label}</span>
       </MenuTrigger>
