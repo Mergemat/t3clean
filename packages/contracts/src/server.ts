@@ -660,6 +660,27 @@ const environmentThemeFields = {
 export const EnvironmentThemeFile = Schema.Struct(environmentThemeFields);
 export type EnvironmentThemeFile = typeof EnvironmentThemeFile.Type;
 
+/** Writes a theme file into the environment's themes directory, replacing one with the id. */
+export const ServerSaveEnvironmentThemeInput = Schema.Struct({
+  themeId: EnvironmentThemeId,
+  theme: EnvironmentThemeFile,
+});
+export type ServerSaveEnvironmentThemeInput = typeof ServerSaveEnvironmentThemeInput.Type;
+
+/** Deletes a theme file and its background; a theme in use falls back to the stock one. */
+export const ServerRemoveEnvironmentThemeInput = Schema.Struct({ themeId: EnvironmentThemeId });
+export type ServerRemoveEnvironmentThemeInput = typeof ServerRemoveEnvironmentThemeInput.Type;
+
+/** A theme file the environment would not write or delete; `detail` is a whole sentence. */
+export class EnvironmentThemeError extends Schema.TaggedError<EnvironmentThemeError>()(
+  "EnvironmentThemeError",
+  { detail: Schema.String },
+) {
+  override get message(): string {
+    return this.detail;
+  }
+}
+
 export const EnvironmentTheme = Schema.Struct({
   id: EnvironmentThemeId,
   ...environmentThemeFields,

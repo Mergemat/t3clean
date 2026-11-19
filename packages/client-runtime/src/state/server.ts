@@ -1747,6 +1747,14 @@ export function createServerEnvironmentAtoms<R, E>(
       scheduler: configScheduler,
       concurrency: configConcurrency,
     }),
+    saveEnvironmentTheme: createEnvironmentRpcCommand(runtime, {
+      label: "environment-data:server:save-environment-theme",
+      tag: WS_METHODS.serverSaveEnvironmentTheme,
+    }),
+    removeEnvironmentTheme: createEnvironmentRpcCommand(runtime, {
+      label: "environment-data:server:remove-environment-theme",
+      tag: WS_METHODS.serverRemoveEnvironmentTheme,
+    }),
     updateSettings,
     mutateProviderInstance: updateSettings,
     prepareAcpRegistryAgent: createEnvironmentRpcCommand(runtime, {

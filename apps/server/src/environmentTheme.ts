@@ -134,6 +134,20 @@ export class EnvironmentThemeService extends Context.Service<
         | { readonly appearance: Exclude<DefaultAppearancePreference, ""> },
     ) => Effect.Effect<void, EnvironmentThemeRefusedError | EnvironmentThemeNotSelectedError>;
 
+    /** Writes `theme` under `themeId`, replacing a file already there, without selecting it. */
+    readonly save: (
+      themeId: string,
+      theme: EnvironmentThemeFile,
+    ) => Effect.Effect<void, EnvironmentThemeRefusedError>;
+
+    /**
+     * Deletes the theme's file and its background. The environment theme falls back to the stock
+     * one when it was this theme, so clients do not keep a theme that is gone.
+     */
+    readonly remove: (
+      themeId: string,
+    ) => Effect.Effect<void, EnvironmentThemeRefusedError | EnvironmentThemeNotSelectedError>;
+
     /** Subscribes before reading to retain changes during connection. */
     readonly streamChanges: Stream.Stream<ReadonlyArray<EnvironmentTheme>>;
   }
@@ -446,6 +460,59 @@ const make = Effect.gen(function* () {
     );
   });
 
+  const save: EnvironmentThemeService["Service"]["save"] = Effect.fn(
+    "EnvironmentThemeService.save",
+  )(function* (themeId, theme) {
+    if (!isEnvironmentThemeId(themeId)) {
+      return yield* new EnvironmentThemeRefusedError({ themeId, problem: INVALID_ID });
+    }
+    // Nothing follows the write here, so the undo it returns is not needed.
+    yield* publishSemaphore.withPermits(1)(publish(themeId, theme).pipe(Effect.asVoid));
+  });
+
+  const remove: EnvironmentThemeService["Service"]["remove"] = Effect.fn(
+    "EnvironmentThemeService.remove",
+  )(function* (themeId) {
+    if (!isEnvironmentThemeId(themeId)) {
+      return yield* new EnvironmentThemeRefusedError({ themeId, problem: INVALID_ID });
+    }
+    yield* publishSemaphore.withPermits(1)(
+      Effect.gen(function* () {
+        const known = (yield* refresh).themes.map(({ id }) => id);
+        if (!known.includes(themeId)) {
+          return yield* new EnvironmentThemeRefusedError({
+            themeId,
+            problem: "is not a published theme.",
+            known,
+          });
+        }
+        const base = `${environmentThemesDir}/${themeId}`;
+        yield* Effect.forEach(
+          [THEME_FILE_SUFFIX, ...THEME_BACKGROUND_EXTENSIONS.map((extension) => `.${extension}`)],
+          (suffix) => fs.remove(`${base}${suffix}`, { force: true }),
+        ).pipe(
+          Effect.mapError(
+            (cause) =>
+              new EnvironmentThemeRefusedError({
+                themeId,
+                problem: "could not be removed. The themes directory may not be writable.",
+                cause,
+              }),
+          ),
+        );
+        yield* refresh;
+        const { defaultTheme } = yield* settings.getSettings.pipe(Effect.orDie);
+        if (defaultTheme !== themeId) return;
+        const setAt = DateTime.formatIso(yield* DateTime.now);
+        yield* settings
+          .updateSettings({ defaultTheme: "", defaultThemeSetAt: setAt })
+          .pipe(
+            Effect.mapError((cause) => new EnvironmentThemeNotSelectedError({ themeId, cause })),
+          );
+      }),
+    );
+  });
+
   const read: EnvironmentThemeService["Service"]["read"] = Effect.fn(
     "EnvironmentThemeService.read",
   )(function* (themeId) {
@@ -468,6 +535,8 @@ const make = Effect.gen(function* () {
     current: Effect.map(refresh, (state) => state.themes),
     read,
     apply,
+    save,
+    remove,
     get streamChanges() {
       return Stream.unwrap(
         Effect.gen(function* () {

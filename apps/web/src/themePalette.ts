@@ -1,5 +1,9 @@
 import { pipe } from "effect/Function";
-import { THEME_CSS_MAX_LENGTH, type EnvironmentTheme } from "@t3tools/contracts";
+import {
+  THEME_CSS_MAX_LENGTH,
+  type EnvironmentTheme,
+  type EnvironmentThemeFile,
+} from "@t3tools/contracts";
 import * as Equal from "effect/Equal";
 import * as Option from "effect/Option";
 import * as Schema from "effect/Schema";
@@ -367,6 +371,23 @@ export function storePublishedEnvironmentThemes(definitions: ReadonlyArray<Theme
 
 function getEnvironmentThemes(): ReadonlyArray<ThemeDefinition> {
   return appAtomRegistry.get(environmentThemeDefinitionsAtom);
+}
+
+/** A theme published by this machine's environment, a file in its themes folder. */
+export function isEnvironmentThemeId(themeId: string): boolean {
+  return getEnvironmentThemes().some((theme) => theme.id === themeId);
+}
+
+/** The file the environment keeps for a theme: what `t3 theme set` and the editor write. */
+export function environmentThemeFileOf(theme: ThemeDefinition): EnvironmentThemeFile {
+  return {
+    version: 1,
+    name: theme.label.slice(0, 48),
+    appearance: theme.appearance,
+    colors: theme.colors,
+    ...(theme.variants ? { variants: theme.variants } : {}),
+    ...(theme.css ? { css: theme.css } : {}),
+  };
 }
 
 export function isReservedThemeId(themeId: string): boolean {

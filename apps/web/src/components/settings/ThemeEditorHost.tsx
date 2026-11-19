@@ -4,13 +4,20 @@ import { lazy, Suspense, useSyncExternalStore } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { m } from "../../i18n/messages";
 import {
+  environmentThemeFileOf,
   getThemeDefinition,
+  isEnvironmentThemeId,
+  removeCustomTheme,
   subscribeToCustomThemes,
   type ThemeAppearance,
   type ThemeDefinition,
 } from "../../themePalette";
 import { stackedThreadToast, toastManager } from "../ui/toast";
 import { useThemeEditorStore } from "./themeEditorStore";
+import { useAtomValue } from "@effect/atom-react";
+import { localEnvironmentIdAtom } from "../../state/primaryEnvironment";
+import { serverEnvironment } from "../../state/server";
+import { useAtomCommand } from "../../state/use-atom-command";
 
 const ThemeEditorPanel = lazy(() =>
   import("./ThemeEditorPanel").then((module) => ({ default: module.ThemeEditorPanel })),
@@ -30,11 +37,26 @@ export function ThemeEditorHost() {
   const { theme, setTheme, themeHalves, refreshTheme } = useTheme();
   const editingTheme = useThemeDefinition(session?.editingThemeId);
   const seedTheme = useThemeDefinition(session?.seedThemeId);
+  const localEnvironmentId = useAtomValue(localEnvironmentIdAtom);
+  const saveEnvironmentTheme = useAtomCommand(serverEnvironment.saveEnvironmentTheme);
+
+  // The editor keeps what it saves in this browser. A theme that lives in this machine's themes
+  // folder goes back there, and the browser copy that would shadow it is dropped once it lands.
+  const writeBackEnvironmentTheme = (savedTheme: ThemeDefinition) => {
+    if (localEnvironmentId === null || !isEnvironmentThemeId(savedTheme.id)) return;
+    void saveEnvironmentTheme({
+      environmentId: localEnvironmentId,
+      input: { themeId: savedTheme.id, theme: environmentThemeFileOf(savedTheme) },
+    }).then((result) => {
+      if (result._tag === "Success") removeCustomTheme(savedTheme.id);
+    });
+  };
 
   const handleSaved = (
     savedTheme: ThemeDefinition,
     { created, mergedAppearance }: { created: boolean; mergedAppearance?: ThemeAppearance },
   ) => {
+    writeBackEnvironmentTheme(savedTheme);
     if (mergedAppearance) {
       if (!setTheme(savedTheme.id)) {
         toastManager.add(

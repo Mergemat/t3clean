@@ -52,6 +52,10 @@ import {
 } from "./ThemePreviewCircles";
 import { SettingsRow } from "./settingsLayout";
 import { T, useGT } from "gt-react";
+import { useAtomValue } from "@effect/atom-react";
+import { localEnvironmentIdAtom } from "../../state/primaryEnvironment";
+import { serverEnvironment } from "../../state/server";
+import { useAtomCommand } from "../../state/use-atom-command";
 
 const MAINTAINER_THEMES: ReadonlyArray<ThemeDefinition> = [
   T3_CHAT_THEME,
@@ -581,6 +585,12 @@ export function ThemeLibrary({
     collectionThemes: ReadonlyArray<ThemeDefinition>;
   } | null>(null);
   const [isThemeRemovalOpen, setIsThemeRemovalOpen] = useState(false);
+  // A theme from this machine's themes folder: removing it deletes the file there.
+  const [environmentThemeToRemove, setEnvironmentThemeToRemove] = useState<ThemeDefinition | null>(
+    null,
+  );
+  const localEnvironmentId = useAtomValue(localEnvironmentIdAtom);
+  const removeEnvironmentTheme = useAtomCommand(serverEnvironment.removeEnvironmentTheme);
   const [themeIdsToRemove, setThemeIdsToRemove] = useState<ReadonlyArray<string>>([]);
   const themeIdsToRemoveSet = new Set(themeIdsToRemove);
   const removeDialogTheme = themeRemovalTarget?.theme;
@@ -780,6 +790,23 @@ export function ThemeLibrary({
                 }}
                 onUseMode={handlePairPick(environmentTheme.id)}
                 theme={getThemeCardDefinition(environmentTheme)}
+                onDownload={() =>
+                  downloadThemeFile(
+                    `${environmentTheme.id}.json`,
+                    serializeThemeFile(environmentTheme),
+                  )
+                }
+                onEdit={() =>
+                  openThemeEditor({
+                    editingThemeId: environmentTheme.id,
+                    seedThemeId: null,
+                    seedName: null,
+                    initialAppearance,
+                  })
+                }
+                {...(localEnvironmentId === null
+                  ? {}
+                  : { onRemove: () => setEnvironmentThemeToRemove(environmentTheme) })}
               />
             ))}
           {customThemeCollections.map(([collectionId, themes]) => (
@@ -922,6 +949,45 @@ export function ThemeLibrary({
         onOpenChange={onImportOpenChange}
         open={isImportOpen}
       />
+      <AlertDialog
+        open={environmentThemeToRemove !== null}
+        onOpenChange={(open) => {
+          if (!open) setEnvironmentThemeToRemove(null);
+        }}
+      >
+        <AlertDialogPopup>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {gt("Remove “{label}”?", { label: environmentThemeToRemove?.label })}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <T>
+                It is deleted from this machine’s themes folder. Export it first to keep a copy.
+              </T>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogClose render={<Button variant="outline" />}>
+              <T>Cancel</T>
+            </AlertDialogClose>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                const target = environmentThemeToRemove;
+                if (target === null || localEnvironmentId === null) return;
+                void removeEnvironmentTheme({
+                  environmentId: localEnvironmentId,
+                  input: { themeId: target.id },
+                }).then((result) => {
+                  if (result._tag === "Success") setEnvironmentThemeToRemove(null);
+                });
+              }}
+            >
+              <T>Remove theme</T>
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogPopup>
+      </AlertDialog>
       <AlertDialog open={isThemeRemovalOpen} onOpenChange={setIsThemeRemovalOpen}>
         <AlertDialogPopup>
           <AlertDialogHeader>

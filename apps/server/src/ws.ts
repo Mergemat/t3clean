@@ -1,4 +1,4 @@
-import { OrchestrationDispatchCommandError } from "@t3tools/contracts";
+import { EnvironmentThemeError, OrchestrationDispatchCommandError } from "@t3tools/contracts";
 // @effect-diagnostics-next-line nodeBuiltinImport:off -- A synchronous digest inside the pure provider mapping.
 import * as NodeCrypto from "node:crypto";
 import * as HostProcess from "@t3tools/shared/HostProcess";
@@ -2689,6 +2689,14 @@ export const layerWsRpc = (
           Effect.fnUntraced(function* (rule) {
             return yield* keybindings.removeKeybindingRule(rule);
           }),
+        [WS_METHODS.serverSaveEnvironmentTheme]: ({ themeId, theme }) =>
+          environmentTheme
+            .save(themeId, theme)
+            .pipe(Effect.mapError((error) => new EnvironmentThemeError({ detail: error.message }))),
+        [WS_METHODS.serverRemoveEnvironmentTheme]: ({ themeId }) =>
+          environmentTheme
+            .remove(themeId)
+            .pipe(Effect.mapError((error) => new EnvironmentThemeError({ detail: error.message }))),
         [WS_METHODS.serverRunStorageCleanup]: () => storageCleanup.runNow,
         [WS_METHODS.serverGetStorageCleanupReport]: () => storageCleanup.reports,
         [WS_METHODS.serverGetDatabaseStorage]: () => databaseStorage.status,

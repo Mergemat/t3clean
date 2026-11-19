@@ -369,6 +369,9 @@ import {
   ServerSignalProcessResult,
   ServerUpsertKeybindingInput,
   ServerUpsertKeybindingResult,
+  EnvironmentThemeError,
+  ServerRemoveEnvironmentThemeInput,
+  ServerSaveEnvironmentThemeInput,
 } from "./server.ts";
 import {
   HostResourcesSnapshot,
@@ -541,6 +544,8 @@ export const WS_METHODS = {
   serverCommitDesktopUpdate: "server.commitDesktopUpdate",
   serverUpsertKeybinding: "server.upsertKeybinding",
   serverRemoveKeybinding: "server.removeKeybinding",
+  serverSaveEnvironmentTheme: "server.saveEnvironmentTheme",
+  serverRemoveEnvironmentTheme: "server.removeEnvironmentTheme",
   serverRunStorageCleanup: "server.runStorageCleanup",
   serverGetStorageCleanupReport: "server.getStorageCleanupReport",
   serverGetDatabaseStorage: "server.getDatabaseStorage",
@@ -683,6 +688,18 @@ const WsServerRemoveKeybindingRpc = Rpc.make(WS_METHODS.serverRemoveKeybinding, 
   payload: ServerRemoveKeybindingInput,
   success: ServerRemoveKeybindingResult,
   error: Schema.Union([KeybindingsConfigError, EnvironmentAuthorizationError]),
+});
+
+const WsServerSaveEnvironmentThemeRpc = Rpc.make(WS_METHODS.serverSaveEnvironmentTheme, {
+  payload: ServerSaveEnvironmentThemeInput,
+  success: Schema.Void,
+  error: Schema.Union([EnvironmentThemeError, EnvironmentAuthorizationError]),
+});
+
+const WsServerRemoveEnvironmentThemeRpc = Rpc.make(WS_METHODS.serverRemoveEnvironmentTheme, {
+  payload: ServerRemoveEnvironmentThemeInput,
+  success: Schema.Void,
+  error: Schema.Union([EnvironmentThemeError, EnvironmentAuthorizationError]),
 });
 
 const WsServerProbeRpc = Rpc.make(WS_METHODS.serverProbe, {
@@ -2295,6 +2312,8 @@ export const WsRpcGroup = RpcGroup.make(
   WsServerCommitDesktopUpdateRpc,
   WsServerUpsertKeybindingRpc,
   WsServerRemoveKeybindingRpc,
+  WsServerSaveEnvironmentThemeRpc,
+  WsServerRemoveEnvironmentThemeRpc,
   WsServerRunStorageCleanupRpc,
   WsServerGetStorageCleanupReportRpc,
   WsServerGetDatabaseStorageRpc,

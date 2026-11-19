@@ -75,6 +75,11 @@ const withEnvironmentThemes = <A, E>(
           Layer.provideMerge(ServerConfig.layerTest(process.cwd(), baseDir)),
           Layer.provideMerge(
             Layer.mock(ServerSettingsService)({
+              // The environment theme the tests start from.
+              getSettings: Effect.succeed({
+                ...DEFAULT_SERVER_SETTINGS,
+                defaultTheme: "nightfall",
+              }),
               updateSettings: (patch) =>
                 patch.defaultTheme === REFUSED_THEME_ID
                   ? Effect.fail(
@@ -299,6 +304,39 @@ it.layer(NodeServices.layer)("environment theme", (it) => {
           { theme: "grove", appearance: "dark" },
           { appearance: "light" },
         ]);
+      }),
+      selected,
+    );
+  });
+
+  it.effect("removes a theme with its background, and drops it as the environment theme", () => {
+    const selected: Array<{ readonly theme?: string; readonly appearance?: string }> = [];
+    return withEnvironmentThemes(
+      {
+        "nightfall.json": encodeThemeFile(NIGHTFALL_THEME),
+        "nightfall.png": "not really a png",
+        "shared.json": encodeThemeFile(SHARED_THEME),
+      },
+      Effect.gen(function* () {
+        const themes = yield* EnvironmentTheme.EnvironmentThemeService;
+        const fs = yield* FileSystem.FileSystem;
+        const { environmentThemesDir } = yield* ServerConfig.ServerConfig;
+
+        yield* themes.remove("shared");
+        assert.deepEqual(
+          (yield* themes.current).map((theme) => theme.id),
+          ["nightfall"],
+        );
+        // Removing a theme that is not the environment theme leaves the selection alone.
+        assert.deepEqual(selected, []);
+
+        yield* themes.remove("nightfall");
+        assert.deepEqual(yield* themes.current, []);
+        assert.isFalse(yield* fs.exists(`${environmentThemesDir}/nightfall.png`));
+        assert.deepEqual(selected, [{ theme: "" }]);
+
+        const missing = yield* themes.remove("nightfall").pipe(Effect.flip);
+        assert.match(missing.message, /not a published theme/);
       }),
       selected,
     );
