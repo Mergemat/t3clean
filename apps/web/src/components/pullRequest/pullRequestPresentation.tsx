@@ -22,7 +22,7 @@ import {
   UserRoundXIcon,
 } from "lucide-react";
 import { msg, useGT, useMessages } from "gt-react";
-import { Children, type CSSProperties, isValidElement, type ReactNode, useState } from "react";
+import { type CSSProperties, type ReactNode, useState } from "react";
 
 import { m, type MessageResolver } from "~/i18n/messages";
 import { cn } from "~/lib/utils";
@@ -568,10 +568,6 @@ export function PullRequestDiffStat({
   );
 }
 
-function separatorKey(segment: ReactNode): string {
-  return `separator:${isValidElement(segment) ? String(segment.key) : String(segment)}`;
-}
-
 export function PullRequestMetaLine({
   children,
   className,
@@ -579,20 +575,9 @@ export function PullRequestMetaLine({
   children: ReactNode;
   className?: string;
 }) {
-  const segments = Children.toArray(children);
+  // Items are set apart by space alone, a whole step, never by separator marks.
   return (
-    <span className={cn("flex min-w-0 items-center gap-2", className)}>
-      {segments.flatMap((segment, index) =>
-        index === 0
-          ? segment
-          : [
-              <span aria-hidden className="shrink-0 text-ink-3" key={separatorKey(segment)}>
-                ·
-              </span>,
-              segment,
-            ],
-      )}
-    </span>
+    <span className={cn("flex min-w-0 flex-wrap items-center gap-x-4", className)}>{children}</span>
   );
 }
 

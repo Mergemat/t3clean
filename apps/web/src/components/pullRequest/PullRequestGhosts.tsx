@@ -226,7 +226,7 @@ export function PullRequestDetailGhost({
         !seed && "motion-safe:animate-skeleton",
       )}
     >
-      <div className="@container/pr-header grid min-w-0 shrink-0 grid-cols-(--grid-trail) items-start gap-x-2 border-b border-border/60">
+      <div className="@container/pr-header grid min-w-0 shrink-0 grid-cols-(--grid-trail) items-start gap-x-2">
         {/* In the window the crumbs and actions sit in the frame header, as the loaded panel's do. */}
         {frameHeader
           ? createPortal(<BarContext value="frame">{headerRow}</BarContext>, frameHeader)

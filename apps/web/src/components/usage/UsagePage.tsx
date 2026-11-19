@@ -732,8 +732,9 @@ function UsageOverview({
         </p>
       ))}
 
-      <PageSection title={chartTitle}>
-        <div className="flex flex-col gap-1 px-2 pb-2">
+      {/* The total over the whole period leads; the chart under it shows it day by day. */}
+      <PageSection title={metric === "cost" ? <T>Total cost</T> : <T>Processed tokens</T>}>
+        <div className="flex flex-col gap-1 px-2">
           <span
             className={cn(
               "text-title font-semibold text-ink-1 tabular-nums",
@@ -742,10 +743,10 @@ function UsageOverview({
           >
             {figure}
           </span>
-          <span className="inline-flex items-center gap-1 text-meta text-ink-2">
+          <span className="flex flex-wrap items-center gap-x-4 text-meta text-ink-2">
             <span className={figureClass(loadingPartial)}>{sessionsLabel(merged.sessions)}</span>
-            {metric === "cost" ? <span>· {gt("API estimate")}</span> : null}
-            <span>· {windowLabel}</span>
+            {metric === "cost" ? <span>{gt("API estimate")}</span> : null}
+            <span>{windowLabel}</span>
             {metric === "cost" && merged.costQuality.unpricedShare > 0 ? (
               <Popover>
                 <PopoverTrigger
@@ -765,6 +766,9 @@ function UsageOverview({
             ) : null}
           </span>
         </div>
+      </PageSection>
+
+      <PageSection title={chartTitle}>
         <div className="px-2">
           <UsageProviderChart
             providers={activeProviders}

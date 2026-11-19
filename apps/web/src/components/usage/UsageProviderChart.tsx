@@ -271,7 +271,7 @@ function UsageChartTooltip({
           </div>
         );
       })}
-      <div className="mt-1 flex items-center justify-between gap-2 border-t border-border pt-1">
+      <div className="mt-2 flex items-center justify-between gap-2">
         <span className="text-ink-2">
           <T>Total</T>
         </span>

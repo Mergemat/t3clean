@@ -191,6 +191,8 @@ Settled per component in review, in order. Each one applies to every later compo
   (8), `nest-text`. Each insets what it holds by one step (8) and is one step rounder.
 - **Space.** Rows in a list sit half a step apart (`gap-1`), so a hovered row beside a selected one
   stays two shapes; related things one step apart (`gap-2`); separate things three (`gap-6`).
+  Space is the only separator: no dots between items in a line, no rules between parts. Items in
+  a meta line sit a whole step apart (`gap-x-4`).
 - **Size.** Layout is whole steps (rows `h-6`, `h-8`, `h-10`). Inside a control, or anything
   smaller than a row, half steps work too (`h-7`, `px-3`, `rounded-chip`).
 - **Type.** `text-title`, `text-heading`, `text-body`, `text-meta`. **Ink:** `text-ink-1/2/3`.

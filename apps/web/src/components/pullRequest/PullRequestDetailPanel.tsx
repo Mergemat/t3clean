@@ -1699,7 +1699,6 @@ export function PullRequestDetailPanel({
       <div
         className={cn(
           "@container/pr-header grid min-w-0 shrink-0 grid-cols-(--grid-trail) items-start gap-x-2",
-          detail && "border-b border-border/60",
           !detail && !onClose && "hidden",
         )}
       >
@@ -2043,7 +2042,6 @@ export function PullRequestDetailPanel({
         provider={detail?.provider ?? repositoryIdentity?.provider}
         host={reference.host}
         repository={reference.repository}
-        className="border-b border-border/60"
       />
       <div
         className="relative flex min-h-0 flex-1 flex-col overflow-hidden"
