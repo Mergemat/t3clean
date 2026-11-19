@@ -151,9 +151,8 @@ Settled per component in review, in order. Each one applies to every later compo
       knob is the one thing sitting on another, so it alone casts a soft shadow; it is the same
       white on and off, and only the track changes.
     - **Floating**, above everything: glass a shade lighter than the panes, as see-through as the
-      Glass opacity setting says, a light edge and a soft shadow. Menus, popovers, dialogs, toasts, tooltips, the details card, the composer. No
-      highlight. A float's drawer (the composer's notices, stash, queue) stands on its top edge
-      one corner in, behind it: the same glass a shade darker.
+      Glass opacity setting says, a light edge and a soft shadow. Menus, popovers, dialogs, toasts, tooltips. No highlight. The composer's drawers (notices,
+      stash, queue) stand on its top edge one corner in, behind it: its glass a shade darker.
 
     Higher is lighter, in fixed steps. Three tints and nothing between: `tint-1` (a field, a
     track, a selected row), `tint-2` (hover, a highlighted row, an off switch or box) and the
@@ -172,8 +171,11 @@ Settled per component in review, in order. Each one applies to every later compo
   smaller than a row, half steps work too (`h-7`, `px-3`, `rounded-chip`).
 - **Type.** `text-title`, `text-heading`, `text-body`, `text-meta`. **Ink:** `text-ink-1/2/3`.
 - **Roots** (`index.css`): `--step` 0.5rem (8px), `--type-base` 0.875rem (14px), `--type-ratio` 1.2.
-- **Levels.** Float (menus, popovers, dialogs, toasts), surface (sidebar, header), window (panes
-  on the aurora). A corner in the OS window's corner follows the OS curve (`--window-corner`).
+- **Levels.** Three layers, top first: the frame (sidebar, header, the details card, which reaches
+  into the window's top right corner so the window's edge curves around it), the chat layer
+  (messages, code, changed files, the composer: glass in the window colour with a light edge, no
+  shadow), and the sky. Floats (menus, popovers, dialogs, toasts, tooltips) sit above all three. A
+  corner in the OS window's corner follows the OS curve (`--window-corner`).
 - **Enforcement.** `pnpm tokens` moves classes onto the grid and `pnpm lint` fails while anything
   is off; `shadcn/no-arbitrary-values` bans raw values. Option+Shift+G (dev) draws the grid and
   shades every ring, so anything unshaded is off the system.
