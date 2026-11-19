@@ -1,8 +1,12 @@
 import type { IssueListEntry } from "@t3tools/contracts";
 import { T, useGT, useMessages, Var } from "gt-react";
 import { ExternalLinkIcon } from "lucide-react";
+import { useContext } from "react";
+import { createPortal } from "react-dom";
 
 import { cn } from "~/lib/utils";
+import { barControlSize } from "../barSize";
+import { WindowHeaderSlotContext } from "../ListPageWindow";
 import { formatRelativeTimeLabel } from "~/timestampFormat";
 
 import { Button } from "../ui/button";
@@ -20,6 +24,27 @@ export function IssueDetailGhost({ seed }: { seed?: IssueListEntry | null }) {
   const gt = useGT();
   const messages = useMessages();
   const tracker = seed ? issueTrackerPresentation(seed.tracker) : null;
+  const frameHeader = useContext(WindowHeaderSlotContext);
+  const controlSize = barControlSize(frameHeader ? "frame" : "panel");
+  const titleRow =
+    seed && tracker ? (
+      <>
+        <IssueStateGlyph state={seed.state} />
+        <span className="shrink-0 font-mono text-meta text-ink-2">{seed.displayKey}</span>
+        <span className="min-w-0 flex-1 truncate text-meta text-ink-2">
+          <tracker.Icon aria-hidden className="mr-1 inline size-3 align-middle" />
+          {seed.scope}
+        </span>
+        <Button
+          size={controlSize.icon}
+          variant="ghost"
+          aria-label={gt("Open on {provider}", { provider: tracker.providerName })}
+          render={<a href={seed.url} target="_blank" rel="noopener noreferrer" />}
+        >
+          <ExternalLinkIcon aria-hidden className="size-4" />
+        </Button>
+      </>
+    ) : null;
   return (
     <div
       role="status"
@@ -31,22 +56,17 @@ export function IssueDetailGhost({ seed }: { seed?: IssueListEntry | null }) {
     >
       {seed && tracker ? (
         <>
-          <PullRequestDetailTitleRow className="gap-2">
-            <IssueStateGlyph state={seed.state} />
-            <span className="shrink-0 font-mono text-meta text-ink-2">{seed.displayKey}</span>
-            <span className="min-w-0 flex-1 truncate text-meta text-ink-2">
-              <tracker.Icon aria-hidden className="mr-1 inline size-3 align-middle" />
-              {seed.scope}
-            </span>
-            <Button
-              size="icon-xs"
-              variant="ghost"
-              aria-label={gt("Open on {provider}", { provider: tracker.providerName })}
-              render={<a href={seed.url} target="_blank" rel="noopener noreferrer" />}
-            >
-              <ExternalLinkIcon aria-hidden className="size-4" />
-            </Button>
-          </PullRequestDetailTitleRow>
+          {/* In the window the crumbs go to the frame header, as the loaded issue's do. */}
+          {frameHeader ? (
+            createPortal(
+              <div className="col-span-2 flex min-w-0 items-center gap-2 text-body">
+                {titleRow}
+              </div>,
+              frameHeader,
+            )
+          ) : (
+            <PullRequestDetailTitleRow className="gap-2">{titleRow}</PullRequestDetailTitleRow>
+          )}
           {/* Leaves room for the edit button, so the title wraps the same once loaded. */}
           <h2 className="pr-8 text-base font-semibold leading-snug">{seed.title}</h2>
           <PullRequestMetaLine className="text-meta text-ink-2">

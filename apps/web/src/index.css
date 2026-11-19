@@ -3012,12 +3012,14 @@ html.electron-windows {
 }
 
 /* The frame is one flat surface: the themed header rule would paint the toolbar colour, and the
-   sidebar would keep its own colour and grain, so either makes it read as a separate panel. */
+   sidebar or the area behind the header would keep its own colour and grain, so any of them would
+   read as a separate panel. */
 [data-chat-header] {
   background-color: transparent !important;
 }
 
-[data-slot="sidebar-inner"] {
+[data-slot="sidebar-inner"],
+[data-slot="sidebar-inset"] {
   background: var(--surface-fill);
 }
 
