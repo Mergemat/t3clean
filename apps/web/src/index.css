@@ -189,6 +189,12 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
   --line-meta: round(up, calc(var(--type-meta) * 1.3), calc(var(--step) / 2));
   --line-base: round(up, calc(var(--type-base) * 1.4), calc(var(--step) / 2));
   --line-title: round(up, calc(var(--type-title) * 1.3), calc(var(--step) / 2));
+  /* One step past the title on the same ratio, three times: for a page's one hero figure. */
+  --type-display: round(
+    calc(var(--type-title) * var(--type-ratio) * var(--type-ratio) * var(--type-ratio)),
+    1px
+  );
+  --line-display: round(up, calc(var(--type-display) * 1.15), calc(var(--step) / 2));
 
   /* Ink: three levels of the foreground, never a per-component grey. */
   --ink-1: var(--foreground);
@@ -208,6 +214,9 @@ html[data-mobile-composer-route-transition="true"]::view-transition-old(t3-mobil
 
   /* Type roles: size, line and weight in one class. Neighbouring roles differ in one property.
      An explicit font-* or leading-* still overrides, and ink is its own class. */
+  --text-display: var(--type-display);
+  --text-display--line-height: var(--line-display);
+  --text-display--font-weight: 600;
   --text-title: var(--type-title);
   --text-title--line-height: var(--line-title);
   --text-title--font-weight: 600;
@@ -354,6 +363,8 @@ html[data-show-grid] .nest-text {
 :root {
   --grid-lead: auto minmax(0, 1fr);
   --grid-trail: minmax(0, 1fr) auto;
+  /* A usage line: name, a short share track, figure, share. */
+  --grid-usage-line: minmax(0, 1fr) minmax(3rem, 20%) 6rem 3rem;
   --grid-lead-trail: auto minmax(0, 1fr) auto;
   /* Collapsible rows animate between these; both must be fr for the transition. */
   --grid-open: 1fr;

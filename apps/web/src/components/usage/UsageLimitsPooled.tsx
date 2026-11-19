@@ -35,7 +35,6 @@ import { providerClients } from "../settings/providerDriverMeta";
 import { RedactedSensitiveText } from "../settings/RedactedSensitiveText";
 import { Button } from "../ui/button";
 import { OpenAI } from "../Icons";
-import { Alert, AlertTitle } from "../ui/alert";
 import { Popover, PopoverCreateHandle, PopoverPopup, PopoverTrigger } from "../ui/popover";
 import { PaceIcon, ResetCreditDialog, barColor, usePaceMark, useResetCredit } from "./UsageLimits";
 import {
@@ -671,7 +670,7 @@ export function UsageLimitsPooled({
   const notices = collectLimitNotices(presentations, m);
   const externalLinks = collectExternalUsageLinks(presentations, m);
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-10">
       {pools.length === 0 && notices.length === 0 && externalLinks.length === 0 ? (
         <p className="px-2 text-body text-ink-2">
           <T>No provider on the selected environments reports subscription limits.</T>
@@ -732,14 +731,18 @@ export function UsageLimitsPooled({
 
 function LimitNotices({ notices }: { readonly notices: readonly string[] }) {
   if (notices.length === 0) return null;
+  // Plain lines, as Settings gives a reason: no box around them.
   return (
-    <Alert variant="warning" controlAlignment="first-line">
-      <AlertTriangleIcon />
+    <div className="flex flex-col gap-1 px-2">
       {notices.map((notice) => (
-        <AlertTitle key={notice} className="break-words">
+        <p key={notice} className="flex items-start gap-2 text-meta text-ink-2 break-words">
+          <AlertTriangleIcon
+            aria-hidden
+            className="mt-0.5 size-3 shrink-0 text-warning-foreground"
+          />
           {notice}
-        </AlertTitle>
+        </p>
       ))}
-    </Alert>
+    </div>
   );
 }

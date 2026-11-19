@@ -76,7 +76,7 @@ export function UsageDot({ color }: { color: string }) {
 }
 
 /** A row's share of the whole, as a thin track under it; the figures beside it say it exactly. */
-export function UsageShareTrack({ share, color }: { share: number; color: string }) {
+function UsageShareTrack({ share, color }: { share: number; color: string }) {
   return (
     <div aria-hidden className="h-1 overflow-hidden rounded-full bg-tint-1">
       <div
@@ -84,5 +84,66 @@ export function UsageShareTrack({ share, color }: { share: number; color: string
         style={{ width: `${Math.max(0, Math.min(1, share)) * 100}%`, backgroundColor: color }}
       />
     </div>
+  );
+}
+
+/**
+ * One line of a split (a provider, a model, a kind of cost): name and its detail, a short share
+ * track, the figure and its share, in fixed columns so every list on the page lines up.
+ */
+export function UsageLine({
+  lead,
+  title,
+  detail,
+  share,
+  color,
+  value,
+  shareLabel,
+  dimmed = false,
+  onClick,
+}: {
+  lead?: ReactNode;
+  title: ReactNode;
+  detail?: ReactNode;
+  /** 0 to 1; null leaves the track out. */
+  share: number | null;
+  color: string;
+  value: ReactNode;
+  shareLabel?: ReactNode;
+  dimmed?: boolean;
+  onClick?: () => void;
+}) {
+  const className =
+    "grid h-8 w-full min-w-0 grid-cols-(--grid-usage-line) items-center gap-x-4 rounded-row px-2 text-left tabular-nums";
+  const body = (
+    <>
+      {/* The detail gives way before the name does. */}
+      <span className="flex min-w-0 items-center gap-2 overflow-hidden">
+        {lead ? <span className="flex shrink-0 items-center [&>svg]:size-4">{lead}</span> : null}
+        <span className="max-w-full shrink-0 truncate text-body text-ink-1">{title}</span>
+        {detail ? <span className="min-w-0 truncate text-meta text-ink-2">{detail}</span> : null}
+      </span>
+      <span>{share === null ? null : <UsageShareTrack share={share} color={color} />}</span>
+      <span
+        className={cn("text-end text-body text-ink-1 transition-opacity", dimmed && "opacity-40")}
+      >
+        {value}
+      </span>
+      <span className="text-end text-meta text-ink-2">{shareLabel}</span>
+    </>
+  );
+  return onClick ? (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        className,
+        "cursor-pointer outline-none hover:bg-tint-2 focus-visible:bg-tint-2",
+      )}
+    >
+      {body}
+    </button>
+  ) : (
+    <div className={className}>{body}</div>
   );
 }

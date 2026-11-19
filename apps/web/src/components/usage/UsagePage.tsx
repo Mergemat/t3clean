@@ -90,7 +90,7 @@ import { SidebarInset } from "../ui/sidebar";
 import { isElectron } from "~/env";
 import { SpeedPremium, UsageModelDialog } from "./UsageModelDialog";
 import { UsageShareBar } from "./UsageShareBar";
-import { UsageDot, UsageRow, UsageShareTrack } from "./UsageRow";
+import { UsageDot, UsageLine } from "./UsageRow";
 import {
   costTypeSegments,
   modelShare,
@@ -556,7 +556,7 @@ export function UsagePage() {
             </TooltipPopup>
           </Tooltip>
         </WorkspacePageHeader>
-        <WindowPage>
+        <WindowPage width="wide">
           {selectedEnvironments.length === 0 ? (
             <PageSection>
               <p className="text-body text-ink-2">
@@ -724,20 +724,25 @@ function UsageOverview({
       formatted: formatCount(count, locale),
     });
 
+  // One hero figure, its supporting figures under it, then the chart; below, the split by
+  // provider beside the split by kind, and the models. Groups sit far apart (gap-10), the parts of
+  // a group close (DESIGN.md: Space).
   return (
-    <div aria-busy={loadingPartial} className="flex flex-col gap-6">
+    <div aria-busy={loadingPartial} className="@container/usage flex flex-col gap-10">
       {sourceMessages.map((message) => (
         <p key={message} className="px-2 text-meta text-ink-2">
           {message}
         </p>
       ))}
 
-      {/* The total over the whole period leads; the chart under it shows it day by day. */}
-      <PageSection title={metric === "cost" ? <T>Total cost</T> : <T>Processed tokens</T>}>
-        <div className="flex flex-col gap-1 px-2">
+      <section className="flex flex-col gap-6 px-2">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-meta font-medium text-ink-2">
+            {metric === "cost" ? <T>Total cost</T> : <T>Processed tokens</T>}
+          </h2>
           <span
             className={cn(
-              "text-title font-semibold text-ink-1 tabular-nums",
+              "text-display font-semibold text-ink-1 tabular-nums",
               figureClass(loadingPartial),
             )}
           >
@@ -745,31 +750,65 @@ function UsageOverview({
           </span>
           <span className="flex flex-wrap items-center gap-x-4 text-meta text-ink-2">
             <span className={figureClass(loadingPartial)}>{sessionsLabel(merged.sessions)}</span>
-            {metric === "cost" ? <span>{gt("API estimate")}</span> : null}
-            <span>{windowLabel}</span>
-            {metric === "cost" && merged.costQuality.unpricedShare > 0 ? (
-              <Popover>
-                <PopoverTrigger
-                  openOnHover
-                  render={<InlineButton tone="muted" />}
-                  aria-label={gt("Unpriced usage details")}
-                >
-                  <InfoIcon className="size-3" aria-hidden />
-                </PopoverTrigger>
-                <PopoverPopup side="top" tooltipStyle>
-                  <T>
-                    API estimate excludes{" "}
-                    <Var>{formatPercent(merged.costQuality.unpricedShare)}</Var> unpriced records.
-                  </T>
-                </PopoverPopup>
-              </Popover>
+            {metric === "cost" ? (
+              <span className="inline-flex items-center gap-1">
+                {gt("API estimate")}
+                {merged.costQuality.unpricedShare > 0 ? (
+                  <Popover>
+                    <PopoverTrigger
+                      openOnHover
+                      render={<InlineButton tone="muted" />}
+                      aria-label={gt("Unpriced usage details")}
+                    >
+                      <InfoIcon className="size-3" aria-hidden />
+                    </PopoverTrigger>
+                    <PopoverPopup side="top" tooltipStyle>
+                      <T>
+                        API estimate excludes{" "}
+                        <Var>{formatPercent(merged.costQuality.unpricedShare)}</Var> unpriced
+                        records.
+                      </T>
+                    </PopoverPopup>
+                  </Popover>
+                ) : null}
+              </span>
             ) : null}
+            <span>{windowLabel}</span>
           </span>
         </div>
-      </PageSection>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-4 @2xl/usage:grid-cols-4">
+          {[
+            // The strip never repeats the headline: in token view its first figure is the cost.
+            metric === "cost"
+              ? { label: gt("Processed tokens"), value: formatTokens(merged.totalTokens) }
+              : { label: gt("Cost, API estimate"), value: formatUsd(merged.costUsd, locale) },
+            { label: gt("Cached input"), value: formatTokens(merged.cachedInputTokens) },
+            {
+              label: gt("Output", { $context: "output tokens" }),
+              value: formatTokens(merged.outputTokens),
+            },
+            {
+              label: gt("Cache savings"),
+              value: formatUsd(merged.costQuality.cacheSavingsUsd, locale),
+            },
+          ].map((entry) => (
+            <div key={entry.label} className="flex min-w-0 flex-col gap-1">
+              <span className="truncate text-meta text-ink-2">{entry.label}</span>
+              <span
+                className={cn(
+                  "text-title font-semibold text-ink-1 tabular-nums",
+                  figureClass(loadingPartial),
+                )}
+              >
+                {entry.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <PageSection title={chartTitle}>
-        <div className="px-2">
+        <div className="px-2 pt-2">
           <UsageProviderChart
             providers={activeProviders}
             loadingProviders={chartLoadingProviders}
@@ -786,88 +825,64 @@ function UsageOverview({
         </div>
       </PageSection>
 
-      <PageSection title={<T>Providers</T>}>
-        {rankedProviders.map((provider) => {
-          const totals = merged.providers.find((entry) => entry.provider === provider);
-          const share = metric === "cost" ? (totals?.costShare ?? 0) : (totals?.tokenShare ?? 0);
-          const providerLoading = loadingProviders.has(provider);
-          const awaitingData = providerLoading && !providersWithData.has(provider);
-          return (
-            <UsageRow
-              key={provider}
-              lead={<UsageDot color={PROVIDER_PRESENTATION[provider].color} />}
-              title={PROVIDER_PRESENTATION[provider].label}
-              detail={awaitingData ? null : sessionsLabel(totals?.sessions ?? 0)}
-              value={
-                awaitingData ? "-" : metricValue(totals?.costUsd ?? 0, totals?.totalTokens ?? 0)
-              }
-              valueDetail={awaitingData ? null : formatPercent(share)}
-              dimmed={providerLoading}
-            >
-              {awaitingData ? null : (
-                <UsageShareTrack share={share} color={PROVIDER_PRESENTATION[provider].color} />
-              )}
-            </UsageRow>
-          );
-        })}
-        {showChatGptSharing ? (
-          <UsageRow title={<T>ChatGPT shared usage</T>} value={<ChatGptUsageButton size="xs" />} />
-        ) : null}
-      </PageSection>
-
-      {/* The totals as one strip of figures, read across, not a column of rows. */}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-4 px-2 sm:grid-cols-4">
-        {[
-          { label: gt("Processed tokens"), value: formatTokens(merged.totalTokens) },
-          { label: gt("Cached input"), value: formatTokens(merged.cachedInputTokens) },
-          {
-            label: gt("Output", { $context: "output tokens" }),
-            value: formatTokens(merged.outputTokens),
-          },
-          {
-            label: gt("Cache savings"),
-            value: formatUsd(merged.costQuality.cacheSavingsUsd, locale),
-          },
-        ].map((figure) => (
-          <div key={figure.label} className="flex min-w-0 flex-col gap-1">
-            <span className="truncate text-meta text-ink-2">{figure.label}</span>
-            <span
-              className={cn(
-                "text-heading font-semibold text-ink-1 tabular-nums",
-                figureClass(loadingPartial),
-              )}
-            >
-              {figure.value}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {merged.totalTokens > 0 ? (
-        metric === "tokens" ? (
-          <UsageShareBar
-            label={gt("Tokens by type")}
-            segments={tokenTypeSegments(merged)}
-            format={formatTokens}
-          />
-        ) : (
-          <>
-            <UsageShareBar
-              label={gt("Cost by type")}
-              segments={costTypeSegments(merged.categoryCost)}
-              format={(value: number) => formatUsd(value, locale)}
-            />
-            {merged.speedCost.fast + merged.speedCost.ultrafast > 0 ? (
-              <UsageShareBar
-                label={gt("Cost by speed")}
-                segments={speedCostSegments(merged.speedCost)}
-                format={(value: number) => formatUsd(value, locale)}
-                aside={<SpeedPremium premiumUsd={merged.speedCost.premium} />}
+      <div className="grid gap-10 @3xl/usage:grid-cols-2 @3xl/usage:gap-x-8">
+        <PageSection title={<T>Providers</T>}>
+          {rankedProviders.map((provider) => {
+            const totals = merged.providers.find((entry) => entry.provider === provider);
+            const share = metric === "cost" ? (totals?.costShare ?? 0) : (totals?.tokenShare ?? 0);
+            const providerLoading = loadingProviders.has(provider);
+            const awaitingData = providerLoading && !providersWithData.has(provider);
+            return (
+              <UsageLine
+                key={provider}
+                lead={<UsageDot color={PROVIDER_PRESENTATION[provider].color} />}
+                title={PROVIDER_PRESENTATION[provider].label}
+                detail={awaitingData ? null : sessionsLabel(totals?.sessions ?? 0)}
+                share={awaitingData ? null : share}
+                color={PROVIDER_PRESENTATION[provider].color}
+                value={
+                  awaitingData ? "-" : metricValue(totals?.costUsd ?? 0, totals?.totalTokens ?? 0)
+                }
+                shareLabel={awaitingData ? null : formatPercent(share)}
+                dimmed={providerLoading}
               />
-            ) : null}
-          </>
-        )
-      ) : null}
+            );
+          })}
+          {showChatGptSharing ? (
+            <div className="flex h-8 items-center justify-between gap-2 px-2 text-meta text-ink-2">
+              <T>ChatGPT shared usage</T>
+              <ChatGptUsageButton size="xs" />
+            </div>
+          ) : null}
+        </PageSection>
+        <div className="flex flex-col gap-10">
+          {merged.totalTokens > 0 ? (
+            metric === "tokens" ? (
+              <UsageShareBar
+                label={gt("Tokens by type")}
+                segments={tokenTypeSegments(merged)}
+                format={formatTokens}
+              />
+            ) : (
+              <>
+                <UsageShareBar
+                  label={gt("Cost by type")}
+                  segments={costTypeSegments(merged.categoryCost)}
+                  format={(value: number) => formatUsd(value, locale)}
+                />
+                {merged.speedCost.fast + merged.speedCost.ultrafast > 0 ? (
+                  <UsageShareBar
+                    label={gt("Cost by speed")}
+                    segments={speedCostSegments(merged.speedCost)}
+                    format={(value: number) => formatUsd(value, locale)}
+                    aside={<SpeedPremium premiumUsd={merged.speedCost.premium} />}
+                  />
+                ) : null}
+              </>
+            )
+          ) : null}
+        </div>
+      </div>
 
       <PageSection
         title={breakdown === "model" ? <T>Models</T> : shownHourly ? <T>Hours</T> : <T>Days</T>}
@@ -897,7 +912,7 @@ function UsageOverview({
               const share = modelShare(model, metric === "tokens" ? "tokens" : "cost");
               const costUnknown = isModelCostUnknown(model);
               return (
-                <UsageRow
+                <UsageLine
                   key={key}
                   lead={<ProviderMark provider={model.provider} className="size-4" />}
                   title={model.model}
@@ -908,6 +923,8 @@ function UsageOverview({
                         ? gt("Unpriced")
                         : formatUsd(model.costUsd, locale)
                   }
+                  share={share}
+                  color={PROVIDER_PRESENTATION[model.provider].color}
                   value={
                     metric === "cost"
                       ? costUnknown
@@ -915,17 +932,10 @@ function UsageOverview({
                         : formatUsd(model.costUsd, locale)
                       : formatTokens(model.totalTokens)
                   }
-                  valueDetail={share === null ? null : formatPercent(share)}
+                  shareLabel={share === null ? null : formatPercent(share)}
                   dimmed={loadingProviders.has(model.provider)}
                   onClick={() => onSelectModel(key)}
-                >
-                  {share === null ? null : (
-                    <UsageShareTrack
-                      share={share}
-                      color={PROVIDER_PRESENTATION[model.provider].color}
-                    />
-                  )}
-                </UsageRow>
+                />
               );
             })
           )
@@ -935,28 +945,21 @@ function UsageOverview({
           </p>
         ) : (
           breakdownPeriods.map((period) => (
-            <UsageRow
+            <UsageLine
               key={"hourStart" in period ? period.hourStart : period.day}
               title={
                 "hourStart" in period
                   ? formatHourShort(period.hourStart, shownWindow.timeZone, hour12, locale)
                   : formatDayShort(period.day, locale)
               }
-              detail={activeProviders
-                .flatMap((provider) => {
-                  const entry = period.byProvider.get(provider);
-                  if (!entry) return [];
-                  return [
-                    `${PROVIDER_PRESENTATION[provider].label} ${metricValue(entry.costUsd, entry.totalTokens)}`,
-                  ];
-                })
-                .join(" · ")}
-              value={metricValue(period.costUsd, period.totalTokens)}
-              valueDetail={
+              detail={
                 metric === "cost"
                   ? gt("{tokens} tokens", { tokens: formatTokens(period.totalTokens) })
                   : formatUsd(period.costUsd, locale)
               }
+              share={null}
+              color="transparent"
+              value={metricValue(period.costUsd, period.totalTokens)}
               dimmed={loadingPartial}
             />
           ))

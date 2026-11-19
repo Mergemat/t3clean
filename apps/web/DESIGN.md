@@ -178,8 +178,9 @@ Settled per component in review, in order. Each one applies to every later compo
     float from its icon (`UsageGlance`); the full cost and tokens open from it as a page.
     A page that is not a thread is solid, as Settings is: no sky, no glass, Settings' container,
     parts labelled the way Settings labels its groups (`WindowPage`, `PageSection`). Figures are
-    rows like Settings rows: name and detail left, value and detail right (`UsageRow`), in the
-    four type sizes. No tables, no custom figure sizes.
+    one hero figure (`text-display`) with its supporting figures read across under it, then
+    splits as one-line rows on one grid (`UsageLine`: name and detail, share track, figure,
+    share), so every list on the page lines up. Groups sit far apart (`gap-10`).
     An item page (an issue, a pull request) reads like a thread: one `text-title` line, the title,
     with one meta line under it and its properties in one quiet line; what people wrote (the
     description, comments) on chat glass (`MessageCard`); events as single `text-meta` lines.
@@ -196,6 +197,8 @@ Settled per component in review, in order. Each one applies to every later compo
 - **Size.** Layout is whole steps (rows `h-6`, `h-8`, `h-10`). Inside a control, or anything
   smaller than a row, half steps work too (`h-7`, `px-3`, `rounded-chip`).
 - **Type.** `text-title`, `text-heading`, `text-body`, `text-meta`. **Ink:** `text-ink-1/2/3`.
+  `text-display` (three ratio steps past the title) is for a page's one hero figure, never more
+  than one per page.
 - **Roots** (`index.css`): `--step` 0.5rem (8px), `--type-base` 0.875rem (14px), `--type-ratio` 1.2.
 - **Levels.** Three heights, top first, like a black slab with the chat window carved in it as a
   bowl. Top: the frame (sidebar, header) and, level with it but not part of it, the floats

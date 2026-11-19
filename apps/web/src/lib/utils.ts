@@ -12,7 +12,7 @@ import { m, type MessageResolver } from "../i18n/messages";
 const twMerge = extendTailwindMerge<"level">({
   extend: {
     theme: {
-      text: ["2xs", "3xs", "4xs", "5xs", "title", "heading", "body", "meta"],
+      text: ["2xs", "3xs", "4xs", "5xs", "display", "title", "heading", "body", "meta"],
       shadow: ["edge-light", "edge-dark", "edge-dark-faint", "knob"],
       radius: ["inherit", "chip", "row", "box", "region"],
     },
