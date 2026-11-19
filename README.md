@@ -19,7 +19,7 @@
 
 <p align="center">
   <a href="https://t3.codes">
-    <img src="./.github/readme/hero.webp" width="100%" alt="T3 Code on desktop with a finished Claude thread, next to the phone app asking to approve a command from Codex" />
+    <img src="./.github/readme/hero.webp" width="100%" alt="T3 Code on desktop: a finished thread over the dithered Silk backdrop, with the thread details card beside it" />
   </a>
 </p>
 
