@@ -158,8 +158,8 @@ Settled per component in review, in order. Each one applies to every later compo
 
     The levels themselves follow one ladder: lower is darker. Every level is the frame's colour
     moved by its own lightness offset: a float +0.025, chat (messages, composer) -0.01, a composer
-    drawer halfway to the floor, the window's floor (and the sky's paper) -0.045. In dark themes
-    the frame is never darker than 0.155, so the floor stops at 0.11 instead of black; a theme with
+    drawer halfway to the floor, the window's floor (and the sky's paper) -0.02. In dark themes
+    the frame is never darker than 0.155, so the floor stops at 0.135 instead of black; a theme with
     a darker frame is lifted to that anchor.
 
     Higher is lighter, in fixed steps. Three tints and nothing between: `tint-1` (a field, a

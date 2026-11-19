@@ -2953,7 +2953,7 @@ code {
   --frame-min-l: 0;
   --float-offset: 0.025;
   --chat-offset: -0.01;
-  --floor-offset: -0.045;
+  --floor-offset: -0.02;
   --float-tone: oklch(from var(--app-chrome-background) calc(l + var(--float-offset)) c h);
   --chat-tone: oklch(from var(--app-chrome-background) calc(l + var(--chat-offset)) c h);
   --drawer-tone: oklch(
