@@ -176,8 +176,11 @@ Settled per component in review, in order. Each one applies to every later compo
 - **Levels.** Three heights, top first, like a black slab with the chat window carved in it as a
   bowl. Top: the frame (sidebar, header) and, level with it but not part of it, the floats
   (thread details, menus, popovers, dialogs, toasts, tooltips). Chat: messages, code, changed
-  files and the composer, a little below the top, no shadow. Sky: the bottom of the bowl. A
-  corner in the OS window's corner follows the OS curve (`--window-corner`).
+  files, cards and the composer, a little below the top, no shadow. Sky: the bottom of the bowl.
+  Every item on a level looks the same: its background, blur, edge, shadow and corner all come
+  from `level-frame`, `level-chat` or `level-float`, and it sets none of them itself
+  (`t3code/one-look-per-level`). A corner in the OS window's corner follows the OS curve
+  (`--window-corner`).
 - **Enforcement.** `pnpm tokens` moves classes onto the grid and `pnpm lint` fails while anything
   is off; `shadcn/no-arbitrary-values` bans raw values. Option+Shift+G (dev) draws the grid and
   shades every ring, so anything unshaded is off the system.

@@ -240,7 +240,7 @@ function UsageChartTooltip({
   return (
     <div
       ref={tooltipRef}
-      className="surface-glass pointer-events-none absolute z-10 min-w-36 max-w-full rounded-box border border-border/50 px-2 py-2 text-meta shadow-lg"
+      className="level-float pointer-events-none absolute z-10 min-w-36 max-w-full px-2 py-2 text-meta"
       style={{
         left: "var(--usage-tooltip-left, 0px)",
         top: "var(--usage-tooltip-top, 0px)",

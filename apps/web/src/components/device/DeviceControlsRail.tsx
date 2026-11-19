@@ -59,7 +59,7 @@ export function DeviceControlsRail(props: {
       data-layout="rail"
       className="pointer-events-none absolute inset-y-0 right-0 z-10 flex w-14 flex-col items-center gap-2 justify-center-safe overflow-y-auto py-2 pr-2 scrollbar-none"
     >
-      <div className="pointer-events-auto flex shrink-0 flex-col items-center gap-1 overflow-y-auto rounded-box border border-border/50 bg-background/80 p-2 shadow-sm scrollbar-none">
+      <div className="level-float pointer-events-auto flex shrink-0 flex-col items-center gap-1 overflow-y-auto p-2 scrollbar-none">
         <RailButton
           tooltipSide={popupSide}
           label="Home"

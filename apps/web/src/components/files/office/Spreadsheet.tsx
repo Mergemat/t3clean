@@ -751,7 +751,7 @@ function SpreadsheetGrid(props: {
       {notice ? (
         <div
           role="status"
-          className="absolute inset-x-3 bottom-3 rounded-row bg-background p-2 text-meta text-ink-1 shadow-md"
+          className="level-float absolute inset-x-3 bottom-3 p-2 text-meta text-ink-1"
         >
           {notice}
         </div>

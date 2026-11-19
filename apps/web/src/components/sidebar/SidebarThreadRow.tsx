@@ -268,7 +268,7 @@ function SidebarThreadTooltip({
   const supportsMultiplePullRequests = useSupportsMultiplePullRequests(thread.environmentId);
   return (
     // An extension of the row: its corner, its top edge, and only what the row doesn't show.
-    <ThreadHoverCardPopup side="right" align="start" sideOffset={4} corner="row">
+    <ThreadHoverCardPopup side="right" align="start" sideOffset={4}>
       <ThreadHoverCard
         footer={
           supportsMultiplePullRequests && thread.pullRequests.length > 0 ? (
@@ -629,7 +629,7 @@ function ThreadRenameInput(props: {
       }}
       onClick={(event) => event.stopPropagation()}
       onDoubleClick={(event) => event.stopPropagation()}
-      className="-mx-1 min-w-0 flex-1 rounded-row bg-card px-1 text-body font-medium text-card-foreground outline-none ring-1 ring-inset ring-input focus:ring-foreground"
+      className="-mx-1 min-w-0 flex-1 rounded-row bg-tint-1 px-1 text-body font-medium text-ink-1 outline-none ring-1 ring-inset ring-input focus:ring-foreground"
     />
   );
 }
@@ -962,27 +962,32 @@ const SidebarThreadRow = memo(function SidebarThreadRow(props: SidebarThreadRowP
     }
   };
 
+  // A row being dragged leaves the sidebar and floats over it, so it takes the float's whole look
+  // instead of the row's corner and fills.
   const rowSurfaceClassName = cn(
-    "group/sidebar-row relative w-full cursor-pointer overflow-hidden rounded-row text-left outline-none select-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-    variantAction === "unsettle" &&
-      !props.isActive &&
-      "[&:not(:hover):not(:focus-within)_*]:text-ink-2",
-    props.isActive
-      ? "bg-sidebar-row-active text-sidebar-foreground light:ring-1 light:ring-inset light:ring-sidebar-border/70"
-      : isSelected || props.sweepAction !== null
-        ? "bg-sidebar-row-selected text-sidebar-foreground light:ring-1 light:ring-inset light:ring-sidebar-border/70"
-        : hasUnsentDraft
-          ? cn(draftSurfaceClassName, "text-sidebar-foreground")
-          : shouldRecede
-            ? "text-ink-2 hover:bg-sidebar-row-hover hover:text-ink-1"
-            : "bg-transparent text-sidebar-foreground hover:bg-sidebar-row-hover",
-    shouldRecede &&
-      (status === "preparing" || status === "working") &&
-      "opacity-70 transition-opacity hover:opacity-100 focus-within:opacity-100 motion-reduce:transition-none",
-    isFileDragOver && "ring-1 ring-inset ring-primary/70",
-    isFileDragOver && !props.isActive && !isSelected && "bg-sidebar-row-hover",
-    props.sortable?.isDragging &&
-      "bg-sidebar bg-linear-to-b from-sidebar-row-active to-sidebar-row-active text-sidebar-foreground opacity-100 shadow-lg",
+    "group/sidebar-row relative w-full cursor-pointer overflow-hidden text-left outline-none select-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+    props.sortable?.isDragging
+      ? "level-float text-sidebar-foreground opacity-100"
+      : cn(
+          "rounded-row",
+          variantAction === "unsettle" &&
+            !props.isActive &&
+            "[&:not(:hover):not(:focus-within)_*]:text-ink-2",
+          props.isActive
+            ? "bg-sidebar-row-active text-sidebar-foreground light:ring-1 light:ring-inset light:ring-sidebar-border/70"
+            : isSelected || props.sweepAction !== null
+              ? "bg-sidebar-row-selected text-sidebar-foreground light:ring-1 light:ring-inset light:ring-sidebar-border/70"
+              : hasUnsentDraft
+                ? cn(draftSurfaceClassName, "text-sidebar-foreground")
+                : shouldRecede
+                  ? "text-ink-2 hover:bg-sidebar-row-hover hover:text-ink-1"
+                  : "bg-transparent text-sidebar-foreground hover:bg-sidebar-row-hover",
+          shouldRecede &&
+            (status === "preparing" || status === "working") &&
+            "opacity-70 transition-opacity hover:opacity-100 focus-within:opacity-100 motion-reduce:transition-none",
+          isFileDragOver && "ring-1 ring-inset ring-primary/70",
+          isFileDragOver && !props.isActive && !isSelected && "bg-sidebar-row-hover",
+        ),
   );
   const sortable = props.sortable;
   const sortableRootProps = sortable

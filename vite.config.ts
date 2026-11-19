@@ -539,6 +539,17 @@ export default defineConfig({
         rules: { "t3code/no-off-ladder-tints": "error" },
       },
       {
+        files: ["apps/web/src/**/*.{ts,tsx}"],
+        excludeFiles: [
+          "**/*.{test,spec}.{ts,tsx}",
+          "apps/web/src/components/Icons.tsx",
+          "apps/web/src/components/JetBrainsIcons.tsx",
+          // tailwind-merge's group names, not classes.
+          "apps/web/src/lib/utils.ts",
+        ],
+        rules: { "t3code/one-look-per-level": "error" },
+      },
+      {
         files: ["apps/web/src/**"],
         rules: { "t3code/max-settings-description-length": "error" },
       },

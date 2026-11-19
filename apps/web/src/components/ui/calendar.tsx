@@ -56,9 +56,10 @@ export function Calendar({
       buttonClassNames,
       "in-data-disabled:pointer-events-none in-[.range-middle]:rounded-none in-[.range-end:not(.range-start)]:rounded-s-none in-[.range-start:not(.range-end)]:rounded-e-none in-[.range-middle]:in-data-selected:bg-tint-1 in-data-selected:bg-primary in-[.range-middle]:in-data-selected:text-ink-1 in-data-disabled:text-ink-2 in-data-outside:text-ink-2 in-data-selected:in-data-outside:text-primary-foreground in-data-selected:text-primary-foreground in-data-disabled:line-through outline-none in-[[data-selected]:not(.range-middle)]:transition focus-visible:z-1 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/50",
     ),
+    // oxlint-disable-next-line t3code/one-look-per-level -- the invisible native select: its colour only themes the OS option list it opens
     dropdown: "absolute bg-popover inset-0 opacity-0",
     dropdown_root:
-      "relative has-focus:border-ring has-focus:ring-ring/50 has-focus:ring-3 has-focus:ring-inset border border-input shadow-xs/5 rounded-row px-2 h-8 sm:h-8 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:-me-1",
+      "relative has-focus:ring-ring/50 has-focus:ring-3 has-focus:ring-inset bg-tint-1 rounded-row px-2 h-8 sm:h-8 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:-me-1",
     dropdowns:
       "w-full flex items-center text-base sm:text-body justify-center h-10 sm:h-8 gap-2 *:[span]:font-medium",
     hidden: "invisible",

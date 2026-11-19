@@ -141,7 +141,7 @@ function SelectPopup({
           </SelectPrimitive.ScrollUpArrow>
           <div
             className={cn(
-              "dropdown-glass relative h-full rounded-box",
+              "level-float relative h-full",
               matchTriggerWidth && "min-w-(--anchor-width)",
             )}
           >

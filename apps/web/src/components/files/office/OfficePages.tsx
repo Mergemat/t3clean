@@ -190,6 +190,7 @@ function OfficePage(props: {
         }}
         role="group"
         aria-label={`${label} ${index + 1}`}
+        // oxlint-disable-next-line t3code/one-look-per-level -- a rendered document page is paper, not app UI: it keeps a page shadow
         className="relative shrink-0 shadow-md"
         style={{
           width: page.width * scale,

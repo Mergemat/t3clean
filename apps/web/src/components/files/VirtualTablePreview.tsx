@@ -132,10 +132,7 @@ export default function VirtualTablePreview(props: {
           style={{ width: tableWidth }}
         >
           {!props.source ? (
-            <div
-              role="row"
-              className="relative z-10 flex min-h-6 shrink-0 border-b border-border bg-muted/60 font-medium backdrop-blur"
-            >
+            <div role="row" className="level-frame relative z-10 flex min-h-6 shrink-0 font-medium">
               <div className="sticky left-0 z-10 w-14 shrink-0 border-r border-border bg-background" />
               <div style={{ width: offset(firstColumn), flexShrink: 0 }} />
               {columns.map((column) => (

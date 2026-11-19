@@ -470,6 +470,7 @@ export default function PdfViewer(props: {
             {visible.map(({ index, ratio }) => (
               <div
                 key={index}
+                // oxlint-disable-next-line t3code/one-look-per-level -- a rendered PDF page is paper, not app UI: white with a page shadow
                 className="absolute bg-white shadow-sm"
                 style={
                   {

@@ -168,7 +168,7 @@ function ComboboxPopup({
       >
         <span
           className={cn(
-            "dropdown-glass relative flex max-h-(--available-height) min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) rounded-box transition duration-150 ease-out",
+            "level-float relative flex max-h-(--available-height) min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) transition duration-150 ease-out",
             className,
           )}
         >

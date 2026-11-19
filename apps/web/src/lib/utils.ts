@@ -7,12 +7,49 @@ import { DraftId } from "../composerDraftStore";
 
 // Register extra font sizes and shadows so tailwind-merge does not treat text-meta or
 // shadow-knob as colors.
-const twMerge = extendTailwindMerge({
+const twMerge = extendTailwindMerge<"level">({
   extend: {
     theme: {
       text: ["2xs", "3xs", "4xs", "5xs", "title", "heading", "body", "meta"],
       shadow: ["edge-light", "edge-dark", "edge-dark-faint", "knob"],
       radius: ["inherit", "chip", "row", "box", "region"],
+    },
+    // A level is a surface's whole look (DESIGN.md, Levels), so it replaces the corner, fill, edge,
+    // shadow and blur classes before it, such as a component's base rounded-row border.
+    classGroups: { level: ["level-frame", "level-chat", "level-float"] },
+    conflictingClassGroups: {
+      level: [
+        "rounded",
+        "rounded-s",
+        "rounded-e",
+        "rounded-t",
+        "rounded-r",
+        "rounded-b",
+        "rounded-l",
+        "rounded-ss",
+        "rounded-se",
+        "rounded-ee",
+        "rounded-es",
+        "rounded-tl",
+        "rounded-tr",
+        "rounded-br",
+        "rounded-bl",
+        "bg-color",
+        "border-w",
+        "border-w-x",
+        "border-w-y",
+        "border-w-s",
+        "border-w-e",
+        "border-w-t",
+        "border-w-r",
+        "border-w-b",
+        "border-w-l",
+        "border-color",
+        "shadow",
+        "shadow-color",
+        "backdrop-blur",
+        "backdrop-saturate",
+      ],
     },
   },
 });

@@ -20,6 +20,7 @@ import noSparklesIcon from "./rules/no-sparkles-icon.ts";
 import noUnreasonedStateSync from "./rules/no-unreasoned-state-sync.ts";
 import requireRegisteredListScroll from "./rules/require-registered-list-scroll.ts";
 import noOffLadderTints from "./rules/no-off-ladder-tints.ts";
+import oneLookPerLevel from "./rules/one-look-per-level.ts";
 import noOutsetStateIndicators from "./rules/no-outset-state-indicators.ts";
 import noPollingLoopInTests from "./rules/no-polling-loop-in-tests.ts";
 import noRawMcpRegistration from "./rules/no-raw-mcp-registration.ts";
@@ -61,6 +62,7 @@ export default definePlugin({
     "no-unreasoned-state-sync": noUnreasonedStateSync,
     "require-registered-list-scroll": requireRegisteredListScroll,
     "no-off-ladder-tints": noOffLadderTints,
+    "one-look-per-level": oneLookPerLevel,
     "no-outset-state-indicators": noOutsetStateIndicators,
     "no-polling-loop-in-tests": noPollingLoopInTests,
     "no-raw-mcp-registration": noRawMcpRegistration,

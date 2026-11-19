@@ -35,7 +35,7 @@ function Main({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-chat-composer-main-surface="true"
-      className={cn("content-glass group relative z-10 rounded-box", className)}
+      className={cn("level-chat group relative z-10", className)}
       {...props}
     />
   );
@@ -47,7 +47,7 @@ function ContextStrip({ className, ...props }: ComponentProps<"div">) {
     <div
       data-slot="composer-context-strip"
       className={cn(
-        "group/composer-context surface-glass relative flex w-full items-center gap-2 overflow-x-clip px-2 pt-2 text-ink-2",
+        "group/composer-context relative flex w-full items-center gap-2 overflow-x-clip px-2 pt-2 text-ink-2",
         className,
       )}
       {...props}

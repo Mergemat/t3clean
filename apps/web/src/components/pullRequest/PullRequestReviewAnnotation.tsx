@@ -42,8 +42,7 @@ import {
   type PullRequestCompletionScope,
 } from "./PullRequestMarkdownTextarea";
 
-const CARD_CLASS =
-  "mx-2 my-2 rounded-row border border-border/70 bg-background p-2 text-body shadow-sm";
+const CARD_CLASS = "level-chat mx-2 my-2 p-2 text-body";
 
 function submitKeys(input: {
   readonly value: string;

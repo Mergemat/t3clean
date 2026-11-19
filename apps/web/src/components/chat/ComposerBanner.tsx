@@ -30,8 +30,9 @@ function Surface({
       className={cn(
         "relative isolate",
         detached
-          ? "dropdown-glass rounded-box"
-          : "rounded-t-box border border-b-0 border-(--level-line) bg-(--drawer-fill) backdrop-blur-(--glass-blur) backdrop-saturate-(--glass-saturation)",
+          ? "level-chat"
+          : // oxlint-disable-next-line t3code/one-look-per-level -- the drawer's bottom joins the composer's top edge, so it drops its bottom corners and edge
+            "level-chat rounded-b-none border-b-0",
         className,
       )}
       {...props}

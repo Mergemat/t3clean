@@ -102,7 +102,7 @@ function AutocompletePopup({
       >
         <span
           className={cn(
-            "relative flex max-h-(--available-height) min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) rounded-box dropdown-glass transition duration-150 ease-out before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit before:shadow-edge-light dark:before:shadow-edge-dark",
+            "relative flex max-h-(--available-height) min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) level-float transition duration-150 ease-out",
             className,
           )}
         >

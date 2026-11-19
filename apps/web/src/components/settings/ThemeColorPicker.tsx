@@ -163,10 +163,7 @@ function ThemeColorPickerPanel({
           <p className="truncate text-meta font-semibold text-ink-1">{label}</p>
           <p className="text-meta text-ink-2">Choose a color</p>
         </div>
-        <span
-          className="size-6 shrink-0 rounded-full shadow-sm"
-          style={{ backgroundColor: currentColor }}
-        />
+        <span className="size-6 shrink-0 rounded-full" style={{ backgroundColor: currentColor }} />
       </div>
       <div className="grid gap-2 px-2 pb-2 pt-2">
         <ColorSaturationValuePlane
@@ -283,7 +280,7 @@ function ThemeColorPicker({
                   type="button"
                 >
                   <span
-                    className="absolute inset-0 rounded-full shadow-sm"
+                    className="absolute inset-0 rounded-full"
                     style={{ backgroundColor: value }}
                   />
                 </button>

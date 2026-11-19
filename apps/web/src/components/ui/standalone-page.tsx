@@ -6,7 +6,7 @@ export function StandalonePage({ children }: { readonly children: ReactNode }) {
   return (
     // The page owns scrolling because root cannot scroll; safe centering keeps oversized cards top-aligned.
     <div className="flex h-full items-center-safe justify-center overflow-y-auto scrollbar-gutter-both bg-background px-4 py-10 text-ink-1 sm:px-6">
-      <section className="dialog-glass w-full max-w-xl rounded-box border p-6">{children}</section>
+      <section className="level-float w-full max-w-xl p-6">{children}</section>
     </div>
   );
 }

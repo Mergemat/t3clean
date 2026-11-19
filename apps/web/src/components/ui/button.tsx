@@ -44,11 +44,9 @@ const buttonVariants = cva(
           "border-0 text-ink-2 [:hover,[data-pressed]]:bg-tint-2 [:hover,[data-pressed]]:text-ink-1",
         "ghost-destructive":
           "border-0 text-ink-2 [:hover,[data-pressed]]:bg-tint-2 [:hover,[data-pressed]]:text-destructive",
-        glass:
-          "surface-glass border-border/60 text-ink-1 shadow-sm [:hover,[data-pressed]]:border-border",
+        glass: "level-float text-ink-1",
         link: "border-0 underline-offset-4 [:hover,[data-pressed]]:underline",
-        "media-close":
-          "border-0 bg-black/65 text-white shadow-sm ring-1 ring-white/20 [:hover,[data-pressed]]:bg-black/80 focus-visible:ring-white",
+        "media-close": "level-float text-ink-1",
         "media-navigation":
           "absolute top-1/2 z-20 -translate-y-1/2 border-0 text-white/90 [:hover,[data-pressed]]:bg-white/10 [:hover,[data-pressed]]:text-white focus-visible:ring-white focus-visible:ring-offset-transparent",
         outline: "raised border-transparent text-ink-1",
@@ -56,7 +54,7 @@ const buttonVariants = cva(
         secondary:
           "border-0 bg-secondary text-secondary-foreground [:hover,[data-pressed]]:bg-secondary/90",
         "warning-outline":
-          "border-warning/32 bg-warning-surface text-warning-foreground shadow-xs/5 [:disabled,:active,[data-pressed]]:shadow-none [:hover,[data-pressed]]:border-warning/40 [:hover,[data-pressed]]:bg-warning/16 dark:[:hover,[data-pressed]]:bg-warning/24",
+          "border-warning/32 bg-warning-surface text-warning-foreground [:hover,[data-pressed]]:border-warning/40 [:hover,[data-pressed]]:bg-warning/16 dark:[:hover,[data-pressed]]:bg-warning/24",
       },
     },
   },

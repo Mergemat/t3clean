@@ -341,7 +341,7 @@ function ProcessDiagnosticsTable({
             <col className="w-1/10" />
             <col className="w-1/20" />
           </colgroup>
-          <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-meta uppercase tracking-widest text-ink-2">
+          <thead className="level-frame sticky top-0 z-10 text-meta uppercase tracking-widest text-ink-2">
             <tr>
               <th className="px-4 py-2 font-semibold sm:pl-4">Name</th>
               <th className="px-2 py-2 text-right font-semibold">CPU</th>
@@ -560,7 +560,7 @@ function ProcessResourceHistoryTable({
             <col className="w-3/20" />
             <col className="w-1/10" />
           </colgroup>
-          <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-meta uppercase tracking-widest text-ink-2">
+          <thead className="level-frame sticky top-0 z-10 text-meta uppercase tracking-widest text-ink-2">
             <tr>
               <th className="px-4 py-2 font-semibold sm:pl-4">Process</th>
               <th className="px-2 py-2 text-right font-semibold">CPU Time</th>

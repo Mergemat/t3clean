@@ -92,14 +92,13 @@ function PopoverPopup({
       >
         <PopoverPrimitive.Popup
           className={cn(
-            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) rounded-box text-popover-foreground outline-none transition duration-150 ease-out before:pointer-events-none before:absolute before:inset-0 before:rounded-inherit before:shadow-edge-light data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:before:shadow-edge-dark",
-            variant !== "panel" && "dropdown-glass",
+            "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) text-popover-foreground outline-none transition duration-150 ease-out data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            variant !== "panel" && "level-float",
             // Electron drag hit-testing ignores z-index; popups over a drag region would swallow hover.
             "app-region-no-drag",
             tooltipStyle && "w-fit text-meta",
             width !== "auto" && ["max-w-(--viewport-inset)", popoverPopupWidthClassName[width]],
-            variant === "panel" &&
-              "w-full overflow-visible rounded-none border-0 bg-transparent shadow-none before:hidden backdrop-filter-none",
+            variant === "panel" && "w-full overflow-visible",
             className,
           )}
           data-slot="popover-popup"

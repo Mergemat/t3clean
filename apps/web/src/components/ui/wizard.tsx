@@ -90,9 +90,8 @@ export function WizardSteps({
             className={cn(
               "flex w-full min-w-0 items-center gap-2 rounded-row px-3 py-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring max-sm:justify-center max-sm:px-2",
               onStepChange &&
-                "cursor-pointer hover:bg-card disabled:cursor-default disabled:hover:bg-transparent",
-              index === currentStep &&
-                "bg-card text-ink-1 shadow-xs ring-1 ring-inset ring-black/5 hover:bg-card dark:shadow-none dark:ring-white/5",
+                "cursor-pointer hover:bg-tint-2 disabled:cursor-default disabled:hover:bg-transparent",
+              index === currentStep && "bg-tint-1 text-ink-1",
             )}
             aria-current={index === currentStep ? "step" : undefined}
             aria-label={`${step}, step ${index + 1}${index < currentStep && summaries?.[index] ? `, ${summaries?.[index]}` : ""}`}
@@ -105,7 +104,7 @@ export function WizardSteps({
                   ? "bg-primary text-primary-foreground ring-primary"
                   : index === currentStep
                     ? "bg-primary/10 text-primary ring-primary/30"
-                    : "bg-card text-ink-2 ring-black/10 dark:bg-white/5 dark:ring-white/10",
+                    : "bg-tint-1 text-ink-2 ring-black/10 dark:ring-white/10",
               )}
               aria-hidden
             >

@@ -670,7 +670,7 @@ function WhenExpressionBuilder({
           </div>
         )}
         {parseError ? (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-row border border-destructive/30 bg-background/75 p-4 text-center text-meta text-destructive backdrop-blur-xs">
+          <div className="level-float pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center text-meta text-destructive">
             Fix the expression above to continue editing visually.
           </div>
         ) : null}

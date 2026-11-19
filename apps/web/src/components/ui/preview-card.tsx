@@ -30,7 +30,7 @@ function PreviewCardPopup({
       >
         <PreviewCardPrimitive.Popup
           className={cn(
-            "dropdown-glass origin-(--transform-origin) rounded-box text-popover-foreground outline-none transition duration-150 ease-out data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            "level-float origin-(--transform-origin) text-popover-foreground outline-none transition duration-150 ease-out data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
             className,
           )}
           data-slot="preview-card-popup"

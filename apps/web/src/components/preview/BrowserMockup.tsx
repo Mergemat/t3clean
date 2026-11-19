@@ -5,7 +5,8 @@ export function BrowserMockup({ className }: { className?: string }) {
     <div
       aria-hidden
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-row border border-border/60 bg-card p-1 shadow-xs/5",
+        // oxlint-disable-next-line t3code/one-look-per-level -- a small drawing of a browser window, not a surface of the app
+        "relative flex flex-col overflow-hidden rounded-row border border-border/60 bg-card p-1",
         className,
       )}
     >

@@ -38,7 +38,7 @@ interface ExpandedImageDialogProps {
 }
 
 const EXPANDED_MEDIA_STATE_CLASS_NAME =
-  "flex aspect-auto h-48 min-h-0 w-128 max-w-(--media-width) flex-col items-center justify-center gap-2 rounded-row border border-border/70 bg-black p-6 text-center text-body text-white shadow-2xl";
+  "flex aspect-auto h-48 min-h-0 w-128 max-w-(--media-width) flex-col items-center justify-center gap-2 level-float p-6 text-center text-body text-ink-1";
 
 function ExpandedMediaFailure({ children }: { children: ReactNode }) {
   return (
@@ -76,7 +76,7 @@ function ExpandedVideo({ item }: { readonly item: ExpandedImageItem }) {
       preload="metadata"
       autoPlay={item.autoPlay ?? true}
       className="block max-h-(--media-height) max-w-(--media-width) text-center"
-      videoClassName="aspect-auto max-h-(--media-height) w-auto max-w-(--media-width) rounded-row border border-border/70 shadow-2xl"
+      videoClassName="aspect-auto max-h-(--media-height) w-auto max-w-(--media-width) rounded-row border border-border/70"
       stateClassName={EXPANDED_MEDIA_STATE_CLASS_NAME}
       onRetry={asset ? refreshAssetUrl : undefined}
     />
@@ -227,7 +227,7 @@ export const ExpandedImageDialog = memo(function ExpandedImageDialog({
               accessibilityDetails ? (
                 <SnapShotAccessibilityData
                   details={accessibilityDetails}
-                  className="h-160 max-h-(--media-height) w-168 max-w-(--media-width) transition-opacity duration-140 ease-out starting:opacity-0 rounded-row border border-border/70 bg-background p-4 text-meta leading-5 shadow-2xl motion-reduce:transition-none"
+                  className="h-160 max-h-(--media-height) w-168 max-w-(--media-width) transition-opacity duration-140 ease-out starting:opacity-0 level-float p-4 text-meta leading-5 motion-reduce:transition-none"
                 />
               ) : null
             ) : item.src === null || failedImageSrc === item.src ? (

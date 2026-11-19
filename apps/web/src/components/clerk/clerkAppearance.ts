@@ -3,7 +3,7 @@ import type { ClerkProviderProps } from "@clerk/react";
 // Scoped to auth flows: UserProfile reuses formButtonPrimary for destructive confirmations.
 const authFlowElements = {
   formButtonPrimary:
-    "border-primary bg-primary bg-none text-primary-foreground shadow-xs shadow-primary/24 hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+    "border-primary bg-primary bg-none text-primary-foreground hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
 };
 
 export const clerkAppearance = {
@@ -30,7 +30,7 @@ export const clerkAppearance = {
   },
   elements: {
     modalBackdrop: "dialog-backdrop z-50",
-    cardBox: "dialog-glass rounded-box border",
+    cardBox: "level-float",
     card: "border-0 bg-transparent shadow-none",
     footer: "bg-transparent bg-none",
     header: "items-start text-start",

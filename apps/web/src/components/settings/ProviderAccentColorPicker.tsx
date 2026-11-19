@@ -54,7 +54,7 @@ function ProviderCustomColorPanel(props: {
   };
 
   return (
-    <div className="w-56 bg-popover">
+    <div className="w-56">
       <div onPointerDownCapture={startDrag}>
         <ColorSaturationValuePlane
           label="Accent color"

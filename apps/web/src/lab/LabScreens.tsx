@@ -122,7 +122,7 @@ function Settings() {
       <div className="nest-box py-0">
         <h3 className="nest-text text-heading">Chat</h3>
       </div>
-      <div className="nest-box flex flex-col border border-(--level-line) bg-card">
+      <div className="level-chat nest-box flex flex-col">
         <Setting title="Default model" description="New threads start on it." value="Opus 5.5" />
         <Setting title="Chat width" description="How wide the lane runs." value="Normal" />
       </div>
@@ -132,7 +132,7 @@ function Settings() {
 
 function Menu() {
   return (
-    <div className="dropdown-glass nest-box flex w-60 shrink-0 flex-col">
+    <div className="level-float nest-box flex w-60 shrink-0 flex-col">
       <Label>Thread</Label>
       <Row icon={PencilIcon} label="Rename" meta="⌘R" active />
       <Row icon={CopyIcon} label="Duplicate" />

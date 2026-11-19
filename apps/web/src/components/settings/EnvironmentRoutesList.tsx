@@ -155,10 +155,7 @@ function SortableRouteRow({
     <li
       ref={setNodeRef}
       style={{ transform: CSS.Translate.toString(transform), transition }}
-      className={cn(
-        "flex items-center gap-2 py-2",
-        isDragging && "relative z-10 rounded-row bg-background shadow-md",
-      )}
+      className={cn("flex items-center gap-2 py-2", isDragging && "level-float relative z-10")}
     >
       <div className="min-w-0 flex-1">
         <p className="flex items-center gap-2 text-meta font-medium text-ink-1">

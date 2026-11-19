@@ -57,7 +57,7 @@ export function HtmlRenderDialog(props: {
           >
             <XIcon />
           </Button>
-          <div className="min-h-0 overflow-y-auto overscroll-contain rounded-row bg-background p-4 shadow-2xl ring-1 ring-border/70">
+          <div className="level-float min-h-0 overflow-y-auto overscroll-contain p-4">
             <div ref={measureBox}>
               <div style={{ zoom, height }}>
                 <HtmlRenderDocument

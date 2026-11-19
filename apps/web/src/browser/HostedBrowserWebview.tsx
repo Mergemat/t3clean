@@ -413,7 +413,7 @@ export function HostedBrowserWebview(props: {
             aria-hidden={active ? undefined : true}
             className={cn(
               "absolute top-0 left-0 flex overflow-hidden bg-white",
-              active && !layout.fillsPanel && "ring-1 ring-border/70 shadow-sm",
+              active && !layout.fillsPanel && "ring-1 ring-border/70",
             )}
             style={{
               width: layout.viewportWidth / layout.viewportScale,
@@ -433,7 +433,7 @@ export function HostedBrowserWebview(props: {
             />
             {activeDrag ? (
               <div
-                className="pointer-events-none absolute z-40 -translate-x-1/2 rounded-row border border-border/80 bg-background/95 px-2 py-1 text-meta font-medium tabular-nums text-ink-1 shadow-md backdrop-blur-sm"
+                className="level-float pointer-events-none absolute z-40 -translate-x-1/2 px-2 py-1 text-meta font-medium tabular-nums text-ink-1"
                 style={{
                   left: layout.viewportX + layout.viewportWidth / 2,
                   top: layout.viewportY + 10,

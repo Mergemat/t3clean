@@ -552,7 +552,7 @@ function ProcessTable({
             <col className="w-1/20" />
             <col className="w-1/20" />
           </colgroup>
-          <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-meta uppercase tracking-widest text-ink-3">
+          <thead className="level-frame sticky top-0 z-10 text-meta uppercase tracking-widest text-ink-3">
             <tr>
               <th className="px-4 py-2 font-semibold sm:pl-4">Process</th>
               <th className="px-2 py-2 font-semibold">Category</th>
@@ -656,7 +656,7 @@ function HistoryProcessTable({
             <col className="w-1/20" />
             <col className="w-1/20" />
           </colgroup>
-          <thead className="sticky top-0 z-10 border-b border-border/60 bg-card text-meta uppercase tracking-widest text-ink-3">
+          <thead className="level-frame sticky top-0 z-10 text-meta uppercase tracking-widest text-ink-3">
             <tr>
               <th className="px-4 py-2 font-semibold sm:pl-4">Process</th>
               <th className="px-2 py-2 font-semibold">Category</th>

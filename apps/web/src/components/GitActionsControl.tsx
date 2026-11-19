@@ -640,7 +640,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                       "relative flex cursor-pointer items-center gap-2 rounded-row border px-2 py-2 text-left outline-none transition",
                       "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
                       isSelected
-                        ? "border-primary bg-background shadow-sm ring-2 ring-inset ring-primary/35 dark:border-transparent dark:bg-primary/10 dark:shadow-none dark:ring-1 dark:ring-primary/30"
+                        ? "border-primary bg-background ring-2 ring-inset ring-primary/35 dark:border-transparent dark:bg-primary/10 dark:ring-1 dark:ring-primary/30"
                         : "border-border bg-background hover:border-foreground/20 hover:bg-muted/50 dark:border-transparent dark:bg-white/4 dark:hover:bg-accent",
                     )}
                   >
@@ -727,7 +727,7 @@ export function PublishRepositoryDialog(props: PublishRepositoryDialogProps) {
                         "relative flex cursor-pointer items-center gap-2 rounded-row border px-2 py-2 text-left outline-none transition",
                         "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
                         isSelected
-                          ? "border-primary bg-background shadow-sm ring-2 ring-inset ring-primary/35 dark:border-transparent dark:bg-primary/10 dark:shadow-none dark:ring-1 dark:ring-primary/30"
+                          ? "border-primary bg-background ring-2 ring-inset ring-primary/35 dark:border-transparent dark:bg-primary/10 dark:ring-1 dark:ring-primary/30"
                           : "border-border bg-background hover:border-foreground/20 hover:bg-muted/50 dark:border-transparent dark:bg-white/4 dark:hover:bg-accent",
                       )}
                     >
@@ -1801,7 +1801,7 @@ export default function GitActionsControl({
                   <p className="font-medium">none</p>
                 ) : (
                   <div className="space-y-2">
-                    <div className="h-44 rounded-row bg-card ring-1 ring-black/5 dark:bg-white/3 dark:ring-white/5">
+                    <div className="h-44 rounded-row bg-tint-1">
                       <ScrollArea>
                         <div className="space-y-1 p-1">
                           {allFiles.map((file) => {

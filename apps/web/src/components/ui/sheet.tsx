@@ -19,7 +19,7 @@ function SheetBackdrop({ className, ...props }: SheetPrimitive.Backdrop.Props) {
   return (
     <SheetPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-(--z-sheet) bg-background/60 backdrop-blur-xs transition-opacity duration-200 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0",
+        "dialog-backdrop fixed inset-0 z-(--z-sheet) transition-opacity duration-200 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0",
         className,
       )}
       data-slot="sheet-backdrop"
@@ -90,17 +90,17 @@ function SheetPopup({
       <SheetViewport side={side} variant={variant}>
         <SheetPrimitive.Popup
           className={cn(
-            "relative flex max-h-full min-h-0 w-full min-w-0 flex-col bg-popover not-dark:bg-clip-padding text-popover-foreground shadow-lg/5 transition duration-200 ease-drawer will-change-transform before:pointer-events-none before:absolute before:inset-0 before:shadow-edge-light data-ending-style:opacity-0 data-starting-style:opacity-0 max-sm:before:hidden dark:before:shadow-edge-dark",
+            "level-float relative flex max-h-full min-h-0 w-full min-w-0 flex-col text-popover-foreground transition duration-200 ease-drawer will-change-transform data-ending-style:opacity-0 data-starting-style:opacity-0",
+            // A sheet against the screen edge is cut square there; the inset sheet floats clear of it.
+            variant === "inset" ? "max-sm:rounded-none" : "rounded-none",
             side === "bottom" &&
-              "row-start-2 border-t data-ending-style:translate-y-8 data-starting-style:translate-y-8",
-            side === "top" &&
-              "data-ending-style:-translate-y-8 data-starting-style:-translate-y-8 border-b",
+              "row-start-2 data-ending-style:translate-y-8 data-starting-style:translate-y-8",
+            side === "top" && "data-ending-style:-translate-y-8 data-starting-style:-translate-y-8",
             side === "left" &&
-              "data-ending-style:-translate-x-8 data-starting-style:-translate-x-8 max-w-md border-e",
+              "data-ending-style:-translate-x-8 data-starting-style:-translate-x-8 max-w-md",
             side === "right" &&
-              "col-start-2 max-w-md border-s data-ending-style:translate-x-8 data-starting-style:translate-x-8",
-            variant === "inset" &&
-              "before:hidden sm:rounded-box sm:border sm:before:rounded-inherit sm:**:data-[slot=sheet-footer]:rounded-b-inherit",
+              "col-start-2 max-w-md data-ending-style:translate-x-8 data-starting-style:translate-x-8",
+            variant === "inset" && "sm:**:data-[slot=sheet-footer]:rounded-b-inherit",
             instant &&
               "transition-none! will-change-auto! data-ending-style:translate-x-0! data-starting-style:translate-x-0! data-ending-style:translate-y-0! data-starting-style:translate-y-0! data-ending-style:opacity-100! data-starting-style:opacity-100!",
             className,

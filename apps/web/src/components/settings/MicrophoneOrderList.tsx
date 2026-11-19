@@ -108,7 +108,7 @@ function MicrophoneRow(props: {
       className={cn(
         // Phones put the marker and controls on a second line so names stay readable.
         "grid grid-cols-(--grid-lead-trail) items-center gap-x-2 py-2 ps-2 pe-2 @min-[32rem]/settings-row:flex",
-        isDragging && "relative z-10 rounded-row bg-background shadow-md",
+        isDragging && "level-float relative z-10",
       )}
     >
       <span className="w-4 shrink-0 text-meta tabular-nums text-ink-2">{props.position}</span>

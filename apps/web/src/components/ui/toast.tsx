@@ -128,8 +128,8 @@ function errorDescriptionClampClass(type: unknown, description: unknown): string
 
 const toastCornerDismissClass = "absolute z-20 -top-2 -right-2";
 const toastCornerOrbClass = cn(
-  "inline-flex size-6 shrink-0 cursor-pointer items-center justify-center border border-border/60 bg-popover/92 text-ink-2 shadow-sm outline-none backdrop-blur-sm",
-  "transition hover:bg-popover hover:text-ink-1",
+  "level-float inline-flex size-6 shrink-0 cursor-pointer items-center justify-center text-ink-2 outline-none",
+  "transition hover:text-ink-1",
   "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
 );
 
@@ -607,7 +607,7 @@ function Toasts({ position }: { position: ToastPosition }) {
           return (
             <Toast.Root
               className={cn(
-                "dropdown-glass absolute w-full overflow-visible select-none rounded-box text-popover-foreground",
+                "level-float absolute w-full overflow-visible select-none text-popover-foreground",
                 "data-[position*=right]:right-0 data-[position*=right]:left-auto",
                 "data-[position*=left]:right-auto data-[position*=left]:left-0",
                 "data-[position*=center]:right-0 data-[position*=center]:left-0",
@@ -728,8 +728,7 @@ function AnchoredToasts() {
               >
                 <Toast.Root
                   className={cn(
-                    "dropdown-glass relative max-w-64 overflow-visible text-balance text-popover-foreground text-meta transition data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
-                    "rounded-box",
+                    "level-float relative max-w-64 overflow-visible text-balance text-popover-foreground text-meta transition data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
                   )}
                   data-slot="toast-popup"
                   toast={toast}

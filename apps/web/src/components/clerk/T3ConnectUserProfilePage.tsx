@@ -76,7 +76,7 @@ function T3ConnectEnvironmentRow(props: {
         <CollapsiblePanel>
           <div className="pt-2">
             <div
-              className="rounded-box border border-input bg-muted/32 px-4 py-4 shadow-xs/5"
+              className="level-chat px-4 py-4"
               role="group"
               aria-label={`Confirm deregistration of ${environment.label}`}
             >

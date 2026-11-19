@@ -10,7 +10,7 @@ export function WorkspaceFileDropOverlay() {
     >
       <div
         role="status"
-        className="flex items-center gap-2 rounded-box border border-primary/25 bg-background/95 px-4 py-2 text-body font-medium text-ink-1 shadow-lg"
+        className="level-float flex items-center gap-2 px-4 py-2 text-body font-medium text-ink-1"
       >
         <PaperclipIcon className="size-4 text-primary" aria-hidden="true" />
         Drop files to attach

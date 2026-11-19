@@ -159,7 +159,7 @@ export function ColorSaturationValuePlane({
           />
           <span
             aria-hidden
-            className="pointer-events-none invisible absolute bottom-2 left-2 z-10 rounded-chip bg-popover px-2 py-1 text-meta text-popover-foreground peer-focus-visible:visible"
+            className="level-float pointer-events-none invisible absolute bottom-2 left-2 z-10 px-2 py-1 text-meta text-popover-foreground peer-focus-visible:visible"
           >
             {axisLabel} {Math.round(value[axis] * 100)}%
           </span>

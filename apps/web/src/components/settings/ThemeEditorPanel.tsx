@@ -1135,7 +1135,7 @@ export function ThemeEditorPanel({
     <div
       aria-label={isEditing ? "Edit theme" : "Create theme"}
       className={cn(
-        "dialog-glass fixed z-110 flex max-h-168 w-104 max-w-(--viewport-inset) flex-col overflow-hidden rounded-box border text-popover-foreground",
+        "level-float fixed z-110 flex max-h-168 w-104 max-w-(--viewport-inset) flex-col overflow-hidden text-popover-foreground",
         position === null && "bottom-4 right-4",
         isMinimized && "max-h-none",
       )}

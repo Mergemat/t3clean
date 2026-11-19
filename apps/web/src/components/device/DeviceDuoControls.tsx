@@ -67,8 +67,7 @@ export function DeviceDuoControls(props: {
       <TooltipPopup side="left">{label}</TooltipPopup>
     </Tooltip>
   );
-  const group =
-    "pointer-events-auto flex shrink-0 flex-col items-center gap-1 rounded-box border border-border/50 bg-background/80 p-2 shadow-sm";
+  const group = "level-float pointer-events-auto flex shrink-0 flex-col items-center gap-1 p-2";
   return (
     <div aria-label="iPhone Duo stands" className="flex flex-col items-center gap-2">
       <div role="group" aria-label="Fold shape" className={group}>

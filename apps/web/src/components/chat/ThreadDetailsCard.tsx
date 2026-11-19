@@ -115,7 +115,7 @@ export function ThreadDetailsCard({
   const card = (
     <div
       className={cn(
-        "dropdown-glass isolate contain-paint grid max-h-full grid-rows-1 overflow-hidden rounded-box",
+        "level-float isolate contain-paint grid max-h-full grid-rows-1 overflow-hidden",
         mode === "popover" && "max-h-(--available-height)",
       )}
       style={placement ? { maxHeight: height } : undefined}

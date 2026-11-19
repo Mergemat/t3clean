@@ -108,7 +108,7 @@ function ProviderOptionGrid({
         <RadioPrimitive.Root
           key={option.driverKind}
           value={option.driverKind}
-          className="relative flex cursor-pointer items-center gap-2 rounded-row bg-card px-2 py-2 text-left text-ink-2 outline-none ring-1 ring-black/5 hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-checked:bg-primary/8 data-checked:text-ink-1 data-checked:ring-2 data-checked:ring-inset data-checked:ring-primary data-checked:hover:bg-primary/8 dark:bg-white/3 dark:ring-white/5 dark:hover:bg-white/5 dark:data-checked:bg-primary/15 dark:data-checked:ring-primary dark:data-checked:hover:bg-primary/15"
+          className="relative flex cursor-pointer items-center gap-2 rounded-row bg-tint-1 px-2 py-2 text-left text-ink-2 outline-none hover:bg-tint-2 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-checked:bg-primary/8 data-checked:text-ink-1 data-checked:ring-2 data-checked:ring-inset data-checked:ring-primary data-checked:hover:bg-primary/8 dark:data-checked:bg-primary/15 dark:data-checked:hover:bg-primary/15"
         >
           <ProviderInstanceIcon
             driverKind={option.driverKind}

@@ -403,7 +403,7 @@ export function ThemeSearchSection({
               const progressAction = isInstalled ? "Updating" : "Installing";
               return (
                 <article
-                  className="group flex min-w-0 flex-col gap-2 rounded-box border border-border/70 bg-card/60 p-2 transition-colors hover:bg-accent/20"
+                  className="level-chat group flex min-w-0 flex-col gap-2 p-2"
                   key={extension.id}
                 >
                   <div className="flex min-w-0 gap-2">

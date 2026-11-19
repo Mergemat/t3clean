@@ -599,45 +599,26 @@ html[data-show-grid] .nest-text {
   }
 }
 
-@utility surface-glass {
-  background: color-mix(in srgb, var(--background) var(--glass-opacity), transparent);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-
-  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-    background: var(--background) !important;
-  }
-}
-
-@utility alert-glass {
-  --alert-glass-tint: transparent;
-  background:
-    linear-gradient(
-      color-mix(in srgb, var(--alert-glass-tint) 4%, transparent),
-      color-mix(in srgb, var(--alert-glass-tint) 4%, transparent)
-    ),
-    color-mix(in srgb, var(--background) var(--glass-opacity), transparent) !important;
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+@utility alert-tint {
+  /* An alert is an item on its level's surface, so it is a tint of that surface (the variant's
+     colour, or the foreground for a plain alert), never glass of its own. */
+  --alert-tint: var(--foreground);
+  background: color-mix(in srgb, var(--alert-tint) 6%, transparent) !important;
 
   &[data-variant="error"] {
-    --alert-glass-tint: var(--destructive);
+    --alert-tint: var(--destructive);
   }
 
   &[data-variant="info"] {
-    --alert-glass-tint: var(--info);
+    --alert-tint: var(--info);
   }
 
   &[data-variant="success"] {
-    --alert-glass-tint: var(--success);
+    --alert-tint: var(--success);
   }
 
   &[data-variant="warning"] {
-    --alert-glass-tint: var(--warning);
-  }
-
-  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-    background: var(--background) !important;
+    --alert-tint: var(--warning);
   }
 }
 
@@ -677,12 +658,39 @@ html[data-show-grid] .nest-text {
   }
 }
 
-@utility dialog-glass {
-  /* A float (see Levels). Dialogs set their own border width. */
+/* The three levels (see Levels in :root). Each one is the whole look of everything on it:
+   background, blur, edge, shadow and corner. A surface takes its level and sets none of these
+   itself; t3code/one-look-per-level holds that. */
+@utility level-frame {
+  /* Top, the frame: the opaque slab. */
+  background: var(--app-chrome-background);
+  border-radius: 0;
+}
+
+@utility level-chat {
+  /* Chat, in the bowl below the top: glass in the window colour with a light edge. Nothing is
+     above it to cast a shadow from, so it casts none. */
+  background: var(--window-content-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--level-line);
+  border-radius: var(--radius-box);
+  --border: var(--level-line);
+  --contrast-border: var(--level-line);
+
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    background: var(--card) !important;
+  }
+}
+
+@utility level-float {
+  /* Top, a float: level with the frame but not part of it. Glass a shade lighter with a light
+     edge, and a soft shadow that falls on the chat. Dividers inside a float draw its outline. */
   background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border-color: var(--level-line);
+  border: 1px solid var(--level-line);
+  border-radius: var(--radius-box);
   box-shadow: var(--float-shadow);
   --border: var(--level-line);
   --contrast-border: var(--level-line);
@@ -699,37 +707,6 @@ html[data-show-grid] .nest-text {
 
   @variant dark {
     background: color-mix(in srgb, var(--background) 64%, transparent);
-  }
-}
-
-@utility dropdown-glass {
-  /* A float (see Levels). Dividers inside a float draw its outline. */
-  background: var(--float-fill);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border: 1px solid var(--level-line);
-  box-shadow: var(--float-shadow);
-  --border: var(--level-line);
-  --contrast-border: var(--level-line);
-
-  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-    background: var(--float-tone) !important;
-  }
-}
-
-@utility content-glass {
-  /* The chat layer (see Levels): what sits in a window, the composer with the messages, code and
-     changed files. Glass in the window colour with a light edge; it casts no shadow, because
-     only floats sit above the layer they cover. */
-  background: var(--window-content-fill);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border: 1px solid var(--level-line);
-  --border: var(--level-line);
-  --contrast-border: var(--level-line);
-
-  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-    background: var(--card) !important;
   }
 }
 

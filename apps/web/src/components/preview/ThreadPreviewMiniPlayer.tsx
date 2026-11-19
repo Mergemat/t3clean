@@ -623,14 +623,14 @@ function MiniPlayerShell({
             >
               <span
                 className={cn(
-                  "block size-2 rounded-full shadow-sm ring-1 ring-background/70",
+                  "block size-2 rounded-full ring-1 ring-background/70",
                   recording
                     ? "bg-destructive motion-safe:animate-status-pulse"
                     : "bg-foreground/25",
                 )}
               />
             </div>
-            <div className="pointer-events-none absolute right-0 top-0 flex h-8 cursor-grab items-center rounded-row border border-border/80 bg-popover/92 p-1 opacity-0 shadow-lg/20 backdrop-blur-xl transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-data-pill-open:pointer-events-auto group-data-pill-open:opacity-100 active:cursor-grabbing pointer-coarse:right-3 pointer-coarse:top-3">
+            <div className="pointer-events-none absolute right-0 top-0 level-float flex h-8 cursor-grab items-center p-1 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-data-pill-open:pointer-events-auto group-data-pill-open:opacity-100 active:cursor-grabbing pointer-coarse:right-3 pointer-coarse:top-3">
               {recording ? (
                 <span aria-hidden className="flex size-6 shrink-0 items-center justify-center">
                   <span className="size-2 rounded-full bg-destructive motion-safe:animate-status-pulse" />
@@ -672,6 +672,7 @@ function MiniPlayerShell({
             </div>
           </div>
 
+          {/* oxlint-disable-next-line t3code/one-look-per-level -- the backing under a live preview: its corner is the player frame's own, and the preview paints over it */}
           <div className="absolute inset-0 z-47 rounded-inherit bg-muted shadow-2xl/35" />
           {children(frame)}
           <div className="pointer-events-none absolute inset-0 z-49 rounded-inherit ring-1 ring-inset ring-border/80" />

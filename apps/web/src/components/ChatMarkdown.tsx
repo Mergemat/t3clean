@@ -303,13 +303,13 @@ function CodexArtifactTemplateCard(props: {
       aria-label={`${props.template.displayName} template`}
       dir={textDirection(props.template.displayName)}
       data-chat-markdown-artifact-template
-      className="my-2 flex w-full min-w-0 items-center gap-2 rounded-box border border-border/70 bg-card/60 px-2 py-2 text-ink-1 shadow-xs"
+      className="level-chat my-2 flex w-full min-w-0 items-center gap-2 px-2 py-2 text-ink-1"
       data-artifact-kind={props.template.artifactKind}
       data-markdown-copy={`${props.template.displayName} (${presentationLabel})\n\n`}
       data-skill-name={props.template.skillName}
     >
       <div className="flex min-w-0 flex-1 items-center gap-2">
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-row border border-border/70 bg-background text-ink-2 shadow-xs">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-row border border-border/70 bg-background text-ink-2">
           <Icon aria-hidden className="size-5" />
         </span>
         <div className="min-w-0">

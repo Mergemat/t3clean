@@ -140,6 +140,7 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
         // The tile is a size container: below ~18px it keeps one letter and drops the mark.
         <span
           className={cn(
+            // oxlint-disable-next-line t3code/one-look-per-level -- an icon tile, not a surface: its card fill is the face the initials sit on
             "@container relative flex size-5 shrink-0 items-center justify-center rounded-chip border bg-card text-meta font-semibold leading-none text-ink-1",
             iconClassName,
           )}
@@ -151,7 +152,8 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
           </span>
           <span
             className={cn(
-              "pointer-events-none absolute -right-2 -bottom-2 z-10 flex size-3 items-center justify-center rounded-full border bg-card text-ink-1 shadow-sm @max-[1.1rem]:hidden",
+              // oxlint-disable-next-line t3code/one-look-per-level -- a badge, not a surface: its fill and ring cut it out of the icon it sits on
+              "pointer-events-none absolute -right-2 -bottom-2 z-10 flex size-3 items-center justify-center rounded-full border bg-card text-ink-1 @max-[1.1rem]:hidden",
               props.badgeClassName,
             )}
             style={{ borderColor: indicatorBackground }}
@@ -177,10 +179,11 @@ export const ProviderInstanceIcon = memo(function ProviderInstanceIcon(props: {
           className={cn(
             // One letter on the icon's corner, not over its face: the system's smallest type needs
             // a 16px badge, and two letters would cover a 16px icon whole.
-            "pointer-events-none absolute -right-2 -bottom-2 z-10 flex size-4 items-center justify-center rounded-full border text-meta font-semibold leading-none shadow-sm",
+            "pointer-events-none absolute -right-2 -bottom-2 z-10 flex size-4 items-center justify-center rounded-full border text-meta font-semibold leading-none",
             accentColor
               ? "bg-(--provider-accent) text-(--provider-accent-foreground)"
-              : "bg-card text-ink-2",
+              : // oxlint-disable-next-line t3code/one-look-per-level -- a badge, not a surface: its fill and ring cut it out of the icon it sits on
+                "bg-card text-ink-2",
             props.badgeClassName,
           )}
           style={{ borderColor: indicatorBackground }}

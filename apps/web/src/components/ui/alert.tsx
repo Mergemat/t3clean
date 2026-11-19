@@ -12,7 +12,7 @@ const alertVariants = cva("relative rounded-box border px-4 py-3 text-card-foreg
   variants: {
     surface: {
       default: "",
-      glass: "alert-glass",
+      glass: "alert-tint",
     },
     variant: {
       default: "bg-tint-1 [&_svg]:text-ink-2",

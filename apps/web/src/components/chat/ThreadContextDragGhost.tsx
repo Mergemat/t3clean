@@ -9,7 +9,7 @@ export function ThreadContextDragGhost() {
   return createPortal(
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-100 flex max-w-72 items-center gap-2 rounded-row border bg-popover px-2 py-2 text-body shadow-lg"
+      className="level-float pointer-events-none fixed left-0 top-0 z-100 flex max-w-72 items-center gap-2 px-2 py-2 text-body"
       style={{ transform: `translate(${ghost.x + 12}px, ${ghost.y + 12}px)` }}
     >
       <MessagesSquareIcon className="size-4 shrink-0 text-ink-2" />

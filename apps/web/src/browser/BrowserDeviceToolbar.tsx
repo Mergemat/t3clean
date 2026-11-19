@@ -168,7 +168,7 @@ export function BrowserDeviceToolbar({
 
   return (
     <div
-      className="sticky left-0 top-0 z-50 flex items-center overflow-x-auto border-b border-border/70 bg-background/95 px-2 shadow-xs backdrop-blur-md scrollbar-none [&::-webkit-scrollbar]:hidden"
+      className="level-frame sticky left-0 top-0 z-50 flex items-center overflow-x-auto px-2 scrollbar-none [&::-webkit-scrollbar]:hidden"
       style={{ width, height: BROWSER_DEVICE_TOOLBAR_HEIGHT }}
       role="toolbar"
       aria-label="Browser device toolbar"

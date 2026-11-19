@@ -132,7 +132,7 @@ function PendingSecretRequestForm(props: {
   return (
     <form
       data-v2-item-type={item.type}
-      className="flex min-w-0 flex-col gap-2 rounded-box border border-border/60 bg-card p-4"
+      className="level-chat flex min-w-0 flex-col gap-2 p-4"
       onSubmit={onSubmit}
       autoComplete="off"
       // On click, not pointerdown: the mousedown that follows a pointerdown

@@ -81,7 +81,7 @@ export function AppRouteModal({ label, children }: { label: string; children: Re
             aria-label={label}
             data-slot="dialog-popup"
             data-app-modal=""
-            className="relative flex size-full min-h-0 min-w-0 flex-col overflow-hidden bg-background max-sm:pt-(--app-modal-top-inset) max-sm:pb-safe text-ink-1 outline-none transition duration-150 ease-out app-region-no-drag data-ending-style:scale-99 data-ending-style:opacity-0 data-starting-style:scale-99 data-starting-style:opacity-0 sm:max-h-240 sm:max-w-320 sm:rounded-box sm:border sm:shadow-2xl/40"
+            className="relative flex size-full min-h-0 min-w-0 flex-col overflow-hidden max-sm:bg-background sm:level-float max-sm:pt-(--app-modal-top-inset) max-sm:pb-safe text-ink-1 outline-none transition duration-150 ease-out app-region-no-drag data-ending-style:scale-99 data-ending-style:opacity-0 data-starting-style:scale-99 data-starting-style:opacity-0 sm:max-h-240 sm:max-w-320"
           >
             {/* The emptied strip still moves the window, as the titlebar it replaces does. */}
             <div

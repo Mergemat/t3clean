@@ -70,7 +70,7 @@ function DeviceCode(props: { readonly code: string }) {
           <span
             key={index}
             aria-hidden
-            className="grid h-10 w-8 place-items-center rounded-row border border-border bg-background shadow-xs"
+            className="grid h-10 w-8 place-items-center rounded-row bg-tint-1"
           >
             {char}
           </span>
@@ -209,8 +209,9 @@ export function SourceControlAppSignInSettings({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-box border bg-card",
-        state.status === "failed" && !signedIn ? "border-destructive/40" : "border-border",
+        "level-chat overflow-hidden",
+        // A failed sign-in tints the card's own edge; it is a state, not a second look.
+        state.status === "failed" && !signedIn && "border-destructive/40",
       )}
     >
       <div className="flex items-center gap-2 p-2">
