@@ -664,7 +664,7 @@ export function IssueDetailPanel({
             </PullRequestDetailTitleRow>
           )}
 
-          <PullRequestMetaLine className="mt-1 min-h-5 text-meta text-ink-2">
+          <PullRequestMetaLine className="mt-2 min-h-5 text-meta text-ink-2">
             <PullRequestActorLabel actor={detail.author} />
             <span>
               <T>
@@ -686,7 +686,7 @@ export function IssueDetailPanel({
           </PullRequestMetaLine>
 
           {/* Properties in one quiet line under the title, not a stack of rows. */}
-          <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1">
+          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1">
             <PullRequestMetaRow icon={<TagIcon className="size-4" />} label={gt("Labels")}>
               <span className="flex min-w-0 flex-wrap items-center gap-1">
                 {detail.labels.length === 0 ? (
@@ -744,7 +744,7 @@ export function IssueDetailPanel({
         </div>
 
         {/* The description is the author's message: on chat glass, as in a thread. */}
-        <MessageCard key={`description:${detail.url}`} className="mx-4 mt-4 mb-2">
+        <MessageCard key={`description:${detail.url}`} className="mx-4 mt-10 mb-6">
           <PullRequestMetaLine className="min-h-6 text-meta text-ink-2">
             <PullRequestActorLabel actor={detail.author} />
             <span>{formatRelativeTimeLabel(detail.createdAt, undefined, messages)}</span>
@@ -825,7 +825,7 @@ export function IssueDetailPanel({
               : gt("Activity")
           }
         >
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             {nextCursor !== null ? (
               <Button
                 size="sm"

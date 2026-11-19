@@ -611,6 +611,7 @@ export function IssuesPage() {
         title={<T context="page title, list of issues">Issues</T>}
         breadcrumbLabel={gt("Issues breadcrumb")}
         emptyText={<T>Choose an issue from the list.</T>}
+        width="reading"
       >
         {presence.present &&
         rightPanelState.isOpen &&

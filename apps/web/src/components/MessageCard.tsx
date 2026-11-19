@@ -8,6 +8,6 @@ import { cn } from "~/lib/utils";
  */
 export function MessageCard({ className, ...props }: ComponentProps<"article">) {
   return (
-    <article {...props} className={cn("level-chat flex min-w-0 flex-col gap-2 p-4", className)} />
+    <article {...props} className={cn("level-chat flex min-w-0 flex-col gap-4 p-6", className)} />
   );
 }

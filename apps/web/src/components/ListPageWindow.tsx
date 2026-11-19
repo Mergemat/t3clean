@@ -1,6 +1,7 @@
 import { createContext, useState, type ReactNode } from "react";
 
 import { isElectron } from "~/env";
+import { cn } from "~/lib/utils";
 import { WorkspaceBreadcrumb, WorkspaceBreadcrumbItem } from "./WorkspaceBreadcrumb";
 import { WorkspacePageHeader } from "./WorkspacePageHeader";
 
@@ -16,11 +17,14 @@ export function ListPageWindow({
   title,
   breadcrumbLabel,
   emptyText,
+  width = "page",
   children,
 }: {
   title: ReactNode;
   breadcrumbLabel: string;
   emptyText: ReactNode;
+  /** "reading" is a thread's message width, for an item that is mostly prose (an issue). */
+  width?: "page" | "reading";
   /** The open item, or null. */
   children: ReactNode;
 }) {
@@ -47,7 +51,12 @@ export function ListPageWindow({
           {/* The window is full width; the item sits in Settings' column inside it (its width, and its
               text edge: the item's own inset plus this). */}
           <div className="relative flex min-h-0 flex-1 flex-col">
-            <div className="relative mx-auto flex min-h-0 w-full max-w-4xl flex-1 flex-col pt-4 sm:px-4">
+            <div
+              className={cn(
+                "relative mx-auto flex min-h-0 w-full flex-1 flex-col pt-10 sm:px-4",
+                width === "reading" ? "max-w-(--chat-content-max-width)" : "max-w-4xl",
+              )}
+            >
               {children}
             </div>
           </div>

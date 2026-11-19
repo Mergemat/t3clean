@@ -64,7 +64,8 @@ export function IssueCommentComposer({
     speech.preparing || (body.trim().length === 0 && !speech.blocksSubmission) || locked;
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pb-4">
+    // The window's fill fades up behind the composer, so text scrolling past never shows under it.
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-(--pane-fill) from-50% to-transparent px-4 pt-8 pb-4">
       <ComposerSurface.Shell className="pointer-events-auto">
         <ComposerSurface.Host>
           <ComposerSurface.Main>

@@ -451,7 +451,7 @@ export function PullRequestSection({
         {actions}
       </div>
       <CollapsiblePanel keepMounted={keepMounted} animate={open !== "revealed"}>
-        <div className="px-4 pb-4">{children}</div>
+        <div className="px-4 pb-8">{children}</div>
       </CollapsiblePanel>
     </Collapsible>
   );
@@ -868,7 +868,7 @@ export function PullRequestSummaryTab({
       className="h-full overflow-y-auto"
       data-pull-request-summary-scroll
     >
-      <section className="px-4 pt-2 pb-1">
+      <section className="px-4 pt-4 pb-4">
         {/* Properties in one quiet line, not a stack of rows. */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <PullRequestMetaRow icon={<UsersIcon className="size-4" />} label={gt("Reviewers")}>

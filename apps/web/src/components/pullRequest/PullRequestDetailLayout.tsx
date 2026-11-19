@@ -29,9 +29,9 @@ export function PullRequestDetailHeaderBody({
   const gt = useGT();
   // The title is the page's one large line; everything about it is one quiet meta line under it.
   return (
-    <div className="col-span-2 mt-1 min-w-0 px-4 pb-4">
+    <div className="col-span-2 mt-1 min-w-0 px-4 pb-6">
       {title}
-      <div className="mt-1 flex min-h-5 min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-meta text-ink-2">
+      <div className="mt-2 flex min-h-5 min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-meta text-ink-2">
         <PullRequestMetaLine className="min-w-0 whitespace-nowrap">
           {author}
           {updated}
