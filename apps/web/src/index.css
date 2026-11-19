@@ -2944,9 +2944,9 @@ code {
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
      through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
      light edge and a soft shadow lift it. A drawer is behind the composer, so it is the composer's
-     glass a shade darker: halfway to the floor. */
+     glass a shade darker: halfway to the frame. */
   --float-tone: var(--popover);
-  --drawer-tone: color-mix(in srgb, var(--chat-tone) 50%, var(--window-fill));
+  --drawer-tone: color-mix(in srgb, var(--app-chrome-background) 50%, var(--card));
   --float-fill: color-mix(
     in srgb,
     var(--float-tone) 18%,
@@ -2981,13 +2981,10 @@ code {
   /* A region: the details card (a box, 16) floats one step inside it and runs parallel. */
   --window-radius: var(--radius-region);
   --window-corner: max(var(--radius-chip), calc(var(--app-corner) - var(--window-gap) - 2px));
-  /* Chat lies a little below the frame and above the floor, so its tone is between the two. */
-  --chat-tone: color-mix(in oklab, var(--app-chrome-background) 98%, black);
-  --window-content-fill: color-mix(in srgb, var(--chat-tone) var(--glass-opacity), transparent);
+  --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
 
   @variant dark {
     --window-fill: color-mix(in oklab, var(--app-chrome-background) 60%, black);
-    --chat-tone: color-mix(in oklab, var(--app-chrome-background) 82%, black);
     --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
     --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
