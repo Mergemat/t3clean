@@ -12,12 +12,15 @@ import { Smoke } from "../../vendor/dithercn/smoke";
 import { Starfield } from "../../vendor/dithercn/starfield";
 import { Waves } from "../../vendor/dithercn/waves";
 
-const SKY = "var(--aurora-sky, var(--card))";
+// The sky is the bottom of the window, so its paper is the ladder's floor; a theme's own sky is
+// held to the same floor, so the pit is never black (DESIGN.md: lower is darker).
+const SKY =
+  "oklch(from var(--aurora-sky, var(--window-fill)) max(l, calc(var(--frame-min-l) + var(--floor-offset))) c h)";
 const EDGE = "var(--aurora-edge, var(--primary))";
 const TIP = "var(--aurora-tip, color-mix(in oklab, var(--primary) 45%, var(--muted-foreground)))";
 
 // Every backdrop is coloured from the active theme: the engine's paper and ink are read in the
-// backdrop's own scope, so setting them here themes all of them, sky from the card surface and
+// backdrop's own scope, so setting them here themes all of them, sky from the window's floor and
 // ink from the accent. A theme can override them with --aurora-sky, --aurora-edge and --aurora-tip.
 export const BACKDROP_STYLE = {
   backgroundColor: SKY,

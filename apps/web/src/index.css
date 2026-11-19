@@ -1457,7 +1457,7 @@ html[data-show-grid] .nest-text {
        states provide separation without milky gray fills. */
     /* The frame tops the level ladder: at the anchor, so the levels below it step down from it
        without reaching black (see Levels). */
-    --background: oklch(0.17 0 0);
+    --background: oklch(0.155 0 0);
     --app-chrome-background: var(--background);
     --surface-raised: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
     --foreground: var(--color-neutral-100);
@@ -2946,15 +2946,19 @@ code {
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
      through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
      light edge and a soft shadow lift it. */
-  /* Lower is darker: every level is the frame's colour, a fixed lightness step up or down. A float
-     is a step above the frame, chat a step below, the floor two; a drawer, behind the composer,
-     halfway from chat to the floor. In dark themes the frame is never below the anchor, so the
-     floor never reaches black. */
+  /* Lower is darker: every level is the frame's colour moved by its own lightness offset. A float
+     sits above the frame, chat (messages, composer) just below it, the floor furthest down; a
+     drawer, behind the composer, halfway from chat to the floor. In dark themes the frame is never
+     below the anchor, so the floor never reaches black. */
   --frame-min-l: 0;
-  --level-step: 0.03;
-  --float-tone: oklch(from var(--app-chrome-background) calc(l + var(--level-step)) c h);
-  --chat-tone: oklch(from var(--app-chrome-background) calc(l - var(--level-step)) c h);
-  --drawer-tone: oklch(from var(--app-chrome-background) calc(l - var(--level-step) * 1.5) c h);
+  --float-offset: 0.025;
+  --chat-offset: -0.01;
+  --floor-offset: -0.045;
+  --float-tone: oklch(from var(--app-chrome-background) calc(l + var(--float-offset)) c h);
+  --chat-tone: oklch(from var(--app-chrome-background) calc(l + var(--chat-offset)) c h);
+  --drawer-tone: oklch(
+    from var(--app-chrome-background) calc(l + (var(--chat-offset) + var(--floor-offset)) / 2) c h
+  );
   --float-fill: color-mix(
     in srgb,
     var(--float-tone) 18%,
@@ -2979,7 +2983,7 @@ code {
   --surface-fill: var(--background);
 
   /* The bottom of the bowl, seen when the sky is off. */
-  --window-fill: oklch(from var(--app-chrome-background) calc(l - var(--level-step) * 2) c h);
+  --window-fill: oklch(from var(--app-chrome-background) calc(l + var(--floor-offset)) c h);
   /* The OS window corner, measured: 16px on macOS 26, 8px on Windows 11. The page can't read it.
      A window corner that sits in the OS corner is concentric with it: it takes the gap and the OS
      edge (2px) off. Every other window corner takes the scale. */
@@ -2991,7 +2995,7 @@ code {
   --window-content-fill: color-mix(in srgb, var(--chat-tone) var(--glass-opacity), transparent);
 
   @variant dark {
-    --frame-min-l: 0.17;
+    --frame-min-l: 0.155;
     --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
 }

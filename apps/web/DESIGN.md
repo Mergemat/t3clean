@@ -156,11 +156,11 @@ Settled per component in review, in order. Each one applies to every later compo
       composer is chat, not a float; its drawers (notices, stash, queue) stand on its top edge
       one corner in, behind it: its glass a shade darker.
 
-    The levels themselves follow one ladder: lower is darker. Every level is the frame's colour a
-    fixed lightness step (0.03) up or down: a float one step above the frame, chat (messages,
-    composer) one below, a composer drawer a step and a half, the window's floor two. In dark
-    themes the frame is never darker than 0.17, so the floor stops at 0.11 instead of black; a
-    theme with a darker frame is lifted to that anchor.
+    The levels themselves follow one ladder: lower is darker. Every level is the frame's colour
+    moved by its own lightness offset: a float +0.025, chat (messages, composer) -0.01, a composer
+    drawer halfway to the floor, the window's floor (and the sky's paper) -0.045. In dark themes
+    the frame is never darker than 0.155, so the floor stops at 0.11 instead of black; a theme with
+    a darker frame is lifted to that anchor.
 
     Higher is lighter, in fixed steps. Three tints and nothing between: `tint-1` (a field, a
     track, a selected row), `tint-2` (hover, a highlighted row, an off switch or box) and the
