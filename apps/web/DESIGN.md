@@ -151,8 +151,7 @@ Settled per component in review, in order. Each one applies to every later compo
       knob is the one thing sitting on another, so it alone casts a soft shadow; it is the same
       white on and off, and only the track changes.
     - **Floating**, above everything: glass a shade lighter than the panes, as see-through as the
-      Glass opacity setting says, a double edge (a light line inside, a dark one outside), a deep
-      shadow. Menus, popovers, dialogs, toasts, tooltips, the details card, the composer. No
+      Glass opacity setting says, a light edge and a soft shadow. Menus, popovers, dialogs, toasts, tooltips, the details card, the composer. No
       highlight. A float's drawer (the composer's notices, stash, queue) stands on its top edge
       one corner in, behind it: the same glass a shade darker.
 

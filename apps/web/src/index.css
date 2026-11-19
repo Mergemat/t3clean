@@ -2936,8 +2936,8 @@ code {
   --level-line: color-mix(in srgb, var(--contrast-foreground) 10%, transparent);
 
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
-     through as the Glass opacity setting says (never below 18%, so text on it stays readable). A
-     double edge (its light line inside, a dark one outside) and a deep shadow lift it. A drawer is
+     through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
+     light edge and a soft shadow lift it. A drawer is
      behind its float, so it is the same glass a shade darker. */
   --float-tone: var(--popover);
   --drawer-tone: color-mix(in srgb, var(--foreground) 3%, var(--popover));
@@ -2951,7 +2951,7 @@ code {
     var(--drawer-tone) 18%,
     color-mix(in srgb, var(--drawer-tone) var(--glass-opacity), transparent)
   );
-  --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
+  --float-shadow: 0 16px 40px -18px rgb(0 0 0 / 55%);
 
   /* Height: higher is lighter, in fixed steps, and tone alone says it: nothing is shaded. Flat
      places take tint 1 (fields, tracks) or tint 2 (hover, a highlighted row, an off switch); a
@@ -2978,7 +2978,7 @@ code {
   @variant dark {
     --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
     --drawer-tone: color-mix(in srgb, var(--foreground) 1%, var(--card));
-    --float-shadow: 0 0 0 1px rgb(0 0 0 / 55%), 0 24px 56px -18px rgb(0 0 0 / 90%);
+    --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
 }
 
