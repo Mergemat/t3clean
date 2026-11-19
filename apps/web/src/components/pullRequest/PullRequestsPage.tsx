@@ -1254,9 +1254,9 @@ export function PullRequestsPage() {
       )}
 
       {listError && shownCount > 0 ? (
-        <div className="flex items-center justify-between gap-2 rounded-row border border-warning/30 bg-warning-surface px-2 py-2 text-meta">
+        <div className="flex flex-col items-start gap-1 px-(--sidebar-content-inset) py-2 text-meta text-ink-2">
           <span>{gt("{error} Showing the last pull requests loaded.", { error: listError })}</span>
-          <Button size="xs" variant="outline" onClick={() => listQuery.refresh()}>
+          <Button size="xs" variant="ghost" onClick={() => listQuery.refresh()}>
             <T>Retry</T>
           </Button>
         </div>

@@ -67,52 +67,58 @@ export function IssueCommentComposer({
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pb-4">
       <ComposerSurface.Shell className="pointer-events-auto">
         <ComposerSurface.Host>
-          <form
-            className="relative z-10 flex flex-col"
-            onSubmit={(event) => {
-              event.preventDefault();
-              submitAfterDictation();
-            }}
-          >
-            <textarea
-              ref={textareaRef}
-              rows={2}
-              className="field-sizing-content max-h-64 min-h-10 w-full resize-none bg-transparent px-4 pt-4 pb-1 text-base text-ink-1 outline-none wrap-anywhere placeholder:text-ink-2 disabled:opacity-64 sm:text-body"
-              aria-label={gt("Add a comment")}
-              placeholder={blocked ?? gt("Leave a comment")}
-              value={body}
-              // Lock while posting because success clears the draft.
-              disabled={locked}
-              readOnly={speech.freezesEditor}
-              onChange={(event) => setBody(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.nativeEvent.isComposing || event.keyCode === 229) return;
-                if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && !event.shiftKey) {
-                  event.preventDefault();
-                  if (!event.repeat) submitAfterDictation();
-                }
+          <ComposerSurface.Main>
+            <form
+              className="relative z-10 flex flex-col"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitAfterDictation();
               }}
-            />
-            <div className="flex flex-wrap items-center justify-end gap-2 px-2 pb-2">
-              <TextFieldSpeechControls speech={speech} disabled={locked} />
-              <button
-                type="submit"
-                className="flex size-8 items-center justify-center rounded-row bg-message-action text-message-action-foreground transition-colors duration-150 enabled:cursor-pointer hover:bg-message-action-hover disabled:pointer-events-none disabled:bg-tint-2 disabled:text-ink-2"
-                disabled={submitDisabled}
-                aria-label={
-                  submitting
-                    ? gt("Posting comment")
-                    : gt("Comment", { $context: "verb, posts the comment" })
-                }
-              >
-                {submitting ? (
-                  <Spinner size="sm" aria-hidden />
-                ) : (
-                  <ArrowUpIcon aria-hidden className="size-4" />
-                )}
-              </button>
-            </div>
-          </form>
+            >
+              <textarea
+                ref={textareaRef}
+                rows={2}
+                className="field-sizing-content max-h-64 min-h-10 w-full resize-none bg-transparent px-4 pt-4 pb-1 text-base text-ink-1 outline-none wrap-anywhere placeholder:text-ink-2 disabled:opacity-64 sm:text-body"
+                aria-label={gt("Add a comment")}
+                placeholder={blocked ?? gt("Leave a comment")}
+                value={body}
+                // Lock while posting because success clears the draft.
+                disabled={locked}
+                readOnly={speech.freezesEditor}
+                onChange={(event) => setBody(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+                  if (
+                    event.key === "Enter" &&
+                    (event.metaKey || event.ctrlKey) &&
+                    !event.shiftKey
+                  ) {
+                    event.preventDefault();
+                    if (!event.repeat) submitAfterDictation();
+                  }
+                }}
+              />
+              <div className="flex flex-wrap items-center justify-end gap-2 px-2 pb-2">
+                <TextFieldSpeechControls speech={speech} disabled={locked} />
+                <button
+                  type="submit"
+                  className="flex size-8 items-center justify-center rounded-row bg-message-action text-message-action-foreground transition-colors duration-150 enabled:cursor-pointer hover:bg-message-action-hover disabled:pointer-events-none disabled:bg-tint-2 disabled:text-ink-2"
+                  disabled={submitDisabled}
+                  aria-label={
+                    submitting
+                      ? gt("Posting comment")
+                      : gt("Comment", { $context: "verb, posts the comment" })
+                  }
+                >
+                  {submitting ? (
+                    <Spinner size="sm" aria-hidden />
+                  ) : (
+                    <ArrowUpIcon aria-hidden className="size-4" />
+                  )}
+                </button>
+              </div>
+            </form>
+          </ComposerSurface.Main>
         </ComposerSurface.Host>
       </ComposerSurface.Shell>
     </div>

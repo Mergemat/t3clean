@@ -319,7 +319,7 @@ function LinkRowImpl({
       ) : null}
       <span
         className={cn(
-          "absolute right-0 bottom-1 flex items-center rounded-r-row bg-background pr-1 pl-4",
+          "absolute right-0 bottom-1 flex items-center rounded-r-row bg-(--pane-fill) pr-1 pl-4",
           "mask-r-from-transparent mask-r-to-black mask-r-to-4",
           // Hidden controls would intercept link taps on touch screens.
           "pointer-events-none opacity-0 group-hover/pr-row:pointer-events-auto group-hover/pr-row:opacity-100",

@@ -12,8 +12,12 @@ export function WindowPage({
   children: ReactNode;
 }) {
   return (
-    <div className="topbar-scroll-fade scrollbar-gutter-both min-h-0 flex-1 overflow-y-auto">
-      <WorkspacePageContainer width={width}>{children}</WorkspacePageContainer>
+    // The window holds the scroller, as Settings' does: a window that scrolls itself would have
+    // its own fill and edge faded by the scroll fade.
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="topbar-scroll-fade scrollbar-gutter-both min-h-0 flex-1 overflow-y-auto">
+        <WorkspacePageContainer width={width}>{children}</WorkspacePageContainer>
+      </div>
     </div>
   );
 }

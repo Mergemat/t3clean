@@ -223,7 +223,6 @@ export function PullRequestDetailGhost({
       )}
       className={cn(
         "flex h-full min-h-0 flex-col overflow-hidden",
-        !frameHeader && "bg-background",
         !seed && "motion-safe:animate-skeleton",
       )}
     >
@@ -424,7 +423,7 @@ export function PullRequestDetailGhost({
         </section>
 
         <section>
-          <div className="sticky top-0 z-10 flex w-full items-center bg-background pr-4">
+          <div className="sticky top-0 z-10 flex w-full items-center bg-(--pane-fill) pr-4">
             <div className="flex min-w-0 flex-1 items-center gap-2 px-4 py-2 text-left text-meta font-medium text-ink-2">
               <span>
                 <T>Description</T>

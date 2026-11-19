@@ -131,7 +131,7 @@ function TimelineMarker({
   return (
     <span
       className={cn(
-        "absolute left-0 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center bg-background",
+        "absolute left-0 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center bg-(--pane-fill)",
         className,
       )}
     >
@@ -143,7 +143,7 @@ function TimelineMarker({
 function IconMarker({ icon, className }: { icon: ReactNode; className?: string | undefined }) {
   return (
     <TimelineMarker className={className}>
-      <span className="flex size-6 items-center justify-center bg-background text-ink-2">
+      <span className="flex size-6 items-center justify-center bg-(--pane-fill) text-ink-2">
         {icon}
       </span>
     </TimelineMarker>

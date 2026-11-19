@@ -20,7 +20,7 @@ const buttonVariants = cva(
     variants: {
       size: {
         // shadcn's sizes, one ladder for text and icon buttons: 24, 32, 36, 40 (DESIGN.md).
-        xs: "h-6 gap-1 px-2 text-meta [&_svg:not([class*='size-'])]:size-3",
+        xs: "h-6 gap-1 px-2 text-meta sm:text-meta [&_svg:not([class*='size-'])]:size-3",
         sm: "h-8 gap-2 px-3",
         default: "h-9 gap-2 px-4",
         lg: "h-10 gap-2 px-6",

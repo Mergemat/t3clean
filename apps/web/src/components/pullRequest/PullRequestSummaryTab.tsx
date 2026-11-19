@@ -438,7 +438,7 @@ export function PullRequestSection({
     >
       <div
         ref={headingRef}
-        className="sticky top-0 z-10 flex w-full items-center bg-background pr-4"
+        className="sticky top-0 z-10 flex w-full items-center bg-(--pane-fill) pr-4"
       >
         <CollapsibleTrigger className="flex min-w-0 flex-1 items-center gap-2 px-4 py-2 text-left text-meta font-medium text-ink-2 hover:text-ink-1">
           <span>{title}</span>
@@ -770,7 +770,7 @@ export function PullRequestSummaryTab({
     return (
       <article
         key={`${detail.url}:${comment.id}`}
-        className="group rounded-row border border-border/60 bg-background contain-intrinsic-block-40 content-visibility-auto"
+        className="group rounded-row border border-border/60 bg-(--pane-fill) contain-intrinsic-block-40 content-visibility-auto"
       >
         <div className="flex flex-wrap items-baseline gap-2 rounded-t-row bg-muted/25 px-2 py-2">
           <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-2 text-meta text-ink-2">
@@ -1167,7 +1167,8 @@ export function PullRequestSummaryTab({
         ) : (
           <>
             {detail.commentsTruncated ? (
-              <p className="mb-2 rounded-row border border-warning/30 bg-warning-surface px-2 py-2 text-meta">
+              // A plain line, as Settings gives a reason once: no box around it.
+              <p className="py-2 text-meta text-ink-2">
                 {gt(
                   "{count, plural, one {This conversation is only partially loaded. {count} comment is loaded; open it on the host to read the rest.} other {This conversation is only partially loaded. {count} comments are loaded; open it on the host to read the rest.}}",
                   { count: commentCount },

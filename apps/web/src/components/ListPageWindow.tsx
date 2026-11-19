@@ -44,7 +44,10 @@ export function ListPageWindow({
       </WorkspacePageHeader>
       {open ? (
         <WindowHeaderSlotContext value={headerSlot}>
-          <div className="relative flex min-h-0 flex-1 flex-col">{children}</div>
+          {/* Settings' column: its width, and its text edge (the item's own inset plus this). */}
+          <div className="relative mx-auto flex min-h-0 w-full max-w-4xl flex-1 flex-col pt-4 sm:px-4">
+            {children}
+          </div>
         </WindowHeaderSlotContext>
       ) : (
         <div className="flex min-h-0 flex-1 flex-col items-center justify-center">

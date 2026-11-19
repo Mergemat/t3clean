@@ -427,13 +427,13 @@ export function IssuesPage() {
   ) : (
     <div className="flex flex-col gap-2">
       {list.error ? (
-        <div className="flex flex-col gap-2 rounded-row bg-warning-surface px-(--sidebar-content-inset) py-2 text-meta">
+        <div className="flex flex-col items-start gap-1 px-(--sidebar-content-inset) py-2 text-meta text-ink-2">
           <span>
             <T>
               <Var>{list.error}</Var> Showing the issues that loaded.
             </T>
           </span>
-          <Button size="sm" variant="ghost" className="self-start" onClick={list.retry}>
+          <Button size="xs" variant="ghost" onClick={list.retry}>
             <T>Retry</T>
           </Button>
         </div>
