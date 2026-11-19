@@ -72,6 +72,9 @@ import { IssueThreadLinks } from "./IssueThreadLinks";
 import { ReactionBar } from "../pullRequest/PullRequestReactions";
 import { PullRequestsUnavailableState } from "../pullRequest/PullRequestsUnavailableState";
 import { issueTrackerPresentation, issueStatePresentation } from "./issuePresentation";
+import { createPortal } from "react-dom";
+import { BarContext, barControlSize } from "../barSize";
+import { WindowHeaderSlotContext } from "../ListPageWindow";
 
 function IssueReactionBar({
   reactions,
@@ -392,6 +395,8 @@ export function IssueDetailPanel({
   onSelectPullRequest?: ((reference: PullRequestRef) => void) | undefined;
 }) {
   const gt = useGT();
+  const frameHeader = useContext(WindowHeaderSlotContext);
+  const controlSize = barControlSize(frameHeader ? "frame" : "panel");
   const messages = useMessages();
   const detailAtom = issueEnvironment.detail({ environmentId, input: reference });
   const detailQuery = useEnvironmentQuery(detailAtom);
@@ -501,7 +506,7 @@ export function IssueDetailPanel({
         <MenuTrigger
           render={
             <Button
-              size="xs"
+              size={controlSize.text}
               variant="outline"
               aria-label={gt("Issue state, {state}", { state: currentState.label })}
               disabled={changingState}
@@ -534,6 +539,45 @@ export function IssueDetailPanel({
       </span>
     );
 
+  const titleRow = (
+    <>
+      <span className="min-w-0 truncate font-medium text-ink-2">{detail.scope}</span>
+      <InlineButton
+        className={cn("shrink-0 font-medium", currentState.toneClassName)}
+        aria-label={gt("Open {issue} on {provider}", {
+          issue: detail.displayKey,
+          provider: tracker.providerName,
+        })}
+        render={<a href={detail.url} target="_blank" rel="noopener noreferrer" />}
+      >
+        {detail.displayKey}
+        <ExternalLinkIcon aria-hidden className="size-3" />
+      </InlineButton>
+      <span className="flex-1" />
+      {stateControl}
+      <IssueThreadLinks
+        key={`${environmentId}:${detail.url}`}
+        environmentId={environmentId}
+        reference={{ ...reference, host: reference.host ?? detail.host }}
+        issue={detail}
+        threadRef={threadRef}
+      />
+      <Button
+        size={controlSize.icon}
+        variant="ghost"
+        aria-label={gt("Refresh issue")}
+        disabled={detailQuery.isPending}
+        onClick={() =>
+          void pager.refresh(registry, () =>
+            executeAtomQuery(registry, detailAtom, { refresh: true, reportFailure: false }),
+          )
+        }
+      >
+        <RefreshIcon size="sm" refreshing={detailQuery.isPending} />
+      </Button>
+    </>
+  );
+
   return (
     <div className="relative flex h-full min-h-0 flex-col">
       <div
@@ -545,42 +589,20 @@ export function IssueDetailPanel({
         data-pull-request-summary-scroll
       >
         <div className="px-4 pb-1">
-          <PullRequestDetailTitleRow className="h-8 gap-1 text-body sm:text-meta">
-            <span className="min-w-0 truncate font-medium text-ink-2">{detail.scope}</span>
-            <InlineButton
-              className={cn("shrink-0 font-medium", currentState.toneClassName)}
-              aria-label={gt("Open {issue} on {provider}", {
-                issue: detail.displayKey,
-                provider: tracker.providerName,
-              })}
-              render={<a href={detail.url} target="_blank" rel="noopener noreferrer" />}
-            >
-              {detail.displayKey}
-              <ExternalLinkIcon aria-hidden className="size-3" />
-            </InlineButton>
-            <span className="flex-1" />
-            {stateControl}
-            <IssueThreadLinks
-              key={`${environmentId}:${detail.url}`}
-              environmentId={environmentId}
-              reference={{ ...reference, host: reference.host ?? detail.host }}
-              issue={detail}
-              threadRef={threadRef}
-            />
-            <Button
-              size="icon-xs"
-              variant="ghost"
-              aria-label={gt("Refresh issue")}
-              disabled={detailQuery.isPending}
-              onClick={() =>
-                void pager.refresh(registry, () =>
-                  executeAtomQuery(registry, detailAtom, { refresh: true, reportFailure: false }),
-                )
-              }
-            >
-              <RefreshIcon size="sm" refreshing={detailQuery.isPending} />
-            </Button>
-          </PullRequestDetailTitleRow>
+          {frameHeader ? (
+            createPortal(
+              <BarContext value="frame">
+                <div className="col-span-2 flex min-w-0 items-center gap-2 text-body">
+                  {titleRow}
+                </div>
+              </BarContext>,
+              frameHeader,
+            )
+          ) : (
+            <PullRequestDetailTitleRow className="h-8 gap-1 text-body sm:text-meta">
+              {titleRow}
+            </PullRequestDetailTitleRow>
+          )}
 
           {detailQuery.error !== null && !detailQuery.isPending ? (
             <div className="mt-2">

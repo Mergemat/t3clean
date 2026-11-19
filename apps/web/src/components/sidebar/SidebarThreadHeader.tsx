@@ -60,8 +60,7 @@ export function SidebarThreadHeader({
 
   return (
     <div className="flex items-center gap-1">
-      <div className="flex h-8 min-w-0 flex-1 items-center gap-2 rounded-row px-2 py-2 text-body font-medium text-ink-2 hover:bg-sidebar-row-hover hover:text-sidebar-foreground focus-within:bg-sidebar-row-hover focus-within:text-sidebar-foreground focus-within:ring-1 focus-within:ring-inset focus-within:ring-ring/70">
-        <SearchIcon className="size-4 shrink-0 text-(--sidebar-icon-color)" />
+      <SidebarSearchBox>
         <SidebarInput
           ref={searchInputRef}
           nativeInput
@@ -97,7 +96,7 @@ export function SidebarThreadHeader({
             <XIcon className="size-3" />
           </Button>
         ) : null}
-      </div>
+      </SidebarSearchBox>
       <div className="flex shrink-0 items-center">
         {hasProjects ? (
           <>
@@ -135,6 +134,17 @@ export function SidebarThreadHeader({
   );
 }
 
+/** The search field every sidebar list opens with: a row, not a boxed input, so it reads as
+ *  part of the list it filters. */
+export function SidebarSearchBox({ icon, children }: { icon?: ReactNode; children: ReactNode }) {
+  return (
+    <div className="flex h-8 min-w-0 flex-1 items-center gap-2 rounded-row px-2 py-2 text-body font-medium text-ink-2 hover:bg-sidebar-row-hover hover:text-sidebar-foreground focus-within:bg-sidebar-row-hover focus-within:text-sidebar-foreground focus-within:ring-1 focus-within:ring-inset focus-within:ring-ring/70 [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-(--sidebar-icon-color)">
+      {icon ?? <SearchIcon />}
+      {children}
+    </div>
+  );
+}
+
 export function SidebarHeaderIconButton({
   label,
   tooltip = label,
@@ -148,7 +158,7 @@ export function SidebarHeaderIconButton({
   children?: ReactNode;
 } & Omit<
   ComponentProps<typeof SidebarMenuButton>,
-  "children" | "className" | "tooltip" | "isActive" | "aria-label"
+  "children" | "className" | "tooltip" | "aria-label"
 >) {
   return (
     <Tooltip>

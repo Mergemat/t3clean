@@ -17,7 +17,6 @@ import {
   FolderGit2Icon,
   LayersIcon,
   ListFilterIcon,
-  SearchIcon,
   TagIcon,
   UserRoundIcon,
 } from "lucide-react";
@@ -28,8 +27,8 @@ import { getSourceControlPresentationForKind } from "~/sourceControlPresentation
 import { useDebouncedValue } from "~/state/queries";
 import { type EnvironmentQueryTarget, usePullRequestFilterOptions } from "~/state/pullRequests";
 import { ProjectFavicon, type ProjectFaviconProject } from "../ProjectFavicon";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group";
-import { Button } from "../ui/button";
+import { SidebarHeaderIconButton, SidebarSearchBox } from "../sidebar/SidebarThreadHeader";
+import { SidebarInput } from "../ui/sidebar";
 
 import {
   Menu,
@@ -111,12 +110,11 @@ export function PullRequestSearchInput({
 }) {
   const [draft, setDraft] = useState<string | null>(null);
   return (
-    <InputGroup className="min-w-0 flex-1 **:[input]:h-8 sm:**:[input]:h-8">
-      <InputGroupAddon>
-        {busy ? <Spinner aria-hidden /> : <SearchIcon aria-hidden />}
-      </InputGroupAddon>
-      <InputGroupInput
+    <SidebarSearchBox icon={busy ? <Spinner aria-hidden /> : undefined}>
+      <SidebarInput
+        nativeInput
         type="search"
+        className="min-w-0 flex-1"
         value={draft ?? value}
         onFocus={() => setDraft(value)}
         onBlur={() => setDraft(null)}
@@ -135,7 +133,7 @@ export function PullRequestSearchInput({
         placeholder={placeholder}
         aria-label={label}
       />
-    </InputGroup>
+    </SidebarSearchBox>
   );
 }
 
@@ -599,17 +597,7 @@ export function PullRequestFiltersMenu({
   ];
   return (
     <Menu onOpenChange={onOpenChange}>
-      <MenuTrigger render={<Button variant="outline" size="sm" />}>
-        <ListFilterIcon className="size-4" />
-        <span>
-          <T>Filters</T>
-        </span>
-        {filterCount > 0 ? (
-          <span className="rounded-row bg-muted px-2 text-meta text-ink-2 tabular-nums">
-            {filterCount}
-          </span>
-        ) : null}
-      </MenuTrigger>
+      <FiltersMenuTrigger count={filterCount} />
       <MenuPopup align="end" side="bottom">
         <PullRequestFilterRadioSubmenu
           label={gt("State", { $context: "pull request filter" })}
@@ -695,5 +683,26 @@ export function PullRequestFiltersMenu({
         />
       </MenuPopup>
     </Menu>
+  );
+}
+
+/** Every filter of a sidebar list behind one icon in its header row; it fills in while any is on. */
+export function FiltersMenuTrigger({ count }: { count: number }) {
+  const gt = useGT();
+  return (
+    <MenuTrigger
+      render={
+        <SidebarHeaderIconButton
+          label={
+            count > 0
+              ? gt("{count, plural, one {Filters, # on} other {Filters, # on}}", { count })
+              : gt("Filters")
+          }
+          isActive={count > 0}
+        />
+      }
+    >
+      <ListFilterIcon aria-hidden />
+    </MenuTrigger>
   );
 }

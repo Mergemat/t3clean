@@ -34,6 +34,7 @@ import { Button } from "../ui/button";
 import { Dialog, DialogPopup, DialogTitle } from "../ui/dialog";
 import { toastManager } from "../ui/toast";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
+import { useBarControlSize } from "../barSize";
 
 /**
  * The threads an issue is linked to, and the control that links it to one more: the thread it is
@@ -50,6 +51,7 @@ export function IssueThreadLinks({
   issue: Pick<IssueDetail, "url" | "displayKey" | "title">;
   threadRef: ScopedThreadRef | null;
 }) {
+  const controlSize = useBarControlSize();
   const gt = useGT();
   const thread = useThreadShell(threadRef?.environmentId === environmentId ? threadRef : null);
   const canOperate = useEnvironmentScope(environmentId, AuthOrchestrationOperateScope);
@@ -133,7 +135,7 @@ export function IssueThreadLinks({
           <TooltipTrigger
             render={
               <Button
-                size="xs"
+                size={controlSize.text}
                 variant="ghost"
                 aria-label={linkedThreadsLabel}
                 onClick={() =>
@@ -160,7 +162,7 @@ export function IssueThreadLinks({
           <TooltipTrigger
             render={
               <Button
-                size="icon-xs"
+                size={controlSize.icon}
                 variant="ghost"
                 aria-label={linkedHere ? gt("Unlink from thread") : gt("Link to thread")}
                 aria-pressed={thread === null ? undefined : linkedHere}

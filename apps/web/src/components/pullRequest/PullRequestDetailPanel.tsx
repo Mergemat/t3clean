@@ -40,12 +40,16 @@ import {
 import {
   lazy,
   Suspense,
+  useContext,
   useEffect,
   useEffectEvent,
   useLayoutEffect,
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
+import { BarContext } from "../barSize";
+import { WindowHeaderSlotContext } from "../ListPageWindow";
 import { msg, T, useGT, useMessages, Var } from "gt-react";
 
 import { m } from "~/i18n/messages";
@@ -387,6 +391,7 @@ export function PullRequestDetailPanel({
 }) {
   const gt = useGT();
   const resolve = useMessages();
+  const frameHeader = useContext(WindowHeaderSlotContext);
   const environmentConfigs = useServerConfigs();
   const projects = useProjects();
   const project = projects.find(
@@ -1545,6 +1550,138 @@ export function PullRequestDetailPanel({
     );
   }
 
+  const headerRow = (
+    <>
+      <PullRequestDetailCrumbs
+        detail={detail}
+        toneClassName={statePresentation?.toneClassName ?? null}
+        condensed={condensed}
+        repositoryUrl={repositoryUrl}
+        openOnHostText={openOnHostText}
+        onBack={onBack}
+        frame={frameHeader !== null}
+      />
+      <div
+        className={cn(
+          "flex h-6 shrink-0 select-none items-center justify-end gap-1",
+          !frameHeader && "mr-2",
+        )}
+      >
+        {detail ? (
+          <TooltipProvider delay={150} closeDelay={150} timeout={400}>
+            {context === "page" ? (
+              <PullRequestThreadLinks
+                display="count"
+                environmentId={environmentId}
+                reference={reference}
+                url={detail.url}
+                threadRef={null}
+              />
+            ) : null}
+            {!nativeStack && supportsStackActions && nativeStackQuery.error ? (
+              <Button variant="ghost" size="xs" onClick={nativeStackQuery.refresh}>
+                <T>Retry stack lookup</T>
+              </Button>
+            ) : null}
+            {nativeStack ? (
+              <PullRequestStackMenu
+                hostLabel={hostClient.label}
+                terminology={terminology}
+                stack={nativeStack}
+                notice={nativeStackQuery.notice}
+                onRetry={nativeStackQuery.error ? nativeStackQuery.refresh : undefined}
+                reference={reference}
+                environmentId={environmentId}
+                onSelect={onSelectPullRequest}
+                mergeMethod={selectedMergeMethod}
+                stale={!nativeStackQuery.isFresh}
+                canMerge={supportsStackActions && can("merge") && allowedMergeMethods.length > 0}
+                canRebase={supportsStackActions && detail.viewerPermissions.stackRebase === true}
+                onActed={() => {
+                  refreshDetail();
+                  onActed?.();
+                }}
+              />
+            ) : null}
+            <PullRequestPrimaryAction
+              mergeBlockedReason={mergeBlockedReason}
+              pullRequestKey={pullRequestKey}
+              primaryAction={primaryAction}
+              autoMergeArmed={autoMergeArmed}
+              armedAutoMergeLabel={armedAutoMergeLabel}
+              pendingAutoMergeLabel={pendingAutoMergeLabel}
+              selectedMergeMethod={selectedMergeMethod}
+              selectedMergeMethodLabel={selectedMergeMethodLabel}
+              statePresentation={statePresentation}
+              pendingAction={pendingAction}
+              perform={perform}
+              resolveConflicts={resolveConflictsControl}
+            />
+            {checkoutControl}
+            <PullRequestActionsMenu
+              environmentId={environmentId}
+              reference={reference}
+              pullRequestKey={pullRequestKey}
+              detail={detail}
+              terminology={terminology}
+              linkThreadRef={
+                threadRef ?? (typeof composerDraftTarget === "object" ? composerDraftTarget : null)
+              }
+              onThreadPickerOpenChange={setThreadPickerOpen}
+              refreshing={refreshing}
+              refreshFromHost={refreshFromHost}
+              handoff={handoff}
+              attachesToComposer={attachTarget !== null}
+              askAboutPullRequest={askAboutPullRequest}
+              explainPullRequest={explainPullRequest}
+              canFixFindings={canFixFindings}
+              startFixFindings={startFixFindings}
+              handoffLabels={handoffLabels}
+              canWriteGuide={reviewGuidesEnabled && guideWriter.canWrite}
+              guideRunning={guideWriter.running}
+              guideWritten={guideWriter.data?.guide != null}
+              writeGuide={writeGuide}
+              pickableEnvironments={pickableEnvironments}
+              actingEnvironmentId={actingEnvironmentId}
+              onActingEnvironmentChange={selectActingEnvironment}
+              can={can}
+              autoMergeArmed={autoMergeArmed}
+              showsDraftToggle={showsDraftToggle}
+              showsMergeNow={showsMergeNow}
+              showsAutoMerge={showsAutoMerge}
+              showsMergeMethods={showsMergeMethods}
+              allowedMergeMethods={allowedMergeMethods}
+              selectedMergeMethod={selectedMergeMethod}
+              onSelectMergeMethod={selectMergeMethod}
+              showsDeleteBranch={showsDeleteBranch}
+              environmentConnected={environmentConnected}
+              canWriteSourceControl={canWriteSourceControl}
+              onMaintainerEditsSaved={refreshDetail}
+              confirmDeleteBranch={confirmDeleteBranch}
+              pendingAction={pendingAction}
+              perform={perform}
+              openOnHostText={openOnHostText}
+              copyReference={copyReference}
+            />
+          </TooltipProvider>
+        ) : null}
+        {onClose ? (
+          <Button
+            size="icon-xs"
+            variant="ghost"
+            aria-label={gt(
+              "Collapse {term, select, mr {merge request} cr {change request} other {pull request}} panel",
+              { term: changeRequestTermKind(terminology) },
+            )}
+            onClick={onClose}
+          >
+            <PanelRightIcon className="size-4" />
+          </Button>
+        ) : null}
+      </div>
+    </>
+  );
+
   return (
     <div className="relative flex h-full min-h-0 w-full flex-col bg-background">
       {threadPickerOpen && detail ? (
@@ -1565,128 +1702,10 @@ export function PullRequestDetailPanel({
           !detail && !onClose && "hidden",
         )}
       >
-        <PullRequestDetailCrumbs
-          detail={detail}
-          toneClassName={statePresentation?.toneClassName ?? null}
-          condensed={condensed}
-          repositoryUrl={repositoryUrl}
-          openOnHostText={openOnHostText}
-          onBack={onBack}
-        />
-        <div className="mr-2 flex h-6 shrink-0 select-none items-center justify-end gap-1">
-          {detail ? (
-            <TooltipProvider delay={150} closeDelay={150} timeout={400}>
-              {context === "page" ? (
-                <PullRequestThreadLinks
-                  display="count"
-                  environmentId={environmentId}
-                  reference={reference}
-                  url={detail.url}
-                  threadRef={null}
-                />
-              ) : null}
-              {!nativeStack && supportsStackActions && nativeStackQuery.error ? (
-                <Button variant="ghost" size="xs" onClick={nativeStackQuery.refresh}>
-                  <T>Retry stack lookup</T>
-                </Button>
-              ) : null}
-              {nativeStack ? (
-                <PullRequestStackMenu
-                  hostLabel={hostClient.label}
-                  terminology={terminology}
-                  stack={nativeStack}
-                  notice={nativeStackQuery.notice}
-                  onRetry={nativeStackQuery.error ? nativeStackQuery.refresh : undefined}
-                  reference={reference}
-                  environmentId={environmentId}
-                  onSelect={onSelectPullRequest}
-                  mergeMethod={selectedMergeMethod}
-                  stale={!nativeStackQuery.isFresh}
-                  canMerge={supportsStackActions && can("merge") && allowedMergeMethods.length > 0}
-                  canRebase={supportsStackActions && detail.viewerPermissions.stackRebase === true}
-                  onActed={() => {
-                    refreshDetail();
-                    onActed?.();
-                  }}
-                />
-              ) : null}
-              <PullRequestPrimaryAction
-                mergeBlockedReason={mergeBlockedReason}
-                pullRequestKey={pullRequestKey}
-                primaryAction={primaryAction}
-                autoMergeArmed={autoMergeArmed}
-                armedAutoMergeLabel={armedAutoMergeLabel}
-                pendingAutoMergeLabel={pendingAutoMergeLabel}
-                selectedMergeMethod={selectedMergeMethod}
-                selectedMergeMethodLabel={selectedMergeMethodLabel}
-                statePresentation={statePresentation}
-                pendingAction={pendingAction}
-                perform={perform}
-                resolveConflicts={resolveConflictsControl}
-              />
-              {checkoutControl}
-              <PullRequestActionsMenu
-                environmentId={environmentId}
-                reference={reference}
-                pullRequestKey={pullRequestKey}
-                detail={detail}
-                terminology={terminology}
-                linkThreadRef={
-                  threadRef ??
-                  (typeof composerDraftTarget === "object" ? composerDraftTarget : null)
-                }
-                onThreadPickerOpenChange={setThreadPickerOpen}
-                refreshing={refreshing}
-                refreshFromHost={refreshFromHost}
-                handoff={handoff}
-                attachesToComposer={attachTarget !== null}
-                askAboutPullRequest={askAboutPullRequest}
-                explainPullRequest={explainPullRequest}
-                canFixFindings={canFixFindings}
-                startFixFindings={startFixFindings}
-                handoffLabels={handoffLabels}
-                canWriteGuide={reviewGuidesEnabled && guideWriter.canWrite}
-                guideRunning={guideWriter.running}
-                guideWritten={guideWriter.data?.guide != null}
-                writeGuide={writeGuide}
-                pickableEnvironments={pickableEnvironments}
-                actingEnvironmentId={actingEnvironmentId}
-                onActingEnvironmentChange={selectActingEnvironment}
-                can={can}
-                autoMergeArmed={autoMergeArmed}
-                showsDraftToggle={showsDraftToggle}
-                showsMergeNow={showsMergeNow}
-                showsAutoMerge={showsAutoMerge}
-                showsMergeMethods={showsMergeMethods}
-                allowedMergeMethods={allowedMergeMethods}
-                selectedMergeMethod={selectedMergeMethod}
-                onSelectMergeMethod={selectMergeMethod}
-                showsDeleteBranch={showsDeleteBranch}
-                environmentConnected={environmentConnected}
-                canWriteSourceControl={canWriteSourceControl}
-                onMaintainerEditsSaved={refreshDetail}
-                confirmDeleteBranch={confirmDeleteBranch}
-                pendingAction={pendingAction}
-                perform={perform}
-                openOnHostText={openOnHostText}
-                copyReference={copyReference}
-              />
-            </TooltipProvider>
-          ) : null}
-          {onClose ? (
-            <Button
-              size="icon-xs"
-              variant="ghost"
-              aria-label={gt(
-                "Collapse {term, select, mr {merge request} cr {change request} other {pull request}} panel",
-                { term: changeRequestTermKind(terminology) },
-              )}
-              onClick={onClose}
-            >
-              <PanelRightIcon className="size-4" />
-            </Button>
-          ) : null}
-        </div>
+        {/* On a list page the crumbs and actions sit in the frame header, like a thread's. */}
+        {frameHeader
+          ? createPortal(<BarContext value="frame">{headerRow}</BarContext>, frameHeader)
+          : headerRow}
 
         <div
           className={cn(

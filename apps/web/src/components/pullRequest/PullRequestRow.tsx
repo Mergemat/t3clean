@@ -1,91 +1,49 @@
 import type { PullRequestAction } from "@t3tools/contracts";
 import { sourceControlClients } from "@t3tools/client-runtime/source-control-clients";
-import { T } from "gt-react";
-import { SearchIcon } from "lucide-react";
-import { PullRequestChangeBreakdownStat } from "./PullRequestChangeBreakdownStat";
-import { PullRequestStackPopover } from "./PullRequestStackPopover";
-import {
-  PullRequestSpeedActions,
-  type PullRequestSpeedActionResult,
-} from "./PullRequestSpeedActions";
+import { useGT } from "gt-react";
 import { memo, type RefCallback } from "react";
 
 import { cn } from "~/lib/utils";
 import { getSourceControlPresentationForKind } from "~/sourceControlPresentation";
+import { SidebarItemCard } from "../sidebar/SidebarItemCard";
 
-import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
-import { PullRequestChecksPopover } from "./PullRequestChecksPopover";
-import { pullRequestPanelReference } from "./usePullRequestDetail";
 import type { EnvironmentPullRequestEntry } from "./pullRequestList.logic";
 import { openOnHostLabel, showPullRequestLinkContextMenu } from "./pullRequestLinkContextMenu";
-import {
-  PULL_REQUEST_ROW_CLASS,
-  PULL_REQUEST_ROW_NUMBER_CLASS,
-  PullRequestRowAuthor,
-  PullRequestRowGlyph,
-  PullRequestRowLines,
-} from "./PullRequestListRow";
-import { PullRequestLabelChip, PullRequestReviewDecisionGlyph } from "./pullRequestPresentation";
-
-const LABEL_SLOTS = [
-  { overflow: "@xl/pr-row-meta:hidden" },
-  { overflow: "@3xl/pr-row-meta:hidden" },
-  { overflow: "" },
-] as const;
-
-function PullRequestRowLabels({ labels }: { labels: EnvironmentPullRequestEntry["labels"] }) {
-  if (labels.length === 0) return null;
-  return (
-    <span className="flex min-w-0 items-center gap-1">
-      {LABEL_SLOTS.map((slot, index) => {
-        const label = labels[index];
-        if (!label) return null;
-        const remaining = labels.length - index - 1;
-        return (
-          <PullRequestLabelChip
-            key={label.name}
-            label={label}
-            className={
-              index === 0
-                ? ""
-                : index === 1
-                  ? "hidden @xl/pr-row-meta:inline-flex"
-                  : "hidden @3xl/pr-row-meta:inline-flex"
-            }
-          >
-            {remaining > 0 ? (
-              <span className={cn("shrink-0", slot.overflow)}>+{remaining}</span>
-            ) : null}
-          </PullRequestLabelChip>
-        );
-      })}
-    </span>
-  );
-}
-
-const PAGE_ROW_CLASS = "px-2 py-2";
+import { PullRequestRowGlyph } from "./PullRequestListRow";
+import type { PullRequestSpeedActionResult } from "./PullRequestSpeedActions";
 
 export type PullRequestRowTarget = Pick<
   EnvironmentPullRequestEntry,
   "environmentId" | "projectId" | "host" | "repository" | "number"
 >;
 
+/** The one word the list says about a pull request's state, worst first. */
+function useStatusWord(entry: EnvironmentPullRequestEntry) {
+  const gt = useGT();
+  if (entry.isDraft) return { label: gt("Draft"), className: "text-ink-3" };
+  if (entry.checksState === "failing")
+    return { label: gt("Checks failing"), className: "text-destructive-foreground" };
+  if (entry.reviewDecision === "changes-requested")
+    return { label: gt("Changes requested"), className: "text-warning-foreground" };
+  if (entry.checksState === "pending") return { label: gt("Checks running"), className: "" };
+  if (entry.reviewDecision === "approved") return { label: gt("Approved"), className: "" };
+  if (entry.reviewDecision === "review-required")
+    return { label: gt("Review required"), className: "" };
+  return null;
+}
+
+/**
+ * A pull request as the sidebar lists it, made like a thread card: where and when on the first
+ * line, the title on the second, its number and state on the third. Everything else is in the
+ * window once it is open.
+ */
 function PullRequestRowImpl({
   entry,
   selected,
-  showProjectTitle,
-  showProvider,
-  environmentLabel,
-  matchedElsewhere,
   statsKey,
   statsRef,
   onSelect,
   onIntent,
-  hostActions,
-  onActed,
-  closing = false,
-  sweeping = false,
-  onCloseSweepStart,
 }: {
   entry: EnvironmentPullRequestEntry;
   selected: boolean;
@@ -105,166 +63,55 @@ function PullRequestRowImpl({
   sweeping?: boolean;
   onCloseSweepStart?: (entry: EnvironmentPullRequestEntry, event: PointerEvent) => void;
 }) {
-  const { Icon, providerName, terminology } = getSourceControlPresentationForKind(entry.provider);
+  const { Icon, providerName } = getSourceControlPresentationForKind(entry.provider);
+  const status = useStatusWord(entry);
+  // Line counts arrive after the list; 0/0 is what an unread entry reports, so it says nothing.
+  const hasDiff = Boolean(entry.additions || entry.deletions);
   return (
-    <div
+    <SidebarItemCard
       ref={statsRef}
       data-pull-request-stats-key={statsKey}
       data-pull-request-key={statsKey}
-      className={cn(
-        "flex items-center rounded-row content-visibility-auto contain-intrinsic-block-14",
-        selected ? "bg-accent" : "hover:bg-accent/60",
-      )}
-    >
-      <button
-        type="button"
-        aria-current={selected ? "true" : undefined}
-        onClick={() => onSelect(entry)}
-        onPointerEnter={() => onIntent?.(entry)}
-        onPointerLeave={(event) => {
+      selected={selected}
+      icon={<Icon aria-label={providerName} />}
+      place={entry.repository}
+      updatedAt={entry.updatedAt}
+      title={entry.title}
+      status={
+        <>
+          <PullRequestRowGlyph
+            state={entry.state}
+            isDraft={entry.isDraft}
+            mergeability={entry.mergeability}
+            baseBranch={entry.baseBranch}
+          />
+          <span className="shrink-0 tabular-nums">#{entry.number}</span>
+          {status ? (
+            <span className={cn("min-w-0 truncate", status.className)}>{status.label}</span>
+          ) : null}
+        </>
+      }
+      trailing={hasDiff ? `+${entry.additions} −${entry.deletions}` : null}
+      buttonProps={{
+        onClick: () => onSelect(entry),
+        onPointerEnter: () => onIntent?.(entry),
+        onPointerLeave: (event) => {
           if (event.currentTarget !== document.activeElement) onIntent?.(null);
-        }}
-        onFocus={() => onIntent?.(entry)}
-        onBlur={(event) => {
+        },
+        onFocus: () => onIntent?.(entry),
+        onBlur: (event) => {
           if (!event.currentTarget.matches(":hover")) onIntent?.(null);
-        }}
-        className={cn(
-          PULL_REQUEST_ROW_CLASS,
-          PAGE_ROW_CLASS,
-          "min-w-0 flex-1 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring",
-        )}
-      >
-        <PullRequestRowGlyph
-          state={entry.state}
-          isDraft={entry.isDraft}
-          mergeability={entry.mergeability}
-          baseBranch={entry.baseBranch}
-          className="self-start"
-        />
-        <PullRequestRowLines
-          number={
-            <span
-              className={PULL_REQUEST_ROW_NUMBER_CLASS}
-              onContextMenu={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                void showPullRequestLinkContextMenu({
-                  url: entry.url,
-                  openLabel: openOnHostLabel(sourceControlClients.get(entry.provider)),
-                  position: { x: event.clientX, y: event.clientY },
-                });
-              }}
-            >
-              #{entry.number}
-            </span>
-          }
-          title={entry.title}
-          signals={
-            <>
-              {entry.checksState === undefined ? null : (
-                <PullRequestChecksPopover
-                  checksState={entry.checksState}
-                  environmentId={entry.environmentId}
-                  reference={{
-                    ...pullRequestPanelReference({ ...entry, host: entry.host.toLowerCase() }),
-                    allowStale: false,
-                  }}
-                />
-              )}
-              {entry.reviewDecision === undefined ? null : (
-                <PullRequestReviewDecisionGlyph decision={entry.reviewDecision} />
-              )}
-            </>
-          }
-          status={
-            <>
-              {entry.stack ? (
-                <PullRequestStackPopover
-                  environmentId={entry.environmentId}
-                  reference={{
-                    projectId: entry.projectId,
-                    host: entry.host,
-                    repository: entry.repository,
-                    number: entry.number,
-                  }}
-                  membership={entry.stack}
-                  onSelect={(target) =>
-                    onSelect({ ...target, host: entry.host, environmentId: entry.environmentId })
-                  }
-                />
-              ) : null}
-              <PullRequestChangeBreakdownStat
-                environmentId={entry.environmentId}
-                reference={{
-                  projectId: entry.projectId,
-                  host: entry.host,
-                  repository: entry.repository,
-                  number: entry.number,
-                }}
-                additions={entry.additions}
-                deletions={entry.deletions}
-                className="font-mono"
-              />
-            </>
-          }
-          metaClassName="@container/pr-row-meta"
-          meta={
-            <>
-              {matchedElsewhere ? (
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <span className="flex min-w-6 items-center gap-1 overflow-hidden rounded-chip border border-border/60 px-1 text-meta" />
-                    }
-                  >
-                    <span className="sr-only">
-                      <T>matched in the description</T>
-                    </span>
-                    <SearchIcon aria-hidden className="size-3 shrink-0" />
-                    <span aria-hidden className="hidden truncate @xs/pr-row-meta:block">
-                      <T>matched in the description</T>
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipPopup side="top">
-                    <T>Matched in the description</T>
-                  </TooltipPopup>
-                </Tooltip>
-              ) : null}
-              {showProvider ? (
-                <Tooltip>
-                  <TooltipTrigger render={<span className="inline-flex shrink-0" />}>
-                    <Icon aria-label={providerName} className="size-3" />
-                  </TooltipTrigger>
-                  <TooltipPopup>{providerName}</TooltipPopup>
-                </Tooltip>
-              ) : null}
-              <PullRequestRowAuthor
-                actor={entry.author}
-                className="min-w-4 max-w-40"
-                labelClassName="sr-only @xs/pr-row-meta:not-sr-only @xs/pr-row-meta:truncate"
-              />
-              {showProjectTitle ? <span className="truncate">{entry.repository}</span> : null}
-              {environmentLabel ? (
-                <span className="min-w-0 max-w-32 truncate">{environmentLabel}</span>
-              ) : null}
-              {entry.labels.length > 0 ? <PullRequestRowLabels labels={entry.labels} /> : null}
-            </>
-          }
-          updatedAt={entry.updatedAt}
-        />
-      </button>
-      {hostActions.size > 0 ? (
-        <PullRequestSpeedActions
-          entry={entry}
-          hostActions={hostActions}
-          terminology={terminology}
-          onActed={onActed}
-          closing={closing}
-          sweeping={sweeping}
-          {...(onCloseSweepStart ? { onCloseSweepStart } : {})}
-        />
-      ) : null}
-    </div>
+        },
+        onContextMenu: (event) => {
+          event.preventDefault();
+          void showPullRequestLinkContextMenu({
+            url: entry.url,
+            openLabel: openOnHostLabel(sourceControlClients.get(entry.provider)),
+            position: { x: event.clientX, y: event.clientY },
+          });
+        },
+      }}
+    />
   );
 }
 

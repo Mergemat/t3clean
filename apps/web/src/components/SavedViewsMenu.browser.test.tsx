@@ -4,6 +4,7 @@ import { act, render, type Screen } from "../../test/render";
 import type { PullRequestListPreferences } from "./pullRequest/pullRequestListPreferences";
 import { PULL_REQUEST_SAVED_VIEWS } from "./pullRequest/pullRequestSavedViews";
 import { SavedViewsMenu, type SavedView } from "./SavedViewsMenu";
+import { SidebarProvider } from "./ui/sidebar";
 
 const PULL_REQUEST_SAVED_VIEWS_KEY = PULL_REQUEST_SAVED_VIEWS.storageKey;
 
@@ -24,8 +25,15 @@ function setup() {
   toastAdd.mockClear();
   return {
     onApply,
+    // The menu sits in a sidebar list's header row.
     menu: (preferences: PullRequestListPreferences = reviewing) => (
-      <SavedViewsMenu kind={PULL_REQUEST_SAVED_VIEWS} preferences={preferences} onApply={onApply} />
+      <SidebarProvider>
+        <SavedViewsMenu
+          kind={PULL_REQUEST_SAVED_VIEWS}
+          preferences={preferences}
+          onApply={onApply}
+        />
+      </SidebarProvider>
     ),
     [Symbol.dispose]() {
       localStorage.clear();
@@ -37,10 +45,15 @@ function setup() {
 async function openMenu(screen: Screen) {
   await act(() =>
     screen.container
-      .querySelector<HTMLButtonElement>('[aria-label="Saved pull request views"]')!
+      .querySelector<HTMLButtonElement>('[aria-label^="Saved pull request views"]')!
       .click(),
   );
 }
+
+const viewsLabel = (screen: Screen) =>
+  screen.container
+    .querySelector('[aria-label^="Saved pull request views"]')
+    ?.getAttribute("aria-label");
 
 async function choose(label: string) {
   const item = [...document.querySelectorAll<HTMLElement>('[role="menuitem"]')].find(
@@ -134,7 +147,7 @@ describe("SavedViewsMenu", () => {
     );
     await using screen = await render(menu());
     await screen.rerender(menu(other.preferences));
-    expect(screen.container.textContent).toContain("Review queue*");
+    expect(viewsLabel(screen)).toBe("Saved pull request views: Review queue, modified");
     await openMenu(screen);
     await choose("Update saved view");
     expect(storedViews()).toEqual([
@@ -143,6 +156,6 @@ describe("SavedViewsMenu", () => {
     ]);
     await openMenu(screen);
     await choose("Other queue");
-    expect(screen.container.textContent).toContain("Other queue");
+    expect(viewsLabel(screen)).toBe("Saved pull request views: Other queue");
   });
 });

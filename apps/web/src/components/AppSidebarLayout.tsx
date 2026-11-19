@@ -44,7 +44,8 @@ import { HistorySwipeNavigation } from "./HistorySwipeNavigation";
 import ThreadSidebar from "./Sidebar";
 import { SidebarBrandWidthProbe } from "./sidebar/SidebarChrome";
 import { isAppModalPage, isSettingsPage } from "./sidebar/mainAppLocation";
-import { SidebarChromeHeader } from "./sidebar/SidebarChrome";
+import { SidebarChromeFooter, SidebarChromeHeader } from "./sidebar/SidebarChrome";
+import { SidebarListSlotContext } from "./sidebar/SidebarListSlot";
 import { SettingsSidebarNav } from "./settings/SettingsSidebarNav";
 import type { SidebarRouteReveal } from "./sidebar/routeReveal";
 import { useSidebarStageBackdropVariant } from "./SidebarStageBackdrop";
@@ -440,6 +441,9 @@ export function AppSidebarLayout({
   // A clamped drag may not change width, so viewport changes need a separate subscription.
   const viewportWidth = useSyncExternalStore(subscribeToViewportWidth, readViewportWidth);
   const [brandWidth, setBrandWidth] = useState(0);
+  // Pages whose list the sidebar shows in place of the threads; the window holds the open item.
+  const listPage = pathname === "/pull-requests" || pathname === "/issues";
+  const [listSlot, setListSlot] = useState<HTMLElement | null>(null);
   const sidebarMinimumWidth = resolveThreadSidebarMinimumWidth(brandWidth);
   const sidebarMaximumWidth = resolveThreadSidebarMaximumWidth(viewportWidth, sidebarMinimumWidth);
   const resetSidebarWidth = () => {
@@ -500,16 +504,23 @@ export function AppSidebarLayout({
                   <SettingsSidebarNav pathname={pathname} />
                 </>
               ) : null}
+              {listPage ? (
+                <>
+                  <SidebarChromeHeader isElectron={isElectron} />
+                  <div ref={setListSlot} className="flex min-h-0 flex-1 flex-col" />
+                  <SidebarChromeFooter />
+                </>
+              ) : null}
               {/* Kept mounted, hidden, while Settings shows: rebuilding the thread list on the way
                   back is the slow part of leaving Settings. */}
-              <Activity mode={isSettingsPage(pathname) ? "hidden" : "visible"}>
+              <Activity mode={isSettingsPage(pathname) || listPage ? "hidden" : "visible"}>
                 <ThreadSidebar routeReveal={sidebarRouteReveal} />
               </Activity>
               <SidebarRail onDoubleClick={resetSidebarWidth} />
             </Sidebar>
           </>
         ) : null}
-        {children}
+        <SidebarListSlotContext value={listSlot}>{children}</SidebarListSlotContext>
         <BackgroundThreadAnnouncer />
         <SidebarControl showSidebar={showSidebar} />
         {isElectron ? <HistorySwipeNavigation /> : null}

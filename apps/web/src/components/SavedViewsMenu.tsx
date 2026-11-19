@@ -1,5 +1,5 @@
 import { T, useGT, useMessages } from "gt-react";
-import { BookmarkIcon, CheckIcon, ChevronDownIcon, PlusIcon } from "lucide-react";
+import { BookmarkIcon, CheckIcon, PlusIcon } from "lucide-react";
 import { useId, useState } from "react";
 import type * as Schema from "effect/Schema";
 import {
@@ -10,6 +10,7 @@ import {
 import { getLocalStorageItem, useLocalStorage } from "../hooks/useLocalStorage";
 import { randomUUID } from "../lib/utils";
 import { Button } from "./ui/button";
+import { SidebarHeaderIconButton } from "./sidebar/SidebarThreadHeader";
 import {
   Dialog,
   DialogDescription,
@@ -142,24 +143,24 @@ export function SavedViewsMenu<Preferences extends Stored, Stored, Encoded>({
   return (
     <>
       <Menu>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <MenuTrigger
-                render={<Button variant="outline" size="sm" />}
-                aria-label={savedViewsLabel}
-              />
-            }
-          >
-            <BookmarkIcon aria-hidden className="size-4" />
-            <span className="max-w-40 truncate">
-              {selectedView?.name ?? gt("Views", { $context: "saved filter views menu" })}
-            </span>
-            {modified ? <span aria-label={gt("Modified view")}>*</span> : null}
-            <ChevronDownIcon aria-hidden className="size-3 shrink-0" />
-          </TooltipTrigger>
-          <TooltipPopup>{selectedView?.name ?? savedViewsLabel}</TooltipPopup>
-        </Tooltip>
+        <MenuTrigger
+          render={
+            <SidebarHeaderIconButton
+              label={
+                selectedView
+                  ? gt("{label}: {name}", {
+                      label: savedViewsLabel,
+                      name: modified
+                        ? gt("{name}, modified", { name: selectedView.name })
+                        : selectedView.name,
+                    })
+                  : savedViewsLabel
+              }
+            />
+          }
+        >
+          <BookmarkIcon aria-hidden />
+        </MenuTrigger>
         <MenuPopup align="start">
           {views.map((view) => (
             <Tooltip key={view.id}>

@@ -14,6 +14,7 @@ const badgeVariants = cva(
     variants: {
       size: {
         control: "h-6 min-w-8 rounded-row px-2 text-body sm:h-6 sm:min-w-6 sm:text-meta",
+        "control-sm": "h-8 min-w-8 rounded-row px-2 text-body",
         default: "h-6 min-w-6 px-1 text-body sm:h-4 sm:min-w-4 sm:text-meta",
         lg: "h-6 min-w-6 px-2 text-base sm:h-6 sm:min-w-6 sm:text-body",
         // Fractional leading rounds font metrics and raises fixed-height labels, especially under zoom.

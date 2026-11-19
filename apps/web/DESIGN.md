@@ -163,6 +163,14 @@ Settled per component in review, in order. Each one applies to every later compo
     themes the same mixes step darker. `t3code/no-off-ladder-tints` holds `components/ui` to the
     ladder.
 
+14. **Pages with lists.** The sidebar lists, the window works, floats glance. Pull requests and
+    issues follow the thread rule: their footer icons swap what the sidebar lists (the thread
+    list's header row, then `SidebarItemCard`s under `SidebarItemGroupHeading`s: where and when,
+    the title, the key and one word of state), and the open item fills the window like a thread,
+    its crumbs and actions in the frame header at the header's height (`ListPageWindow`,
+    `BarContext`). No tabs, no columns of controls on the page. Usage, a thing you glance at, is a
+    float from its icon (`UsageGlance`); the full cost and tokens open from it.
+
 ## Mechanics
 
 - **Nest.** Rings build every inset and corner: `nest-region` (24), `nest-box` (16), `nest-row`

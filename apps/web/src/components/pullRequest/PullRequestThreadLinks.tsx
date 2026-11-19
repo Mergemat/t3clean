@@ -34,6 +34,7 @@ import { toastManager } from "../ui/toast";
 import { PullRequestGlyph } from "./pullRequestIcons";
 
 import { changeRequestTermKind } from "./changeRequestTerm";
+import { useBarControlSize } from "../barSize";
 
 interface PullRequestThreadLinksProps {
   environmentId: EnvironmentId;
@@ -63,6 +64,7 @@ function EnabledPullRequestThreadLinks({
   display,
   onPickerOpenChange,
 }: PullRequestThreadLinksProps) {
+  const controlSize = useBarControlSize();
   const parsedUrl = sourceControlClients.parseChangeRequestUrl(url);
   const parsed = parsedUrl?.link ?? null;
   const term = changeRequestTermKind(
@@ -157,7 +159,7 @@ function EnabledPullRequestThreadLinks({
           <TooltipTrigger
             render={
               <Button
-                size="xs"
+                size={controlSize.text}
                 variant="ghost"
                 aria-label={linkedThreadsLabel}
                 onClick={() =>

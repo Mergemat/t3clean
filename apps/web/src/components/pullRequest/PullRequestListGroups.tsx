@@ -1,5 +1,4 @@
 import type { EnvironmentId, PullRequestAction } from "@t3tools/contracts";
-import { EyeIcon, LayersIcon, PenLineIcon, UsersIcon, type LucideIcon } from "lucide-react";
 import { useMessages } from "gt-react";
 import { useDeferredValue, type RefCallback } from "react";
 
@@ -15,12 +14,7 @@ import {
   PullRequestSpeedModeProvider,
   type PullRequestSpeedActionResult,
 } from "./PullRequestSpeedActions";
-
-const GROUP_ICONS: Record<string, LucideIcon> = {
-  authored: PenLineIcon,
-  reviewRequested: EyeIcon,
-  others: UsersIcon,
-};
+import { SidebarItemGroupHeading } from "../sidebar/SidebarItemCard";
 
 const MATCHED_ELSEWHERE_SCORE = 10;
 const FIRST_PAINT_ROWS = 24;
@@ -44,14 +38,7 @@ function PullRequestGroupHeader({
   count: number;
 }) {
   const resolve = useMessages();
-  const Icon = GROUP_ICONS[group.key] ?? LayersIcon;
-  return (
-    <div className="flex items-center gap-2 px-2 pb-1 text-meta font-medium text-ink-2">
-      <Icon aria-hidden className="size-4 shrink-0" />
-      <h2 className="shrink-0">{resolve(group.label)}</h2>
-      <span className="shrink-0 tabular-nums text-ink-3">{count}</span>
-    </div>
-  );
+  return <SidebarItemGroupHeading label={resolve(group.label)} count={count} />;
 }
 
 export function PullRequestListGroups({

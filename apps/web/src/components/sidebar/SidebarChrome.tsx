@@ -33,6 +33,9 @@ import {
   useSidebar,
 } from "../ui/sidebar";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
+import { Popover, PopoverPopup, PopoverTrigger } from "../ui/popover";
+import { UsageGlance } from "../usage/UsageGlance";
+import { useNowMinute } from "../../hooks/useNowMinute";
 import { readPullRequestListPreferences } from "../pullRequest/pullRequestListPreferences";
 import { readIssueListPreferences } from "../issue/issueListPreferences";
 import { IssueGlyph } from "../issue/issuePresentation";
@@ -225,6 +228,39 @@ function SidebarUtilityItem({
   );
 }
 
+/** Usage is something you glance at, so it opens as a float from its icon, like thread details;
+ *  cost and token history open on the full page from there. */
+function SidebarUsageItem({ onOpenPage }: { onOpenPage: () => void }) {
+  const gt = useGT();
+  const nowMinute = useNowMinute();
+  const label = gt("Usage");
+  return (
+    <SidebarMenuItem className="shrink-0">
+      <Popover>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <PopoverTrigger render={<SidebarMenuButton aria-label={label} size="icon" />} />
+            }
+          >
+            <ChartNoAxesColumnIcon />
+          </TooltipTrigger>
+          <TooltipPopup side="top">{label}</TooltipPopup>
+        </Tooltip>
+        <PopoverPopup side="top" align="start" className="w-72">
+          <div className="max-h-120 overflow-y-auto">
+            <UsageGlance now={Date.parse(`${nowMinute}:00Z`)} />
+          </div>
+          <Button variant="ghost-muted" size="sm" className="mt-2 w-full" onClick={onOpenPage}>
+            <T>Cost and tokens</T>
+            <ArrowRightIcon />
+          </Button>
+        </PopoverPopup>
+      </Popover>
+    </SidebarMenuItem>
+  );
+}
+
 const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
   const navigate = useNavigate();
   const navigateToMainApp = useNavigateToMainApp();
@@ -300,11 +336,7 @@ const SidebarUtilityMenu = memo(function SidebarUtilityMenu() {
               onClick={handleIssuesClick}
             />
           ) : null}
-          <SidebarUtilityItem
-            icon={<ChartNoAxesColumnIcon />}
-            label={gt("Usage")}
-            onClick={handleUsageClick}
-          />
+          <SidebarUsageItem onOpenPage={handleUsageClick} />
         </>
       )}
       <SidebarThreadUndoNotice />

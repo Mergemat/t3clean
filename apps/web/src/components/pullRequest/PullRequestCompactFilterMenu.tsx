@@ -1,9 +1,7 @@
 import { useGT } from "gt-react";
-import { ChevronDownIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { cn } from "~/lib/utils";
-import { Button } from "../ui/button";
+import { SidebarHeaderIconButton } from "../sidebar/SidebarThreadHeader";
 import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../ui/menu";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import {
@@ -11,26 +9,19 @@ import {
   type PullRequestFilterOption,
 } from "./PullRequestListFilters";
 
+/** A sidebar list's one-choice menu (sort, tracker): an icon in the list's header row. */
 export function PullRequestCompactFilterMenu<Value extends string>({
   label,
   triggerIcon,
-  triggerLabel,
-  outlined = false,
-  iconOnly = false,
   value,
   options,
   onChange,
-  className,
 }: {
   label: string;
-  triggerIcon?: ReactNode;
-  triggerLabel?: string;
-  outlined?: boolean;
-  iconOnly?: boolean;
+  triggerIcon: ReactNode;
   value: Value;
   options: ReadonlyArray<PullRequestFilterOption<Value>>;
   onChange: (value: Value) => void;
-  className?: string;
 }) {
   const gt = useGT();
   const current = options.find((option) => option.value === value) ?? options[0];
@@ -38,32 +29,13 @@ export function PullRequestCompactFilterMenu<Value extends string>({
   return (
     <Menu>
       <MenuTrigger
-        aria-label={
-          triggerLabel || iconOnly ? gt("{label}: {value}", { label, value: current.label }) : label
-        }
-        title={iconOnly ? gt("{label}: {value}", { label, value: current.label }) : undefined}
         render={
-          outlined ? (
-            <Button variant="outline" size={iconOnly ? "icon-sm" : "sm"} />
-          ) : (
-            <Button variant="ghost-muted" size="sm" />
-          )
+          <SidebarHeaderIconButton
+            label={gt("{label}: {value}", { label, value: current.label })}
+          />
         }
-        className={cn("min-w-0", className)}
       >
-        {iconOnly ? (
-          <current.Icon aria-hidden className="size-4" />
-        ) : triggerLabel ? (
-          <>
-            {triggerIcon}
-            <span>{triggerLabel}</span>
-          </>
-        ) : (
-          <>
-            <span className="truncate">{current.label}</span>
-            <ChevronDownIcon aria-hidden className="size-3 shrink-0 text-ink-2" />
-          </>
-        )}
+        {triggerIcon}
       </MenuTrigger>
       <MenuPopup align="start" side="bottom">
         <MenuRadioGroup value={value} onValueChange={(next) => onChange(next as Value)}>

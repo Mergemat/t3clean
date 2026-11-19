@@ -63,6 +63,7 @@ import { PullRequestThreadLinks } from "./PullRequestThreadLinks";
 import { useInlineActionConfirm } from "./useInlineActionConfirm";
 
 import { changeRequestTermKind } from "./changeRequestTerm";
+import { useBarControlSize } from "../barSize";
 
 /** Everything else the reader can do with the pull request, behind the header's overflow button. */
 export function PullRequestActionsMenu({
@@ -160,6 +161,7 @@ export function PullRequestActionsMenu({
   openOnHostText: string;
   copyReference: (value: string, failureTitle: string) => void;
 }) {
+  const controlSize = useBarControlSize();
   const gt = useGT();
   const resolve = useMessages();
   const keybindings = useAtomValue(primaryServerKeybindingsAtom);
@@ -225,7 +227,7 @@ export function PullRequestActionsMenu({
                           { term: changeRequestTermKind(terminology) },
                         )
                   }
-                  size="icon-xs"
+                  size={controlSize.icon}
                   variant="ghost-muted"
                 />
               }

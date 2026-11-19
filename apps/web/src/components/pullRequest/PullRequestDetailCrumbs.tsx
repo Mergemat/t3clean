@@ -116,6 +116,7 @@ export function PullRequestDetailCrumbs({
   repositoryUrl,
   openOnHostText,
   onBack,
+  frame = false,
 }: {
   detail: CrumbsPullRequest | null;
   toneClassName: string | null;
@@ -123,16 +124,19 @@ export function PullRequestDetailCrumbs({
   repositoryUrl: string | null;
   openOnHostText: string;
   onBack: (() => void) | undefined;
+  /** In the frame header they read as its breadcrumb: its size and spacing, its inset. */
+  frame?: boolean;
 }) {
   const gt = useGT();
   const ready = detail !== null && toneClassName !== null;
   return (
-    <div className="pl-4 grid h-6 min-w-0 items-center overflow-hidden">
+    <div className={cn("grid h-6 min-w-0 items-center overflow-hidden", !frame && "pl-4")}>
       <div
         aria-hidden={condensed}
         inert={condensed}
         className={cn(
           ROW_CLASS_NAME,
+          frame && "gap-2 sm:text-body",
           condensed
             ? "pointer-events-none -translate-y-1 opacity-0 duration-100"
             : "translate-y-0 opacity-100 delay-50 duration-150",
@@ -179,6 +183,7 @@ export function PullRequestDetailCrumbs({
         inert={!condensed}
         className={cn(
           ROW_CLASS_NAME,
+          frame && "gap-2 sm:text-body",
           condensed
             ? "translate-y-0 opacity-100 delay-50 duration-150"
             : "pointer-events-none translate-y-1 opacity-0 duration-100",

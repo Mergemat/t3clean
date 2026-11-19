@@ -74,10 +74,14 @@ export function PullRequestRowLines({
   updatedAt?: string | null | undefined;
 }) {
   return (
-    <span className="min-w-0 flex-1">
-      <span className="flex min-w-0 items-center gap-2">
+    // Narrow (the sidebar, the details card), the title takes its own line under the number and
+    // status, like a thread card; wide, it sits between them.
+    <span className="@container/row-lines block min-w-0 flex-1">
+      <span className="flex min-w-0 flex-wrap items-center gap-x-2 @xs/row-lines:flex-nowrap">
         {number}
-        <span className="min-w-0 truncate text-body">{title}</span>
+        <span className="min-w-0 truncate text-body @max-xs/row-lines:order-last @max-xs/row-lines:basis-full">
+          {title}
+        </span>
         {signals ? (
           <span className="flex shrink-0 items-center gap-1 text-meta">{signals}</span>
         ) : null}

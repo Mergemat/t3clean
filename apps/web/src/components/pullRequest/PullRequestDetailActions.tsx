@@ -30,6 +30,7 @@ import type { PickableEnvironment } from "./pullRequestProjectAssignment.logic";
 import { useInlineActionConfirm } from "./useInlineActionConfirm";
 
 import type { ChangeRequestTermKind } from "./changeRequestTerm";
+import { useBarControlSize } from "../barSize";
 
 export type PerformPullRequestAction = (
   action: PullRequestAction,
@@ -96,6 +97,7 @@ export function PullRequestCheckoutMenu({
   onActingEnvironmentChange: (environmentId: EnvironmentId) => void;
   term: ChangeRequestTermKind;
 }) {
+  const controlSize = useBarControlSize();
   const gt = useGT();
   return (
     <Menu>
@@ -106,7 +108,7 @@ export function PullRequestCheckoutMenu({
               disabled={handoff !== null || checkoutRoot === null}
               render={
                 <Button
-                  size="xs"
+                  size={controlSize.text}
                   variant="outline"
                   aria-label={
                     handoff?.startsWith("checkout") ? gt("Checking out...") : gt("Check out")
@@ -176,6 +178,7 @@ export function PullRequestResolveConflictsButton({
   unavailable: boolean;
   onResolve: () => void;
 }) {
+  const controlSize = useBarControlSize();
   const gt = useGT();
   return (
     <Tooltip>
@@ -183,7 +186,7 @@ export function PullRequestResolveConflictsButton({
         render={
           <span className="inline-flex shrink-0">
             <Button
-              size="xs"
+              size={controlSize.text}
               variant="destructive-outline"
               disabled={handoff !== null || unavailable}
               onClick={onResolve}
@@ -232,6 +235,7 @@ export function PullRequestPrimaryAction({
   perform: PerformPullRequestAction;
   resolveConflicts: ReactNode;
 }) {
+  const controlSize = useBarControlSize();
   const gt = useGT();
   const inlineConfirm = useInlineActionConfirm(pullRequestKey);
   const actionPending = pendingAction !== null;
@@ -241,7 +245,12 @@ export function PullRequestPrimaryAction({
         <Tooltip>
           <TooltipTrigger
             render={
-              <Badge size="control" variant="info" role="img" aria-label={armedAutoMergeLabel}>
+              <Badge
+                size={controlSize.badge}
+                variant="info"
+                role="img"
+                aria-label={armedAutoMergeLabel}
+              >
                 <PullRequestGlyph.merged aria-hidden className="size-4" />
                 <span className="@max-[30rem]/pr-header:hidden">{armedAutoMergeLabel}</span>
               </Badge>
@@ -262,7 +271,7 @@ export function PullRequestPrimaryAction({
             render={
               <span className="inline-flex shrink-0">
                 <Button
-                  size="xs"
+                  size={controlSize.text}
                   variant="default"
                   disabled={actionPending}
                   onClick={() => void perform("ready")}
@@ -286,7 +295,7 @@ export function PullRequestPrimaryAction({
             render={
               <span className="inline-flex shrink-0">
                 <Button
-                  size="xs"
+                  size={controlSize.text}
                   variant="default"
                   disabled={actionPending}
                   aria-disabled={mergeBlockedReason !== null || undefined}
@@ -341,7 +350,12 @@ export function PullRequestPrimaryAction({
         <Tooltip>
           <TooltipTrigger
             render={
-              <Badge size="control" variant="info" role="img" aria-label={armedAutoMergeLabel}>
+              <Badge
+                size={controlSize.badge}
+                variant="info"
+                role="img"
+                aria-label={armedAutoMergeLabel}
+              >
                 <PullRequestGlyph.merged aria-hidden className="size-4" />
                 <span className="@max-[30rem]/pr-header:hidden">{armedAutoMergeLabel}</span>
               </Badge>
@@ -359,7 +373,7 @@ export function PullRequestPrimaryAction({
             render={
               <span className="inline-flex shrink-0">
                 <Button
-                  size="xs"
+                  size={controlSize.text}
                   variant="default"
                   disabled={actionPending}
                   aria-disabled={mergeBlockedReason !== null || undefined}
@@ -409,7 +423,7 @@ export function PullRequestPrimaryAction({
         </Tooltip>
       ) : (primaryAction === "merged" || primaryAction === "closed") &&
         statePresentation !== null ? (
-        <Badge size="control" variant="outline">
+        <Badge size={controlSize.badge} variant="outline">
           <span className={cn("flex items-center gap-1", statePresentation.toneClassName)}>
             <statePresentation.Icon className="size-4" />
             {statePresentation.label}

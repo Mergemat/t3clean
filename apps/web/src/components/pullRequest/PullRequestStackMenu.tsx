@@ -33,6 +33,7 @@ import { PullRequestGlyph } from "./pullRequestIcons";
 import { readableFailure } from "./pullRequestDetail.logic";
 
 import { changeRequestTermKind } from "./changeRequestTerm";
+import { useBarControlSize } from "../barSize";
 
 export function PullRequestStackMenu({
   hostLabel,
@@ -63,6 +64,7 @@ export function PullRequestStackMenu({
   onSelect?: ((reference: PullRequestRef) => void) | undefined;
   onActed: () => void;
 }) {
+  const controlSize = useBarControlSize();
   const gt = useGT();
   const [open, setOpen] = useState(false);
   const [confirmation, setConfirmation] = useState<"merge" | "update-branch" | null>(null);
@@ -166,7 +168,7 @@ export function PullRequestStackMenu({
                 render={
                   <Button
                     variant="ghost"
-                    size="xs"
+                    size={controlSize.text}
                     aria-label={gt("Stack {number}, layer {position} of {size}", {
                       number: stack.number,
                       position,
@@ -247,7 +249,7 @@ export function PullRequestStackMenu({
               <span className="inline-flex">
                 <Button
                   variant="default"
-                  size="xs"
+                  size={controlSize.text}
                   disabled={mergeDisabled && !stale}
                   aria-disabled={mergeDisabled || undefined}
                   aria-description={stale ? staleReason : undefined}

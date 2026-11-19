@@ -5,11 +5,10 @@ import type {
   IssueListState,
   ProjectId,
 } from "@t3tools/contracts";
-import { FolderGit2Icon, LayersIcon, ListFilterIcon, TagIcon, UserIcon } from "lucide-react";
+import { FolderGit2Icon, LayersIcon, TagIcon, UserIcon } from "lucide-react";
 import { T, useGT } from "gt-react";
 import { useState } from "react";
 
-import { Button } from "~/components/ui/button";
 import {
   Menu,
   MenuCheckboxItem,
@@ -22,13 +21,13 @@ import {
   MenuSub,
   MenuSubPopup,
   MenuSubTrigger,
-  MenuTrigger,
 } from "~/components/ui/menu";
 import { useIssueFilterCandidates } from "~/state/issues";
 
 import type { ProjectFaviconProject } from "../ProjectFavicon";
 
 import {
+  FiltersMenuTrigger,
   PullRequestFilterRadioSubmenu,
   pullRequestProjectKey,
   type PullRequestFilterOption,
@@ -56,6 +55,10 @@ export function IssueFiltersMenu(props: {
   projects: ReadonlyArray<ProjectFaviconProject & { readonly id: ProjectId }>;
   project: { environmentId: EnvironmentId; projectId: ProjectId } | undefined;
   onProject: (project: { environmentId: EnvironmentId; projectId: ProjectId } | undefined) => void;
+  /** Shown only when the list reads more than one tracker. */
+  trackers: ReadonlyArray<PullRequestFilterOption<string>>;
+  tracker: string;
+  onTracker: (tracker: string) => void;
 }) {
   const gt = useGT();
   const [open, setOpen] = useState(false);
@@ -64,6 +67,7 @@ export function IssueFiltersMenu(props: {
     props.involvement !== "all",
     props.project,
     props.assignee,
+    props.tracker,
     ...props.labels,
   ].filter(Boolean).length;
   const projectValue = props.project
@@ -90,17 +94,7 @@ export function IssueFiltersMenu(props: {
   const scopes = open ? props.scopes : [];
   return (
     <Menu onOpenChange={setOpen}>
-      <MenuTrigger render={<Button variant="outline" size="sm" />}>
-        <ListFilterIcon className="size-4" />
-        <span>
-          <T>Filters</T>
-        </span>
-        {count > 0 ? (
-          <span className="rounded-full bg-muted px-2 text-meta text-ink-2 tabular-nums">
-            {count}
-          </span>
-        ) : null}
-      </MenuTrigger>
+      <FiltersMenuTrigger count={count} />
       <MenuPopup align="end" side="bottom">
         <PullRequestFilterRadioSubmenu
           label={gt("State", { $context: "issue state filter" })}
@@ -114,6 +108,14 @@ export function IssueFiltersMenu(props: {
           options={props.involvementOptions}
           onChange={props.onInvolvement}
         />
+        {props.trackers.length > 1 ? (
+          <PullRequestFilterRadioSubmenu
+            label={gt("Tracker", { $context: "issue tracker filter" })}
+            value={props.tracker}
+            options={props.trackers}
+            onChange={props.onTracker}
+          />
+        ) : null}
         {props.projects.length > 1 || props.project ? (
           <PullRequestFilterRadioSubmenu
             label={gt("Project")}
