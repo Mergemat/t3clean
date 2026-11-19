@@ -717,6 +717,22 @@ html[data-show-grid] .nest-text {
   }
 }
 
+@utility content-glass {
+  /* The chat layer (see Levels): what sits in a window, the composer with the messages, code and
+     changed files. Glass in the window colour with a light edge; it casts no shadow, because
+     only floats sit above the layer they cover. */
+  background: var(--window-content-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--level-line);
+  --border: var(--level-line);
+  --contrast-border: var(--level-line);
+
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    background: var(--card) !important;
+  }
+}
+
 @utility topbar-scroll-fade {
   -webkit-mask-image:
     linear-gradient(
@@ -2937,10 +2953,10 @@ code {
 
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
      through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
-     light edge and a soft shadow lift it. A drawer is
-     behind its float, so it is the same glass a shade darker. */
+     light edge and a soft shadow lift it. A drawer is behind the composer, so it is the composer's
+     glass a shade darker: halfway to the frame. */
   --float-tone: var(--popover);
-  --drawer-tone: color-mix(in srgb, var(--foreground) 3%, var(--popover));
+  --drawer-tone: color-mix(in srgb, var(--app-chrome-background) 50%, var(--card));
   --float-fill: color-mix(
     in srgb,
     var(--float-tone) 18%,
@@ -2977,7 +2993,6 @@ code {
 
   @variant dark {
     --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
-    --drawer-tone: color-mix(in srgb, var(--foreground) 1%, var(--card));
     --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
 }
@@ -3136,6 +3151,38 @@ html.electron-windows {
 [data-chat-header] + div .topbar-scroll-fade {
   -webkit-mask-image: none;
   mask-image: none;
+}
+
+/* The details card inline is a piece of the frame reaching into the window's top right corner.
+   These are the window's own corners where its edge turns around the card: one on the top edge,
+   left of the card, and one on the right edge, below it. */
+[data-thread-details-panel="inline"]::before,
+[data-thread-details-panel="inline"]::after {
+  content: "";
+  position: absolute;
+  width: var(--radius-region);
+  height: var(--radius-region);
+  pointer-events: none;
+}
+
+[data-thread-details-panel="inline"]::before {
+  top: 0;
+  right: 100%;
+  background: radial-gradient(
+    circle at 0 100%,
+    transparent var(--radius-region),
+    var(--app-chrome-background) var(--radius-region)
+  );
+}
+
+[data-thread-details-panel="inline"]::after {
+  top: 100%;
+  right: 0;
+  background: radial-gradient(
+    circle at 0 100%,
+    transparent var(--radius-region),
+    var(--app-chrome-background) var(--radius-region)
+  );
 }
 
 [data-slot="composer-context-strip"] {
@@ -3403,7 +3450,7 @@ html.electron-windows {
   [data-slot="composer-shell"] {
     --chat-composer-drawer-inset: var(--radius-box);
     /* Controls that cut through to the composer's face read its fill here. */
-    --chat-composer-glass-surface: var(--float-fill);
+    --chat-composer-glass-surface: var(--window-content-fill);
   }
 
   [data-slot="composer-banner"] {

@@ -30,12 +30,12 @@ function Host({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-/** The composer's card: a float (see Height in DESIGN.md). Its drawers stand on its top edge. */
+/** The composer's card: chat content, on the chat layer with the messages. Its drawers stand on its top edge. */
 function Main({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-chat-composer-main-surface="true"
-      className={cn("dropdown-glass group relative z-10 rounded-box", className)}
+      className={cn("content-glass group relative z-10 rounded-box", className)}
       {...props}
     />
   );
