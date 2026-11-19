@@ -1411,8 +1411,8 @@ const SidebarThreadRow = memo(function SidebarThreadRow(props: SidebarThreadRowP
       // The hints are the rendered heights inside py-1. Revealing the open thread measures rows
       // that have not rendered yet, so a hint off by a pixel lands it a pixel short per row above.
       className={cn(
-        "list-none py-1 content-visibility-auto contain-intrinsic-block-23",
-        metaLineEmpty && "contain-intrinsic-block-16",
+        "list-none py-1 content-visibility-auto contain-intrinsic-block-21",
+        metaLineEmpty && "contain-intrinsic-block-15",
         sortable?.isDragging && "relative z-20",
       )}
     >
@@ -1439,8 +1439,9 @@ const SidebarThreadRow = memo(function SidebarThreadRow(props: SidebarThreadRowP
         >
           <div
             className={cn(
-              // Every line sits in a 20px slot, one step apart; the row's height comes from its lines.
-              "relative z-10 flex flex-col gap-2 px-(--sidebar-content-inset) py-2",
+              // Every line sits in a 20px slot, half a step apart (lines of one item, like rows in
+              // a list); the row's height comes from its lines.
+              "relative z-10 flex flex-col gap-1 px-(--sidebar-content-inset) py-2",
             )}
           >
             <div className="flex h-5 min-w-0 items-center gap-2">
