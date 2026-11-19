@@ -1,3 +1,4 @@
+import { T } from "gt-react";
 import { type ReactNode, useState } from "react";
 
 import { Collapsible, CollapsiblePanel } from "../ui/collapsible";
@@ -26,7 +27,9 @@ export function AdvancedSettings({
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
       <div className="flex min-h-8 items-center px-2">
-        <SettingsFoldTrigger>Advanced</SettingsFoldTrigger>
+        <SettingsFoldTrigger>
+          <T>Advanced</T>
+        </SettingsFoldTrigger>
       </div>
       <CollapsiblePanel>{children}</CollapsiblePanel>
     </Collapsible>

@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import { BookmarkIcon } from "lucide-react";
 import { memo } from "react";
 
@@ -11,6 +12,7 @@ export const ComposerStashBadge = memo(function ComposerStashBadge(props: {
   pulseKey: number;
   onToggleMenu: () => void;
 }) {
+  const gt = useGT();
   if (props.count === 0) return null;
   const pulsed = props.pulseKey > 0;
 
@@ -21,7 +23,12 @@ export const ComposerStashBadge = memo(function ComposerStashBadge(props: {
       size="sm"
       data-prompt-stash-badge="true"
       data-pressed={props.menuOpen || undefined}
-      aria-label={`Stashed prompts: ${props.count}. ${props.menuOpen ? "Close" : "Open"} stash.`}
+      aria-label={
+        props.menuOpen
+          ? gt("Stashed prompts: {count}. Close stash.", { count: props.count })
+          : gt("Stashed prompts: {count}. Open stash.", { count: props.count })
+      }
+
       aria-expanded={props.menuOpen}
       onPointerDown={(event) => event.preventDefault()}
       onClick={props.onToggleMenu}

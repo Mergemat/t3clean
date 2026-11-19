@@ -18,6 +18,7 @@ import noMobilePullRequestGlyphLiterals from "./rules/no-mobile-pull-request-gly
 import noNativeTitleTooltip from "./rules/no-native-title-tooltip.ts";
 import noSparklesIcon from "./rules/no-sparkles-icon.ts";
 import noUnreasonedStateSync from "./rules/no-unreasoned-state-sync.ts";
+import noUntranslatedCopy from "./rules/no-untranslated-copy.ts";
 import requireRegisteredListScroll from "./rules/require-registered-list-scroll.ts";
 import noOffLadderTints from "./rules/no-off-ladder-tints.ts";
 import oneLookPerLevel from "./rules/one-look-per-level.ts";
@@ -60,6 +61,7 @@ export default definePlugin({
     "no-native-title-tooltip": noNativeTitleTooltip,
     "no-sparkles-icon": noSparklesIcon,
     "no-unreasoned-state-sync": noUnreasonedStateSync,
+    "no-untranslated-copy": noUntranslatedCopy,
     "require-registered-list-scroll": requireRegisteredListScroll,
     "no-off-ladder-tints": noOffLadderTints,
     "one-look-per-level": oneLookPerLevel,

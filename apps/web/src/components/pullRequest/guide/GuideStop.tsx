@@ -13,6 +13,7 @@ import {
   MessageCircleQuestionIcon,
   MessageSquareIcon,
 } from "lucide-react";
+import { msg, T, useGT, useMessages, Var } from "gt-react";
 import type { ReactNode } from "react";
 
 import { getDiffLineStat } from "~/lib/diffRendering";
@@ -31,11 +32,11 @@ import { GuideProse } from "./GuideProse";
 import { letterStopNotes } from "@t3tools/client-runtime/review-guide-tour";
 
 const ATTENTION_LABELS = {
-  tradeoff: "A tradeoff to weigh",
-  contract: "A contract to check",
-  product: "A product call",
-  risk: "A risk to judge",
-  accessibility: "An accessibility call",
+  tradeoff: msg("A tradeoff to weigh"),
+  contract: msg("A contract to check"),
+  product: msg("A product call"),
+  risk: msg("A risk to judge"),
+  accessibility: msg("An accessibility call"),
 } as const satisfies Record<PullRequestReviewGuideAttention["kind"], string>;
 
 export function GuideStop({
@@ -71,6 +72,8 @@ export function GuideStop({
   onFinish: (() => void) | null;
   onOpenFile: (path: string) => void;
 }) {
+  const gt = useGT();
+  const resolve = useMessages();
   const { lettered, byExcerpt } = letterStopNotes(stop);
   const excerptPaths = new Set(stop.excerpts.map((excerpt) => excerpt.path));
   const otherFiles = stop.files.filter((file) => !excerptPaths.has(file.path));
@@ -83,7 +86,9 @@ export function GuideStop({
         <Collapsible open={railOpen} onOpenChange={onRailOpenChange}>
           <header className="flex items-center justify-between gap-2">
             <p className="text-meta text-ink-2 tabular-nums @max-[56rem]/guide:hidden">
-              Stop {index + 1} of {stopCount}
+              <T>
+                Stop <Var>{index + 1}</Var> of <Var>{stopCount}</Var>
+              </T>
             </p>
             <CollapsibleTrigger
               render={
@@ -91,7 +96,9 @@ export function GuideStop({
               }
             >
               <span className="tabular-nums">
-                Stop {index + 1} of {stopCount}
+                <T>
+                  Stop <Var>{index + 1}</Var> of <Var>{stopCount}</Var>
+                </T>
               </span>
               <ChevronDownIcon aria-hidden className={cn(railOpen && "rotate-180")} />
             </CollapsibleTrigger>
@@ -99,7 +106,7 @@ export function GuideStop({
               <Button
                 size="icon-xs"
                 variant="outline"
-                aria-label="Previous stop"
+                aria-label={gt("Previous stop")}
                 disabled={index === 0}
                 onClick={() => onStep(-1)}
               >
@@ -108,7 +115,7 @@ export function GuideStop({
               <Button
                 size="icon-xs"
                 variant="outline"
-                aria-label="Next stop"
+                aria-label={gt("Next stop")}
                 disabled={index === stopCount - 1}
                 onClick={() => onStep(1)}
               >
@@ -137,7 +144,7 @@ export function GuideStop({
         {stop.attention !== null ? (
           <Alert controlAlignment="first-line">
             <EyeIcon />
-            <AlertTitle>{ATTENTION_LABELS[stop.attention.kind]}</AlertTitle>
+            <AlertTitle>{resolve(ATTENTION_LABELS[stop.attention.kind])}</AlertTitle>
             <AlertDescription>
               <div>
                 <GuideProse text={stop.attention.note} />
@@ -169,7 +176,7 @@ export function GuideStop({
         {otherFiles.length > 0 ? (
           <section className="flex flex-col gap-2">
             <h3 className="text-meta font-medium text-ink-2">
-              {stop.excerpts.length > 0 ? "Also in this stop" : "Files in this stop"}
+              {stop.excerpts.length > 0 ? gt("Also in this stop") : gt("Files in this stop")}
             </h3>
             <DiffWorkerPoolProvider>
               <ul className="flex flex-col overflow-hidden rounded-row border border-border/60">
@@ -201,12 +208,17 @@ export function GuideStop({
                         </CollapsibleTrigger>
                         <CollapsiblePanel animate={false}>
                           {diff !== undefined ? (
-                            <GuideFileDiff file={diff} loadDiffFiles={loadDiffFiles} />
+                            <GuideFileDiff
+                              path={file.path}
+                              file={diff}
+                              commenting={commenting}
+                              loadDiffFiles={loadDiffFiles}
+                            />
                           ) : (
                             <p className="px-2 py-2 text-meta text-ink-2">
                               {diffLoading
-                                ? "Loading the diff..."
-                                : "This file is not in the loaded diff."}
+                                ? gt("Loading the diff...")
+                                : gt("This file is not in the loaded diff.")}
                             </p>
                           )}
                         </CollapsiblePanel>
@@ -222,7 +234,9 @@ export function GuideStop({
         {stop.questions.length > 0 || onAsk !== null ? (
           <section className="flex flex-col gap-2">
             {stop.questions.length > 0 ? (
-              <h3 className="text-meta font-medium text-ink-2">Questions to consider</h3>
+              <h3 className="text-meta font-medium text-ink-2">
+                <T>Questions to consider</T>
+              </h3>
             ) : null}
             <div className="flex flex-col items-start gap-2">
               {stop.questions.map((question) =>
@@ -241,7 +255,7 @@ export function GuideStop({
                       aria-hidden
                       className="size-4 h-lh shrink-0 text-ink-2"
                     />
-                    <span className="sr-only">Ask an agent: </span>
+                    <span className="sr-only">{gt("Ask an agent: ")}</span>
                     <span>
                       <GuideProse text={question} plain />
                     </span>
@@ -251,7 +265,7 @@ export function GuideStop({
               {onAsk !== null ? (
                 <Button size="sm" variant="ghost-muted" onClick={() => onAsk("")}>
                   <MessageCircleQuestionIcon aria-hidden />
-                  Ask about this stop
+                  <T>Ask about this stop</T>
                 </Button>
               ) : null}
             </div>
@@ -261,13 +275,17 @@ export function GuideStop({
         <footer className="flex flex-wrap items-center justify-end gap-2 pt-4">
           {nextTitle !== null ? (
             <Button wrap className="max-w-full" onClick={() => onStep(1)}>
-              <span className="min-w-0 break-words">Next: {nextTitle}</span>
+              <span className="min-w-0 break-words">
+                <T>
+                  Next: <Var>{nextTitle}</Var>
+                </T>
+              </span>
               <ArrowRightIcon aria-hidden />
             </Button>
           ) : onFinish !== null ? (
             <Button onClick={onFinish}>
               <MessageSquareIcon aria-hidden />
-              Finish review
+              <T>Finish review</T>
             </Button>
           ) : null}
         </footer>

@@ -1,6 +1,7 @@
 import { useAtomValue } from "@effect/atom-react";
 import { EnvironmentId } from "@t3tools/contracts";
 import { Atom } from "effect/reactivity";
+import { msg, T, useGT, useMessages } from "gt-react";
 import { Fragment, type RefObject, useRef } from "react";
 
 import { environmentThreadShells } from "~/state/threads";
@@ -84,9 +85,9 @@ export function UpdateEverythingDialog({
 }
 
 const APP_LABELS = {
-  "this-app": "This app",
-  server: "Server",
-  "desktop-app": "Desktop app",
+  "this-app": msg("This app"),
+  server: msg("Server"),
+  "desktop-app": msg("Desktop app"),
 } as const;
 
 function UpdateEverythingDialogContent({
@@ -96,12 +97,14 @@ function UpdateEverythingDialogContent({
   onConfirm,
   cancelRef,
   title,
-  confirmLabel = "Update",
+  confirmLabel,
   notes = [],
   disabledReason = null,
   busy = false,
   checking = false,
 }: UpdateEverythingDialogContentProps) {
+  const gt = useGT();
+  const m = useMessages();
   const stopped = useAtomValue(
     runningThreadCountAtom(
       restarts
@@ -119,7 +122,6 @@ function UpdateEverythingDialogContent({
     ),
   );
   const running = stopped + continuing;
-  const threads = `${running} running ${running === 1 ? "thread" : "threads"}`;
   const restarting = new Set(restarts.map((machine) => machine.environmentId));
   const updating = rows.filter((row) => row.app !== null || row.providers.length > 0);
   const skipped = rows.filter((row) => row.skipped !== null);
@@ -128,7 +130,10 @@ function UpdateEverythingDialogContent({
     <>
       <AlertDialogHeader className="shrink-0">
         <AlertDialogTitle>
-          {title ?? `Update ${updating.length} ${updating.length === 1 ? "machine" : "machines"}?`}
+          {title ??
+            gt("{count, plural, one {Update {count} machine?} other {Update {count} machines?}}", {
+              count: updating.length,
+            })}
         </AlertDialogTitle>
         {/* Only what the rows don't say: which T3 Code version, and whether more may come. */}
         {version !== null || checking ? (
@@ -139,7 +144,7 @@ function UpdateEverythingDialogContent({
               </>
             ) : null}
             {version !== null && checking ? " · " : null}
-            {checking ? "Checking for more…" : null}
+            {checking ? gt("Checking for more…") : null}
           </AlertDialogDescription>
         ) : null}
       </AlertDialogHeader>
@@ -152,12 +157,18 @@ function UpdateEverythingDialogContent({
             </p>
           ))}
           {/* Rows to the eye, a table to a screen reader: each value keeps its column. */}
-          <div role="table" aria-label="Machines to update" className="flex flex-col gap-1">
+          <div role="table" aria-label={gt("Machines to update")} className="flex flex-col gap-1">
             <div role="row" className="sr-only">
-              <span role="columnheader">Machine</span>
+              <span role="columnheader">
+                <T>Machine</T>
+              </span>
               <span role="columnheader">T3 Code</span>
-              <span role="columnheader">Providers</span>
-              <span role="columnheader">Running threads</span>
+              <span role="columnheader">
+                <T>Providers</T>
+              </span>
+              <span role="columnheader">
+                <T>Running threads</T>
+              </span>
             </div>
             {updating.map((row) => (
               <div
@@ -171,8 +182,10 @@ function UpdateEverythingDialogContent({
                 </span>
                 <span className="flex min-w-0 shrink-0 flex-wrap items-baseline justify-end gap-x-2 text-right text-ink-2">
                   <span role="cell" className="whitespace-nowrap empty:hidden">
-                    {row.app !== null ? APP_LABELS[row.app] : null}
-                    {row.app === "this-app" ? ", restarts last" : null}
+                    {row.app !== null ? m(APP_LABELS[row.app]) : null}
+                    {row.app === "this-app"
+                      ? gt(", restarts last", { $context: "follows 'This app'" })
+                      : null}
                   </span>
                   {/* Provider names wrap between names, never inside one. */}
                   <span role="cell" className="empty:hidden">
@@ -195,7 +208,7 @@ function UpdateEverythingDialogContent({
           {skipped.length > 0 ? (
             <>
               <div className="flex h-8 items-end px-2 pb-1 text-meta font-medium text-ink-2">
-                Skipped
+                <T>Skipped</T>
               </div>
               {skipped.map((row) => (
                 <div
@@ -220,17 +233,29 @@ function UpdateEverythingDialogContent({
         ) : running > 0 ? (
           <p className="self-center text-ink-2 text-body max-sm:order-1 max-sm:text-center sm:mr-auto">
             {stopped === 0
-              ? `${threads} will be interrupted and can resume after the restart.`
+              ? gt(
+                  "{count, plural, one {{count} running thread will be interrupted and can resume after the restart.} other {{count} running threads will be interrupted and can resume after the restart.}}",
+                  { count: running },
+                )
               : continuing === 0
-                ? `${threads} will be interrupted.`
-                : `${threads} will be interrupted. ${continuing} can resume after the restart.`}
+                ? gt(
+                    "{count, plural, one {{count} running thread will be interrupted.} other {{count} running threads will be interrupted.}}",
+                    { count: running },
+                  )
+                : `${gt(
+                    "{count, plural, one {{count} running thread will be interrupted.} other {{count} running threads will be interrupted.}}",
+                    { count: running },
+                  )} ${gt(
+                    "{count, plural, one {{count} can resume after the restart.} other {{count} can resume after the restart.}}",
+                    { count: continuing },
+                  )}`}
           </p>
         ) : null}
         <AlertDialogClose ref={cancelRef} render={<Button variant="outline" disabled={busy} />}>
-          Cancel
+          <T>Cancel</T>
         </AlertDialogClose>
         <Button disabled={disabledReason !== null || busy} onClick={onConfirm}>
-          {confirmLabel}
+          {confirmLabel ?? gt("Update", { $context: "verb, confirms the update" })}
         </Button>
       </AlertDialogFooter>
     </>
@@ -239,5 +264,10 @@ function UpdateEverythingDialogContent({
 
 function RunningThreads({ environmentId }: { readonly environmentId: EnvironmentId }) {
   const count = useAtomValue(runningThreadCountAtom(environmentId));
-  return count > 0 ? <span className="whitespace-nowrap text-warning">{count} running</span> : null;
+  const gt = useGT();
+  return count > 0 ? (
+    <span className="whitespace-nowrap text-warning">
+      {gt("{count, plural, one {{count} running} other {{count} running}}", { count })}
+    </span>
+  ) : null;
 }

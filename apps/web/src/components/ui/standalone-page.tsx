@@ -25,6 +25,7 @@ export function StandalonePageHeader({
       <div className="flex items-baseline justify-between gap-3 text-ink-2">
         <span className="flex items-baseline gap-2" role="img" aria-label="T3 Code">
           <T3Wordmark className="h-3 w-auto shrink-0 text-ink-1" aria-hidden />
+          {/* oxlint-disable-next-line t3code/no-untranslated-copy -- product wordmark */}
           <span className="text-title font-medium tracking-tight">Code</span>
         </span>
         {context ? <span className="text-body">{context}</span> : null}

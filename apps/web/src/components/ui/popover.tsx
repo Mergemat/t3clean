@@ -94,6 +94,8 @@ function PopoverPopup({
           className={cn(
             "relative flex h-(--popup-height,auto) w-(--popup-width,auto) origin-(--transform-origin) text-popover-foreground outline-none transition duration-150 ease-out data-ending-style:scale-98 data-starting-style:scale-98 data-ending-style:opacity-0 data-starting-style:opacity-0",
             variant !== "panel" && "level-float",
+            // Without it, Chromium re-snaps text after the scale-in at fractional zoom, so hovered rows jump a pixel.
+            "will-change-transform",
             // Electron drag hit-testing ignores z-index; popups over a drag region would swallow hover.
             "app-region-no-drag",
             tooltipStyle && "w-fit text-meta",

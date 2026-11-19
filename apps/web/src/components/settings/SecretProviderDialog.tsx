@@ -1,6 +1,7 @@
 import type { EnvironmentId, SecretProviderConfig, SecretProviderId } from "@t3tools/contracts";
 import * as Result from "effect/Result";
 import { useState } from "react";
+import { T, useGT, useMessages, Var } from "gt-react";
 
 import { useUpdateEnvironmentSettings } from "../../hooks/useSettings";
 import { Button } from "../ui/button";
@@ -35,6 +36,8 @@ export function SecretProviderDialog({
   readonly existingIds: ReadonlySet<string>;
   readonly existing?: { readonly id: SecretProviderId; readonly config: SecretProviderConfig };
 }) {
+  const messages = useMessages();
+  const gt = useGT();
   const updateSettings = useUpdateEnvironmentSettings(environmentId);
   const [draft, setDraft] = useState<SecretProviderDraft>(
     existing ? draftFromSecretProvider(existing.config) : { name: "", account: "" },
@@ -44,6 +47,7 @@ export function SecretProviderDialog({
     draft,
     existingIds,
     existing ? { mode: "edit", id: existing.id } : { mode: "add" },
+    messages,
   );
   const issues = Result.isFailure(result) ? result.failure : {};
   const nameError = submitted ? issues.name : undefined;
@@ -67,11 +71,15 @@ export function SecretProviderDialog({
       <DialogPopup size="sm">
         <DialogHeader>
           <DialogTitle>
-            {existing ? `Edit ${existing.config.label}` : "Add a 1Password provider"}
+            {existing
+              ? gt("Edit {label}", { label: existing.config.label })
+              : gt("Add a 1Password provider")}
           </DialogTitle>
           <DialogDescription>
-            Provider variables on {environmentLabel} can read values from it by name. Values are
-            read with the op CLI on that server when a provider starts.
+            <T>
+              Provider variables on <Var>{environmentLabel}</Var> can read values from it by name.
+              Values are read with the op CLI on that server when a provider starts.
+            </T>
           </DialogDescription>
         </DialogHeader>
         <DialogPanel>
@@ -83,10 +91,10 @@ export function SecretProviderDialog({
               save();
             }}
           >
-            <Field label="Name" htmlFor="secret-provider-name" stacked>
+            <Field label={<T>Name</T>} htmlFor="secret-provider-name" stacked>
               <Input
                 id="secret-provider-name"
-                placeholder="Personal"
+                placeholder={gt("Personal")}
                 value={draft.name}
                 onChange={(event) => update({ name: event.target.value })}
                 maxLength={64}
@@ -106,7 +114,7 @@ export function SecretProviderDialog({
                 </p>
               ) : null}
             </Field>
-            <Field label="Account" htmlFor="secret-provider-account" stacked>
+            <Field label={<T>Account</T>} htmlFor="secret-provider-account" stacked>
               <Input
                 id="secret-provider-account"
                 placeholder="my.1password.com"
@@ -129,22 +137,24 @@ export function SecretProviderDialog({
                 </p>
               ) : null}
               <p className="text-meta text-ink-2">
-                The account shorthand, sign-in address without https://, or ID that op account list
-                shows.
+                <T>
+                  The account shorthand, sign-in address without https://, or ID that op account
+                  list shows.
+                </T>
               </p>
             </Field>
           </form>
         </DialogPanel>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            <T>Cancel</T>
           </Button>
           <Button
             type="submit"
             form="secret-provider-form"
             disabled={submitted && Result.isFailure(result)}
           >
-            {existing ? "Save changes" : "Add provider"}
+            {existing ? gt("Save changes") : gt("Add provider")}
           </Button>
         </DialogFooter>
       </DialogPopup>

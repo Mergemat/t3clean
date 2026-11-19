@@ -7,9 +7,11 @@ import {
 import type { ProviderOptionDescriptor, RuntimeMode } from "@t3tools/contracts";
 import type { EffortDisplay } from "@t3tools/contracts/settings";
 import { getProviderOptionCurrentLabel } from "@t3tools/shared/model";
+import { msg, T, useGT, useMessages } from "gt-react";
 import { ChevronRightIcon, ChevronUpIcon, WorkflowIcon } from "lucide-react";
 import { type KeyboardEvent, type ReactNode, useRef, useState } from "react";
 
+import { m, type MessageResolver } from "~/i18n/messages";
 import { cn } from "~/lib/utils";
 import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../ui/menu";
 import { Switch } from "../ui/switch";
@@ -78,22 +80,26 @@ export function describeComposerEffort(
   traits: TraitsSelectionInput | null,
   effortDisplay: EffortDisplay,
   size: ComposerControlSize,
+  resolve: MessageResolver = m,
 ): { suffix: ReactNode; detail: string | null } {
   if (!traits) return { suffix: null, detail: null };
-  const visibility = getTraitsSectionVisibility(traits);
+  const visibility = getTraitsSectionVisibility({ ...traits, resolve });
   if (!visibility.hasAnyControls) return { suffix: null, detail: null };
   const modelSelection =
     traits.instanceId && traits.model
       ? { instanceId: traits.instanceId, model: traits.model, options: traits.modelOptions ?? [] }
       : null;
   const primary = visibility.primarySelectDescriptor;
-  const display = buildTraitsTriggerDisplay({
-    descriptors: visibility.descriptors,
-    primarySelectDescriptorId: primary?.id ?? null,
-    ultrathinkPromptControlled: visibility.ultrathinkPromptControlled,
-    modelSelection,
-    reportedModelSelection: traits.reportedModelSelection,
-  });
+  const display = buildTraitsTriggerDisplay(
+    {
+      descriptors: visibility.descriptors,
+      primarySelectDescriptorId: primary?.id ?? null,
+      ultrathinkPromptControlled: visibility.ultrathinkPromptControlled,
+      modelSelection,
+      reportedModelSelection: traits.reportedModelSelection,
+    },
+    resolve,
+  );
   // The same reasoning control the column lists, wherever the agent put it among its options.
   const reasoning =
     columnControls(visibility.selectDescriptors, visibility.booleanDescriptors).effort
@@ -114,7 +120,9 @@ export function describeComposerEffort(
     : !reasoning
       ? null
       : reasoning.type === "boolean"
-        ? `${reasoning.label} ${reasoning.currentValue === true ? "On" : "Off"}`
+        ? reasoning.currentValue === true
+          ? resolve(msg("{option} On", { option: reasoning.label }))
+          : resolve(msg("{option} Off", { option: reasoning.label }))
         : ultrathink
           ? "Ultrathink"
           : (getProviderOptionCurrentLabel(
@@ -184,6 +192,7 @@ function ColumnRow(props: {
   disabled?: boolean;
   onPick: () => void;
 }) {
+  const gt = useGT();
   const rowProps = {
     type: "button",
     role: "radio",
@@ -202,12 +211,12 @@ function ColumnRow(props: {
       <span className="min-w-0 flex-1 truncate">{props.label}</span>
       {props.selected ? (
         props.isDefault ? (
-          <span className="sr-only">Default</span>
+          <span className="sr-only">{gt("Default", { $context: "marks the default option" })}</span>
         ) : null
       ) : props.isDefault ? (
         // Shown on the row you point at; the column stays as narrow as its levels.
         <span className="text-ink-2 text-meta opacity-0 group-hover/level:opacity-100 group-focus-visible/level:opacity-100">
-          Default
+          {gt("Default", { $context: "marks the default option" })}
         </span>
       ) : null}
     </>
@@ -293,6 +302,8 @@ function EffortLevels(props: { traits: TraitsSelectionInput }) {
 type TraitsSelection = ReturnType<typeof useTraitsSelection>;
 
 function EffortRows(props: { control: ColumnControl; traits: TraitsSelection; locked: boolean }) {
+  const gt = useGT();
+  const messages = useMessages();
   const { control, traits } = props;
   const { descriptor } = control;
   if (control.kind === "boolean") {
@@ -301,7 +312,11 @@ function EffortRows(props: { control: ColumnControl; traits: TraitsSelection; lo
         {([true, false] as const).map((value) => (
           <ColumnRow
             key={String(value)}
-            label={value ? "On" : "Off"}
+            label={
+              value
+                ? gt("On", { $context: "option state" })
+                : gt("Off", { $context: "option state" })
+            }
             selected={(control.descriptor.currentValue === true) === value}
             tabStop={(control.descriptor.currentValue === true) === value}
             onPick={() => traits.changeBoolean(descriptor.id, value)}
@@ -318,7 +333,9 @@ function EffortRows(props: { control: ColumnControl; traits: TraitsSelection; lo
   return (
     <div role="radiogroup" aria-label={descriptor.label} className="flex flex-col gap-1">
       {locked ? (
-        <div className="nest-text pb-2 text-ink-2 text-meta">{ULTRATHINK_IN_BODY_NOTE}</div>
+        <div className="nest-text pb-2 text-ink-2 text-meta">
+          {messages(ULTRATHINK_IN_BODY_NOTE)}
+        </div>
       ) : null}
       {choices.map((option, index) => (
         <ColumnRow
@@ -358,8 +375,10 @@ function OptionMenuRow(props: {
   /** Holds the column's tab stop when the model has no levels. */
   tabStop: boolean;
 }) {
+  const gt = useGT();
   const { descriptor, traits } = props;
   const [open, setOpen] = useState(false);
+
   const popupRef = useRef<HTMLDivElement>(null);
   const choices = selectableProviderOptionChoices(descriptor);
   const value = traits.selectValue(descriptor);
@@ -433,7 +452,11 @@ function OptionMenuRow(props: {
                     <span className="line-clamp-2 text-ink-2 text-meta">{choice.description}</span>
                   ) : null}
                 </span>
-                {choice.isDefault ? <span className="text-ink-2 text-meta">Default</span> : null}
+                {choice.isDefault ? (
+                  <span className="text-ink-2 text-meta">
+                    {gt("Default", { $context: "marks the default option" })}
+                  </span>
+                ) : null}
               </span>
             </MenuRadioItem>
           ))}
@@ -449,11 +472,17 @@ function OptionSwitchRow(props: {
   traits: TraitsSelection;
   tabStop: boolean;
 }) {
+  const gt = useGT();
   const { descriptor, traits } = props;
   const checked = descriptor.currentValue === true;
   return (
     <label className={cn(OPTION_ROW, "has-focus-visible:bg-tint-2")}>
-      <OptionRowText label={descriptor.label} value={checked ? "On" : "Off"} />
+      <OptionRowText
+        label={descriptor.label}
+        value={
+          checked ? gt("On", { $context: "option state" }) : gt("Off", { $context: "option state" })
+        }
+      />
       <Switch
         size="sm"
         checked={checked}
@@ -468,13 +497,19 @@ function OptionSwitchRow(props: {
 
 function NoEffortRow() {
   return (
-    <div className="nest-row flex h-8 items-center text-ink-2 text-body">No effort levels</div>
+    <div className="nest-row flex h-8 items-center text-ink-2 text-body">
+      <T>No effort levels</T>
+    </div>
   );
 }
 
 /** The model picker's effort column: the selected model's levels and its other options. */
 export function ComposerEffortColumn(props: { traits: TraitsSelectionInput | null }) {
-  const visibility = props.traits ? getTraitsSectionVisibility(props.traits) : null;
+  const gt = useGT();
+  const messages = useMessages();
+  const visibility = props.traits
+    ? getTraitsSectionVisibility({ ...props.traits, resolve: messages })
+    : null;
   const controls =
     props.traits && visibility
       ? columnControls(visibility.selectDescriptors, visibility.booleanDescriptors)
@@ -484,7 +519,10 @@ export function ComposerEffortColumn(props: { traits: TraitsSelectionInput | nul
       {/* Sits in the search row's slot, so the first level lines up with the first model. */}
       <div className="shrink-0 px-2 pt-2">
         <div className="nest-text flex h-8 items-center font-medium text-ink-2 text-meta">
-          {controls?.effort?.descriptor.label ?? (controls?.others.length ? "Options" : "Effort")}
+          {controls?.effort?.descriptor.label ??
+            (controls?.others.length
+              ? gt("Options", { $context: "heading for model options" })
+              : gt("Effort", { $context: "heading for reasoning effort levels" }))}
         </div>
       </div>
       {/* pt-item puts the first level on the same line as the first model. */}
@@ -502,19 +540,29 @@ export function ComposerEffortColumn(props: { traits: TraitsSelectionInput | nul
 // The footer's choices are the app's segmented toggle group: 32 tall with an 8 corner, so it is
 // concentric in the popup's corner, and one choice's options read as one shape.
 function SpeedControl(props: { traits: TraitsSelectionInput }) {
+  const gt = useGT();
   const traits = useTraitsSelection(props.traits);
   const { speedSelect, fastToggle } = splitSpeed(
     traits.selectDescriptors,
     traits.booleanDescriptors,
   );
   if (traits.modelIsUnavailable || (!speedSelect && !fastToggle)) return null;
-  const options: ReadonlyArray<{ id: string; label: string; description?: string | undefined }> =
-    speedSelect
-      ? selectableProviderOptionChoices(speedSelect)
-      : [
-          { id: "standard", label: "Standard" },
-          { id: "fast", label: "Fast" },
-        ];
+  const options: ReadonlyArray<{
+    id: string;
+    label: string;
+    /** The untranslated speed name that picks the bolt, when `label` is translated. */
+    speed?: string;
+    description?: string | undefined;
+  }> = speedSelect
+    ? selectableProviderOptionChoices(speedSelect)
+    : [
+        {
+          id: "standard",
+          speed: "Standard",
+          label: gt("Standard", { $context: "response speed" }),
+        },
+        { id: "fast", speed: "Fast", label: gt("Fast", { $context: "response speed" }) },
+      ];
   const value = speedSelect
     ? traits.selectValue(speedSelect)
     : fastToggle?.currentValue === true
@@ -533,10 +581,11 @@ function SpeedControl(props: { traits: TraitsSelectionInput }) {
       }}
     >
       {options.map((option) => {
+        const speed = option.speed ?? option.label;
         const content = (
           <>
-            {option.label === "Fast" || option.label === "Ultrafast" ? (
-              <FastBolt ultra={option.label === "Ultrafast"} />
+            {speed === "Fast" || speed === "Ultrafast" ? (
+              <FastBolt ultra={speed === "Ultrafast"} />
             ) : null}
             {option.label}
           </>
@@ -582,6 +631,7 @@ function PermissionsMenu(props: {
   options: ReadonlyArray<RuntimeModeOption>;
   onChange: (mode: RuntimeMode) => void;
 }) {
+  const gt = useGT();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const current = props.options.find((option) => option.mode === props.runtimeMode);
   if (!current) return null;
@@ -598,7 +648,8 @@ function PermissionsMenu(props: {
             ref={triggerRef}
             type="button"
             data-composer-permissions-trigger
-            aria-label={`Permissions: ${current.label}`}
+            aria-label={gt("Permissions: {mode}", { mode: current.label })}
+
             className="ms-auto flex h-8 cursor-pointer items-center gap-2 rounded-row px-2 text-ink-2 text-body outline-none hover:bg-tint-2 hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-popup-open:bg-tint-2 data-popup-open:text-ink-1"
           />
         }

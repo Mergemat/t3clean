@@ -1,10 +1,11 @@
 import { DEFAULT_UNIFIED_SETTINGS } from "@t3tools/contracts/settings";
+import { useGT, useMessages } from "gt-react";
 import { type ReactNode, useEffect, useState } from "react";
 
 import { cn } from "~/lib/utils";
 import { BACKDROP_STYLE, BACKDROPS } from "../chat/backdrops";
 import { SettingResetButton, SettingsSection } from "./settingsLayout";
-import { searchableSetting } from "./settingsSearch";
+import { useSearchableSetting } from "./settingsSearch";
 import { useScopedSettings, useUpdateScopedSettings } from "./useScopedSettings";
 
 const SPEED = 0.4;
@@ -16,7 +17,10 @@ const PREVIEW_CELL = 0.5;
 
 /** The background behind the chat, as a gallery: each tile runs its effect in the theme. */
 export function BackdropSettings() {
+  const gt = useGT();
+  const m = useMessages();
   const settings = useScopedSettings();
+  const searchableSetting = useSearchableSetting();
   // Each preview compiles a shader. Starting one per idle moment after the page has painted keeps
   // opening Appearance instant and leaves room for input between them.
   const [previewsStarted, setPreviewsStarted] = useState(0);
@@ -37,11 +41,11 @@ export function BackdropSettings() {
   return (
     <SettingsSection
       id={searchableSetting("dither-backdrop").id}
-      title="Backdrop"
+      title={gt("Backdrop")}
       headerAction={
         isDefault ? null : (
           <SettingResetButton
-            label="backdrop"
+            ariaLabel={gt("Reset backdrop")}
             onClick={() =>
               updateSettings({
                 ditherBackdropEnabled: DEFAULT_UNIFIED_SETTINGS.ditherBackdropEnabled,
@@ -54,19 +58,19 @@ export function BackdropSettings() {
     >
       <div
         role="group"
-        aria-label="Backdrop"
+        aria-label={gt("Backdrop")}
         className="grid w-full gap-1"
         style={{ gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 8rem), 1fr))" }}
       >
         <BackdropTile
-          label="None"
+          label={gt("None")}
           selected={current === null}
           onSelect={() => updateSettings({ ditherBackdropEnabled: false })}
         />
         {BACKDROPS.map((backdrop, index) => (
           <BackdropTile
             key={backdrop.id}
-            label={backdrop.label}
+            label={m(backdrop.label)}
             selected={current === backdrop.id}
             onSelect={() =>
               updateSettings({ ditherBackdropEnabled: true, ditherBackdrop: backdrop.id })

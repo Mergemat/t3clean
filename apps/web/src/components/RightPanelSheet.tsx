@@ -1,3 +1,4 @@
+import { T } from "gt-react";
 import { type ReactNode } from "react";
 
 import { Sheet, SheetHeader, SheetPopup, SheetTitle } from "./ui/sheet";
@@ -26,7 +27,9 @@ export function RightPanelSheet(props: {
         className="w-2/5 min-w-80 max-w-112 max-[760px]:w-96 max-[760px]:min-w-0 max-[760px]:max-w-(--viewport-inset) wco:mt-(--workspace-topbar-height)"
       >
         <SheetHeader className="sr-only">
-          <SheetTitle>Workspace panel</SheetTitle>
+          <SheetTitle>
+            <T>Workspace panel</T>
+          </SheetTitle>
         </SheetHeader>
         {props.children}
       </SheetPopup>

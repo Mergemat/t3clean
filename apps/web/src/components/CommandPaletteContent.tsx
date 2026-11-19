@@ -1,3 +1,4 @@
+import { T, useGT, Var } from "gt-react";
 import { type ComponentProps, type ReactNode, type RefObject } from "react";
 
 import { Command, CommandFooter, CommandInput, CommandPanel } from "./ui/command";
@@ -58,7 +59,9 @@ export function CommandPaletteContent({
   testId,
   ...commandProps
 }: CommandPaletteContentProps) {
-  const showsEnter = footerActionLabel !== undefined && footerActionLabel !== "Select";
+  const gt = useGT();
+  // Callers pass translated labels, so plain Select is matched in the viewer's language.
+  const showsEnter = footerActionLabel !== undefined && footerActionLabel !== gt("Select");
   return (
     <div className="contents" data-testid={testId}>
       <Command {...commandProps}>
@@ -91,7 +94,13 @@ export function CommandPaletteContent({
         {showsEnter || footerTrailing ? (
           <CommandFooter className="max-sm:flex-col max-sm:items-start">
             <span className="flex min-w-0 flex-wrap items-center gap-x-4">
-              {showsEnter ? <span>Enter to {footerActionLabel}</span> : null}
+              {showsEnter ? (
+                <span>
+                  <T>
+                    Enter to <Var>{footerActionLabel}</Var>
+                  </T>
+                </span>
+              ) : null}
             </span>
             {footerTrailing}
           </CommandFooter>

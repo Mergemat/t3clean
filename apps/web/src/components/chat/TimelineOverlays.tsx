@@ -1,3 +1,4 @@
+import { T } from "gt-react";
 import { ChevronDownIcon, PaperclipIcon } from "lucide-react";
 
 import { Button } from "../ui/button";
@@ -13,7 +14,7 @@ export function WorkspaceFileDropOverlay() {
         className="level-float flex items-center gap-2 px-4 py-2 text-body font-medium text-ink-1"
       >
         <PaperclipIcon className="size-4 text-primary" aria-hidden="true" />
-        Drop files to attach
+        <T>Drop files to attach</T>
       </div>
     </div>
   );
@@ -42,7 +43,7 @@ export function ScrollToEndButton(props: {
         variant="glass"
       >
         <ChevronDownIcon />
-        Scroll to end
+        <T>Scroll to end</T>
         {props.summary === null ? null : (
           <span className="text-ink-2">
             <span aria-hidden>· </span>

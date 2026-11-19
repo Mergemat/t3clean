@@ -1,3 +1,4 @@
+import { T, useGT, useMessages } from "gt-react";
 import { useAtomValue } from "@effect/atom-react";
 import {
   isTerminalSubagentStatus,
@@ -40,9 +41,11 @@ export function WorkflowOpeningBlock(props: {
   readonly environmentId: EnvironmentId;
   readonly onOpenThread: (threadId: string) => void;
 }) {
+  const gt = useGT();
   const { opening } = props;
+  const m = useMessages();
   const providers = useAtomValue(providersIgnoringCheckedAtAtom(props.environmentId));
-  const headline = workflowOpeningHeadline(opening);
+  const headline = workflowOpeningHeadline(opening, m);
   const phases = opening.group?.phases.filter((phase) => phase.members.length > 0) ?? [];
   const memberRow = (member: RuntimeSubagent) =>
     opening.providerInstanceId === null ? null : (
@@ -58,14 +61,16 @@ export function WorkflowOpeningBlock(props: {
     );
   return (
     <section
-      aria-label={`Workflow started: ${headline.title}`}
+      aria-label={gt("Workflow started: {title}", { title: headline.title })}
       className="flex min-w-0 flex-col gap-2 px-1 py-1"
       data-workflow-opening
     >
       <header className="flex min-w-0 items-start gap-2">
         <WorkflowIcon aria-hidden className="h-lh w-4 shrink-0 text-ink-2" />
         <div className="flex min-w-0 flex-1 flex-col">
-          <p className="text-meta font-medium text-ink-2">Workflow started</p>
+          <p className="text-meta font-medium text-ink-2">
+            <T>Workflow started</T>
+          </p>
           <h3 className="truncate text-body font-medium text-ink-1" data-thread-find-text="true">
             {headline.title}
           </h3>
@@ -82,7 +87,7 @@ export function WorkflowOpeningBlock(props: {
         ) : null}
       </header>
       {phases.map((phase) => (
-        <section key={phase.index} aria-label={`${phase.title} phase`}>
+        <section key={phase.index} aria-label={gt("{title} phase", { title: phase.title })}>
           <h4 className="flex items-baseline gap-2 px-2 pb-1 text-meta font-medium text-ink-2">
             <span className="min-w-0 truncate" data-thread-find-text="true">
               {phase.title}
@@ -112,6 +117,7 @@ function WorkflowMemberRow(props: {
   readonly driver: ProviderDriverKind | undefined;
   readonly onOpenThread: (threadId: string) => void;
 }) {
+  const gt = useGT();
   const { member } = props;
   const threadId = member.childThreadId;
   const failed = member.status === "failed";
@@ -136,7 +142,7 @@ function WorkflowMemberRow(props: {
             ) : (
               <button
                 type="button"
-                aria-label={`Open ${member.title}`}
+                aria-label={gt("Open {title}", { title: member.title })}
                 aria-description={member.status}
                 onClick={() => props.onOpenThread(threadId)}
                 className={cn(
@@ -202,6 +208,7 @@ function WorkflowMemberRow(props: {
 }
 
 function WorkflowScript(props: { readonly script: string }) {
+  const gt = useGT();
   const [expanded, setExpanded] = useState(false);
   const revealRef = findRevealRef(() => setExpanded(true));
   const { ref: contentRef, tallEnough: canFold } = useTallEnoughToFold();
@@ -233,7 +240,7 @@ function WorkflowScript(props: { readonly script: string }) {
             data-scroll-anchor-ignore
             onClick={() => setExpanded((value) => !value)}
           >
-            {expanded ? "Show less" : "Show full script"}
+            {expanded ? gt("Show less") : gt("Show full script")}
           </Button>
         </div>
       ) : null}

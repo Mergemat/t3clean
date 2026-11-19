@@ -1,3 +1,4 @@
+import { useGT } from "gt-react";
 import type { ScopedThreadRef } from "@t3tools/contracts";
 import { X } from "lucide-react";
 
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export function PreviewRecentUrlCard({ threadRef, entry, onOpen, onRemove }: Props) {
+  const gt = useGT();
   const parsed = new URL(entry.url);
   const path = parsed.pathname === "/" ? "" : parsed.pathname;
   const label = `${parsed.host}${path}${parsed.search}${parsed.hash}`;
@@ -41,7 +43,7 @@ export function PreviewRecentUrlCard({ threadRef, entry, onOpen, onRemove }: Pro
         <Button
           size="icon-xs"
           variant="ghost-muted"
-          aria-label={`Remove ${label} from history`}
+          aria-label={gt("Remove {url} from history", { url: label })}
           onClick={onRemove}
         >
           <X />

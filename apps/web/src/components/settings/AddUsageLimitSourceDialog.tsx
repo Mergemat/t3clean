@@ -1,4 +1,5 @@
 import type { EnvironmentId, SecretReference, UnifiedSettings } from "@t3tools/contracts";
+import { T, useGT, Var } from "gt-react";
 import { useId, useState } from "react";
 
 import { useUpdateEnvironmentSettings } from "../../hooks/useSettings";
@@ -31,6 +32,7 @@ export function AddUsageLimitSourceDialog({
   readonly environmentLabel: string;
   readonly sources: UnifiedSettings["usageLimitSources"];
 }) {
+  const gt = useGT();
   const formId = useId();
   const updateSettings = useUpdateEnvironmentSettings(environmentId);
   const [label, setLabel] = useState("");
@@ -77,10 +79,14 @@ export function AddUsageLimitSourceDialog({
     >
       <DialogPopup size="sm">
         <DialogHeader>
-          <DialogTitle>Add a CLIProxyAPI hub</DialogTitle>
+          <DialogTitle>
+            <T>Add a CLIProxyAPI hub</T>
+          </DialogTitle>
           <DialogDescription>
-            Show the quota of every account the hub pools, next to the providers on{" "}
-            {environmentLabel}. The key stays on that server.
+            <T>
+              Show the quota of every account the hub pools, next to the providers on{" "}
+              <Var>{environmentLabel}</Var>. The key stays on that server.
+            </T>
           </DialogDescription>
         </DialogHeader>
         <DialogPanel>
@@ -92,7 +98,7 @@ export function AddUsageLimitSourceDialog({
               save();
             }}
           >
-            <Field label="Hub URL" htmlFor="usage-source-url" stacked>
+            <Field label={<T>Hub URL</T>} htmlFor="usage-source-url" stacked>
               <Input
                 id="usage-source-url"
                 placeholder="https://hub.example.ts.net:8318"
@@ -101,10 +107,10 @@ export function AddUsageLimitSourceDialog({
                 autoFocus
               />
             </Field>
-            <Field label="Management key" htmlFor="usage-source-key" stacked>
+            <Field label={<T>Management key</T>} htmlFor="usage-source-key" stacked>
               <SecretSourceInput
                 id="usage-source-key"
-                aria-label="Management key"
+                aria-label={gt("Management key")}
                 value={keyDraft}
                 sources={secretSources}
                 environmentId={environmentId}
@@ -113,10 +119,10 @@ export function AddUsageLimitSourceDialog({
                 onValidityChange={setKeyValid}
               />
             </Field>
-            <Field label="Label (optional)" htmlFor="usage-source-label" stacked>
+            <Field label={<T>Label (optional)</T>} htmlFor="usage-source-label" stacked>
               <Input
                 id="usage-source-label"
-                placeholder="Defaults to the hub's host name"
+                placeholder={gt("Defaults to the hub's host name")}
                 value={label}
                 onChange={(event) => setLabel(event.target.value)}
               />
@@ -131,10 +137,10 @@ export function AddUsageLimitSourceDialog({
               onOpenChange(false);
             }}
           >
-            Cancel
+            <T>Cancel</T>
           </Button>
           <Button type="submit" form={formId} disabled={!canSave}>
-            Add hub
+            <T>Add hub</T>
           </Button>
         </DialogFooter>
       </DialogPopup>

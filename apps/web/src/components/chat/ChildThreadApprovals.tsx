@@ -6,6 +6,7 @@ import {
   isAtomCommandInterrupted,
   squashAtomCommandFailure,
 } from "@t3tools/client-runtime/state/runtime";
+import { T, useGT, useMessages, Var } from "gt-react";
 import { ShieldAlertIcon } from "lucide-react";
 import { useState } from "react";
 import { useEnvironmentScope } from "../../state/session";
@@ -17,16 +18,22 @@ import { ComposerPendingApprovalActions } from "./ComposerPendingApprovalActions
 function ChildApproval({ entry }: { entry: ChildThreadApproval }) {
   const canRespond = useEnvironmentScope(entry.thread.environmentId, AuthOrchestrationOperateScope);
   const respond = useAtomCommand(threadEnvironment.respondToApproval, { reportFailure: false });
+  const gt = useGT();
+  const messages = useMessages();
   const [responding, setResponding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { approval } = entry;
   return (
-    <section aria-label={`Approval from ${entry.title}`} className="text-body">
+    <section aria-label={gt("Approval from {title}", { title: entry.title })} className="text-body">
       <ComposerBanner.Row>
         <ComposerBanner.Icon className="text-warning [&>svg]:size-4">
           <ShieldAlertIcon />
         </ComposerBanner.Icon>
-        <ComposerBanner.Content>Approval needed from {entry.title}</ComposerBanner.Content>
+        <ComposerBanner.Content>
+          <T>
+            Approval needed from <Var>{entry.title}</Var>
+          </T>
+        </ComposerBanner.Content>
       </ComposerBanner.Row>
       <ComposerBanner.Body className="pe-2 pb-2">
         <pre className="max-h-40 overflow-auto rounded-row bg-tint-1 px-4 py-2 font-mono text-meta whitespace-pre-wrap break-words">
@@ -35,13 +42,13 @@ function ChildApproval({ entry }: { entry: ChildThreadApproval }) {
         {approval.appName ? <p className="mt-2 text-ink-2">{approval.appName}</p> : null}
         {approval.responseCapability !== "live" ? (
           <p className="mt-2 text-warning">
-            Provider process is gone. Interrupt or restart the child thread to respond.
+            <T>Provider process is gone. Interrupt or restart the child thread to respond.</T>
           </p>
         ) : null}
         {approval.reason ? <p className="mt-2 text-ink-2">{approval.reason}</p> : null}
         {approval.fullAccessOverride ? (
           <p className="mt-2 text-ink-2">
-            {fullAccessOverrideExplanation(approval.fullAccessOverride)}
+            {fullAccessOverrideExplanation(approval.fullAccessOverride, messages)}
           </p>
         ) : null}
         <div className="mt-2 flex flex-wrap gap-2">
@@ -65,7 +72,7 @@ function ChildApproval({ entry }: { entry: ChildThreadApproval }) {
                 setError(
                   failure instanceof Error
                     ? failure.message
-                    : "Failed to submit approval decision.",
+                    : gt("Failed to submit approval decision."),
                 );
               }
               setResponding(false);

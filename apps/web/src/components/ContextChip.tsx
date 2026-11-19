@@ -57,7 +57,11 @@ function ContextChip({
     // `--context-chip-ink` stays unset here so surrounding surfaces can recolour chips
     // (TimelineUserMessageRow); inline style would outrank their selector.
     className: cn(
-      "inline-flex max-w-full items-center gap-1 font-medium leading-tight text-(--context-chip-ink,var(--context-chip-accent)) [&_svg]:block [&_svg]:size-em [&_svg]:shrink-0 [&_svg]:self-center [button&,a&,[data-popup-open]&]:cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current rounded-row disabled:cursor-default",
+      "inline-flex max-w-full items-center gap-1 font-medium leading-tight [&_svg]:block [&_svg]:size-em [&_svg]:shrink-0 [&_svg]:self-center [button&,a&,[data-popup-open]&]:cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current rounded-row disabled:cursor-default",
+      // PDF red reads as the invalid state, so only the icon carries it.
+      kind === "doc-pdf" && state !== "invalid"
+        ? "text-(--context-chip-ink,currentColor)"
+        : "text-(--context-chip-ink,var(--context-chip-accent))",
       shape === "bubble" &&
         "w-64 gap-2 rounded-box bg-message px-2 py-2 text-body text-message-foreground",
       className,

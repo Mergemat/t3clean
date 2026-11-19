@@ -11,6 +11,7 @@ import {
   type ScopedThreadRef,
   type ThreadId,
 } from "@t3tools/contracts";
+import { T, useGT } from "gt-react";
 import { Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -39,6 +40,7 @@ export default function SideChatPane(props: {
   readonly parentPanel: SideChatParentPanel;
 }) {
   const { parentRef, threadId } = props;
+  const gt = useGT();
   const threadRef = scopeThreadRef(parentRef.environmentId, threadId);
   // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- registers the parent panel as host in the panel store
   useEffect(
@@ -58,11 +60,11 @@ export default function SideChatPane(props: {
   const mergeRun = projection ? resolveLatestMergeBackRun(projection) : null;
   // A pending merge-back would fail the main thread's queued message, so the server refuses it.
   const bringBackBlockedReason = !canOperate
-    ? "This connection cannot change threads."
+    ? gt("This connection cannot change threads.")
     : threadRuntimeIsActive(parent?.runtime)
-      ? "Available when the main thread is idle."
+      ? gt("Available when the main thread is idle.")
       : mergeRun === null
-        ? "Available after a finished reply."
+        ? gt("Available after a finished reply.")
         : null;
 
   const bringBack = async () => {
@@ -76,14 +78,14 @@ export default function SideChatPane(props: {
     if (result._tag === "Success") {
       toastManager.add({
         type: "success",
-        title: "Brought back",
-        description: "The main thread gets this side chat with your next message there.",
+        title: gt("Brought back"),
+        description: gt("The main thread gets this side chat with your next message there."),
       });
     } else if (!isAtomCommandInterrupted(result)) {
       const error = squashAtomCommandFailure(result);
       toastManager.add({
         type: "error",
-        title: "Could not bring back the side chat",
+        title: gt("Could not bring back the side chat"),
         ...(error instanceof Error ? { description: error.message } : {}),
       });
     }
@@ -97,8 +99,8 @@ export default function SideChatPane(props: {
       const confirmed = await settlePromise(() =>
         api.dialogs.confirm(
           [
-            `Delete side chat "${shell.title}"?`,
-            "This permanently clears its conversation history.",
+            gt('Delete side chat "{title}"?', { title: shell.title }),
+            gt("This permanently clears its conversation history."),
           ].join("\n"),
           { variant: "destructive" },
         ),
@@ -119,7 +121,7 @@ export default function SideChatPane(props: {
       const error = squashAtomCommandFailure(result);
       toastManager.add({
         type: "error",
-        title: "Could not delete the side chat",
+        title: gt("Could not delete the side chat"),
         ...(error instanceof Error ? { description: error.message } : {}),
       });
     }
@@ -138,18 +140,18 @@ export default function SideChatPane(props: {
                 aria-disabled={bringBackBlockedReason !== null || bringingBack || undefined}
                 onClick={() => void bringBack()}
               >
-                Bring back
+                <T>Bring back</T>
               </Button>
             }
           />
           <TooltipPopup side="bottom">
-            {bringBackBlockedReason ?? "Adds this side chat to the main thread's next message."}
+            {bringBackBlockedReason ?? gt("Adds this side chat to the main thread's next message.")}
           </TooltipPopup>
         </Tooltip>
         <Button
           variant="ghost"
           size="icon-sm"
-          aria-label="Delete side chat"
+          aria-label={gt("Delete side chat")}
           disabled={!canOperate || shell === null || deleting}
           onClick={() => void deleteSideChat()}
         >
@@ -158,7 +160,9 @@ export default function SideChatPane(props: {
       </div>
       {shell === null ? (
         snapshotLoaded ? (
-          <p className="p-2 text-meta text-ink-2">This side chat was deleted.</p>
+          <p className="p-2 text-meta text-ink-2">
+            <T>This side chat was deleted.</T>
+          </p>
         ) : null
       ) : (
         <BackgroundThreadContext value>

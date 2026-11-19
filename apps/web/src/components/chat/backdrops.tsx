@@ -1,3 +1,4 @@
+import { msg } from "gt-react";
 import type { DitherBackdrop } from "@t3tools/contracts/settings";
 import type { CSSProperties, ReactNode } from "react";
 
@@ -46,7 +47,7 @@ export const BACKDROPS: ReadonlyArray<{
 }> = [
   {
     id: "aurora",
-    label: "Aurora",
+    label: msg("Aurora"),
     // dithercn's "Northern lights" shape.
     render: (props) => (
       <Aurora
@@ -67,19 +68,27 @@ export const BACKDROPS: ReadonlyArray<{
   },
   {
     id: "mesh-gradient",
-    label: "Mesh",
+    label: msg("Mesh"),
     render: (props) => <MeshGradient {...skyUntilDrawn(props)} />,
   },
   {
     id: "noise-field",
-    label: "Noise",
+    label: msg("Noise"),
     render: (props) => <NoiseField {...skyUntilDrawn(props)} />,
   },
-  { id: "waves", label: "Waves", render: (props) => <Waves {...skyUntilDrawn(props)} /> },
-  { id: "starfield", label: "Stars", render: (props) => <Starfield {...skyUntilDrawn(props)} /> },
-  { id: "silk", label: "Silk", render: (props) => <Silk {...skyUntilDrawn(props)} /> },
-  { id: "smoke", label: "Smoke", render: (props) => <Smoke {...skyUntilDrawn(props)} /> },
-  { id: "flow-field", label: "Flow", render: (props) => <FlowField {...skyUntilDrawn(props)} /> },
+  { id: "waves", label: msg("Waves"), render: (props) => <Waves {...skyUntilDrawn(props)} /> },
+  {
+    id: "starfield",
+    label: msg("Stars"),
+    render: (props) => <Starfield {...skyUntilDrawn(props)} />,
+  },
+  { id: "silk", label: msg("Silk"), render: (props) => <Silk {...skyUntilDrawn(props)} /> },
+  { id: "smoke", label: msg("Smoke"), render: (props) => <Smoke {...skyUntilDrawn(props)} /> },
+  {
+    id: "flow-field",
+    label: msg("Flow"),
+    render: (props) => <FlowField {...skyUntilDrawn(props)} />,
+  },
 ];
 
 export const backdropById = (id: DitherBackdrop) =>

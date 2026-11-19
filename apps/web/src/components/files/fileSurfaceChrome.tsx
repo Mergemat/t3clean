@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { T, useGT } from "gt-react";
 import { Spinner } from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
 import { Toggle } from "~/components/ui/toggle";
@@ -114,10 +115,11 @@ export function FileSurfaceNotice(props: { readonly children: ReactNode }) {
 }
 
 export function FileSurfaceLoading(props: { readonly className?: string }) {
+  const gt = useGT();
   return (
     <div
       role="status"
-      aria-label="Loading file"
+      aria-label={gt("Loading file")}
       className={cn("flex min-h-0 flex-1 items-center justify-center text-ink-2", props.className)}
     >
       <Spinner size="lg" />
@@ -141,7 +143,7 @@ export function FileSurfaceFailure(props: {
           onClick={props.onRetry}
           className="rounded-row border border-input px-2 py-1 text-meta text-ink-1 hover:bg-accent focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
         >
-          Try again
+          <T>Try again</T>
         </button>
       ) : null}
     </div>
