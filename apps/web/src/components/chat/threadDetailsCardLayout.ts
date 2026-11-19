@@ -1,7 +1,7 @@
 import type { PreviewMiniPlayerFrame } from "../preview/previewMiniPlayerLayout";
 import { DETAILS_CARD_CLEARANCE } from "./chatCanvasLayout";
 
-// The gap the card keeps from the canvas's preview frames and the find bar.
+// A float (16) in the pane's 24 corner sits one step in: concentric.
 export const THREAD_DETAILS_CARD_GAP = 8;
 // Keep in sync with --thread-details-panel-width.
 const THREAD_DETAILS_CARD_WIDTH = 280;
@@ -33,15 +33,13 @@ export function resolveThreadDetailsCardLayout({
 }) {
   const gap = THREAD_DETAILS_CARD_GAP;
   const width = THREAD_DETAILS_CARD_WIDTH;
-  // The card is part of the frame (top layer): it fills the window's top right corner, flush with
-  // its top and right edges, and the window's edge curves around it.
-  const x = container.width - width;
+  const x = container.width - width - gap;
   // The transition ends are sampled once, so a resize mid-animation can leave them
   // wider than the container is now.
   const fitWidth = Math.min(narrowestWidth, container.width);
   if (fitWidth - width - gap - DETAILS_CARD_CLEARANCE - lane.padding < lane.minChatWidth)
     return null;
-  const y = topInset;
+  const y = gap + topInset;
   const height =
     overlapsDetailsCard && frame && frame.x + frame.width > x - gap && frame.x < x + width + gap
       ? Math.min(container.height - y - gap, frame.y - y - gap)
@@ -49,7 +47,7 @@ export function resolveThreadDetailsCardLayout({
   if (height < 160) return null;
   return {
     x,
-    right: 0,
+    right: gap,
     width,
     y,
     height,

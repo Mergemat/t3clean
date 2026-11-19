@@ -678,7 +678,7 @@ html[data-show-grid] .nest-text {
 }
 
 @utility dialog-glass {
-  /* Level 2 (see Levels): a dialog is a float. Dialogs set their own border width. */
+  /* A float (see Levels). Dialogs set their own border width. */
   background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
@@ -703,7 +703,7 @@ html[data-show-grid] .nest-text {
 }
 
 @utility dropdown-glass {
-  /* Level 2 (see Levels). Dividers inside a float draw its outline. */
+  /* A float (see Levels). Dividers inside a float draw its outline. */
   background: var(--float-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
@@ -2936,13 +2936,15 @@ code {
   outline: none;
 }
 
-/* Levels, nearest first. Every surface belongs to one level and takes its material from here,
-   so a theme only supplies colours.
-   2 float:   menus, popovers, tooltips, hover cards, dialogs, toasts. Glass that casts a shadow.
-   1 surface: the frame (sidebar, header, tab bars) and the rows and controls on it. Flat and
-              opaque, with no outline.
-   0 window:  panes cut through the frame onto the aurora, outlined and shaded by the frame.
-              What sits inside a window is glass in the window colour.
+/* Levels, top first. Every surface belongs to one level and takes its material from here, so a
+   theme only supplies colours. Picture a black slab with a window-shaped bowl carved in it:
+   top:   the slab's face. Two kinds of thing share it: the frame (sidebar, header, tab bars, and
+          the rows and controls on it: flat, opaque, no outline) and the floats (thread details,
+          menus, popovers, tooltips, hover cards, dialogs, toasts: glass with its own edge). A float
+          is level with the frame but not part of it; the soft shadow it casts falls on the chat.
+   chat:  what lies in the bowl, a little below the face: messages, code, changed files, the
+          composer. Glass in the window colour with a light edge, no shadow.
+   sky:   the bottom of the bowl.
    Siblings on a level follow the same rules, with no per-component exceptions:
      windows        rounded-2xl, 8px gaps; a corner in the app window's corner is concentric with it
      window content rounded-2xl (messages, code, composer, changed files)
@@ -3151,38 +3153,6 @@ html.electron-windows {
 [data-chat-header] + div .topbar-scroll-fade {
   -webkit-mask-image: none;
   mask-image: none;
-}
-
-/* The details card inline is a piece of the frame reaching into the window's top right corner.
-   These are the window's own corners where its edge turns around the card: one on the top edge,
-   left of the card, and one on the right edge, below it. */
-[data-thread-details-panel="inline"]::before,
-[data-thread-details-panel="inline"]::after {
-  content: "";
-  position: absolute;
-  width: var(--radius-region);
-  height: var(--radius-region);
-  pointer-events: none;
-}
-
-[data-thread-details-panel="inline"]::before {
-  top: 0;
-  right: 100%;
-  background: radial-gradient(
-    circle at 0 100%,
-    transparent var(--radius-region),
-    var(--app-chrome-background) var(--radius-region)
-  );
-}
-
-[data-thread-details-panel="inline"]::after {
-  top: 100%;
-  right: 0;
-  background: radial-gradient(
-    circle at 0 100%,
-    transparent var(--radius-region),
-    var(--app-chrome-background) var(--radius-region)
-  );
 }
 
 [data-slot="composer-context-strip"] {

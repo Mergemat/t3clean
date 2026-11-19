@@ -115,10 +115,8 @@ export function ThreadDetailsCard({
   const card = (
     <div
       className={cn(
-        "isolate contain-paint grid max-h-full grid-rows-1 overflow-hidden",
-        mode === "popover"
-          ? "dropdown-glass max-h-(--available-height) rounded-box"
-          : "rounded-bl-region bg-(--app-chrome-background)",
+        "dropdown-glass isolate contain-paint grid max-h-full grid-rows-1 overflow-hidden rounded-box",
+        mode === "popover" && "max-h-(--available-height)",
       )}
       style={placement ? { maxHeight: height } : undefined}
       onContextMenu={onContextMenu}
