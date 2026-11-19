@@ -3420,12 +3420,6 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
             </ComposerBanner.Attachment>
           ) : null}
         </ComposerBanner.Column>
-        <ComposerStashBadge
-          count={stashQueue.length}
-          menuOpen={isStashMenuOpen}
-          pulseKey={stashPulseKey}
-          onToggleMenu={toggleStashMenuStable}
-        />
       </ComposerBanner.Dock>
       <div className="relative">
         <ComposerSurface.Main
@@ -3722,8 +3716,16 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
                     "hidden sm:flex",
                 )}
               >
-                {composerAttachButton && !dictationTakesFooter ? (
-                  <div className="me-2">{composerAttachButton}</div>
+                {!dictationTakesFooter ? (
+                  <div className="me-2 flex items-center gap-1 empty:hidden">
+                    {composerAttachButton}
+                    <ComposerStashBadge
+                      count={stashQueue.length}
+                      menuOpen={isStashMenuOpen}
+                      pulseKey={stashPulseKey}
+                      onToggleMenu={toggleStashMenuStable}
+                    />
+                  </div>
                 ) : null}
                 <div
                   data-chat-composer-actions="right"
