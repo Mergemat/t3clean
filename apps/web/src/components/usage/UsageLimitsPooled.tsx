@@ -372,7 +372,6 @@ function SegmentTriggers({
   const [segmentRef, paceMark] = usePaceMark(timeLeft);
   const m = useMessages();
   const resetsIn = formatResetsIn(window, now, m);
-  const refillIn = formatResetsIn(window, now, m, "refill");
   const credits = account.limits.resetCredits?.availableCount ?? 0;
   const gt = useGT();
   const segmentLabel = [
@@ -404,22 +403,23 @@ function SegmentTriggers({
             type="button"
             style={{ gridColumn: index, gridRow: 1, ...paceMark?.gappedTrack }}
             aria-label={segmentLabel}
-            className="relative h-5 min-w-0 cursor-pointer rounded-row bg-muted text-start outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-[popup-open]:ring-1 data-[popup-open]:ring-inset data-[popup-open]:ring-border @2xl/pool:h-8"
+            // A thin track like every share track on the page; the hit area reaches past it.
+            className="relative h-2 min-w-0 cursor-pointer rounded-full bg-tint-1 text-start outline-none before:absolute before:-inset-y-2 before:inset-x-0 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring data-[popup-open]:ring-2 data-[popup-open]:ring-inset data-[popup-open]:ring-tint-2"
           />
         }
       >
-        <div aria-hidden className="absolute inset-0 overflow-hidden rounded-row">
+        <div aria-hidden className="absolute inset-0 overflow-hidden rounded-full">
           {/* Clipped inside the rounded clip so the bar's own corners keep their antialiasing. */}
           <div className="absolute inset-0" style={paceMark?.gap}>
             <div
               aria-hidden
-              className="absolute inset-y-0 left-0 rounded-row opacity-35"
+              className="absolute inset-y-0 left-0 rounded-full"
               style={{ width: `${remaining}%`, backgroundColor: color }}
             />
             {remaining < 100 && reset && refillPercent > 0 ? (
               <div
                 aria-hidden
-                className="absolute inset-y-0 right-0 opacity-20"
+                className="absolute inset-y-0 right-0 opacity-40"
                 style={{
                   width: `${Math.min(100 - remaining, refillPercent)}%`,
                   backgroundImage: `repeating-linear-gradient(135deg, ${color} 0 1px, transparent 1px 5px)`,
@@ -431,45 +431,15 @@ function SegmentTriggers({
         {paceMark ? (
           <span
             aria-hidden
-            className="absolute inset-y-1 w-1 -translate-x-1/2 rounded-full bg-foreground"
+            className="absolute -inset-y-1 w-0.5 -translate-x-1/2 rounded-full bg-foreground"
             style={paceMark.tick}
           />
         ) : null}
-        <span
-          aria-hidden
-          className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-row text-meta leading-none font-semibold text-ink-2 tabular-nums @2xl/pool:hidden"
-        >
-          {index}
-        </span>
-        <div className="relative hidden h-full min-w-0 items-center gap-2 overflow-hidden rounded-row px-2 text-meta @2xl/pool:flex">
-          {showAccountName ? (
-            <AccountName account={account} className="min-w-0 truncate font-medium text-ink-1" />
-          ) : null}
-          {/* A single-account bar repeats the headline percentage. */}
-          {showAccountName ? (
-            <span className="shrink-0 font-semibold text-ink-1 tabular-nums">{remaining}%</span>
-          ) : null}
-          {resetsIn || credits ? (
-            <span className="ms-auto flex min-w-0 items-center gap-2 overflow-hidden rounded-row bg-background/85 px-2 py-1 text-meta whitespace-nowrap text-ink-1 tabular-nums">
-              {refillIn ?? ""}
-              {credits ? (
-                <>
-                  {resetsIn ? (
-                    <span aria-hidden className="text-ink-2">
-                      ·
-                    </span>
-                  ) : null}
-                  <span aria-hidden className="inline-flex items-center font-semibold">
-                    <TicketIcon className="size-3" aria-hidden />
-                    {credits}
-                  </span>
-                </>
-              ) : null}
-            </span>
-          ) : null}
-        </div>
       </PopoverTrigger>
-      <LegendRow payload={payload} color={color} now={now} index={index} />
+      {/* With several accounts in one pool, each gets a line under the bar. */}
+      {showAccountName ? (
+        <LegendRow payload={payload} color={color} now={now} index={index} />
+      ) : null}
     </>
   );
 }
@@ -498,12 +468,12 @@ function LegendRow({
       payload={payload}
       style={{ gridColumn: "1 / -1", gridRow: index + 1 }}
       render={<Button variant="ghost" size="sm" />}
-      className="min-w-0 @2xl/pool:hidden"
+      className="min-w-0 justify-start"
     >
       <span className="relative inline-flex size-4 shrink-0 items-center justify-center rounded-chip text-meta leading-none font-semibold text-ink-2 tabular-nums">
         <span
           aria-hidden
-          className="absolute inset-0 rounded-row opacity-35"
+          className="absolute inset-0 rounded-chip opacity-35"
           style={{ backgroundColor: color }}
         />
         <span className="sr-only">{`${gt("Segment")} `}</span>
@@ -515,7 +485,6 @@ function LegendRow({
         {resetsIn ?? ""}
         {credits ? (
           <>
-            {resetsIn ? <span aria-hidden>·</span> : null}
             <span aria-hidden className="inline-flex items-center font-semibold text-ink-1">
               <TicketIcon className="size-3" aria-hidden />
               {credits}
@@ -547,7 +516,7 @@ function PoolBar({
   return (
     <div className="@container/pool min-w-0">
       <div
-        className="grid gap-x-1 gap-y-1"
+        className="grid gap-x-1 gap-y-2"
         style={{ gridTemplateColumns: `repeat(${pool.columns.length}, minmax(0, 1fr))` }}
       >
         {pool.columns.map((member, position) =>
@@ -567,12 +536,9 @@ function PoolBar({
             <div
               key={member.account.key}
               style={{ gridColumn: position + 1, gridRow: 1 }}
-              className="flex h-5 min-w-0 items-center justify-center gap-2 overflow-hidden rounded-row border border-dashed border-border text-meta whitespace-nowrap text-ink-2 @2xl/pool:h-8 @2xl/pool:justify-start @2xl/pool:px-2 @2xl/pool:text-meta"
+              className="flex min-w-0 items-center gap-2 text-meta whitespace-nowrap text-ink-2"
             >
-              <AccountName
-                account={member.account}
-                className="hidden min-w-0 truncate @2xl/pool:inline-flex"
-              />
+              <AccountName account={member.account} className="min-w-0 truncate" />
               {gt("$0 cap")}
             </div>
           ) : null,
@@ -596,10 +562,36 @@ function PoolWindowCard({
   readonly description?: string | undefined;
 }) {
   const nextRefill = pool.resets.find((reset) => reset.restoresPercent > 0);
+  const m = useMessages();
+  const gt = useGT();
+  // One account: when it resets and its banked credits are the row's detail, not badges on the bar.
+  const single = pool.columns.length === 1 ? pool.columns[0] : undefined;
+  const resetsIn = single?.window ? formatResetsIn(single.window, now, m) : null;
+  const credits = single?.account.limits.resetCredits?.availableCount ?? 0;
+  const detail = [
+    description,
+    resetsIn,
+    credits
+      ? gt(
+          "{count, plural, one {{count} reset credit banked} other {{count} reset credits banked}}",
+          { count: credits },
+        )
+      : null,
+  ].filter(Boolean);
   return (
     <UsageRow
       title={label === null ? pool.label : (label ?? pool.label)}
-      detail={description}
+      detail={
+        detail.length > 0 ? (
+          <span className="flex flex-wrap gap-x-4">
+            {detail.map((part) => (
+              <span key={String(part)} className="inline-block first-letter:uppercase">
+                {part}
+              </span>
+            ))}
+          </span>
+        ) : undefined
+      }
       value={
         <span className="inline-flex items-center gap-2">
           {pool.pace ? <PaceIcon pace={pool.pace} /> : null}
