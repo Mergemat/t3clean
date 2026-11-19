@@ -35,7 +35,7 @@ import {
   XIcon,
 } from "lucide-react";
 import { resolveEventKeys } from "@t3tools/shared/keybindings";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate, useRouter } from "@tanstack/react-router";
 import { T, useGT, useMessages } from "gt-react";
 
 import { cn } from "../../lib/utils";
@@ -136,6 +136,7 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
   const m = useMessages();
   const navArea = workspaceAreaProps("settings-nav", 0, gt("Settings sections"));
   const navigate = useNavigate();
+  const router = useRouter();
   const closeSettings = useCloseAppModal();
   const currentHash = useLocation({ select: (location) => location.hash });
   const activePath = SETTINGS_DETAIL_PAGE_PARENTS[pathname] ?? pathname;
@@ -191,6 +192,10 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Sections are buttons, not links, so they don't get the router's preload on intent; without it
+  // a section's code starts loading only on the click.
+  const preloadSection = (to: SettingsPath) =>
+    void router.preloadRoute({ to }).catch(() => undefined);
   const handleSectionClick = (to: SettingsPath) => {
     void navigate({
       to,
@@ -373,6 +378,8 @@ export function SettingsSidebarNav({ pathname }: { pathname: string }) {
                                   aria-current={isActive ? "page" : undefined}
                                   isActive={isActive}
                                   onClick={() => handleSectionClick(to)}
+                                  onPointerEnter={() => preloadSection(to)}
+                                  onFocus={() => preloadSection(to)}
                                 >
                                   <Icon />
                                   <span className="truncate">{m(SETTINGS_NAV_LABELS[to])}</span>

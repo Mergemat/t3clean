@@ -1,5 +1,6 @@
 import { workspaceAreaProps } from "../lib/workspaceFocus";
 import { Outlet, createFileRoute, redirect, useLocation } from "@tanstack/react-router";
+import { useSettingsPathname } from "../components/settings/useSettingsPathname";
 import { useState, type ReactNode } from "react";
 import { T, useGT, useMessages, Var } from "gt-react";
 import { RotateCcwIcon } from "lucide-react";
@@ -126,10 +127,10 @@ function SettingsContentLayout() {
   const gt = useGT();
   const contentArea = workspaceAreaProps("settings", 1, gt("Settings content"));
 
-  const location = useLocation();
+  const pathname = useSettingsPathname();
   const { search, environment } = useSettingsScope();
   const contentScopeKey =
-    location.pathname === "/settings/diagnostics" || location.pathname === "/settings/providers"
+    pathname === "/settings/diagnostics" || pathname === "/settings/providers"
       ? environment?.environmentId
       : JSON.stringify(search);
   const [restoreSignal, setRestoreSignal] = useState(0);
@@ -140,9 +141,9 @@ function SettingsContentLayout() {
     <SidebarInset className="h-dvh min-h-0 overflow-hidden overscroll-y-none">
       <div {...contentArea} className="flex min-h-0 min-w-0 flex-1 flex-col">
         <WorkspacePageHeader data-chat-header="" electron={isElectron} className="relative">
-          <SettingsBreadcrumb pathname={location.pathname} />
+          <SettingsBreadcrumb pathname={pathname} />
           <div className="ms-auto flex shrink-0 items-center gap-1">
-            {location.pathname === "/settings/general" ? (
+            {pathname === "/settings/general" ? (
               <RestoreDeviceDefaultsButton
                 onRestored={() => setRestoreSignal((value) => value + 1)}
               />
@@ -150,7 +151,7 @@ function SettingsContentLayout() {
           </div>
         </WorkspacePageHeader>
         <div key={`${contentScopeKey}:${restoreSignal}`} className="flex min-h-0 flex-1 flex-col">
-          <SettingsScopeBoundary pathname={location.pathname}>
+          <SettingsScopeBoundary pathname={pathname}>
             <Outlet />
           </SettingsScopeBoundary>
         </div>
@@ -162,7 +163,7 @@ function SettingsContentLayout() {
 function SettingsRouteLayout() {
   const rawSearch = Route.useSearch();
   const navigate = Route.useNavigate();
-  const pathname = useLocation({ select: (location) => location.pathname });
+  const pathname = useSettingsPathname();
   return (
     <SettingsScopeProvider
       search={rawSearch}
