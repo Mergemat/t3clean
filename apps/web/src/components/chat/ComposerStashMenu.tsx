@@ -175,7 +175,7 @@ export const ComposerStashMenu = memo(function ComposerStashMenu(props: {
                 data-highlighted={highlightedEntry?.id === entry.id || undefined}
                 className={cn(
                   "relative rounded-row",
-                  highlightedEntry?.id === entry.id && "bg-accent text-accent-foreground",
+                  highlightedEntry?.id === entry.id && "bg-tint-2",
                 )}
                 onMouseMove={() => {
                   if (highlightedId !== entry.id) setHighlightedId(entry.id);

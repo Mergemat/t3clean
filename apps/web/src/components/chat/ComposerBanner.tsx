@@ -113,11 +113,13 @@ function Row({
 }: useRender.ComponentProps<"div"> & {
   layout?: "inline" | "wrap-actions" | "approval";
 }) {
+  // A button row is its drawer's handle: the drawer is the thing you press, so hover lights the
+  // label instead of drawing a box inside it.
   const rowProps = {
     className: cn(
       "group/banner-row grid min-h-(--composer-banner-icon-column) w-full min-w-0 grid-cols-(--grid-lead-trail) items-center gap-x-1 text-start",
       "not-has-[>[data-slot=composer-banner-actions]]:grid-cols-(--grid-lead)",
-      "[&:is(button)]:cursor-pointer [&:is(button)]:rounded-box [&:is(button)]:hover:bg-foreground/5 [&:is(button)]:focus-visible:outline-2 [&:is(button)]:focus-visible:-outline-offset-2 [&:is(button)]:focus-visible:outline-ring",
+      "[&:is(button)]:cursor-pointer [&:is(button)]:rounded-box [&:is(button):hover_:is([data-slot=composer-banner-icon],[data-slot=composer-banner-content],[data-slot=composer-banner-content]_*)]:text-ink-1 [&:is(button)]:focus-visible:outline-2 [&:is(button)]:focus-visible:-outline-offset-2 [&:is(button)]:focus-visible:outline-ring",
       layout === "wrap-actions" && "flex flex-wrap *:data-[slot=composer-banner-content]:grow",
       layout === "approval" && "items-start gap-x-2 gap-y-2",
       className,
