@@ -252,7 +252,7 @@ function ToastDescriptionAndExpandable({
               aria-expanded={open}
               className={cn(
                 "group flex min-w-0 w-full cursor-pointer select-none items-start gap-2 rounded-row text-left outline-none ring-offset-background",
-                "transition-colors hover:bg-muted/40",
+                "transition-colors hover:bg-tint-2",
                 "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
               )}
               onClick={toggle}

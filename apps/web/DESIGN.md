@@ -146,10 +146,9 @@ Settled per component in review, in order. Each one applies to every later compo
     height has one make:
     - **Flat**, part of the plane: a tint, no shading. Panes, rows, fields, tracks, unchecked
       boxes, ghost buttons. A field is a place you put things, not something you press.
-    - **Raised**, a thing you press: light on top, a dark rim, a small shadow (`bump`). Filled
-      buttons, triggers, the chosen segment or toggle. A switch's knob is raised with a soft
-      shadow only: at its size a rim reads as an outline. It is the same knob on and off; only
-      the track changes.
+    - **Raised**, a thing you press: light on top and a soft shadow, no rim (`bump`; `raised`
+      adds the ladder's face). Filled buttons, triggers, the chosen segment or toggle, a switch's
+      knob. The knob is the same white on and off; only the track changes.
     - **Floating**, above everything: glass a shade lighter than the panes, as see-through as the
       Glass opacity setting says, a double edge (a light line inside, a dark one outside), a deep
       shadow. Menus, popovers, dialogs, toasts, tooltips, the details card, the composer. No
@@ -158,6 +157,12 @@ Settled per component in review, in order. Each one applies to every later compo
 
     Nothing sits below the plane: the darkest surfaces leave no room under them. Pressing lowers
     a thing one height, while held or while its popup is open; choosing raises one.
+
+    Higher is lighter, in fixed steps, so tone says height too. Three tints and nothing between:
+    `tint-1` (a field, a track, a selected row), `tint-2` (hover, a highlighted row, an off switch
+    or box) and the raised face, two steps above its track. Hover is a step up from where you
+    are; a lowered thing lands on `tint-2`. In light themes places step darker and the raised face
+    is white. `t3code/no-off-ladder-tints` holds `components/ui` to the ladder.
 
 ## Mechanics
 

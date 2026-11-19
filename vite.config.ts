@@ -535,6 +535,10 @@ export default defineConfig({
         rules: { "t3code/no-outset-state-indicators": "error" },
       },
       {
+        files: ["apps/web/src/components/ui/**"],
+        rules: { "t3code/no-off-ladder-tints": "error" },
+      },
+      {
         files: ["apps/web/src/**"],
         rules: { "t3code/max-settings-description-length": "error" },
       },

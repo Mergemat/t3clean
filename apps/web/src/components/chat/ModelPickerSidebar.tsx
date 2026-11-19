@@ -70,7 +70,7 @@ export const ModelPickerSidebar = memo(function ModelPickerSidebar(props: {
                     render={
                       <Toolbar.Button
                         className={cn(
-                          "relative isolate flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-row transition-colors hover:bg-foreground/9 aria-pressed:bg-foreground/8 focus-visible:bg-foreground/10 focus-visible:outline-none",
+                          "relative isolate flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-row transition-colors hover:bg-tint-2 aria-pressed:bg-tint-1 focus-visible:bg-tint-2 focus-visible:outline-none",
                         )}
                         onClick={() => handleSelect("favorites")}
                         type="button"
@@ -113,7 +113,7 @@ export const ModelPickerSidebar = memo(function ModelPickerSidebar(props: {
             const button = (
               <Toolbar.Button
                 className={cn(
-                  "relative isolate flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-row transition-colors hover:bg-foreground/9 aria-pressed:bg-foreground/8 focus-visible:bg-foreground/10 focus-visible:outline-none",
+                  "relative isolate flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-row transition-colors hover:bg-tint-2 aria-pressed:bg-tint-1 focus-visible:bg-tint-2 focus-visible:outline-none",
                   isDisabled && "opacity-50 cursor-not-allowed hover:bg-transparent",
                 )}
                 data-provider-accent-color={entry.accentColor}

@@ -15,7 +15,7 @@ const alertVariants = cva("relative rounded-box border px-4 py-3 text-card-foreg
       glass: "alert-glass",
     },
     variant: {
-      default: "bg-transparent dark:bg-input/32 [&_svg]:text-ink-2",
+      default: "bg-tint-1 [&_svg]:text-ink-2",
       sidebar:
         "rounded-row border-sidebar-border bg-sidebar-control-surface px-2 py-2 text-meta leading-4 [&_[data-slot=alert-description]]:block [&_[data-slot=alert-description]]:text-ink-2",
       error:

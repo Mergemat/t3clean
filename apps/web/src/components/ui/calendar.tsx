@@ -4,7 +4,7 @@ import type * as React from "react";
 import { cn } from "~/lib/utils";
 
 const buttonClassNames =
-  "relative flex size-10 sm:size-8 text-base sm:text-body items-center justify-center rounded-row text-ink-1 not-in-data-selected:hover:bg-accent disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
+  "relative flex size-10 sm:size-8 text-base sm:text-body items-center justify-center rounded-row text-ink-1 not-in-data-selected:hover:bg-tint-2 disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0";
 
 const defaultComponents = {
   Chevron: ({
@@ -54,7 +54,7 @@ export function Calendar({
     day: "size-10 sm:size-8 text-body py-px",
     day_button: cn(
       buttonClassNames,
-      "in-data-disabled:pointer-events-none in-[.range-middle]:rounded-none in-[.range-end:not(.range-start)]:rounded-s-none in-[.range-start:not(.range-end)]:rounded-e-none in-[.range-middle]:in-data-selected:bg-accent in-data-selected:bg-primary in-[.range-middle]:in-data-selected:text-ink-1 in-data-disabled:text-ink-2 in-data-outside:text-ink-2 in-data-selected:in-data-outside:text-primary-foreground in-data-selected:text-primary-foreground in-data-disabled:line-through outline-none in-[[data-selected]:not(.range-middle)]:transition focus-visible:z-1 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/50",
+      "in-data-disabled:pointer-events-none in-[.range-middle]:rounded-none in-[.range-end:not(.range-start)]:rounded-s-none in-[.range-start:not(.range-end)]:rounded-e-none in-[.range-middle]:in-data-selected:bg-tint-1 in-data-selected:bg-primary in-[.range-middle]:in-data-selected:text-ink-1 in-data-disabled:text-ink-2 in-data-outside:text-ink-2 in-data-selected:in-data-outside:text-primary-foreground in-data-selected:text-primary-foreground in-data-disabled:line-through outline-none in-[[data-selected]:not(.range-middle)]:transition focus-visible:z-1 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-ring/50",
     ),
     dropdown: "absolute bg-popover inset-0 opacity-0",
     dropdown_root:
@@ -67,7 +67,7 @@ export function Calendar({
       "relative mx-6 sm:mx-6 px-1 mb-1 flex h-10 sm:h-8 items-center justify-center z-2",
     months: "relative flex flex-col sm:flex-row gap-2",
     nav: "absolute top-0 flex w-full justify-between z-1",
-    outside: "text-ink-2 data-selected:bg-accent/50 data-selected:text-ink-2",
+    outside: "text-ink-2 data-selected:bg-tint-1 data-selected:text-ink-2",
     range_end: "range-end",
     range_middle: "range-middle",
     range_start: "range-start",

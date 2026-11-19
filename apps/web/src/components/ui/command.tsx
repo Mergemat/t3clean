@@ -201,10 +201,10 @@ function CommandItem({
   return (
     <AutocompleteItem
       className={cn(
-        "py-2 data-selected:bg-foreground/8 data-highlighted:bg-foreground/9 data-highlighted:text-ink-1 [&[data-highlighted][data-selected]]:bg-foreground/9 [&[data-highlighted][data-selected]]:text-ink-1",
+        "py-2 data-selected:bg-tint-1 data-highlighted:bg-tint-2 data-highlighted:text-ink-1 [&[data-highlighted][data-selected]]:bg-tint-2 [&[data-highlighted][data-selected]]:text-ink-1",
         active !== undefined &&
           "cursor-pointer hover:bg-transparent hover:text-inherit data-highlighted:bg-transparent data-highlighted:text-inherit data-selected:bg-transparent data-selected:text-inherit [&[data-highlighted][data-selected]]:bg-transparent [&[data-highlighted][data-selected]]:text-inherit",
-        active && "bg-accent! text-accent-foreground!",
+        active && "bg-tint-2! text-accent-foreground!",
         className,
       )}
       data-active={active || undefined}

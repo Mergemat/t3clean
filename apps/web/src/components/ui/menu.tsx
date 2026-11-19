@@ -114,7 +114,7 @@ function MenuItem({
   return (
     <MenuPrimitive.Item
       className={cn(
-        "nest-row flex min-h-8 items-center cursor-pointer select-none py-1 text-body text-ink-1 outline-none data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-foreground/9 data-inset:ps-8 data-[variant=destructive]:text-destructive-foreground data-highlighted:text-accent-foreground data-disabled:opacity-64 [&>svg:not([class*='opacity-'])]:opacity-80 [&>svg:not([class*='size-'])]:size-4 [&>svg:not([class*='text-'])]:text-ink-2 data-[variant=destructive]:[&>svg:not([class*='text-'])]:text-current [&>svg]:pointer-events-none [&>svg]:shrink-0",
+        "nest-row flex min-h-8 items-center cursor-pointer select-none py-1 text-body text-ink-1 outline-none data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-tint-2 data-inset:ps-8 data-[variant=destructive]:text-destructive-foreground data-highlighted:text-accent-foreground data-disabled:opacity-64 [&>svg:not([class*='opacity-'])]:opacity-80 [&>svg:not([class*='size-'])]:size-4 [&>svg:not([class*='text-'])]:text-ink-2 data-[variant=destructive]:[&>svg:not([class*='text-'])]:text-current [&>svg]:pointer-events-none [&>svg]:shrink-0",
         variant === "ghost" &&
           buttonVariants({
             variant: "ghost",
@@ -159,7 +159,7 @@ function MenuCheckboxItem({
     <MenuPrimitive.CheckboxItem
       checked={checked}
       className={cn(
-        "nest-row grid min-h-8 in-data-[side=none]:min-w-(--anchor-width) cursor-pointer items-center py-1 text-body text-ink-1 outline-none data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "nest-row grid min-h-8 in-data-[side=none]:min-w-(--anchor-width) cursor-pointer items-center py-1 text-body text-ink-1 outline-none data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-tint-2 data-highlighted:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         variant === "switch" ? "grid-cols-(--grid-trail)" : "grid-cols-(--grid-lead)",
         className,
       )}
@@ -170,12 +170,12 @@ function MenuCheckboxItem({
         <>
           <span className="col-start-1">{children}</span>
           <MenuPrimitive.CheckboxItemIndicator
-            className="inset-shadow-2xs inline-flex shrink-0 items-center rounded-full p-1 outline-none transition duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:bg-input data-disabled:opacity-64"
+            className="inline-flex shrink-0 items-center rounded-full p-1 outline-none transition duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:bg-tint-2 data-disabled:opacity-64"
             data-slot="menu-checkbox-item-switch"
             keepMounted
           >
             <span
-              className="pointer-events-none block in-[[data-slot=menu-checkbox-item]:active]:not-data-disabled:scale-x-110 bg-background shadow-sm/5 in-data-checked:bg-white"
+              className="pointer-events-none block in-[[data-slot=menu-checkbox-item]:active]:not-data-disabled:scale-x-110 bg-white shadow-bump inset-shadow-bump dark:in-data-unchecked:bg-foreground/80"
               data-slot="menu-checkbox-item-switch-thumb"
             />
           </MenuPrimitive.CheckboxItemIndicator>
@@ -225,7 +225,7 @@ function MenuRadioItem({
   return (
     <MenuPrimitive.RadioItem
       className={cn(
-        "nest-row flex min-h-8 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-body text-ink-1 outline-none data-checked:bg-foreground/8 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "nest-row flex min-h-8 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-body text-ink-1 outline-none data-checked:bg-tint-1 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-highlighted:bg-tint-2 data-highlighted:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       data-slot="menu-radio-item"
@@ -306,7 +306,7 @@ function MenuSubTrigger({
   return (
     <MenuPrimitive.SubmenuTrigger
       className={cn(
-        "nest-row flex min-h-8 items-center cursor-pointer py-1 text-body text-ink-1 outline-none data-disabled:cursor-not-allowed data-disabled:pointer-events-none data-highlighted:bg-foreground/9 data-popup-open:bg-accent data-inset:ps-8 data-highlighted:text-accent-foreground data-popup-open:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-ink-2 [&>svg:not(:last-child):not([class*='opacity-'])]:opacity-80 [&_svg]:pointer-events-none [&>svg]:shrink-0",
+        "nest-row flex min-h-8 items-center cursor-pointer py-1 text-body text-ink-1 outline-none data-disabled:cursor-not-allowed data-disabled:pointer-events-none data-highlighted:bg-tint-2 data-popup-open:bg-tint-2 data-inset:ps-8 data-highlighted:text-accent-foreground data-popup-open:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-ink-2 [&>svg:not(:last-child):not([class*='opacity-'])]:opacity-80 [&_svg]:pointer-events-none [&>svg]:shrink-0",
         density === "touch" && "min-h-10 sm:min-h-10",
         className,
       )}

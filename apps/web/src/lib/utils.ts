@@ -11,7 +11,7 @@ const twMerge = extendTailwindMerge({
   extend: {
     theme: {
       text: ["2xs", "3xs", "4xs", "5xs", "title", "heading", "body", "meta"],
-      shadow: ["edge-light", "edge-dark", "edge-dark-faint", "bump", "knob"],
+      shadow: ["edge-light", "edge-dark", "edge-dark-faint", "bump"],
       radius: ["inherit", "chip", "row", "box", "region"],
     },
   },

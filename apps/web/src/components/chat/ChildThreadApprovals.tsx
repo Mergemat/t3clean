@@ -29,7 +29,7 @@ function ChildApproval({ entry }: { entry: ChildThreadApproval }) {
         <ComposerBanner.Content>Approval needed from {entry.title}</ComposerBanner.Content>
       </ComposerBanner.Row>
       <ComposerBanner.Body className="pe-2 pb-2">
-        <pre className="max-h-40 overflow-auto rounded-row bg-foreground/6 px-3 py-2 font-mono text-meta whitespace-pre-wrap break-words">
+        <pre className="max-h-40 overflow-auto rounded-row bg-tint-1 px-4 py-2 font-mono text-meta whitespace-pre-wrap break-words">
           {approval.detail || approval.requestKind}
         </pre>
         {approval.appName ? <p className="mt-2 text-ink-2">{approval.appName}</p> : null}

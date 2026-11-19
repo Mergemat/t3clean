@@ -450,10 +450,10 @@ html[data-show-grid] .nest-text {
   /* Raised (see Height in :root). Read through variables so light and dark differ, and through
      Tailwind's shadow slots so a focus ring adds to them instead of replacing them. */
   --shadow-bump: var(--bump-shadow);
-  /* A switch's knob is raised too, but at its size the dark rim reads as an outline, so it only
-     casts a soft shadow. */
-  --shadow-knob: 0 1px 2px rgb(0 0 0 / 45%), 0 0 1px rgb(0 0 0 / 30%);
   --inset-shadow-bump: var(--bump-inset);
+  /* The tone ladder (see Height in :root). */
+  --color-tint-1: var(--tint-1);
+  --color-tint-2: var(--tint-2);
   /* Motion. out replaces Tailwind's ease-out with a stronger curve: entering UI moves most in its
      first frames, so it reads as immediate. drawer is the decelerating curve for surfaces that
      slide or pop in (composer context, pills, sheets). */
@@ -661,16 +661,30 @@ html[data-show-grid] .nest-text {
 }
 
 /* Raised (Height): a thing you press. Pressing lowers it to flat, while held or while its popup
-   is open. A chosen toggle or segment raises with this too (data-pressed:bump), so data-pressed
-   is not a press here. */
+   is open. bump is the shading alone, for parts with a colour of their own (primary, destructive);
+   raised adds the ladder's face for the rest. A chosen toggle or segment raises too
+   (data-pressed:raised), so data-pressed is not a press here. */
 @utility bump {
-  background-image: var(--bump-sheen);
   @apply shadow-bump inset-shadow-bump;
 
   &:active:not(:disabled, [aria-haspopup]),
   &[data-popup-open] {
-    background-image: none;
     @apply shadow-none inset-shadow-none;
+  }
+}
+
+@utility raised {
+  @apply bump;
+  background-color: var(--raised-face);
+
+  &:hover:not(:disabled, [data-disabled]) {
+    background-color: var(--raised-hover);
+  }
+
+  /* Lowered, it lands on the flat ladder. */
+  &:active:not(:disabled, [aria-haspopup]),
+  &[data-popup-open] {
+    background-color: var(--tint-2);
   }
 }
 
@@ -1275,9 +1289,9 @@ html[data-show-grid] .nest-text {
     margin-top: calc(--spacing(1.5) * -1);
     border: 0;
     border-radius: 9999px;
-    /* The switch's knob: solid white, a soft shadow, no ring. */
+    /* The switch's knob: white and raised. */
     background: white;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+    box-shadow: var(--bump-inset), var(--bump-shadow);
     transition:
       transform 120ms ease,
       box-shadow 120ms ease;
@@ -2950,10 +2964,17 @@ code {
   );
   --float-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 16px 40px -18px rgb(0 0 0 / 55%);
 
-  /* Height: one light from above. Raised: light on top, a dark rim, a little shadow. */
-  --bump-sheen: linear-gradient(rgb(255 255 255 / 30%), rgb(0 0 0 / 3%));
+  /* Height: one light from above, and higher is lighter, in fixed steps. Flat places take tint 1
+     (fields, tracks) or tint 2 (hover, a highlighted row, an off switch); a selected row is tint
+     1 so its hover is still a step up. A raised face is two steps above its track, lit on top with
+     a soft shadow and no rim. In light themes places step darker and a raised face is white, so a
+     hairline in its shadow gives it the edge white on white lacks. */
+  --tint-1: color-mix(in srgb, var(--foreground) 6%, transparent);
+  --tint-2: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --raised-face: white;
+  --raised-hover: color-mix(in srgb, var(--foreground) 4%, white);
   --bump-inset: inset 0 1px rgb(255 255 255 / 70%);
-  --bump-shadow: 0 0 0 1px rgb(0 0 0 / 10%), 0 1px 2px rgb(0 0 0 / 8%);
+  --bump-shadow: 0 0 0 1px rgb(0 0 0 / 8%), 0 1px 2px rgb(0 0 0 / 10%);
 
   --surface-fill: var(--background);
 
@@ -2972,9 +2993,10 @@ code {
     --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
     --drawer-tone: color-mix(in srgb, var(--foreground) 1%, var(--card));
     --float-shadow: 0 0 0 1px rgb(0 0 0 / 55%), 0 24px 56px -18px rgb(0 0 0 / 90%);
-    --bump-sheen: linear-gradient(rgb(255 255 255 / 6%), rgb(0 0 0 / 6%));
+    --raised-face: color-mix(in srgb, var(--foreground) 15%, transparent);
+    --raised-hover: color-mix(in srgb, var(--foreground) 20%, transparent);
     --bump-inset: inset 0 1px rgb(255 255 255 / 12%);
-    --bump-shadow: 0 0 0 1px rgb(0 0 0 / 45%), 0 1px 2px rgb(0 0 0 / 40%);
+    --bump-shadow: 0 1px 2px rgb(0 0 0 / 45%);
   }
 }
 

@@ -108,7 +108,7 @@ function ComboboxSearchInput(props: React.ComponentProps<typeof ComboboxInput>) 
   return (
     // The field is a row of the list: its edges where the items' fills are, its icon on theirs.
     <div className="min-w-0 shrink-0 px-2 pt-2">
-      <div className="relative rounded-row bg-foreground/6 px-2 transition-colors focus-within:bg-foreground/9">
+      <div className="relative rounded-row bg-tint-1 px-2 transition-colors focus-within:bg-tint-2">
         <SearchIcon
           aria-hidden="true"
           className="pointer-events-none absolute top-2 left-2 size-4 shrink-0 text-ink-3"
@@ -200,8 +200,8 @@ function ComboboxItem({
   return (
     <ComboboxPrimitive.Item
       className={cn(
-        "nest-row flex min-h-8 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-body outline-none not-data-disabled:hover:bg-foreground/9 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-selected:text-ink-1 data-highlighted:bg-foreground/9 data-highlighted:text-accent-foreground [&[data-highlighted][data-selected]]:bg-foreground/9 [&[data-highlighted][data-selected]]:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        selectedFill && "data-selected:bg-foreground/8",
+        "nest-row flex min-h-8 in-data-[side=none]:min-w-(--anchor-width) items-center cursor-pointer py-1 text-body outline-none not-data-disabled:hover:bg-tint-2 data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-selected:text-ink-1 data-highlighted:bg-tint-2 data-highlighted:text-accent-foreground [&[data-highlighted][data-selected]]:bg-tint-2 [&[data-highlighted][data-selected]]:text-accent-foreground data-disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        selectedFill && "data-selected:bg-tint-1",
         className,
       )}
       data-slot="combobox-item"

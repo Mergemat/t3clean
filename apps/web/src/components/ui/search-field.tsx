@@ -12,7 +12,7 @@ export function SearchField({
   busy?: boolean;
 }) {
   return (
-    <div className="relative min-w-0 rounded-row bg-foreground/6 px-2 transition-colors focus-within:bg-foreground/9">
+    <div className="relative min-w-0 rounded-row bg-tint-1 px-2 transition-colors focus-within:bg-tint-2">
       {busy ? (
         <Spinner
           aria-hidden="true"

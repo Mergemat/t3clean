@@ -170,7 +170,7 @@ export function describeComposerEffort(
 }
 
 const COLUMN_ROW =
-  "nest-row flex h-8 w-full shrink-0 cursor-pointer items-center text-left text-body text-ink-1 outline-none hover:bg-foreground/9 focus-visible:bg-foreground/9 disabled:cursor-not-allowed disabled:opacity-64";
+  "nest-row flex h-8 w-full shrink-0 cursor-pointer items-center text-left text-body text-ink-1 outline-none hover:bg-tint-2 focus-visible:bg-tint-2 disabled:cursor-not-allowed disabled:opacity-64";
 const COLUMN_LABEL = "nest-text pt-2 pb-1 font-medium text-ink-2 text-meta";
 
 function ColumnRow(props: {
@@ -194,7 +194,7 @@ function ColumnRow(props: {
     "data-effort-level": true,
     // Up and Down move between rows.
     tabIndex: props.tabStop ? 0 : -1,
-    className: cn(COLUMN_ROW, "group/level aria-checked:bg-foreground/8"),
+    className: cn(COLUMN_ROW, "group/level aria-checked:bg-tint-1"),
     onClick: props.onPick,
   } as const;
   const content = (
@@ -387,7 +387,7 @@ function OptionMenuRow(props: {
             data-effort-row
             tabIndex={props.tabStop ? 0 : -1}
             aria-label={`${descriptor.label}: ${current}`}
-            className={cn(OPTION_ROW, "data-popup-open:bg-foreground/9")}
+            className={cn(OPTION_ROW, "data-popup-open:bg-tint-2")}
             onKeyDown={(event) => {
               if (event.key !== "ArrowRight") return;
               event.preventDefault();
@@ -452,7 +452,7 @@ function OptionSwitchRow(props: {
   const { descriptor, traits } = props;
   const checked = descriptor.currentValue === true;
   return (
-    <label className={cn(OPTION_ROW, "has-focus-visible:bg-foreground/9")}>
+    <label className={cn(OPTION_ROW, "has-focus-visible:bg-tint-2")}>
       <OptionRowText label={descriptor.label} value={checked ? "On" : "Off"} />
       <Switch
         size="sm"
@@ -599,7 +599,7 @@ function PermissionsMenu(props: {
             type="button"
             data-composer-permissions-trigger
             aria-label={`Permissions: ${current.label}`}
-            className="ms-auto flex h-8 cursor-pointer items-center gap-2 rounded-row px-2 text-ink-2 text-body outline-none hover:bg-foreground/9 hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-popup-open:bg-foreground/9 data-popup-open:text-ink-1"
+            className="ms-auto flex h-8 cursor-pointer items-center gap-2 rounded-row px-2 text-ink-2 text-body outline-none hover:bg-tint-2 hover:text-ink-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset data-popup-open:bg-tint-2 data-popup-open:text-ink-1"
           />
         }
       >
