@@ -1457,7 +1457,7 @@ html[data-show-grid] .nest-text {
        states provide separation without milky gray fills. */
     /* The frame tops the level ladder: at the anchor, so the levels below it step down from it
        without reaching black (see Levels). */
-    --background: oklch(0.155 0 0);
+    --background: oklch(var(--frame-min-l) 0 0);
     --app-chrome-background: var(--background);
     --surface-raised: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
     --foreground: var(--color-neutral-100);
@@ -2946,15 +2946,15 @@ code {
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
      through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
      light edge and a soft shadow lift it. */
-  /* Lower is darker, and neighbouring levels stay close, about 0.01 apart: every level is the
+  /* Lower is darker, and neighbouring levels stay close, about 0.005 to 0.015 apart: every level is the
      frame's colour moved by its own lightness offset. A float
      sits above the frame, chat (messages, composer) just below it, the floor furthest down; a
      drawer, behind the composer, halfway from chat to the floor. In dark themes the frame is never
      below the anchor, so the floor never reaches black. */
   --frame-min-l: 0;
   --float-offset: 0.015;
-  --chat-offset: -0.01;
-  --floor-offset: -0.02;
+  --chat-offset: -0.005;
+  --floor-offset: -0.01;
   --float-tone: oklch(from var(--app-chrome-background) calc(l + var(--float-offset)) c h);
   --chat-tone: oklch(from var(--app-chrome-background) calc(l + var(--chat-offset)) c h);
   --drawer-tone: oklch(
