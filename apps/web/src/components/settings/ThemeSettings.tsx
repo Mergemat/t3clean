@@ -321,8 +321,8 @@ function ThemeLibraryCard({
                 />
               )}
             </div>
-            <div className="flex items-center justify-center px-4 pt-2 pb-4">
-              <div className="min-w-0">
+            <div className="flex min-h-8 items-center gap-2 px-4 pt-2 pb-4">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <button
                     aria-label={
@@ -353,7 +353,8 @@ function ThemeLibraryCard({
                 </div>
               </div>
               {onEdit || onDuplicate || onDownload || onRemove ? (
-                <div className="absolute top-2 right-2 flex shrink-0 items-center gap-1 opacity-0 transition-opacity group-hover/theme:opacity-100 focus-within:opacity-100">
+                // In plain view beside the name: a theme's own actions are not a secret.
+                <div className="flex shrink-0 items-center gap-1">
                   {onDuplicate ? (
                     <Tooltip>
                       <TooltipTrigger

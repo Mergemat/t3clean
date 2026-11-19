@@ -1456,6 +1456,8 @@ html[data-show-grid] .nest-text {
        over neutral-950, so cards, popovers, and the composer still lift. Borders and hover
        states provide separation without milky gray fills. */
     --background: #000;
+    /* The frame sits a shade above black so the window, below it, can be black. */
+    --app-chrome-background: color-mix(in srgb, var(--color-neutral-950) 99%, var(--color-white));
     --surface-raised: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
     --foreground: var(--color-neutral-100);
     --card: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
@@ -2942,9 +2944,9 @@ code {
   /* A float's own look: glass a tone lighter than the panes, because higher is lighter, as see-
      through as the Glass opacity setting says (never below 18%, so text on it stays readable). Its
      light edge and a soft shadow lift it. A drawer is behind the composer, so it is the composer's
-     glass a shade darker: halfway to the frame. */
+     glass a shade darker: halfway to the floor. */
   --float-tone: var(--popover);
-  --drawer-tone: color-mix(in srgb, var(--app-chrome-background) 50%, var(--card));
+  --drawer-tone: color-mix(in srgb, var(--chat-tone) 50%, var(--window-fill));
   --float-fill: color-mix(
     in srgb,
     var(--float-tone) 18%,
@@ -2968,7 +2970,9 @@ code {
 
   --surface-fill: var(--background);
 
-  --window-fill: var(--card);
+  /* The bottom of the bowl, seen when the sky is off: a step below the frame around it, because
+     higher is lighter. Chat glass and floats lift off it in turn. */
+  --window-fill: color-mix(in oklab, var(--app-chrome-background) 96%, black);
   /* The OS window corner, measured: 16px on macOS 26, 8px on Windows 11. The page can't read it.
      A window corner that sits in the OS corner is concentric with it: it takes the gap and the OS
      edge (2px) off. Every other window corner takes the scale. */
@@ -2977,9 +2981,13 @@ code {
   /* A region: the details card (a box, 16) floats one step inside it and runs parallel. */
   --window-radius: var(--radius-region);
   --window-corner: max(var(--radius-chip), calc(var(--app-corner) - var(--window-gap) - 2px));
-  --window-content-fill: color-mix(in srgb, var(--card) var(--glass-opacity), transparent);
+  /* Chat lies a little below the frame and above the floor, so its tone is between the two. */
+  --chat-tone: color-mix(in oklab, var(--app-chrome-background) 98%, black);
+  --window-content-fill: color-mix(in srgb, var(--chat-tone) var(--glass-opacity), transparent);
 
   @variant dark {
+    --window-fill: color-mix(in oklab, var(--app-chrome-background) 60%, black);
+    --chat-tone: color-mix(in oklab, var(--app-chrome-background) 82%, black);
     --float-tone: color-mix(in srgb, var(--foreground) 3%, var(--card));
     --float-shadow: 0 18px 44px -18px rgb(0 0 0 / 80%);
   }
